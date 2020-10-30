@@ -1,6 +1,7 @@
 package social.tsu.android
 
 import android.app.Application
+import android.content.Context
 import android.util.Log
 import androidx.appcompat.app.AppCompatDelegate
 import androidx.camera.camera2.Camera2Config
@@ -49,8 +50,14 @@ open class TsuApplication : Application(),HasAndroidInjector,   CameraXConfig.Pr
     @Inject
     lateinit var postFeedRepository: PostFeedRepository
 
+
+    companion object{
+        lateinit var mContext: Context
+    }
+
     override fun onCreate() {
         super.onCreate()
+        mContext = this
         AppVersion.init(this)
         setNetworkEnviorement()
         appComponent.inject(this)

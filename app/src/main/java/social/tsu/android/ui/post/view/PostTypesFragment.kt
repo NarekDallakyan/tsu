@@ -6,6 +6,7 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.appcompat.widget.Toolbar
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.fragment.app.Fragment
@@ -14,12 +15,14 @@ import androidx.navigation.NavOptions
 import androidx.navigation.fragment.navArgs
 import kotlinx.android.synthetic.main.fragment_post_types.*
 import social.tsu.android.R
+import social.tsu.android.helper.DeviceFlashHelper
 import social.tsu.android.helper.navigateSafe
 import social.tsu.android.ui.post.view.viewpager.*
 import social.tsu.android.utils.findParentNavController
 import social.tsu.android.utils.setScreenOrientation
 import social.tsu.android.utils.show
 import social.tsu.android.viewModel.SharedViewModel
+
 
 /**
  * Main entry point for choosing media that can be attached to post.
@@ -78,6 +81,16 @@ class PostTypesFragment : Fragment() {
         initOnClicks()
     }
 
+    override fun onStart() {
+        super.onStart()
+        DeviceFlashHelper.registerFlashlightState(requireContext())
+    }
+
+    override fun onStop() {
+        super.onStop()
+        DeviceFlashHelper.unregisterFlashlightState(requireContext())
+    }
+
     private fun initOnClicks() {
 
         // listen bottom buttons click listeners
@@ -107,6 +120,18 @@ class PostTypesFragment : Fragment() {
     }
 
     private fun onClickButtons() {
+
+        view?.findViewById<ConstraintLayout>(R.id.flashLayout_id)?.setOnClickListener {
+
+            if (!DeviceFlashHelper.deviceFlashIsAvailable()) {
+                showNoFlashError()
+                return@setOnClickListener
+            }
+
+            val flashIsOn = DeviceFlashHelper.isFlashlightOn
+
+            DeviceFlashHelper.switchFlashLight(!flashIsOn)
+        }
         view?.findViewById<ConstraintLayout>(R.id.languageLayout_id)?.setOnClickListener {
             setChoose(LANGUAGE_CLICK)
             setUnChoose(PHOTO_CLICK)
@@ -138,8 +163,8 @@ class PostTypesFragment : Fragment() {
     private fun setChoose(layout: Int) {
         when (layout) {
             LANGUAGE_CLICK -> {
-               view?.findViewById<ConstraintLayout>(R.id.languageLayout_id)
-                   ?.setBackgroundResource(R.drawable.ic_languages_white_end)
+                view?.findViewById<ConstraintLayout>(R.id.languageLayout_id)
+                    ?.setBackgroundResource(R.drawable.ic_languages_white_end)
             }
 
             PHOTO_CLICK -> {
@@ -186,7 +211,7 @@ class PostTypesFragment : Fragment() {
 
         try {
             sharedViewModel!!.select(false)
-        } catch (e:Exception){
+        } catch (e: Exception) {
             e.printStackTrace()
         }
     }
@@ -219,6 +244,15 @@ class PostTypesFragment : Fragment() {
             .build()
 
         findParentNavController().navigateSafe(direction, navOptions)
+    }
+
+    private fun showNoFlashError() {
+
+        Toast.makeText(
+            requireContext(),
+            "Flash not available in this device...",
+            Toast.LENGTH_LONG
+        ).show()
     }
 
     companion object {
