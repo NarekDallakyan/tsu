@@ -1,0 +1,92 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:orientation="vertical">
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:scrollbars="none">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical">
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/margin_medium"
+                android:layout_marginTop="@dimen/standard_margin"
+                android:layout_marginEnd="@dimen/margin_medium"
+                android:textAppearance="@style/TextAppearance.AppCompat.Body2"
+                android:text="@string/reset_password_enter_email_message"
+                android:textSize="@dimen/font_medium"
+                android:gravity="center" />
+
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/standard_margin"
+                android:layout_marginTop="@dimen/margin_medium"
+                android:layout_marginEnd="@dimen/standard_margin"
+                android:textAppearance="@style/TextAppearance.AppCompat.Body1"
+                android:text="@string/enter_email"
+                android:textSize="@dimen/font_large"
+                android:gravity="start" />
+
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/email_til"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:endIconMode="clear_text"
+                app:errorIconDrawable="@null"
+                android:layout_marginStart="@dimen/standard_margin"
+                android:layout_marginEnd="@dimen/standard_margin">
+
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/email_edittext"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:backgroundTint="@android:color/transparent"
+                    android:inputType="textEmailAddress"
+                    android:textSize="@dimen/font_medium"
+                    android:maxLines="1" />
+            </com.google.android.material.textfield.TextInputLayout>
+
+            <Button
+                android:id="@+id/request_otp_button"
+                style="@style/RoundButton"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/full_width_button_margin"
+                android:layout_marginTop="@dimen/margin_medium"
+                android:layout_marginEnd="@dimen/full_width_button_margin"
+                android:paddingTop="@dimen/padding_standard"
+                android:paddingBottom="@dimen/padding_standard"
+                android:text="@string/send_one_time_code"
+                android:textSize="@dimen/font_xlarge" />
+
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/margin_large"
+                android:layout_marginTop="@dimen/standard_margin"
+                android:layout_marginEnd="@dimen/margin_large"
+                android:textAppearance="@style/TextAppearance.MaterialComponents.Headline6"
+                android:text="@string/reset_password_update_message"
+                android:textSize="@dimen/font_large"
+                android:gravity="center" />
+        </LinearLayout>
+
+    </ScrollView>
+
+
+    <include
+        layout="@layout/progress_layout"
+        android:visibility="gone"/>
+</androidx.constraintlayout.widget.ConstraintLayout>

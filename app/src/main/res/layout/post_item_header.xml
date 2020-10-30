@@ -1,0 +1,100 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:paddingBottom="@dimen/list_item_title_margin_horizontal">
+
+
+    <include
+        android:id="@+id/ad_header"
+        layout="@layout/sample_ad_screen"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:visibility="gone"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/post_share_text"
+        style="@style/TSUTextAppearance"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/margin_default_medium"
+        android:layout_marginTop="@dimen/margin_default_medium"
+        android:layout_marginEnd="@dimen/margin_default_medium"
+        android:paddingTop="14dp"
+        android:paddingBottom="14dp"
+        android:textColor="@color/secondaryDarkGray"
+        android:textSize="@dimen/font_medium"
+        android:visibility="gone"
+        app:layout_constraintTop_toBottomOf="@id/ad_header"
+        tools:text="Michael Chen shared a post"
+        tools:visibility="visible" />
+
+    <de.hdodenhof.circleimageview.CircleImageView
+        android:id="@+id/post_item_user_icon"
+        android:layout_width="@dimen/user_item_photo_size"
+        android:layout_height="@dimen/user_item_photo_size"
+        android:layout_marginStart="@dimen/margin_default_medium"
+        android:layout_marginTop="@dimen/margin_default_small"
+        app:civ_border_color="@color/user_profile_avatar_border"
+        app:civ_border_width="@dimen/user_item_photo_border"
+        app:layout_constraintEnd_toStartOf="@id/post_item_username"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/post_share_text"
+        app:layout_goneMarginTop="@dimen/margin_default_medium"
+        tools:src="@drawable/fake" />
+
+    <TextView
+        android:id="@+id/post_item_username"
+        style="@style/TSUTextAppearance"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/list_item_title_margin_horizontal"
+        android:layout_marginTop="0dp"
+        android:layout_marginEnd="@dimen/list_item_title_margin_horizontal"
+        android:maxLines="2"
+        android:textColor="@color/secondaryDarkGray"
+        android:textSize="@dimen/font_medium"
+        app:layout_constraintEnd_toStartOf="@+id/post_more_icon"
+        app:layout_constraintStart_toEndOf="@id/post_item_user_icon"
+        app:layout_constraintTop_toTopOf="@id/post_item_user_icon"
+        tools:text="cybo" />
+
+    <TextView
+        android:id="@+id/post_item_date"
+        style="@style/TSUTextAppearance.PostDate"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/margin_default_xsmall"
+        app:layout_constraintEnd_toStartOf="@+id/post_more_icon"
+        app:layout_constraintStart_toStartOf="@id/post_item_username"
+        app:layout_constraintTop_toBottomOf="@id/post_item_username"
+        tools:text="5 mintues ago" />
+
+    <ImageView
+        android:id="@+id/post_more_icon"
+        android:layout_width="@dimen/button_icon_size"
+        android:layout_height="@dimen/button_icon_size"
+        android:layout_marginEnd="@dimen/margin_default_medium"
+        android:background="?attr/selectableItemBackgroundBorderless"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="@id/post_item_user_icon"
+        app:srcCompat="@drawable/ic_more_horizontal" />
+
+    <TextView
+        android:id="@+id/post_item_content"
+        style="@style/TSUTextAppearance.Medium"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/list_item_title_margin_horizontal"
+        android:paddingLeft="@dimen/margin_default_medium"
+        android:paddingRight="@dimen/margin_default_medium"
+        android:textColor="@color/white"
+        android:textSize="@dimen/font_medium"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/post_item_date"
+        tools:text="@string/test_text" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>

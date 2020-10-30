@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:background="@color/black">
+
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/invite_only_signin_btn"
+        style="@style/TSUTextButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/invite_only_signin_top"
+        android:layout_marginEnd="@dimen/margin_default_small"
+        android:text="@string/sign_in"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <ImageView
+        android:id="@+id/invite_only_logo"
+        android:layout_width="@dimen/invite_only_icon_width"
+        android:layout_height="wrap_content"
+        android:src="@drawable/ic_tsu_splash_icon"
+        app:layout_constraintBottom_toTopOf="@id/invite_only_title"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/invite_only_signin_btn"
+        app:layout_constraintVertical_bias="0.47" />
+
+    <TextView
+        android:id="@+id/invite_only_title"
+        style="@style/TSUTextAppearance.Title"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/margin_default_medium"
+        android:layout_marginEnd="@dimen/margin_default_medium"
+        android:gravity="center"
+        android:text="@string/invitation_only_title"
+        app:layout_constraintBottom_toTopOf="@id/invite_only_notice"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_chainStyle="packed" />
+
+    <TextView
+        android:id="@+id/invite_only_notice"
+        style="@style/TSUTextAppearance.Text"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/margin_default_medium"
+        android:layout_marginTop="@dimen/margin_default_small"
+        android:layout_marginEnd="@dimen/margin_default_medium"
+        android:gravity="center"
+        android:text="@string/invitation_only_notice"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/invite_only_title" />
+
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/invite_only_request_btn"
+        style="@style/TSUButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/margin_default_xlarge"
+        android:text="@string/request_invitation_btn"
+        android:textAllCaps="false"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/invite_only_notice" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>

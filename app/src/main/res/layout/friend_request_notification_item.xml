@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="utf-8"?>
+<com.daimajia.swipe.SwipeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/notification_swipe_layout"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:orientation="horizontal"
+        android:layout_height="match_parent">
+
+        <TextView
+            android:id="@+id/request_confirm"
+            style="@style/TSUTextAppearance.Bold"
+            android:layout_width="@dimen/notification_request_btn_width"
+            android:layout_height="match_parent"
+            android:background="@color/colorPrimary"
+            android:gravity="center"
+            android:text="@string/confirm"
+            android:textColor="@color/black"
+            android:textSize="@dimen/font_medium" />
+
+        <TextView
+            android:id="@+id/request_delete"
+            style="@style/TSUTextAppearance.Bold"
+            android:layout_width="@dimen/notification_request_btn_width"
+            android:layout_height="match_parent"
+            android:background="@color/decline_button"
+            android:gravity="center"
+            android:text="@string/delete"
+            android:textColor="@android:color/white"
+            android:textSize="@dimen/font_medium" />
+
+    </LinearLayout>
+
+    <include layout="@layout/notification_item" />
+
+</com.daimajia.swipe.SwipeLayout>

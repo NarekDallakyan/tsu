@@ -1,0 +1,116 @@
+package social.tsu.android.ui.util
+import android.graphics.Canvas
+import android.graphics.Rect
+import android.view.LayoutInflater
+import android.view.View
+import android.view.ViewGroup
+import android.widget.TextView
+import androidx.annotation.NonNull
+import androidx.recyclerview.widget.RecyclerView
+import androidx.recyclerview.widget.RecyclerView.ItemDecoration
+import social.tsu.android.R
+import kotlin.math.max
+
+
+class RecyclerSectionItemDecoration(
+    private val headerOffset: Int,
+    private val sticky: Boolean,
+    private val topPadding: Int = 0,
+    @NonNull private val sectionCallback: SectionCallback
+) : ItemDecoration() {
+    private var headerView: View? = null
+    private var header: TextView? = null
+    override fun getItemOffsets(
+        outRect: Rect,
+        view: View,
+        parent: RecyclerView,
+        state: RecyclerView.State
+    ) {
+        super.getItemOffsets(outRect, view, parent, state)
+        val pos = parent.getChildAdapterPosition(view)
+        if (pos > -1 && sectionCallback.isSection(pos)) {
+            outRect.top = headerOffset
+            if (pos == 0) {
+                outRect.top += topPadding
+            }
+        }
+    }
+
+    override fun onDrawOver(
+        c: Canvas,
+        parent: RecyclerView,
+        state: RecyclerView.State
+    ) {
+        super.onDrawOver(c, parent, state)
+        if (headerView == null) {
+            headerView = inflateHeaderView(parent)
+            header = headerView!!.findViewById<View>(R.id.header_title) as TextView
+            fixLayoutSize(headerView, parent)
+        }
+        var previousHeader: CharSequence = ""
+        for (i in 0 until parent.childCount) {
+            val child = parent.getChildAt(i)
+            val position = parent.getChildAdapterPosition(child)
+            val title = try{sectionCallback.getSectionHeader(position)} catch (e: IndexOutOfBoundsException){previousHeader}
+            header!!.text = title
+            if (previousHeader != title || (position>-1 && sectionCallback.isSection(position))) {
+                drawHeader(c, child, headerView)
+                previousHeader = title
+            }
+        }
+    }
+
+    private fun drawHeader(
+        c: Canvas,
+        child: View,
+        headerView: View?
+    ) {
+        c.save()
+        if (sticky) {
+            c.translate(
+                0f,
+                max(0, child.top - headerView!!.height).toFloat()
+            )
+        } else {
+            c.translate(0f, child.top - headerView!!.height.toFloat())
+        }
+        headerView.draw(c)
+        c.restore()
+    }
+
+    private fun inflateHeaderView(parent: RecyclerView): View {
+        return LayoutInflater.from(parent.context)
+            .inflate(R.layout.view_header, parent, false)
+    }
+
+    private fun fixLayoutSize(view: View?, parent: ViewGroup) {
+        if (view == null) return
+
+        val widthSpec = View.MeasureSpec.makeMeasureSpec(
+            parent.width,
+            View.MeasureSpec.EXACTLY
+        )
+        val heightSpec = View.MeasureSpec.makeMeasureSpec(
+            parent.height,
+            View.MeasureSpec.UNSPECIFIED
+        )
+        val childWidth = ViewGroup.getChildMeasureSpec(
+            widthSpec,
+            parent.paddingLeft + parent.paddingRight,
+            view.layoutParams.width
+        )
+        val childHeight = ViewGroup.getChildMeasureSpec(
+            heightSpec,
+            parent.paddingTop + parent.paddingBottom,
+            view.layoutParams.height
+        )
+        view.measure(childWidth, childHeight)
+        view.layout(0, 0, view.measuredWidth, view.measuredHeight)
+    }
+
+    interface SectionCallback {
+        fun isSection(position: Int): Boolean
+        fun getSectionHeader(position: Int): CharSequence
+    }
+
+}

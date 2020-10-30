@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layer-list xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <item android:drawable="@color/black"/>
+
+    <item
+        android:height="120dp"
+        android:width="180dp"
+        android:drawable="@drawable/ic_social_that_pays"
+        android:gravity="center"/>
+
+    <item
+        android:height="40dp"
+        android:width="250dp"
+        android:drawable="@drawable/ic_tsu_thank_you_text"
+        android:gravity="center"
+        android:top="350dp"/>
+    <item
+        android:height="45dp"
+        android:width="180dp"
+        android:drawable="@drawable/ic_tsu_alpha_copy"
+        android:gravity="center"
+        android:top="500dp"/>
+</layer-list>

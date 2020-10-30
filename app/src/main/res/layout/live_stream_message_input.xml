@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+
+        <import type="android.text.TextUtils" />
+
+        <import type="android.view.View" />
+
+        <variable
+            name="viewModel"
+            type="com.getstream.sdk.chat.viewmodel.ChannelViewModel" />
+
+    </data>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/chat_text_input_layout"
+            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="2dp"
+            app:boxCornerRadiusBottomEnd="@dimen/chat_field_radius"
+            app:boxCornerRadiusBottomStart="@dimen/chat_field_radius"
+            app:boxCornerRadiusTopEnd="@dimen/chat_field_radius"
+            app:boxCornerRadiusTopStart="@dimen/chat_field_radius"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent">
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/messageInput"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/chat_field_height"
+                android:inputType="text"
+                android:nextFocusDown="@id/last_name"
+                android:paddingEnd="@dimen/chat_field_height"
+                android:text="@={viewModel.messageInputText}" />
+
+        </com.google.android.material.textfield.TextInputLayout>
+
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/chat_emoji_list"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/chat_field_height"
+            android:orientation="horizontal"
+            app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+            app:layout_constraintBottom_toTopOf="@+id/chat_text_input_layout"
+            tools:listitem="@layout/comment_default_input_layout" />
+
+        <Button
+            android:id="@+id/chat_send_message"
+            style="@style/TSUTextButton"
+            android:layout_width="@dimen/chat_field_height"
+            android:layout_height="@dimen/chat_field_height"
+            android:layout_margin="2dp"
+            android:text="@string/create_post_btn"
+            android:background="@null"
+            app:layout_constraintBottom_toBottomOf="@+id/chat_text_input_layout"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="@+id/chat_text_input_layout" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</layout>
+                    

@@ -1,0 +1,577 @@
+<resources xmlns:tools="http://schemas.android.com/tools">
+
+    <!-- Base application theme. -->
+<!--    <style name="AppTheme" parent="Theme.AppCompat.Light.DarkActionBar">-->
+    <style name="AppTheme" parent="Theme.MaterialComponents.DayNight.DarkActionBar">
+        <!-- Customize your theme here. -->
+        <item name="android:windowBackground">@drawable/splash_screen</item>
+        <item name="colorPrimary">@color/colorPrimary</item>
+        <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
+        <item name="colorAccent">@color/colorPrimary</item>
+        <item name="android:fontFamily">@font/lato</item>
+        <item name="android:alertDialogTheme">@style/AlertDialogTheme.Light</item>
+        <item name="android:navigationBarColor">@color/colorPrimaryDark</item>
+        <item name="android:windowTranslucentStatus">true</item>
+    </style>
+
+    <style name="AlertDialogTheme.Light" parent="ThemeOverlay.MaterialComponents.Dialog.Alert" >
+        <item name="android:buttonStyle">@style/AlertDialog</item>
+    </style>
+
+    <style name="RoundButton" parent="Widget.MaterialComponents.Button">
+        <item name="cornerRadius">@dimen/button_corners</item>
+        <item name="backgroundTint">@color/secondary1</item>
+        <item name="android:textColor">@color/black</item>
+    </style>
+
+    <style name="TSUButton" parent="Widget.MaterialComponents.Button">
+        <item name="android:fontFamily">@font/lato_bold</item>
+        <item name="android:insetBottom">0dp</item>
+        <item name="android:insetLeft">0dp</item>
+        <item name="android:insetRight">0dp</item>
+        <item name="android:insetTop">0dp</item>
+        <item name="android:letterSpacing">0</item>
+        <item name="android:paddingBottom">@dimen/button_padding_default</item>
+        <item name="android:paddingEnd">34dp</item>
+        <item name="android:paddingStart">34dp</item>
+        <item name="android:paddingTop">@dimen/button_padding_default</item>
+        <item name="android:textColor">@drawable/default_button_text</item>
+        <item name="android:textSize">@dimen/font_medium</item>
+        <item name="backgroundTint">@drawable/default_button_background</item>
+        <item name="cornerRadius">@dimen/button_corners</item>
+        <item name="fontFamily">@font/lato_bold</item>
+        <item name="iconGravity">textStart</item>
+        <item name="iconPadding">4dp</item>
+        <item name="android:textAllCaps">false</item>
+        <item name="iconTint">@drawable/default_button_text</item>
+    </style>
+
+    <style name="TSUButton.WrapContent" parent="TSUButton">
+        <item name="android:minHeight">@dimen/button_min_height</item>
+        <item name="android:minWidth">40dp</item>
+        <item name="android:paddingBottom">4dp</item>
+        <item name="android:paddingEnd">@dimen/button_padding_default</item>
+        <item name="android:paddingLeft">@dimen/button_padding_default</item>
+        <item name="android:paddingRight">@dimen/button_padding_default</item>
+        <item name="android:paddingStart">@dimen/button_padding_default</item>
+        <item name="android:paddingTop">4dp</item>
+    </style>
+
+    <style name="TSUButton.WrapContent.Round">
+        <item name="cornerRadius">8dp</item>
+    </style>
+
+    <style name="TSUButton.WrapContent.Profile">
+        <item name="android:minHeight">40dp</item>
+        <item name="cornerRadius">4dp</item>
+    </style>
+
+    <style name="TSUButton.Support" parent="TSUButton.WrapContent.Profile">
+        <item name="backgroundTint">@color/profileButtonSecondary</item>
+        <item name="iconTint">@color/secondary2</item>
+        <item name="android:textColor">@color/profileButtonText</item>
+    </style>
+
+    <style name="TSUButton.Grey" parent="TSUButton.WrapContent.Profile">
+        <item name="backgroundTint">@color/profileButtonSecondary</item>
+        <item name="iconTint">@color/colorPrimary</item>
+        <item name="android:textColor">@color/colorPrimary</item>
+    </style>
+
+    <style name="TSUButton.WrapContent.Rounded" parent="TSUButton.WrapContent">
+        <item name="cornerRadius">@dimen/button_corners_rounded</item>
+    </style>
+
+    <style name="TSUButton.WrapContent.SupportMe" parent="TSUButton.WrapContent.Rounded">
+        <item name="backgroundTint">@color/button_background_simple</item>
+        <item name="iconTint">@color/tsu_yellow</item>
+        <item name="android:textColor">@color/white</item>
+    </style>
+
+    <style name="TSUButton.Decline" parent="TSUButton.WrapContent">
+        <item name="backgroundTint">@color/button_background_decline</item>
+        <item name="android:textColor">@color/white</item>
+    </style>
+
+    <style name="TSUButton.Outlined" parent="Widget.MaterialComponents.Button.OutlinedButton">
+        <item name="android:fontFamily">@font/lato_medium</item>
+        <item name="android:insetBottom">0dp</item>
+        <item name="android:insetLeft">0dp</item>
+        <item name="android:insetRight">0dp</item>
+        <item name="android:insetTop">0dp</item>
+        <item name="android:letterSpacing">0</item>
+        <item name="android:paddingBottom">@dimen/button_padding_default</item>
+        <item name="android:paddingEnd">34dp</item>
+        <item name="android:paddingStart">34dp</item>
+        <item name="android:paddingTop">@dimen/button_padding_default</item>
+        <item name="android:textAllCaps">false</item>
+        <item name="android:textColor">@drawable/default_button_background</item>
+        <item name="android:textSize">@dimen/font_medium</item>
+        <item name="strokeColor">@drawable/default_button_background</item>
+        <item name="cornerRadius">@dimen/button_corners</item>
+        <item name="fontFamily">@font/lato_medium</item>
+        <item name="iconGravity">textStart</item>
+        <item name="iconPadding">4dp</item>
+        <item name="iconTint">@drawable/default_button_text</item>
+    </style>
+
+    <style name="TSUTextInputLayout">
+        <item name="errorIconDrawable">@null</item>
+        <item name="errorTextAppearance">@style/TSUTextAppearance.Error</item>
+        <item name="hintEnabled">false</item>
+    </style>
+
+    <style name="TSUEditText" parent="Widget.AppCompat.EditText">
+        <item name="android:backgroundTint">@android:color/transparent</item>
+        <item name="android:fontFamily">@font/lato_bold</item>
+        <item name="android:layout_marginBottom">8dp</item>
+        <item name="android:maxLines">1</item>
+        <item name="android:paddingBottom">@dimen/field_padding_vertical</item>
+        <item name="android:paddingLeft">@dimen/field_padding_horizontal</item>
+        <item name="android:paddingRight">@dimen/field_padding_horizontal</item>
+        <item name="android:paddingTop">@dimen/field_padding_vertical</item>
+        <item name="android:textColor">@color/white</item>
+        <item name="android:textColorHint">@color/field_multiline_hint</item>
+        <item name="fontFamily">@font/lato_bold</item>
+    </style>
+
+    <style name="TSUEditText.Multiline" parent="Widget.AppCompat.EditText">
+        <item name="android:backgroundTint">@android:color/transparent</item>
+        <item name="android:fontFamily">@font/lato_bold</item>
+        <item name="android:gravity">start|top</item>
+        <item name="android:inputType">textMultiLine</item>
+        <item name="android:layout_marginBottom">8dp</item>
+        <item name="android:minLines">@dimen/create_post_field_min_lines</item>
+        <item name="android:paddingBottom">@dimen/field_padding_vertical</item>
+        <item name="android:paddingLeft">@dimen/field_padding_horizontal</item>
+        <item name="android:paddingRight">@dimen/field_padding_horizontal</item>
+        <item name="android:paddingTop">@dimen/field_padding_vertical</item>
+        <item name="android:textColor">@color/white</item>
+        <item name="android:textColorHint">@color/field_multiline_hint</item>
+        <item name="fontFamily">@font/lato_bold</item>
+    </style>
+
+    <style name="TSUTextAppearance">
+        <item name="fontFamily">@font/lato</item>
+        <item name="android:fontFamily">@font/lato</item>
+    </style>
+
+    <style name="TSUTextAppearance.Medium">
+        <item name="fontFamily">@font/lato_medium</item>
+        <item name="android:fontFamily">@font/lato_medium</item>
+    </style>
+
+    <style name="TSUTextAppearance.Bold">
+        <item name="fontFamily">@font/lato_bold</item>
+        <item name="android:fontFamily">@font/lato_bold</item>
+    </style>
+
+    <style name="TSUTextAppearance.Text" parent="TSUTextAppearance">
+        <item name="android:textSize">@dimen/font_medium</item>
+        <item name="android:textColor">@color/white</item>
+        <item name="lineHeight">20dp</item>
+    </style>
+
+    <style name="TSUTextAppearance.Description" parent="TSUTextAppearance">
+        <item name="android:textSize">@dimen/font_medium</item>
+        <item name="android:textColor">@color/text_description</item>
+    </style>
+
+    <style name="TSUTextAppearance.PostDate" parent="TSUTextAppearance.Medium">
+        <item name="android:maxLines">1</item>
+        <item name="android:textColor">@color/post_date</item>
+        <item name="android:textSize">@dimen/font_small</item>
+    </style>
+
+    <style name="TSUTextAppearance.Hint" parent="TSUTextAppearance">
+        <item name="android:gravity">start</item>
+        <item name="android:layout_marginBottom">4dp</item>
+        <item name="android:textColor">@color/field_hint</item>
+        <item name="android:textSize">@dimen/font_medium</item>
+    </style>
+
+    <style name="TSUTextAppearance.Error" parent="TSUTextAppearance">
+        <item name="android:textColor">@color/field_error</item>
+        <item name="android:textSize">@dimen/font_small</item>
+    </style>
+
+    <style name="TSUTextAppearance.AppBarTitle" parent="TSUTextAppearance.Bold">
+        <item name="android:gravity">center</item>
+        <item name="android:textColor">@color/white</item>
+        <item name="android:textSize">@dimen/font_medium</item>
+    </style>
+
+    <style name="TSUTextAppearance.Title" parent="TSUTextAppearance.Bold">
+        <item name="android:gravity">center</item>
+        <item name="android:textColor">@color/white</item>
+        <item name="android:textSize">@dimen/font_xlarge</item>
+    </style>
+
+    <style name="TSUTextAppearance.ItemTitle" parent="TSUTextAppearance.Bold">
+        <item name="android:layout_marginTop">@dimen/margin_default_large</item>
+        <item name="android:textColor">@color/white</item>
+        <item name="android:textSize">@dimen/font_medium</item>
+    </style>
+
+    <style name="TSUTextAppearance.CategoryTitle" parent="TSUTextAppearance.ItemTitle">
+        <item name="android:layout_marginTop">@dimen/margin_default_small</item>
+        <item name="android:textSize">@dimen/font_large</item>
+    </style>
+
+    <style name="TSUTextAppearance.CountValue" parent="TSUTextAppearance.Bold">
+        <item name="android:textColor">@color/user_profile_count_text</item>
+        <item name="android:textSize">@dimen/font_large</item>
+    </style>
+
+    <style name="TSUTextAppearance.CountLabel" parent="TSUTextAppearance.Medium">
+        <item name="android:textColor">@color/tsu_grey</item>
+        <item name="android:textSize">@dimen/font_xsmall</item>
+        <item name="android:textAllCaps">true</item>
+    </style>
+
+    <style name="TSUTextAppearance.UserInfoLabel" parent="TSUTextAppearance.Medium">
+        <item name="android:textColor">@color/tsu_grey</item>
+        <item name="android:textSize">@dimen/font_medium</item>
+    </style>
+
+    <style name="TSUTextAppearance.UserInfoText" parent="TSUTextAppearance.Bold">
+        <item name="android:gravity">center_vertical</item>
+        <item name="android:minHeight">20dp</item>
+        <item name="android:singleLine">true</item>
+        <item name="android:textColor">@color/user_profile_count_text</item>
+        <item name="android:textSize">@dimen/font_medium</item>
+    </style>
+
+    <style name="TSUTextAppearance.InfoValue" parent="TSUTextAppearance.Medium">
+        <item name="android:layout_marginTop">@dimen/user_info_value_margin_top</item>
+        <item name="android:textColor">@color/text_description</item>
+        <item name="android:textSize">@dimen/font_medium</item>
+    </style>
+
+    <style name="TSUTextAppearance.AboutHeader" parent="TSUTextAppearance.Bold">
+        <item name="android:layout_marginTop">@dimen/margin_default_large</item>
+        <item name="android:textColor">@color/white</item>
+        <item name="android:textSize">@dimen/font_xlarge</item>
+    </style>
+
+    <style name="TSUTextAppearance.AboutItemHeader" parent="TSUTextAppearance.Bold">
+        <item name="android:textColor">@color/white</item>
+        <item name="android:textSize">@dimen/font_medium</item>
+    </style>
+
+    <style name="TSUTextAppearance.AboutHeaderEdit" parent="TSUTextAppearance.Bold">
+        <item name="android:layout_marginTop">@dimen/margin_default_large</item>
+        <item name="android:textColor">@color/colorPrimary</item>
+        <item name="android:textSize">@dimen/font_medium</item>
+        <item name="android:paddingTop">6dp</item>
+        <item name="android:paddingBottom">6dp</item>
+        <item name="android:paddingStart">@dimen/margin_default_medium</item>
+        <item name="android:paddingEnd">@dimen/margin_default_medium</item>
+    </style>
+
+    <style name="TSUTextAppearance.AboutItemText" parent="TSUTextAppearance.Bold">
+        <item name="android:textColor">@color/secondaryDarkGray</item>
+        <item name="android:textSize">@dimen/font_xsmall</item>
+    </style>
+
+    <style name="TSUTextAppearance.AboutItemEmpty" parent="TSUTextAppearance">
+        <item name="android:textColor">@color/primaryGray</item>
+        <item name="android:textSize">@dimen/font_medium</item>
+    </style>
+
+    <style name="TSUTextAppearance.SettingsTitle" parent="TSUTextAppearance.Medium">
+        <item name="android:gravity">center_vertical</item>
+        <item name="android:minHeight">36dp</item>
+        <item name="android:paddingBottom">@dimen/margin_default_small</item>
+        <item name="android:paddingEnd">@dimen/margin_default_medium</item>
+        <item name="android:paddingStart">@dimen/margin_default_medium</item>
+        <item name="android:paddingTop">@dimen/margin_default_small</item>
+        <item name="android:textAllCaps">true</item>
+        <item name="android:textColor">@color/primaryGray</item>
+        <item name="android:textSize">@dimen/font_small</item>
+    </style>
+
+    <style name="SplashTheme" parent="AppTheme.NoActionBar">
+        <item name="android:windowBackground">@drawable/splash_screen</item>
+    </style>
+
+    <style name="TSUTextButton" parent="Widget.MaterialComponents.Button.TextButton">
+        <item name="android:fontFamily">@font/lato</item>
+        <item name="android:gravity">center</item>
+        <item name="android:textAllCaps">false</item>
+        <item name="android:textColor">@color/secondary1</item>
+        <item name="android:textSize">@dimen/font_medium</item>
+        <item name="fontFamily">@font/lato</item>
+    </style>
+
+    <style name="TSUBottomDialog" parent="Theme.MaterialComponents.BottomSheetDialog">
+        <item name="android:colorBackground">@android:color/transparent</item>
+    </style>
+
+    <style name="TSUBottomDialog.Container">
+        <item name="android:background">@drawable/rounded_corner</item>
+        <item name="android:backgroundTint">@color/bottom_bar_background</item>
+    </style>
+
+    <style name="TSUBottomDialog.Item" parent="TSUTextAppearance.Medium">
+        <item name="android:clickable">true</item>
+        <item name="android:focusable">true</item>
+        <item name="android:foreground">?attr/selectableItemBackground</item>
+        <item name="android:gravity">center</item>
+        <item name="android:padding">18dp</item>
+        <item name="android:textColor">@color/white</item>
+        <item name="android:textSize">@dimen/font_medium</item>
+    </style>
+
+    <style name="AlertDialog" parent="Widget.MaterialComponents.Button">
+        <item name="colorPrimary">@color/black</item>
+        <item name="android:paddingLeft">@dimen/mtrl_btn_padding_left</item>
+        <item name="android:paddingRight">@dimen/mtrl_btn_padding_right</item>
+        <item name="android:paddingTop">@dimen/mtrl_btn_padding_top</item>
+        <item name="android:paddingBottom">@dimen/mtrl_btn_padding_bottom</item>
+    </style>
+
+
+    <style name="TSUPostIconButton" parent="Widget.MaterialComponents.Button.TextButton">
+        <item name="android:fontFamily">@font/lato_bold</item>
+        <item name="android:gravity">start|center_vertical</item>
+
+        <item name="android:insetBottom">0dp</item>
+        <item name="android:insetLeft">0dp</item>
+        <item name="android:insetRight">0dp</item>
+        <item name="android:insetTop">0dp</item>
+
+        <item name="android:minHeight">0dp</item>
+        <item name="android:minWidth">0dp</item>
+
+        <item name="android:paddingBottom">12dp</item>
+        <item name="android:paddingEnd">@dimen/margin_default_medium</item>
+        <item name="android:paddingStart">@dimen/margin_default_medium</item>
+        <item name="android:paddingTop">12dp</item>
+
+        <item name="android:textAllCaps">false</item>
+        <item name="android:textColor">@drawable/post_btn_text_color</item>
+        <item name="android:letterSpacing">0</item>
+        <item name="android:textSize">@dimen/font_small</item>
+        <item name="fontFamily">@font/lato_bold</item>
+
+        <item name="iconGravity">start</item>
+        <item name="iconPadding">@dimen/button_icon_padding_default</item>
+        <item name="iconTint">@drawable/post_btn_icon_color</item>
+    </style>
+
+    <style name="TSUPostImageButton" parent="Widget.AppCompat.ImageButton">
+        <item name="android:tint">@color/white</item>
+        <item name="android:layout_marginStart">@dimen/margin_default_small</item>
+        <item name="android:background">?android:attr/selectableItemBackground</item>
+    </style>
+
+    <style name="TSUChatImageButton" parent="Widget.AppCompat.ImageButton">
+        <item name="android:background">@android:color/transparent</item>
+        <item name="android:foreground">?attr/selectableItemBackgroundBorderless</item>
+        <item name="android:scaleType">center</item>
+        <item name="android:tint">@color/colorPrimary</item>
+    </style>
+
+    <style name="TSUChatTextField" parent="Widget.AppCompat.EditText">
+        <item name="android:background">@drawable/chat_field_background</item>
+        <item name="android:fontFamily">@font/lato_medium</item>
+        <item name="android:gravity">start|top</item>
+        <item name="android:inputType">textMultiLine|textCapSentences</item>
+        <item name="android:maxLines">5</item>
+        <item name="android:scrollbars">vertical</item>
+        <item name="android:textColor">@color/white</item>
+        <item name="android:textColorHint">@color/field_hint</item>
+        <item name="android:textSize">@dimen/font_medium</item>
+        <item name="fontFamily">@font/lato_medium</item>
+    </style>
+
+    <style name="TSUPostPopularityValue" parent="TSUTextAppearance.Medium">
+        <item name="android:clickable">true</item>
+        <item name="android:focusable">true</item>
+        <item name="android:ellipsize">end</item>
+        <item name="android:maxLines">1</item>
+        <item name="android:textColor">@color/tsu_grey</item>
+        <item name="android:textSize">@dimen/font_small</item>
+
+        <item name="android:paddingBottom">11dp</item>
+        <item name="android:paddingEnd">@dimen/margin_default_medium</item>
+        <item name="android:paddingStart">@dimen/margin_default_medium</item>
+        <item name="android:paddingTop">11dp</item>
+    </style>
+
+    <style name="TSUPostCreateIconButton" parent="TSUPostIconButton">
+        <item name="android:paddingEnd">@dimen/button_padding_default</item>
+        <item name="android:paddingLeft">@dimen/button_padding_default</item>
+        <item name="android:paddingRight">@dimen/button_padding_default</item>
+        <item name="android:paddingStart">@dimen/button_padding_default</item>
+        <item name="android:textColor">@drawable/post_btn_text_color</item>
+        <item name="iconSize">@dimen/create_post_button_icon_size</item>
+        <item name="iconTint">@drawable/post_btn_icon_color</item>
+    </style>
+
+    <style name="TSUPostImage">
+        <item name="android:adjustViewBounds">true</item>
+        <item name="android:minHeight">200dp</item>
+        <item name="android:scaleType">fitCenter</item>
+    </style>
+
+    <style name="TSUDrawerTextAppearance">
+        <item name="android:fontFamily">@font/lato</item>
+        <item name="android:textSize">17sp</item>
+    </style>
+
+    <style name="TSUDrawerFullNameText" parent="Widget.AppCompat.TextView">
+        <item name="android:ellipsize">end</item>
+        <item name="android:fontFamily">@font/lato_medium</item>
+        <item name="android:maxLines">1</item>
+        <item name="android:textColor">@color/drawer_full_name_text</item>
+        <item name="android:textSize">@dimen/drawer_full_name_text</item>
+    </style>
+
+    <style name="TSUDrawerUsernameText" parent="Widget.AppCompat.TextView">
+        <item name="android:ellipsize">end</item>
+        <item name="android:fontFamily">@font/lato</item>
+        <item name="android:maxLines">1</item>
+        <item name="android:textColor">@color/drawer_username_text</item>
+        <item name="android:textSize">@dimen/drawer_username_text</item>
+    </style>
+
+    <style name="TSUPlayerButton" parent="ExoMediaButton.Play">
+        <item name="android:background">@drawable/player_button_background</item>
+        <item name="android:tint">@color/white</item>
+    </style>
+
+    <style name="TSUPlayerButton.Play" parent="TSUPlayerButton">
+        <item name="android:paddingBottom">@dimen/video_play_btn_padding_bottom</item>
+        <item name="android:paddingEnd">@dimen/video_play_btn_padding_end</item>
+        <item name="android:paddingStart">@dimen/video_play_btn_padding_start</item>
+        <item name="android:paddingTop">@dimen/video_play_btn_padding_top</item>
+        <item name="android:src">@drawable/ic_play</item>
+    </style>
+
+    <style name="TSUPlayerButton.Mute" parent="TSUPlayerButton">
+        <item name="android:padding">@dimen/video_mute_btn_padding</item>
+        <item name="android:scaleType">center</item>
+        <item name="android:src">@drawable/ic_mute_on</item>
+    </style>
+
+    <style name="TSUDefaultPostTextStyle" parent="TSUTextAppearance">
+        <item name="android:textColor">@color/secondaryDarkGray</item>
+        <item name="android:textSize">@dimen/font_medium</item>
+    </style>
+
+    <style name="TSUBoldPostTextStyle" parent="TSUTextAppearance.Bold">
+        <item name="android:textColor">@color/white</item>
+    </style>
+
+    <style name="TSUToolbar" parent="Widget.MaterialComponents.Toolbar">
+        <item name="android:background">@color/toolbar_color</item>
+        <item name="android:textColor">@color/toolbar_text</item>
+        <item name="tint">@color/toolbar_text</item>
+        <item name="titleEnabled">false</item>
+    </style>
+
+    <style name="TSUProfileToolbar" parent="@style/ThemeOverlay.AppCompat.ActionBar">
+        <!-- Customize color of navigation drawer icon and back arrow -->
+        <item name="colorControlNormal">@color/toolbar_text</item>
+        <item name="android:background">@color/toolbar_color</item>
+    </style>
+
+    <style name="TSUBottomNavigation" parent="Widget.MaterialComponents.BottomAppBar">
+        <item name="hideOnScroll">true</item>
+        <item name="itemBackground">@color/bottom_nav_background</item>
+        <item name="itemIconSize">@dimen/bottom_icon_size</item>
+        <item name="itemIconTint">@drawable/bottom_nav_item_tint</item>
+        <item name="itemTextColor">@drawable/bottom_nav_item_tint</item>
+        <item name="labelVisibilityMode">unlabeled</item>
+    </style>
+
+    <style name="TSUSegmentedControlButton" parent="Widget.AppCompat.CompoundButton.RadioButton">
+        <item name="android:fontFamily">@font/lato_bold</item>
+        <item name="fontFamily">@font/lato_bold</item>
+        <item name="android:minHeight">32dp</item>
+        <item name="android:padding">6dp</item>
+        <item name="android:textSize">@dimen/font_small</item>
+        <item name="android:textAlignment">center</item>
+        <item name="android:textColor">@drawable/segmented_control_text</item>
+        <item name="android:button">@android:color/transparent</item>
+    </style>
+
+    <style name="TSUSegmentedControlButton.Left">
+        <item name="android:background">@drawable/bg_segmented_control_left</item>
+    </style>
+
+    <style name="TSUSegmentedControlButton.Middle">
+        <item name="android:background">@drawable/bg_segmented_control_middle</item>
+    </style>
+
+    <style name="TSUSegmentedControlButton.Right">
+        <item name="android:background">@drawable/bg_segmented_control_right</item>
+    </style>
+
+    <style name="TSUToggleButton" parent="TSUTextAppearance.Bold">
+        <item name="android:background">@drawable/bg_community_join_button</item>
+        <item name="android:drawableLeft">@drawable/selector_join_button_drawable</item>
+        <item name="android:minHeight">0dp</item>
+        <item name="android:padding">6dp</item>
+        <item name="android:textAllCaps">false</item>
+        <item name="android:textColor">@drawable/community_join_button_text</item>
+        <item name="android:textSize">@dimen/font_medium</item>
+    </style>
+
+
+    <!--    <style name="MyDatePickerStyle" parent="@android:style/Widget.Material.DatePicker">-->
+<!--        <item name="android:colorAccent">@color/black</item>-->
+<!--&lt;!&ndash;        <item name="android:colorControlActivated">#ffea00</item>&ndash;&gt;-->
+<!--        <item name="android:datePickerMode">spinner</item>-->
+<!--        <item name="android:spinnersShown">true</item>-->
+<!--        <item name="android:windowFullscreen">false</item>-->
+
+<!--        <item name="android:calendarViewShown">false</item>-->
+<!--    </style>-->
+
+    <style name="AppTheme.AdAttribution">
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_gravity">left</item>
+        <item name="android:textColor">#FFFFFF</item>
+        <item name="android:textSize">12sp</item>
+        <item name="android:text">@string/ad_attribution</item>
+        <item name="android:height">15dp</item>
+    </style>
+
+    <style name="TSU_Tab_Bar_Text" parent="TextAppearance.Design.Tab">
+        <item name="android:fontFamily">@font/lato_medium</item>
+        <item name="android:textAllCaps">true</item>
+        <item name="android:textColor">@drawable/tab_text</item>
+        <item name="android:textSize">@dimen/font_medium</item>
+        <item name="fontFamily">@font/lato_medium</item>
+        <item name="textAllCaps">true</item>
+    </style>
+
+    <style name="AppTheme.NoActionBar">
+        <item name="windowActionBar">false</item>
+        <item name="windowNoTitle">true</item>
+    </style>
+    <style name="AppTheme.AppBarOverlay" parent="ThemeOverlay.AppCompat.Dark.ActionBar" />
+
+    <style name="Widget.App.CardView" parent="Widget.MaterialComponents.CardView">
+        <item name="materialThemeOverlay">@style/ThemeOverlay.App.Card</item>
+    </style>
+
+    <style name="ThemeOverlay.App.Card" parent="">
+        <item name="colorPrimary">@color/analytics_filter_item_background_active</item>
+        <item name="colorSurface">@color/analytics_filter_item_background</item>
+    </style>
+
+    <style name="ProfileSheetDialog" parent="Theme.Design.Light.BottomSheetDialog">
+        <item name="android:windowIsTranslucent">true</item>
+        <item name="android:windowContentOverlay">@null</item>
+        <item name="android:colorBackground">@android:color/transparent</item>
+        <item name="android:backgroundDimEnabled">true</item>
+        <item name="android:backgroundDimAmount">0.3</item>
+        <item name="android:windowFrame">@null</item>
+        <item name="android:windowIsFloating">true</item>
+    </style>
+</resources>

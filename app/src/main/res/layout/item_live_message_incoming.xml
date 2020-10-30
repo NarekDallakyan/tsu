@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    tools:background="@color/black">
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/chat_message_guideline"
+        android:layout_width="0dp"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        app:layout_constraintGuide_percent="@dimen/chat_live_chats_message_incoming_margin" />
+
+    <de.hdodenhof.circleimageview.CircleImageView
+        android:id="@+id/chat_message_profile_image"
+        android:layout_width="@dimen/chat_live_message_avatar_size"
+        android:layout_height="@dimen/chat_live_message_avatar_size"
+        android:layout_marginStart="@dimen/chat_message_margins"
+        android:layout_marginBottom="@dimen/chat_message_margins"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        tools:src="@drawable/fake" />
+
+    <TextView
+        android:id="@+id/chat_message_text"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/chat_message_margins"
+        android:layout_marginTop="@dimen/chat_message_margins"
+        android:layout_marginBottom="@dimen/chat_message_margins"
+        android:background="@drawable/rounded_corner"
+        android:backgroundTint="@color/darker_grey"
+        android:padding="@dimen/chat_message_margins"
+        android:textColor="@color/chat_message_text"
+        android:textSize="@dimen/chat_message_text"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="@id/chat_message_guideline"
+        app:layout_constraintStart_toEndOf="@id/chat_message_profile_image"
+        app:layout_constraintTop_toTopOf="parent"
+        tools:text="@string/test_text" />
+
+
+</androidx.constraintlayout.widget.ConstraintLayout>

@@ -1,0 +1,55 @@
+{
+  "project_info": {
+    "project_number": "48855706189",
+    "firebase_url": "https://tsu-mobile-test-ios.firebaseio.com",
+    "project_id": "tsu-mobile-test-ios",
+    "storage_bucket": "tsu-mobile-test-ios.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:48855706189:android:600c9de320843babe24a04",
+        "android_client_info": {
+          "package_name": "social.tsu.android"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "48855706189-ps6ishohjtaq3m3i3fdc5norsbi4aeuu.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "social.tsu.android",
+            "certificate_hash": "942d0547e711eaa82659a73c7a878279c6a9e922"
+          }
+        },
+        {
+          "client_id": "48855706189-j2hkiet21pi05ijle3cmbg7gclecgp2h.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDmfVUJB9_ab6lXw7S6IQNRMM_-bXE3Iwk"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "48855706189-j2hkiet21pi05ijle3cmbg7gclecgp2h.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "48855706189-pvemh0jdmgp3jf28utdp5kg1bmaln5d5.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.social.tsu-beta"
+              }
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

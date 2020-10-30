@@ -1,0 +1,430 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".ProfileEdit">
+
+    <ScrollView
+        android:id="@+id/settings_scroll_view"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.0">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <TextView
+                android:id="@+id/nameWelcomeBackHeader"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:padding="@dimen/padding_small"
+                android:text="@string/welcome_back_edit_profile"
+                android:textAlignment="center"
+                android:textSize="@dimen/font_medium" />
+
+            <TextView
+                android:id="@+id/namePictureHeader"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:padding="@dimen/padding_small"
+                android:textAlignment="center"
+                android:textSize="@dimen/font_medium"
+                android:textStyle="bold"
+                android:layout_marginStart="5dp"
+                android:text="@string/profile_picture" />
+
+            <de.hdodenhof.circleimageview.CircleImageView
+                android:id="@+id/settings_profile_picture"
+                android:layout_width="80dp"
+                android:layout_height="80dp"
+                android:layout_gravity="start"
+                android:layout_marginStart="5dp"
+                android:src="@drawable/user"
+                app:civ_border_color="@color/user_profile_avatar_border"
+                app:civ_border_width="@dimen/user_item_photo_border"
+                android:contentDescription="@string/profile_picture" />
+
+            <TextView
+                android:id="@+id/pictureDescription"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="5dp"
+                android:padding="@dimen/padding_small"
+                android:textAlignment="center"
+                android:textSize="@dimen/font_small"
+                android:text="@string/profile_picture_desc"
+                tools:text="@string/profile_picture_desc" />
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="10dp" />
+
+            <TextView
+                android:id="@+id/nameCoverHeader"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:padding="@dimen/padding_small"
+                android:textAlignment="center"
+                android:textSize="@dimen/font_medium"
+                android:textStyle="bold"
+                android:layout_marginStart="5dp"
+                android:text="@string/cover_picture"
+                tools:text="@string/cover_picture" />
+
+
+            <ImageView
+                android:id="@+id/settings_cover_picture"
+                android:layout_width="match_parent"
+                android:layout_height="90dp"
+                android:background="@color/placeholder_Color"
+                android:contentDescription="@string/cover_picture"
+                android:adjustViewBounds="true"
+                android:scaleType="centerCrop"
+                app:srcCompat="@drawable/ic_no_cover_small"
+                tools:srcCompat="@drawable/ic_no_cover_small" />
+
+            <TextView
+                android:id="@+id/coverDescription"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:padding="@dimen/padding_small"
+                android:textAlignment="center"
+                android:textSize="@dimen/font_small"
+                android:layout_marginStart="5dp"
+                android:text="@string/cover_picture_desc"
+                tools:text="@string/cover_picture_desc" />
+
+<!--            <View-->
+<!--                android:layout_width="match_parent"-->
+<!--                android:layout_height="1px"-->
+<!--                android:background="@color/tsu_grey"/>-->
+
+            <TextView
+                android:id="@+id/nameBioHeader"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="5dp"
+                android:padding="@dimen/padding_small"
+                android:textAlignment="center"
+                android:textSize="@dimen/font_medium"
+                android:text="Bio"
+                tools:text="Bio" />
+
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/bio"
+                android:layout_marginStart="5dp"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:boxBackgroundMode="filled"
+                app:boxBackgroundColor="@color/textInputBackground"
+                app:counterEnabled="true"
+                app:counterMaxLength="160">
+
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/settings_bio_edit"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:maxLength="160"
+                    android:minHeight="100dp"
+                    android:nextFocusDown="@id/settings_website_edit"
+                    android:textSize="16sp"
+                    android:inputType="textMultiLine"
+                    android:hint="@string/enter_your_bio" />
+            </com.google.android.material.textfield.TextInputLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_vertical"
+                    android:layout_marginStart="5dp"
+                    android:padding="@dimen/padding_small"
+                    android:layout_weight="3"
+                    android:text="@string/relationship_status"/>
+
+
+                <Spinner
+                    android:id="@+id/settings_relationship_status"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_vertical"
+                    android:layout_weight="7"
+                    android:entries="@array/relationship_status"
+                    android:textSize="16sp"
+                    android:prompt="@string/relationship_status"
+                    android:spinnerMode="dialog"/>
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/settings_relationship_with_container"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:padding="5dp"
+                android:orientation="vertical"
+                android:visibility="gone">
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="5dp"
+                    android:text="@string/relationship_with"
+                     />
+
+                <com.google.android.material.textfield.TextInputLayout
+                    android:id="@+id/relationship_with_textfield_input"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="5dp"
+                    app:boxBackgroundMode="filled"
+                    app:boxBackgroundColor="@color/textInputBackground">
+
+                    <com.google.android.material.textfield.TextInputEditText
+                        android:id="@+id/relationship_with_textfield_edit"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:inputType="text"
+                        android:maxLength="160"
+                        android:minHeight="60dp"
+                        android:maxLines="1"
+                        android:nextFocusDown="@id/settings_youtube_edit"
+                        android:padding="5dp"
+                        android:textSize="16sp" />
+                </com.google.android.material.textfield.TextInputLayout>
+
+            </LinearLayout>
+
+            <TextView
+                android:id="@+id/website_header"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="5dp"
+                android:padding="@dimen/padding_small"
+                android:textAlignment="center"
+                android:textSize="@dimen/font_medium"
+                android:text="Website"
+                tools:text="Website" />
+
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/website_textfield_input"
+                android:layout_marginStart="5dp"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                app:boxBackgroundMode="filled"
+                app:boxBackgroundColor="@color/textInputBackground">
+
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/settings_website_edit"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:maxLength="160"
+                    android:minHeight="70dp"
+                    android:maxLines="1"
+                    android:inputType="text"
+                    android:nextFocusDown="@id/settings_youtube_edit"
+                    android:padding="5dp"
+                    android:textSize="16sp" />
+            </com.google.android.material.textfield.TextInputLayout>
+
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="70dp"
+                android:orientation="horizontal"
+                android:padding="10dp">
+
+                <ImageView
+                    android:layout_width="@dimen/button_icon_size"
+                    android:layout_height="@dimen/button_icon_size"
+                    android:layout_gravity="center"
+                    android:layout_marginRight="4dp"
+                    app:tint="@color/white"
+                    android:src="@drawable/ic_user_profile_youtube" />
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_weight="2"
+                    android:layout_gravity="center_vertical"
+                    android:gravity="center_vertical"
+                    android:text="@string/youtube_channel"
+                    android:textSize="16sp"
+                    android:maxLines="1"
+                    app:autoSizeTextType="uniform"
+                    app:autoSizeMinTextSize="6sp"
+                    app:autoSizeMaxTextSize="16sp"
+                    />
+
+                <com.google.android.material.textfield.TextInputLayout
+                    android:id="@+id/settings_youtube"
+                    android:layout_marginStart="5dp"
+                    android:layout_weight="1"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    app:boxBackgroundMode="filled"
+                    app:boxBackgroundColor="@color/textInputBackground">
+
+                    <com.google.android.material.textfield.TextInputEditText
+                        android:id="@+id/settings_youtube_edit"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:maxLength="160"
+                        android:inputType="text"
+                        android:maxLines="1"
+                        android:nextFocusDown="@id/settings_instagram_edit"
+                        android:padding="5dp"
+                        android:textSize="16sp" />
+                </com.google.android.material.textfield.TextInputLayout>
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="70dp"
+                android:orientation="horizontal"
+                android:padding="10dp">
+
+                <ImageView
+                    android:layout_width="@dimen/button_icon_size"
+                    android:layout_height="@dimen/button_icon_size"
+                    android:layout_gravity="center"
+                    android:layout_marginRight="4dp"
+                    app:tint="@color/white"
+                    android:src="@drawable/ic_user_profile_instagram" />
+
+                <TextView
+                    android:layout_height="match_parent"
+                    android:layout_width="match_parent"
+                    android:layout_weight="2"
+                    android:layout_gravity="center_vertical"
+                    android:gravity="center_vertical"
+                    android:text="@string/instagram_help"
+                    android:maxLines="1"
+                    app:autoSizeTextType="uniform"
+                    app:autoSizeMinTextSize="6sp"
+                    app:autoSizeMaxTextSize="16sp"
+                    android:textSize="16sp"
+                    />
+
+                <com.google.android.material.textfield.TextInputLayout
+                    android:id="@+id/settings_instagram"
+                    android:layout_marginStart="5dp"
+                    android:layout_weight="1"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    app:boxBackgroundMode="filled"
+                    app:boxBackgroundColor="@color/textInputBackground">
+
+                    <com.google.android.material.textfield.TextInputEditText
+                        android:id="@+id/settings_instagram_edit"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:maxLength="160"
+                        android:maxLines="1"
+                        android:inputType="text"
+                        android:minHeight="36dp"
+                        android:nextFocusDown="@id/settings_facebook_edit"
+                        android:padding="5dp"
+                        android:textSize="16sp" />
+                </com.google.android.material.textfield.TextInputLayout>
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="70dp"
+                android:orientation="horizontal"
+                android:padding="10dp">
+
+                <ImageView
+                    android:layout_width="@dimen/button_icon_size"
+                    android:layout_height="@dimen/button_icon_size"
+                    android:layout_gravity="center"
+                    android:layout_marginRight="4dp"
+                    app:tint="@color/white"
+                    android:src="@drawable/ic_user_profile_facebook" />
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_weight="2"
+                    android:layout_gravity="center_vertical"
+                    android:gravity="center_vertical"
+                    android:text="@string/facebook_page"
+                    android:textSize="16sp"
+                    android:maxLines="1"
+                    app:autoSizeTextType="uniform"
+                    app:autoSizeMinTextSize="6sp"
+                    app:autoSizeMaxTextSize="16sp"
+                    />
+
+                <com.google.android.material.textfield.TextInputLayout
+                    android:id="@+id/settings_facebook"
+                    android:layout_marginStart="5dp"
+                    android:layout_weight="1"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    app:boxBackgroundMode="filled"
+                    app:boxBackgroundColor="@color/textInputBackground">
+
+                    <com.google.android.material.textfield.TextInputEditText
+                        android:id="@+id/settings_facebook_edit"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:maxLength="160"
+                        android:inputType="text"
+                        android:maxLines="1"
+                        android:imeOptions="actionDone"
+                        android:padding="5dp"
+                        android:textSize="16sp" />
+                </com.google.android.material.textfield.TextInputLayout>
+
+            </LinearLayout>
+
+            <Button
+                android:id="@+id/settings_save_button"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
+                android:layout_margin="5dp"
+                android:textSize="18sp"
+                android:text="@string/save" />
+
+
+        </LinearLayout>
+    </ScrollView>
+
+    <LinearLayout
+        android:id="@+id/settings_search_container"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        android:visibility="gone">
+
+        <SearchView
+            android:id="@+id/settings_search_bar"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/settings_search_recycler_view"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent" />
+    </LinearLayout>
+
+    <include layout="@layout/full_screen_progress" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>

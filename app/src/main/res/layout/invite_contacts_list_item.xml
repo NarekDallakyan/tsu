@@ -1,0 +1,109 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+    <data>
+        <import type="android.text.TextUtils"/>
+        <variable
+            name="contact"
+            type="social.tsu.android.ui.ContactRepository.ContactItem" />
+
+        <variable
+            name="email"
+            type="String" />
+
+        <variable
+            name="viewModel"
+            type="social.tsu.android.ui.InviteContactsViewModel" />
+    </data>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:clickable="false"
+        android:focusable="false">
+
+        <de.hdodenhof.circleimageview.CircleImageView
+            android:id="@+id/contactImage"
+            android:layout_width="52dp"
+            android:layout_height="52dp"
+            android:layout_marginStart="@dimen/margin_default_medium"
+            android:layout_marginTop="@dimen/margin_default_small"
+            android:layout_marginBottom="@dimen/margin_default_small"
+            app:civ_border_color="@color/user_profile_avatar_border"
+            app:civ_border_width="@dimen/user_item_photo_border"
+            app:contactImage="@{contact.contactId}"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            tools:src="@drawable/fake" />
+
+        <TextView
+            android:id="@+id/contact_name"
+            text="@{contact.displayName}"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/standard_margin"
+            android:clickable="false"
+            android:focusable="false"
+            android:textSize="@dimen/font_xlarge"
+            app:layout_constraintBottom_toBottomOf="@+id/contactImage"
+            app:layout_constraintEnd_toStartOf="@+id/barrier"
+            app:layout_constraintHorizontal_bias="0.5"
+            app:layout_constraintStart_toEndOf="@id/contactImage"
+            app:layout_constraintTop_toTopOf="parent"
+            tools:text="John smith" />
+
+        <androidx.constraintlayout.widget.Barrier
+            android:id="@+id/barrier"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:barrierDirection="end"
+            app:constraint_referenced_ids="contact_name, contact_name"
+            tools:layout_editor_absoluteX="303dp" />
+
+        <ToggleButton
+            android:id="@+id/invite_button"
+            style="@style/TSUToggleButton"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_marginEnd="@dimen/margin_default_medium"
+            android:clickable="false"
+            android:focusable="false"
+            android:onClick="@{() -> viewModel.showInviteOptions(contact)}"
+            android:textOff="@string/invite"
+            android:textOn="@string/invited"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.0"
+            app:layout_constraintStart_toEndOf="@+id/barrier"
+            app:layout_constraintTop_toTopOf="@id/contact_name"
+            app:visibleOrGone="@{!viewModel.hasBeenInvited(contact)}" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_marginEnd="@dimen/standard_margin"
+            android:text="@string/invited"
+            android:textSize="@dimen/font_large"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toEndOf="@+id/barrier"
+            app:layout_constraintTop_toTopOf="parent"
+            app:visibleOrGone="@{viewModel.hasBeenInvited(contact)}" />
+
+        <TextView
+            app:visibleOrGone="@{!TextUtils.isEmpty(email)}"
+            android:id="@+id/contact_email"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/margin_small"
+            android:layout_marginBottom="@dimen/margin_small"
+            android:text="@{email}"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="@id/barrier"
+            app:layout_constraintHorizontal_bias="0.0"
+            app:layout_constraintStart_toStartOf="@+id/contact_name"
+            app:layout_constraintTop_toBottomOf="@+id/contact_name" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</layout>

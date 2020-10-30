@@ -1,0 +1,195 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.swiperefreshlayout.widget.SwipeRefreshLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/community_swipe_refresh"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <androidx.constraintlayout.motion.widget.MotionLayout
+            android:id="@+id/community_holder"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            app:layoutDescription="@xml/scene_community_feed">
+
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:id="@+id/community_header"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@color/community_header_background">
+
+                <ImageView
+                    android:id="@+id/community_banner"
+                    android:layout_width="match_parent"
+                    android:layout_height="150dp"
+                    android:scaleType="centerCrop"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"
+                    tools:src="@drawable/cover" />
+
+                <TextView
+                    android:id="@+id/community_name"
+                    style="@style/TSUTextAppearance.Bold"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="16dp"
+                    android:layout_marginTop="8dp"
+                    android:layout_marginEnd="16dp"
+                    android:textAlignment="center"
+                    android:textColor="@color/white"
+                    android:textSize="@dimen/font_xlarge"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintHorizontal_bias="0.0"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/community_type"
+                    tools:text="Name" />
+
+                <TextView
+                    android:id="@+id/community_type"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="20dp"
+                    android:fontFamily="@font/lato_bold"
+                    android:gravity="end"
+                    android:textAllCaps="true"
+                    android:textColor="@color/bottom_nav_item"
+                    android:textSize="12sp"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/community_banner"
+                    tools:text="Public community" />
+
+                <View
+                    android:id="@+id/divider2"
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:layout_marginStart="16dp"
+                    android:layout_marginTop="16dp"
+                    android:layout_marginEnd="16dp"
+                    android:background="?android:attr/listDivider"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/community_name" />
+
+                <View
+                    android:id="@+id/divider5"
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:layout_marginStart="16dp"
+                    android:layout_marginTop="8dp"
+                    android:layout_marginEnd="16dp"
+                    android:background="?android:attr/listDivider"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/community_members_text" />
+
+                <com.google.android.material.button.MaterialButton
+                    android:id="@+id/community_join_btn"
+                    style="@style/TSUButton.WrapContent"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="8dp"
+                    android:paddingStart="35dp"
+                    android:paddingEnd="35dp"
+                    android:text="@string/community_join"
+                    android:visibility="gone"
+                    app:icon="@drawable/ic_btn_add"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/divider5"
+                    tools:visibility="visible" />
+
+                <ProgressBar
+                    android:id="@+id/progress_bar"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/margin_default_small"
+                    android:layout_marginBottom="@dimen/margin_default_small"
+                    android:visibility="gone"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/divider5"
+                    tools:visibility="visible" />
+
+                <at.blogc.android.views.ExpandableTextView
+                    android:id="@+id/community_description"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="@dimen/margin_default_medium"
+                    android:layout_marginTop="@dimen/margin_default_large"
+                    android:layout_marginEnd="@dimen/margin_default_medium"
+                    android:layout_marginBottom="@dimen/margin_default_large"
+                    android:ellipsize="end"
+                    android:maxLines="2"
+                    app:animation_duration="250"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/community_join_btn"
+                    tools:text="TextView" />
+
+                <TextView
+                    android:id="@+id/community_more"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/feature_request_str_more"
+                    app:layout_constraintEnd_toEndOf="@+id/community_description"
+                    app:layout_constraintTop_toBottomOf="@+id/community_description" />
+
+                <TextView
+                    android:id="@+id/community_members_text"
+                    android:layout_width="0dp"
+                    android:layout_height="16dp"
+                    android:layout_marginTop="8dp"
+                    android:fontFamily="@font/lato_bold"
+                    android:maxLines="1"
+                    android:textAlignment="center"
+                    app:layout_constraintEnd_toEndOf="@+id/divider2"
+                    app:layout_constraintStart_toStartOf="@+id/divider2"
+                    app:layout_constraintTop_toBottomOf="@+id/divider2"
+                    tools:text="320 Members 9+" />
+
+                <ImageView
+                    android:id="@+id/moderation_image"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginEnd="24dp"
+                    app:layout_constraintBottom_toBottomOf="@+id/community_banner"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/community_banner"
+                    app:srcCompat="@drawable/ic_moderation" />
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/posts"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                app:layout_constraintTop_toBottomOf="@id/community_header"
+                tools:itemCount="5"
+                tools:listitem="@layout/post_text" />
+
+
+        </androidx.constraintlayout.motion.widget.MotionLayout>
+
+
+        <ProgressBar
+            android:id="@+id/progress_main"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_marginBottom="@dimen/margin_default_small"
+            android:visibility="gone"
+            tools:visibility="visible" />
+
+    </FrameLayout>
+
+
+</androidx.swiperefreshlayout.widget.SwipeRefreshLayout>

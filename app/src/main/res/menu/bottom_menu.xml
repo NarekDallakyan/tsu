@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <item
+        android:id="@+id/mainFeedFragment"
+        android:icon="@drawable/ic_home"
+        android:title="@string/nav_home"
+        app:showAsAction="always"/>
+
+    <item
+        android:id="@+id/communityFragment"
+        android:icon="@drawable/ic_tsu_community"
+        android:title="@string/community"
+        app:showAsAction="always"/>
+
+
+    <item
+        android:id="@+id/postTypesFragment"
+        android:title="@string/nav_compose"
+        app:showAsAction="always"/>
+
+    <item
+        android:id="@+id/recentContactsFragment"
+        android:icon="@drawable/ic_chat"
+        android:title="@string/nav_messages"
+        app:showAsAction="always"/>
+
+
+    <item
+        android:id="@+id/currentUserProfileFragment"
+        android:title="@string/profile_picture"
+        app:showAsAction="always"
+        android:actionLayout="@layout/item_profile_action"/>
+
+
+
+
+</menu>

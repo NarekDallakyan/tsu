@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:orientation="vertical"
+    android:layout_margin="@dimen/standard_margin">
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/standard_margin"
+        android:layout_marginTop="@dimen/standard_margin"
+        android:layout_marginEnd="@dimen/standard_margin"
+        android:textAppearance="@style/TextAppearance.AppCompat.Body2"
+        android:text="@string/reset_password_one_time_code_message"
+        android:textSize="@dimen/font_medium"
+        android:gravity="center"/>
+
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/standard_margin"
+        android:textAppearance="@style/TextAppearance.AppCompat.Body1"
+        android:text="@string/one_time_code"
+        android:textSize="@dimen/font_large"
+        android:gravity="start"/>
+
+    <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/otp_til"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:endIconMode="clear_text"
+        app:errorIconDrawable="@null">
+
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/otp_edittext"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textSize="@dimen/font_medium"
+            android:backgroundTint="@android:color/transparent"
+            android:inputType="number"
+            android:maxLines="1" />
+    </com.google.android.material.textfield.TextInputLayout>
+
+
+    <Button
+        android:id="@+id/go_to_reset_password_page"
+        style="@style/RoundButton"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/full_width_button_margin"
+        android:layout_marginTop="@dimen/margin_medium"
+        android:layout_marginEnd="@dimen/full_width_button_margin"
+        android:paddingTop="@dimen/padding_standard"
+        android:paddingBottom="@dimen/padding_standard"
+        android:text="@string/reset_password"
+        android:textSize="@dimen/font_xlarge" />
+
+</LinearLayout>

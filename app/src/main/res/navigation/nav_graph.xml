@@ -1,0 +1,1134 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/nav_graph"
+    app:startDestination="@id/mainFeedFragment">
+
+    <fragment
+        android:id="@+id/launcherFragment"
+        android:name="social.tsu.android.ui.LauncherFragment"
+        android:label="LauncherFragment"
+        tools:layout="@layout/launcher">
+        <action
+            android:id="@+id/action_launcherFragment_to_loginFragment"
+            app:destination="@id/loginFragment"
+            app:enterAnim="@anim/nav_default_enter_anim"
+            app:exitAnim="@anim/nav_default_exit_anim" />
+        <action
+            android:id="@+id/action_launcherFragment_to_userFeedFragment"
+            app:destination="@id/userFeedFragment" />
+        <action
+            android:id="@+id/action_launcherFragment_to_searchFragment"
+            app:destination="@id/searchFragment" />
+
+    </fragment>
+
+    <fragment
+        android:id="@+id/profileEditFragment"
+        android:name="social.tsu.android.ui.ProfileEditFragment"
+        android:label="ProfileEditFragment"
+        tools:layout="@layout/profile_edit_fragment">
+        <argument
+            android:name="oldUserDetails"
+            app:argType="social.tsu.android.data.local.models.OldUserDetails"
+            app:nullable="true"
+            android:defaultValue="@null" />
+        <argument
+            android:name="isNewUser"
+            app:argType="boolean"
+            android:defaultValue="false" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/createAccountFragment"
+        android:name="social.tsu.android.ui.CreateAccountFragment"
+        android:label="CreateAccountFragment"
+        tools:layout="@layout/create_account">
+
+        <argument
+            android:name="invitedBy"
+            android:defaultValue="0"
+            app:argType="integer" />
+
+        <argument
+            android:name="invitedByUsername"
+            android:defaultValue="@null"
+            app:argType="string"
+            app:nullable="true" />
+
+        <argument
+            android:name="oldUserDetails"
+            android:defaultValue="@null"
+            app:argType="social.tsu.android.data.local.models.OldUserDetails"
+            app:nullable="true" />
+
+        <argument
+            android:name="email"
+            android:defaultValue="@null"
+            app:argType="string"
+            app:nullable="true" />
+
+        <argument
+            android:name="hubspotId"
+            android:defaultValue="0"
+            app:argType="integer" />
+
+        <action
+            android:id="@+id/showFeedFragment"
+            app:destination="@id/mainFeedFragment"
+            app:launchSingleTop="true" />
+        <action
+            android:id="@+id/action_createAccountFragment_to_oldUserOnBoardingFragment"
+            app:destination="@id/oldUserOnBoardingFragment" />
+
+    </fragment>
+
+    <fragment
+        android:id="@+id/loginFragment"
+        android:name="social.tsu.android.ui.LoginFragment"
+        android:label="LoginFragment"
+        tools:layout="@layout/login">
+
+        <argument
+            android:name="email"
+            android:defaultValue="@null"
+            app:argType="string"
+            app:nullable="true" />
+        <action
+            android:id="@+id/showFeedFragment"
+            app:destination="@id/mainFeedFragment"
+            app:launchSingleTop="true"
+            app:popUpTo="@+id/nav_graph"
+            app:popUpToInclusive="true" />
+        <action
+            android:id="@+id/action_loginFragment_to_enterEmailFragment"
+            app:destination="@id/enterEmailFragment" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/mainFeedFragment"
+        android:name="social.tsu.android.ui.post_feed.main.MainFeedFragment"
+        android:label="MainFeedFragment"
+        tools:layout="@layout/feed">
+        <argument
+            android:name="showCompose"
+            android:defaultValue="true"
+            app:argType="boolean" />
+        <action
+            android:id="@+id/action_userFeedFragment_to_postDraftFragment"
+            app:destination="@id/postDraftFragment"
+            app:popUpTo="@id/userFeedFragment"
+            app:popUpToInclusive="false" />
+
+        <action
+            android:id="@+id/action_mainFeedFragment_to_searchFragment"
+            app:destination="@id/mentionUserSearchFragment"
+            app:popUpTo="@id/mainFeedFragment" />
+
+
+        <action
+            android:id="@+id/action_postDraft_to_searchFragment"
+            app:destination="@id/searchFragment"
+            app:popUpTo="@id/postDraftFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/userFeedFragment"
+        android:name="social.tsu.android.ui.post_feed.user_feed.UserFeedFragment"
+        android:label="UserFeedFragment"
+        tools:layout="@layout/feed">
+        <argument
+            android:name="showCompose"
+            android:defaultValue="true"
+            app:argType="boolean" />
+        <argument
+            android:name="userId"
+            android:defaultValue="-1L"
+            app:argType="long" />
+        <action
+            android:id="@+id/action_userFeedFragment_to_postDraftFragment"
+            app:destination="@id/postDraftFragment"
+            app:popUpTo="@id/userFeedFragment"
+            app:popUpToInclusive="false" />
+        <action
+            android:id="@+id/action_userFeedFragment_to_messageFragment"
+            app:destination="@id/messageFragment" />
+        <action
+            android:id="@+id/action_userFeedFragment_to_videoCaptureFragment"
+            app:destination="@id/videoCaptureFragment" />
+        <argument
+            android:name="dividerColor"
+            app:argType="integer"
+            android:defaultValue="0" />
+    </fragment>
+    <fragment
+        android:id="@+id/editPostFragment"
+        android:name="social.tsu.android.ui.post_feed.edit_post.EditPostFragment"
+        android:label="EditPostFragment"
+        tools:layout="@layout/draft_post">
+
+        <action
+            android:id="@+id/action_postEdit_to_mentionSearchFragment"
+            app:destination="@id/mentionUserSearchFragment"
+            app:popUpTo="@id/editPostFragment" />
+
+
+        <argument
+            android:name="postId"
+            app:argType="long" />
+    </fragment>
+    <fragment
+        android:id="@+id/currentUserProfileFragment"
+        android:name="social.tsu.android.ui.user_profile.UserProfileFragment"
+        android:label="UserProfileFragment"
+        tools:layout="@layout/user_profile">
+        <argument
+            android:name="id"
+            android:defaultValue="-1"
+            app:argType="integer" />
+        <argument
+            android:name="defaultTab"
+            android:defaultValue="0"
+            app:argType="integer" />
+        <argument
+            android:name="tag"
+            android:defaultValue=""
+            app:argType="string"
+            app:nullable="true" />
+    </fragment>
+    <fragment
+        android:id="@+id/userProfileFragment"
+        android:name="social.tsu.android.ui.user_profile.UserProfileFragment"
+        android:label="UserProfileFragment"
+        tools:layout="@layout/user_profile">
+        <argument
+            android:name="id"
+            android:defaultValue="-1"
+            app:argType="integer" />
+        <argument
+            android:name="tag"
+            app:argType="string"
+            app:nullable="true" />
+
+        <argument
+            android:name="defaultTab"
+            android:defaultValue="0"
+            app:argType="integer" />
+        <deepLink
+            android:id="@+id/deepLink2"
+            app:uri="tsuapp://user/profile?id={id}" />
+    </fragment>
+
+    <action
+        android:id="@+id/showUserProfile"
+        app:destination="@id/userProfileFragment"
+        app:enterAnim="@anim/slide_enter_rtl"
+        app:exitAnim="@anim/slide_exit_rtl"
+        app:popEnterAnim="@anim/slide_pop_enter_rtl"
+        app:popExitAnim="@anim/slide_pop_exit_rtl">
+        <argument
+            android:name="id"
+            android:defaultValue="-1"
+            app:argType="integer" />
+        <argument
+            android:name="tag"
+            android:defaultValue=""
+            app:argType="string"
+            app:nullable="true" />
+    </action>
+
+    <fragment android:id="@+id/userFriendsFragment"
+        android:name="social.tsu.android.ui.user_profile.friends.UserFriendsFragment"
+        tools:layout="@layout/users_list">
+        <argument
+            android:name="id"
+            android:defaultValue="-1"
+            app:argType="integer" />
+        <argument
+            android:name="list_type"
+            android:defaultValue="-1"
+            app:argType="integer" />
+        <argument
+            android:name="toolbar_title"
+            app:nullable="true"
+            app:argType="string" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/commentsFragment"
+        android:name="social.tsu.android.ui.post_feed.comment.CommentsFragment"
+        android:label="CommentsFragment"
+        tools:layout="@layout/comments_layout">
+        <argument
+            android:name="postId"
+            app:argType="long"
+            app:nullable="false" />
+        <action
+            android:id="@+id/action_commentFragment_To_mentionSearchFragment"
+            app:destination="@id/mentionUserSearchFragment"
+            app:popUpTo="@id/commentsFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/searchFragment"
+        android:name="social.tsu.android.ui.search.SearchFragment"
+        android:label="SearchFragment"
+        tools:layout="@layout/search" >
+        <argument
+            android:name="searchType"
+            app:argType="integer"
+            android:defaultValue="0" />
+        <argument
+            android:name="mentionType"
+            android:defaultValue="0"
+            app:argType="integer" />
+    </fragment>
+    <fragment
+        android:id="@+id/messageFragment"
+        android:name="social.tsu.android.ui.MessageFragment"
+        android:label="MessageFragment"
+        tools:layout="@layout/success_page">
+        <argument
+            android:name="message"
+            android:defaultValue="Default Message"
+            app:argType="string" />
+    </fragment>
+    <fragment
+        android:id="@+id/gallery_fragment"
+        android:name="social.tsu.android.ui.GalleryFragment"
+        android:label="GalleryFragment">
+        <argument
+            android:name="root_directory"
+            app:argType="string" />
+    </fragment>
+    <fragment
+        android:id="@+id/postDraftFragment"
+        android:name="social.tsu.android.ui.new_post.PostDraftFragment"
+        android:label="New Post"
+        tools:layout="@layout/draft_post">
+
+        <action
+            android:id="@+id/action_postDraft_to_mentionFragment"
+            app:destination="@id/mentionUserSearchFragment"
+            app:popUpTo="@id/postDraftFragment" />
+
+        <action
+            android:id="@+id/action_postDraftFragment_to_searchFragment"
+            app:destination="@id/searchFragment"
+            app:popUpTo="@id/userFeedFragment" />
+
+        <action
+            android:id="@+id/action_postDraftFragment_to_userFeedFragment"
+            app:destination="@id/userFeedFragment" />
+        <argument
+            android:name="videoPath"
+            app:argType="string"
+            app:nullable="true" />
+        <argument
+            android:name="allowVideo"
+            android:defaultValue="true"
+            app:argType="boolean" />
+        <argument
+            android:name="popToDestination"
+            android:defaultValue="@id/mainFeedFragment"
+            app:argType="reference" />
+        <argument
+            android:name="videoContentUri"
+            app:argType="string"
+            app:nullable="true" />
+        <argument
+            android:name="photoUri"
+            app:argType="android.net.Uri"
+            app:nullable="true" />
+        <argument
+            android:name="postText"
+            app:argType="string"
+            android:defaultValue='' />
+        <argument
+            android:name="recipient"
+            android:defaultValue="@null"
+            app:argType="social.tsu.android.data.local.models.PostUser"
+            app:nullable="true" />
+        <argument
+            android:name="postingType"
+            android:defaultValue="POST"
+            app:argType="social.tsu.android.ui.new_post.PostDraftType" />
+        <argument
+            android:name="membership"
+            app:argType="social.tsu.android.network.model.Membership"
+            app:nullable="true"
+            android:defaultValue="@null" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/notificationFragment"
+        android:name="social.tsu.android.ui.notifications.feed.NotificationFragment"
+        android:label="NotificationFragment" />
+
+    <fragment
+        android:id="@+id/videoCaptureFragment"
+        android:name="social.tsu.android.ui.new_post.VideoCaptureFragment"
+        android:label="VideoCaptureFragment">
+        <action
+            android:id="@+id/action_videoCaptureFragment_to_postDraftFragment"
+            app:destination="@id/postDraftFragment"
+            app:popUpTo="@id/mainFeedFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/bankAccountFragment"
+        android:name="social.tsu.android.ui.BankAccountFragment"
+        android:label="AccountFragment">
+        <action
+            android:id="@+id/action_accountFragment_to_placeholder"
+            app:destination="@id/redeemFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/redeemFragment"
+        android:name="social.tsu.android.ui.RedeemFragment"
+        android:label="RedeemFragment"
+        tools:layout="@layout/fragment_redeem">
+        <action
+            android:id="@+id/action_redeemFragment_to_accountFragment"
+            app:destination="@id/bankAccountFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/photoCaptureFragment"
+        android:name="social.tsu.android.ui.new_post.PhotoCaptureFragment"
+        android:label="PhotoCaptureFragment">
+        <action
+            android:id="@+id/action_photoCaptureFragment_to_postDraftFragment"
+            app:destination="@id/postDraftFragment"
+            app:popUpTo="@id/mainFeedFragment">
+            <argument
+                android:name="videoPath"
+                app:argType="string"
+                app:nullable="true" />
+            <argument
+                android:name="videoContentUri"
+                app:argType="string"
+                app:nullable="true" />
+            <argument
+                android:name="photoUri"
+                app:argType="android.net.Uri"
+                app:nullable="true" />
+
+        </action>
+    </fragment>
+
+    <fragment
+        android:id="@+id/textMediaFragment"
+        android:name="social.tsu.android.ui.new_post.TextMediaFragment"
+        android:label="TextMediaFragment">
+        <action
+            android:id="@+id/action_textMediaFragment_to_postDraftFragment"
+            app:destination="@id/postDraftFragment"
+            app:popUpTo="@id/mainFeedFragment">
+            <argument
+                android:name="videoPath"
+                app:argType="string"
+                app:nullable="true" />
+            <argument
+                android:name="videoContentUri"
+                app:argType="string"
+                app:nullable="true" />
+            <argument
+                android:name="photoUri"
+                app:argType="android.net.Uri"
+                app:nullable="true" />
+
+        </action>
+    </fragment>
+    <fragment
+        android:id="@+id/simpleWebViewFragment"
+        android:name="social.tsu.android.ui.SimpleWebViewFragment"
+        android:label="fragment_simple_webview"
+        tools:layout="@layout/fragment_simple_webview">
+        <argument
+            android:name="url"
+            android:defaultValue="https://www.yahoo.com"
+            app:argType="string" />
+    </fragment>
+    <action
+        android:id="@+id/termsOfService"
+        app:destination="@id/simpleWebViewFragment">
+        <argument
+            android:name="url"
+            android:defaultValue="https://www.tsu.social/terms" />
+    </action>
+    <action
+        android:id="@+id/privacyPolicy"
+        app:destination="@id/simpleWebViewFragment">
+        <argument
+            android:name="url"
+            android:defaultValue="https://www.tsu.social/privacy" />
+    </action>
+    <action
+        android:id="@+id/paymentPolicy"
+        app:destination="@id/simpleWebViewFragment">
+        <argument
+            android:name="url"
+            android:defaultValue="https://www.tsu.social/payment" />
+    </action>
+    <action
+        android:id="@+id/support"
+        app:destination="@id/simpleWebViewFragment">
+        <argument
+            android:name="url"
+            android:defaultValue="https://help.tsusocial.com/hc/en-us" />
+    </action>
+    <action
+        android:id="@+id/copyrightInfringement"
+        app:destination="@id/simpleWebViewFragment">
+        <argument
+            android:name="url"
+            android:defaultValue="https://www.tsusocial.com/contact/intellectual-property" />
+    </action>
+
+    <fragment
+        android:id="@+id/chatFragment"
+        android:name="social.tsu.android.ui.messaging.chats.ChatFragment"
+        android:label="chat_fragment"
+        tools:layout="@layout/fragment_chat">
+        <argument
+            android:name="recipient"
+            android:defaultValue="@null"
+            app:nullable="true"
+            app:argType="social.tsu.android.data.local.models.PostUser" />
+
+        <action
+            android:id="@+id/action_chatFragment_To_mentionSearchFragment"
+            app:destination="@id/mentionUserSearchFragment"
+            app:popUpTo="@id/chatFragment" />
+
+
+    </fragment>
+
+    <fragment
+        android:id="@+id/inviteFriendsFragment"
+        android:name="social.tsu.android.ui.InviteFriendsFragment"
+        android:label="invite_friends_fragment"
+        tools:layout="@layout/invite_friends_fragment">
+        <action
+            android:id="@+id/action_inviteFriendsFragment_to_inviteContactsFragment"
+            app:destination="@id/inviteContactsFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/inviteContactsFragment"
+        android:name="social.tsu.android.ui.InviteContactsFragment"
+        android:label="invite_contacts_fragment"
+        tools:layout="@layout/invite_contacts_fragment">
+        <argument
+            android:name="inviteLink"
+            app:argType="string" />
+        <argument
+            android:name="username"
+            app:argType="string" />
+    </fragment>
+    <fragment
+        android:id="@+id/enterEmailFragment"
+        android:name="social.tsu.android.ui.reset_password.EnterEmailFragment"
+        android:label="EnterEmailFragment">
+        <action
+            android:id="@+id/action_enterEmailFragment_to_oneTimeCodeFragment"
+            app:destination="@id/oneTimeCodeFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/oneTimeCodeFragment"
+        android:name="social.tsu.android.ui.reset_password.OneTimeCodeFragment"
+        android:label="OneTimeCodeFragment">
+        <action
+            android:id="@+id/action_oneTimeCodeFragment_to_changePasswordFragment"
+            app:destination="@id/changePasswordFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/changePasswordFragment"
+        android:name="social.tsu.android.ui.reset_password.ChangePasswordFragment"
+        android:label="ChangePasswordFragment">
+        <action
+            android:id="@+id/action_changePasswordFragment_to_loginFragment"
+            app:destination="@id/loginFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/postTypesFragment"
+        android:name="social.tsu.android.ui.new_post.PostTypesFragment"
+        android:label="PostTypesFragment" >
+        <action
+            android:id="@+id/next"
+            app:destination="@id/postDraftFragment" />
+        <argument
+            android:name="defaultPostType"
+            app:argType="reference" />
+        <argument
+            android:name="popToDestination"
+            android:defaultValue="@id/mainFeedFragment"
+            app:argType="reference" />
+        <argument
+            android:name="postText"
+            app:argType="string" />
+        <argument
+            android:name="allowVideo"
+            android:defaultValue="true"
+            app:argType="boolean" />
+        <argument
+            android:name="recipient"
+            android:defaultValue="@null"
+            app:nullable="true"
+            app:argType="social.tsu.android.data.local.models.PostUser" />
+        <argument
+            android:name="postingType"
+            android:defaultValue="POST"
+            app:argType="social.tsu.android.ui.new_post.PostDraftType" />
+        <argument
+            android:name="membership"
+            app:argType="social.tsu.android.network.model.Membership"
+            app:nullable="true"
+            android:defaultValue="@null" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/editAccountFragment"
+        android:name="social.tsu.android.ui.EditAccountFragment"
+        android:label="@string/edit_account_toolbar_label"
+        tools:layout="@layout/edit_account" />
+
+    <action
+        android:id="@+id/showSignupFragment"
+        app:destination="@id/createAccountFragment"
+        app:enterAnim="@anim/nav_default_enter_anim"
+        app:exitAnim="@anim/nav_default_exit_anim"
+        app:launchSingleTop="true"/>
+
+    <action
+        android:id="@+id/showLoginFragment"
+        app:destination="@id/oldUserEnterEmailFragment"
+        app:enterAnim="@anim/nav_default_enter_anim"
+        app:exitAnim="@anim/nav_default_exit_anim"
+        app:launchSingleTop="true"/>
+
+
+    <action
+        android:id="@+id/showEditProfileFragment"
+        app:destination="@id/profileEditFragment"
+        app:enterAnim="@anim/nav_default_enter_anim"
+        app:exitAnim="@anim/nav_default_exit_anim"
+        app:popEnterAnim="@anim/nav_default_pop_enter_anim"
+        app:popExitAnim="@anim/nav_default_pop_exit_anim"
+        app:popUpTo="@id/currentUserProfileFragment" />
+
+    <action
+        android:id="@+id/showPostTypesFragment"
+        app:destination="@id/postTypesFragment" >
+        <argument
+            android:name="defaultPostType"
+            android:defaultValue="@id/photoCaptureFragment2" />
+    </action>
+    <action
+        android:id="@+id/showMentionFragment"
+        app:destination="@id/mentionUserSearchFragment">
+
+        <argument
+            android:name="searchType"
+            android:defaultValue="0"
+            app:argType="integer" />
+
+        <argument
+            android:name="mentionType"
+            android:defaultValue="0"
+            app:argType="integer" />
+
+        <argument
+            android:name="popToDestination"
+            android:defaultValue="@id/postDraftFragment"
+            app:argType="reference" />
+
+    </action>
+
+    <action
+        android:id="@+id/showMentionFragmentFromMainView"
+        app:destination="@id/mentionUserSearchFragment">
+
+        <argument
+            android:name="searchType"
+            android:defaultValue="0"
+            app:argType="integer" />
+
+        <argument
+            android:name="mentionType"
+            android:defaultValue="0"
+            app:argType="integer" />
+
+        <argument
+            android:name="popToDestination"
+            android:defaultValue="@id/postDraftFragment"
+            app:argType="reference" />
+
+    </action>
+
+    <fragment
+        android:id="@+id/communityFragment"
+        android:name="social.tsu.android.ui.community.CommunityFragment"
+        android:label="@string/community" >
+        <action
+            android:id="@+id/action_communityFragment_to_searchFragment"
+            app:destination="@id/searchFragment"
+            app:popUpTo="@id/communityFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/communityCreateFragment"
+        android:name="social.tsu.android.ui.community.CommunityCreateFragment">
+        <argument
+            android:name="mode"
+            app:argType="social.tsu.android.ui.community.CommunityCreateFragment$CreateCommunityMode"
+            android:defaultValue="CREATE" />
+        <argument
+            android:name="community"
+            app:argType="social.tsu.android.network.model.Group"
+            app:nullable="true"
+            android:defaultValue="@null" />
+        <action
+            android:id="@+id/action_communityCreateFragment_to_searchFragment"
+            app:destination="@id/searchFragment"
+            app:popUpTo="@id/communityCreateFragment" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/communityMembersFragment"
+        android:name="social.tsu.android.ui.community.members.CommunityMembersFragment"
+        android:label="@string/community_members_category">
+        <argument
+            android:name="id"
+            app:argType="integer" />
+        <argument
+            android:name="role_type"
+            android:defaultValue="member"
+            app:argType="string" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/tsuContactsFragment"
+        android:name="social.tsu.android.ui.messaging.tsu_contacts.TsuContactsFragment"
+        android:label="TsuContactsFragment" >
+        <argument
+            android:name="mode"
+            app:argType="social.tsu.android.ui.messaging.tsu_contacts.TsuContactsFragment$ContactsMode" />
+        <argument
+            android:name="communityId"
+            app:argType="integer"
+            android:defaultValue="-1" />
+    </fragment>
+    <fragment
+        android:id="@+id/hashtagGridFragment"
+        android:name="social.tsu.android.ui.hashtag.HashtagGridFragment">
+        <argument
+            android:name="hashtag"
+            app:argType="string"
+            app:nullable="true" />
+    </fragment>
+    <fragment
+        android:id="@+id/recentContactsFragment"
+        android:name="social.tsu.android.ui.messaging.recents.RecentContactsFragment"
+        android:label="RecentContactsFragment" />
+    <fragment
+        android:id="@+id/userPhotosFeedFragment"
+        android:name="social.tsu.android.ui.post_feed.user_feed.UserPhotosFeedFragment"
+        android:label="UserPhotosFeedFragment">
+        <argument
+            android:name="userId"
+            app:argType="integer"
+            android:defaultValue="-1" />
+        <argument
+            android:name="postId"
+            app:argType="long"
+            android:defaultValue="-1L" />
+        <argument
+            android:name="postPosition"
+            app:argType="integer"
+            android:defaultValue="0" />
+    </fragment>
+    <action
+        android:id="@+id/showUserPhotosFeedFragment"
+        app:destination="@id/userPhotosFeedFragment">
+        <argument
+            android:name="postId"
+            android:defaultValue="-1L" />
+        <argument
+            android:name="userId"
+            android:defaultValue="-1" />
+        <argument
+            android:name="postPosition"
+            android:defaultValue="0" />
+    </action>
+    <fragment
+        android:id="@+id/userVideosFeedFragment"
+        android:name="social.tsu.android.ui.post_feed.user_feed.UserVideosFeedFragment"
+        android:label="UserVideosFeedFragment">
+        <argument
+            android:name="userId"
+            app:argType="integer"
+            android:defaultValue="-1" />
+        <argument
+            android:name="postId"
+            app:argType="long"
+            android:defaultValue="-1L" />
+        <argument
+            android:name="postPosition"
+            app:argType="integer"
+            android:defaultValue="0" />
+    </fragment>
+    <action
+        android:id="@+id/showUserVideosFeedFragment"
+        app:destination="@id/userVideosFeedFragment">
+        <argument
+            android:name="postId"
+            android:defaultValue="-1L" />
+        <argument
+            android:name="userId"
+            android:defaultValue="-1" />
+        <argument
+            android:name="postPosition"
+            android:defaultValue="0" />
+    </action>
+    <fragment
+        android:id="@+id/singlePostFragment"
+        android:name="social.tsu.android.ui.post_feed.single_post.SinglePostFeedFragment"
+        android:label="SinglePostFragment">
+        <argument
+            android:name="postId"
+            app:argType="long"
+            android:defaultValue="0L" />
+    </fragment>
+    <fragment
+        android:id="@+id/notificationSubscriptionsFragment"
+        android:name="social.tsu.android.ui.notifications.subscriptions.NotificationSubscriptionsFragment"
+        android:label="NotificationSubscriptionsFragment" />
+    <action
+        android:id="@+id/showPostDraftFragment"
+        app:destination="@id/postDraftFragment" />
+    <fragment
+        android:id="@+id/communityFeedFragment"
+        android:name="social.tsu.android.ui.post_feed.community.CommunityFeedFragment"
+        android:label="CommunityFeedFragment" >
+        <argument
+            android:name="groupId"
+            android:defaultValue="-1"
+            app:argType="integer" />
+        <argument
+            android:name="group"
+            android:defaultValue="@null"
+            app:argType="social.tsu.android.network.model.Group"
+            app:nullable="true" />
+        <argument
+            android:name="membership"
+            android:defaultValue="@null"
+            app:argType="social.tsu.android.network.model.Membership"
+            app:nullable="true" />
+    </fragment>
+    <action
+        android:id="@+id/openCommunityFeedFragment"
+        app:destination="@id/communityFeedFragment"
+        app:launchSingleTop="true" />
+
+    <fragment
+        android:id="@+id/likesListFragment"
+        android:name="social.tsu.android.ui.new_post.likes.LikesListFragment"
+        android:label="@string/toolbar_title_likes"
+        tools:layout="@layout/post_likes_list">
+        <argument
+            android:name="postId"
+            android:defaultValue="-1"
+            app:argType="integer" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/supportsListFragment"
+        android:name="social.tsu.android.ui.new_post.supports.SupportsListFragment"
+        android:label="@string/toolbar_title_supporters"
+        tools:layout="@layout/post_supports_list">
+        <argument
+            android:name="postId"
+            android:defaultValue="-1"
+            app:argType="integer" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/communityPublishingRequestsFragment"
+        android:name="social.tsu.android.ui.community.CommunityPublishingRequestsFragment"
+        android:label="CommunityPublishingRequestsFragment" >
+        <argument
+            android:name="groupId"
+            app:argType="integer"
+            android:defaultValue="0" />
+    </fragment>
+
+    <action
+        android:id="@+id/action_global_open_communityPublishingRequestsFragment"
+        app:destination="@id/communityPublishingRequestsFragment">
+    </action>
+
+    <action android:id="@+id/action_global_communityCreateFragment" app:destination="@id/communityCreateFragment" />
+    <fragment
+        android:id="@+id/pendingMembershipFragment"
+        android:name="social.tsu.android.ui.community.PendingMembershipFragment"
+        android:label="PendingMembershipFragment">
+        <argument
+            android:name="community"
+            app:argType="social.tsu.android.network.model.Group" />
+    </fragment>
+    <action
+        android:id="@+id/launchPendingMembershipFragment"
+        app:destination="@id/pendingMembershipFragment" />
+    <fragment
+        android:id="@+id/livestreamFragment"
+        android:name="social.tsu.android.ui.live_stream.LivestreamFragment"
+        android:label="LivestreamFragment" />
+    <action
+        android:id="@+id/showLiveFragment"
+        app:destination="@id/livestreamFragment" />
+    <fragment
+        android:id="@+id/oldUserEnterEmailFragment"
+        android:name="social.tsu.android.ui.user_invite.UserInviteEnterEmailFragment"
+        android:label="OldUserEnterEmailFragment">
+
+        <argument
+            android:name="email"
+            android:defaultValue="@null"
+            app:argType="string"
+            app:nullable="true" />
+
+        <argument
+            android:name="oldUserName"
+            android:defaultValue="@null"
+            app:argType="string"
+            app:nullable="true" />
+
+        <argument
+            android:name="invitedByUsername"
+            android:defaultValue="@null"
+            app:argType="string"
+            app:nullable="true" />
+
+        <argument
+            android:name="verificationCode"
+            android:defaultValue="0"
+            app:argType="integer" />
+
+        <argument
+            android:name="hubspotId"
+            android:defaultValue="0"
+            app:argType="integer" />
+        <argument
+            android:name="invitedBy"
+            android:defaultValue="0"
+            app:argType="integer" />
+
+        <argument
+            android:name="legacyUserFlag"
+            android:defaultValue="false"
+            app:argType="boolean" />
+
+        <deepLink
+            android:id="@+id/hubspot_id_link"
+            app:uri="https://www.tsu.social/?hubspot_id={hubspotId}" />
+
+        <deepLink
+            android:id="@+id/invited_by_link"
+            app:uri="https://www.tsu.social/?invited_by_id={invitedBy}" />
+
+        <deepLink
+            android:id="@+id/invited_by_username"
+            app:uri="https://www.tsu.social/mobile-download?invited_by_username={invitedByUsername}" />
+
+        <deepLink
+            android:id="@+id/invited_by_username2"
+            app:uri="https://www.tsu.social/?invited_by_username={invitedByUsername}" />
+
+        <deepLink
+            android:id="@+id/invited_by_username3"
+            app:uri="http://www.tsu.social/?invited_by_username={invitedByUsername}" />
+
+        <deepLink
+            android:id="@+id/invited_by_username4"
+            app:uri="https://tsu.social/invite?invited_by_username={invitedByUsername}" />
+
+        <deepLink
+            android:id="@+id/invited_by_username5"
+            app:uri="https://www.tsu.social/mobile-download/?invited_by_username={invitedByUsername}" />
+
+        <deepLink
+            android:id="@+id/invited_by_username6"
+            app:uri="http://www.tsu.social/mobile-download?invited_by_username={invitedByUsername}" />
+
+        <deepLink
+            android:id="@+id/invited_by_username7"
+            app:uri="http://www.tsu.social/mobile-download/?invited_by_username={invitedByUsername}" />
+
+        <deepLink
+            android:id="@+id/old_user_link"
+            app:uri="http://www.tsu.social/?email={email}&amp;username={oldUserName}&amp;verification_code={verificationCode}" />
+
+
+        <deepLink
+            android:id="@+id/old_user_link5"
+            app:uri="http://www.tsu.social/?email={email}&amp;verification_code={verificationCode}" />
+
+        <deepLink
+            android:id="@+id/old_user_link4"
+            app:uri="http://www.tsu.social/?email={email}" />
+        <deepLink
+            android:id="@+id/old_user_link2"
+            app:uri="http://www.tsu.social/?email={email}&amp;legacy_user={legacyUserFlag}" />
+        <deepLink
+            android:id="@+id/old_user_link3"
+            app:uri="http://www.tsu.social/?email={email}&amp;username={oldUserName}&amp;legacy_user={legacyUserFlag}" />
+
+        <action
+            android:id="@+id/action_oldUserEnterEmailFragment_to_createAccountFragment"
+            app:destination="@id/createAccountFragment" />
+        <action
+            android:id="@+id/action_oldUserEnterEmailFragment_to_loginFragment"
+            app:destination="@id/loginFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/oldUserOnBoardingFragment"
+        android:name="social.tsu.android.ui.user_invite.OldUserOnBoardingFragment"
+        android:label="OldUserOnBoardingFragment">
+        <argument
+            android:name="oldUserDetails"
+            app:argType="social.tsu.android.data.local.models.OldUserDetails"
+            app:nullable="true"
+            android:defaultValue="@null" />
+        <action
+            android:id="@+id/action_oldUserOnBoardingFragment_to_profileEditFragment"
+            app:destination="@id/profileEditFragment" />
+    </fragment>
+
+
+    <fragment
+        android:id="@+id/insightsFragment"
+        android:name="social.tsu.android.ui.user_profile.insights.InsightsFragment"
+        android:label="UserInsightsFragment" />
+    <fragment
+        android:id="@+id/userAboutFragment"
+        android:name="social.tsu.android.ui.user_profile.UserAboutFragment"
+        android:label="UserAboutFragment" >
+        <argument
+            android:name="userId"
+            app:argType="long"
+            android:defaultValue="-1L" />
+        <argument
+            android:name="profileInfo"
+            app:argType="social.tsu.android.network.model.UserProfileParams" />
+        <action
+            android:id="@+id/showBasicInfoFragment"
+            app:destination="@id/basicInfoFragment" />
+    </fragment>
+    <action android:id="@+id/showUserAboutFragment" app:destination="@id/userAboutFragment" />
+    <fragment
+        android:id="@+id/basicInfoFragment"
+        android:name="social.tsu.android.ui.user_profile.BasicInfoFragment"
+        android:label="BasicInfoFragment" >
+        <argument
+            android:name="user"
+            app:argType="social.tsu.android.network.model.UserProfileParams" />
+    </fragment>
+    <fragment
+        android:id="@+id/topFriendsFragment"
+        android:name="social.tsu.android.ui.user_profile.TopFriendsFragment"
+        android:label="TopFriendsFragment" />
+    <fragment
+        android:id="@+id/interestsFragment"
+        android:name="social.tsu.android.ui.user_profile.InterestsFragment"
+        android:label="InterestsFragment" />
+
+    <fragment
+        android:id="@+id/myCommunitiesFragment"
+        android:name="social.tsu.android.ui.community.MyCommunitiesFragment"
+        android:label="MyCommunitiesFragment" />
+
+    <fragment
+        android:id="@+id/userSettingsFragment"
+        android:name="social.tsu.android.ui.user_profile.UserSettingsFragment"
+        android:label="UserSettingsFragment" />
+
+    <fragment
+        android:id="@+id/mentionUserSearchFragment"
+        android:name="social.tsu.android.ui.search.MentionUserSearchFragment"
+        android:label="MentionUserSearchFragment">
+
+        <argument
+            android:name="searchType"
+            android:defaultValue="0"
+            app:argType="integer" />
+
+        <argument
+            android:name="mentionType"
+            android:defaultValue="0"
+            app:argType="integer" />
+
+        <argument
+            android:name="popToDestination"
+            android:defaultValue="@id/postDraftFragment"
+            app:argType="reference" />
+
+    </fragment>
+
+    <fragment
+        android:id="@+id/discoveryFeedFragment"
+        android:name="social.tsu.android.ui.search.DiscoveryFeedFragment"
+        android:label="DiscoveryFeedFragment">
+        <argument
+            android:name="userId"
+            app:argType="integer"
+            android:defaultValue="-1" />
+        <argument
+            android:name="postId"
+            app:argType="long"
+            android:defaultValue="-1L" />
+        <argument
+            android:name="postPosition"
+            app:argType="integer"
+            android:defaultValue="0" />
+    </fragment>
+    <action
+        android:id="@+id/showDiscoveryFeedFragmentt"
+        app:destination="@id/discoveryFeedFragment">
+        <argument
+            android:name="postId"
+            android:defaultValue="-1L" />
+        <argument
+            android:name="userId"
+            android:defaultValue="-1" />
+        <argument
+            android:name="postPosition"
+            android:defaultValue="0" />
+    </action>
+    
+    <fragment
+        android:id="@+id/hashtagFeedFragment"
+        android:name="social.tsu.android.ui.hashtag.feed.HashtagFeedFragment">
+        <argument
+            android:name="hashtag"
+            android:defaultValue=""
+            app:argType="string" />
+        <argument
+            android:name="postPosition"
+            android:defaultValue="0"
+            app:argType="integer" />
+    </fragment>
+    <action
+        android:id="@+id/openHashtagFeedFragment"
+        app:destination="@+id/hashtagFeedFragment">
+        <argument
+            android:name="hashtag"
+            android:defaultValue=""
+            app:argType="string" />
+        <argument
+            android:name="postPosition"
+            android:defaultValue="0"
+            app:argType="integer" />
+    </action>
+    <fragment
+        android:id="@+id/feedSettingsFragment"
+        android:name="social.tsu.android.ui.post_feed.feed_type.FeedTypeFragment">
+    </fragment>
+    
+</navigation>

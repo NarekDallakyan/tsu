@@ -1,0 +1,138 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="colorPrimary">@color/tsu_green</color>
+    <color name="primaryGray">#58595B</color>
+    <color name="colorPrimaryDark">#000000</color>
+    <color name="black">#000000</color>
+    <color name="screen_background">#121212</color>
+    <color name="toolbar_color">#121212</color>
+    <color name="colorAccent">#D81B60</color>
+    <color name="white">#ffffff</color>
+    <color name="light_gray">#7f7f7f</color>
+    <color name="primaryButton">#D2D2D2</color>
+    <color name="textInputBackground">#FF121212</color>
+    <color name="secondary1">#c4db6c</color>
+    <color name="secondary2">#FFB734</color>
+    <color name="red">#FC1908</color>
+    <color name="decline_button">#EA4242</color>
+    <color name="secondaryDarkGray">#909295</color>
+    <color name="secondaryBlue">#60A3BC</color>
+    <color name="ib_fr_white">#FFFFFF</color>
+
+    <color name="tsu_grey">@color/secondaryDarkGray</color>
+    <color name="tsu_primary">@color/tsu_red</color>
+
+    <color name="tsu_blue">#4ECDC4</color>
+    <color name="tsu_green">#C7F465</color>
+    <color name="tsu_red">#FF6B6B</color>
+    <color name="tsu_yellow">#FFB734</color>
+    <color name="tsu_cine">#656CF4</color>
+
+    <color name="icActive">#FFFFFFFF</color>
+    <color name="icFocused">#DDFFFFFF</color>
+    <color name="icPressed">#AAFFFFFF</color>
+
+    <color name="placeholder_Color">#C7C7CD</color>
+    <color name="standard_grey">#D2D2D2</color>
+
+    <color name="bottom_nav_background">#262626</color>
+    <color name="bottom_nav_item">#848484</color>
+    <color name="bottom_nav_item_active">#C7F465</color>
+
+    <color name="toolbar_text">#FFFFFF</color>
+
+    <color name="drawer_background">#000000</color>
+    <color name="drawer_text">#D2D2D2</color>
+    <color name="drawer_full_name_text">#D2D2D2</color>
+    <color name="drawer_username_text">#ECECEC</color>
+
+    <color name="player_btn_background">#80000000</color>
+
+    <color name="list_divider">#262626</color>
+    <color name="user_sections_divider">#14FFFFFF</color>
+    <color name="sections_divider">#1AFFFFFF</color>
+
+    <color name="post_date">@color/primaryGray</color>
+    <color name="post_link_container">#262626</color>
+    <color name="post_link_host">@color/tsu_grey</color>
+    <color name="post_link_url">@color/tsu_green</color>
+
+    <color name="button_background_decline">@color/secondaryDarkGray</color>
+    <color name="button_background_disabled">@color/primaryGray</color>
+    <color name="button_background_enabled">@color/tsu_green</color>
+    <color name="button_background_pending">#FAFAFA</color>
+    <color name="button_background_simple">#363636</color>
+    <color name="button_container">#262626</color>
+    <color name="button_text_disabled">#000000</color>
+    <color name="button_text_pending">@color/secondaryDarkGray</color>
+
+    <color name="divider_default">@color/primaryGray</color>
+
+    <color name="field_error">@color/tsu_red</color>
+    <color name="field_hint">#909295</color>
+    <color name="field_multiline_hint">@color/primaryGray</color>
+    <color name="light_green">#c4db6c</color>
+    <color name="shared_color">#647A33</color>
+
+    <color name="text_description">#E2E2E2</color>
+    <color name="text_info_value_underline">#FAFAFA</color>
+    <color name="text_no_info_value">#909295</color>
+
+    <color name="secondaryErrorRed">@color/tsu_red</color>
+
+    <color name="chat_field_divider">#FFFFFF</color>
+    <color name="chat_field_background">#262626</color>
+    <color name="chat_message_text">#FAFAFA</color>
+    <color name="community_header_background">#262626</color>
+    <color name="darker_grey">#262626</color>
+
+    <color name="user_profile_avatar_border">#D0D0D0</color>
+    <color name="user_profile_count_text">#FAFAFA</color>
+    <color name="user_profile_tab_text">#909295</color>
+    <color name="profile_background_gray">#262626</color>
+    <color name="community_count_color">#FAFAFA</color>
+    <color name="community_text_color">#959595</color>
+    <color name="community_moderated_color">#FFB734</color>
+    <color name="community_second_count_color">#C7F465</color>
+
+
+    <color name="snack_bar_background">#54C0AF</color>
+    <color name="bottom_sheet_item_text_color">#1E82FF</color>
+
+    <color name="analytics_filter_item_background">#121212</color>
+    <color name="analytics_filter_item_background_active">#FFFFFF</color>
+    <color name="analytics_filter_item_text">@color/primaryGray</color>
+    <color name="analytics_filter_item_text_active">#FFFFFF</color>
+    <color name="analytics_post_label">#909295</color>
+    <color name="analytics_post_message">#E2E2E2</color>
+    <color name="analytics_post_item_icon_disabled">@color/primaryGray</color>
+    <color name="analytics_post_item_counter">#909295</color>
+    <color name="analytics_post_item_counter_active">#FFFFFF</color>
+
+
+    <color name="analytics_graph_color_views">#FFB735</color>
+    <color name="analytics_graph_color_likes">#FF6B6B</color>
+
+    <color name="profileButtonSecondary">#363636</color>
+    <color name="profileButtonText">#FFFFFF</color>
+
+    <color name="message_outcoming_background">@color/primaryGray</color>
+    <color name="message_incoming_background">#262626</color>
+    <color name="message_group_date">@color/primaryGray                                                 </color>
+
+    <color name="messages_counter_background">#262626</color>
+    <color name="messages_date">#58595B</color>
+    <color name="profile_actions_separator_color">#959595</color>
+    <color name="profile_actions_normal_text_color">#FFFFFF</color>
+    <color name="profile_actions_highlited_text_color">#FF6B6B</color>
+
+
+    <color name="tsu_light_blue">#5B7CF3</color>
+    <color name="tsu_brown">#4C1302</color>
+    <color name="tsu_maroon">#6C0202</color>
+    <color name="tsu_white">#050F45</color>
+    <color name="tsu_dark_green">#249E03</color>
+    <color name="tsu_pink">#FA21A3</color>
+    <color name="tsu_dark_yellow">#976304</color>
+
+</resources>

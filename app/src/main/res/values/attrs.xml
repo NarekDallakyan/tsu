@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <declare-styleable name="MessageItemLayout">
+        <attr name="viewPartMessage" format="reference"/>
+        <attr name="viewPartTime" format="reference"/>
+    </declare-styleable>
+
+
+
+    <declare-styleable name="SettingsItemView">
+        <attr name="enable_arrow" format="boolean" />
+        <attr name="item_title" format="string" />
+        <attr name="item_value" format="string" />
+    </declare-styleable>
+
+
+</resources>

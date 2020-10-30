@@ -1,0 +1,159 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:paddingStart="16dp"
+    android:paddingEnd="16dp">
+
+    <View
+        android:id="@+id/view2"
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:background="@drawable/line_divider"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/post_date"
+        style="@style/TSUTextAppearance.PostDate"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        android:text="20/07/2020 07:45 AM"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/post_message"
+        style="@style/TSUTextAppearance.Medium"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="8dp"
+        android:ellipsize="end"
+        android:maxLines="2"
+        android:textColor="@color/analytics_post_message"
+        android:textSize="16sp"
+        app:layout_constraintEnd_toStartOf="@+id/post_image"
+        app:layout_constraintStart_toStartOf="@+id/post_date"
+        app:layout_constraintTop_toBottomOf="@+id/post_date"
+        tools:text="Test  Test Test Test Test Test Test Test Test Test Test Test Test Test Test Test Test Test Test Test Test Test Test" />
+
+    <ImageView
+        android:id="@+id/post_image"
+        android:layout_width="56dp"
+        android:layout_height="56dp"
+        android:layout_marginTop="16dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <ImageView
+        android:id="@+id/views_icon"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="56dp"
+        android:layout_marginBottom="16dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toStartOf="@+id/likes_icon"
+        app:layout_constraintHorizontal_chainStyle="spread_inside"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/post_date"
+        app:srcCompat="@drawable/ic_eye_open" />
+
+    <TextView
+        android:id="@+id/views_counter"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:layout_marginEnd="8dp"
+        android:ellipsize="end"
+        android:fontFamily="@font/lato_bold"
+        android:maxLines="1"
+        android:textSize="16sp"
+        app:layout_constraintBottom_toBottomOf="@+id/views_icon"
+        app:layout_constraintEnd_toStartOf="@+id/likes_icon"
+        app:layout_constraintStart_toEndOf="@+id/views_icon"
+        app:layout_constraintTop_toTopOf="@+id/views_icon"
+        tools:text="1,328" />
+
+    <ImageView
+        android:id="@+id/likes_icon"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="16dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toStartOf="@+id/comments_icon"
+        app:layout_constraintStart_toEndOf="@+id/views_icon"
+        app:srcCompat="@drawable/ic_like" />
+
+    <TextView
+        android:id="@+id/likes_counter"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:layout_marginEnd="8dp"
+        android:ellipsize="end"
+        android:fontFamily="@font/lato_bold"
+        android:maxLines="1"
+        android:textSize="16sp"
+        app:layout_constraintBottom_toBottomOf="@+id/likes_icon"
+        app:layout_constraintEnd_toStartOf="@+id/comments_icon"
+        app:layout_constraintStart_toEndOf="@+id/likes_icon"
+        app:layout_constraintTop_toTopOf="@+id/likes_icon"
+        tools:text="24" />
+
+    <ImageView
+        android:id="@+id/comments_icon"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="16dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toStartOf="@+id/shares_icon"
+        app:layout_constraintStart_toEndOf="@+id/likes_icon"
+        app:srcCompat="@drawable/ic_comment" />
+
+    <TextView
+        android:id="@+id/comments_counter"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:layout_marginEnd="8dp"
+        android:ellipsize="end"
+        android:fontFamily="@font/lato_bold"
+        android:maxLines="1"
+        android:textSize="16sp"
+        app:layout_constraintBottom_toBottomOf="@+id/comments_icon"
+        app:layout_constraintEnd_toStartOf="@+id/shares_icon"
+        app:layout_constraintStart_toEndOf="@+id/comments_icon"
+        app:layout_constraintTop_toTopOf="@+id/comments_icon"
+        tools:text="456" />
+
+    <ImageView
+        android:id="@+id/shares_icon"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="64dp"
+        android:layout_marginBottom="16dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/comments_icon"
+        app:srcCompat="@drawable/ic_share" />
+
+    <TextView
+        android:id="@+id/shares_counter"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:ellipsize="end"
+        android:fontFamily="@font/lato_bold"
+        android:maxLines="1"
+
+        android:textSize="16sp"
+        app:layout_constraintBottom_toBottomOf="@+id/shares_icon"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/shares_icon"
+        app:layout_constraintTop_toTopOf="@+id/shares_icon"
+        tools:text="9999" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>

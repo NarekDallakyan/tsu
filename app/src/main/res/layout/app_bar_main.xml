@@ -1,0 +1,140 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/main_layout"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:fitsSystemWindows="true"
+    android:orientation="vertical"
+    tools:context=".ui.MainActivity">
+
+    <com.google.android.material.appbar.AppBarLayout
+        android:id="@+id/main_app_bar_layout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:theme="@style/AppTheme.AppBarOverlay">
+
+        <FrameLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <androidx.appcompat.widget.Toolbar
+                android:id="@+id/toolbar"
+                style="@style/TSUToolbar"
+                android:layout_width="match_parent"
+                android:layout_height="?actionBarSize" />
+
+            <TextView
+                android:id="@+id/toolbar_title"
+                style="@style/TSUTextAppearance.AppBarTitle"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:visibility="gone"
+                tools:text="Some title" />
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:id="@+id/feed_toolbar_buttons"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+
+                <!-- Do not add tint to this icon. Change icon xml -->
+                <ImageView
+                    android:id="@+id/btn_toolbar_live"
+                    android:layout_width="@dimen/toolbar_icon_size"
+                    android:layout_height="@dimen/toolbar_icon_size"
+                    android:layout_marginStart="@dimen/margin_default_medium"
+                    android:layout_marginEnd="@dimen/margin_small"
+                    android:src="@drawable/ic_livestream_off"
+                    android:visibility="visible"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+                <ProgressBar
+                    android:id="@+id/pbLive"
+                    android:layout_width="wrap_content"
+                    android:scaleX="0.6"
+                    android:scaleY="0.6"
+                    android:visibility="gone"
+                    android:background="#99000000"
+                    android:indeterminateTint="@color/stream_white"
+                    app:layout_constraintBottom_toBottomOf="@+id/btn_toolbar_live"
+                    app:layout_constraintTop_toTopOf="@+id/btn_toolbar_live"
+                    app:layout_constraintEnd_toEndOf="@+id/btn_toolbar_live"
+                    app:layout_constraintStart_toStartOf="@+id/btn_toolbar_live"
+                    android:layout_height="wrap_content"/>
+
+                <ImageView
+                    android:id="@+id/toolbar_logo"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:src="@drawable/ic_tsu_logo"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+                <ImageView
+                    android:id="@+id/btn_toolbar_search"
+                    android:layout_width="@dimen/toolbar_icon_size"
+                    android:layout_height="@dimen/toolbar_icon_size"
+                    android:layout_marginEnd="@dimen/margin_default_medium"
+                    android:src="@drawable/ic_search"
+                    android:tint="@color/toolbar_text"
+                    android:visibility="visible"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+                <ImageView
+                    android:id="@+id/ic_notify"
+                    android:layout_width="@dimen/toolbar_icon_size"
+                    android:layout_height="@dimen/toolbar_icon_size"
+                    android:layout_marginEnd="@dimen/margin_default_medium"
+                    android:src="@drawable/ic_bell"
+                    android:tint="@color/toolbar_text"
+                    android:visibility="visible"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toStartOf="@id/btn_toolbar_search"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+                <TextView
+                    android:id="@+id/notify_badge"
+                    android:layout_width="@dimen/toolbar_icon_badge_size"
+                    android:layout_height="@dimen/toolbar_icon_badge_size"
+                    android:layout_marginTop="5dp"
+                    android:background="@drawable/badge_background"
+                    android:gravity="center"
+                    android:padding="3dp"
+                    android:text="0"
+                    android:textColor="@android:color/black"
+                    android:textSize="10sp"
+                    android:visibility="gone"
+                    app:layout_constraintBottom_toTopOf="@id/ic_notify"
+                    app:layout_constraintEnd_toEndOf="@+id/ic_notify"
+                    app:layout_constraintTop_toTopOf="@+id/ic_notify" />
+
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+            <ImageView
+                android:id="@+id/new_message"
+                android:layout_width="@dimen/toolbar_icon_size"
+                android:layout_height="@dimen/toolbar_icon_size"
+                android:layout_gravity="center_vertical|end"
+                android:layout_marginEnd="@dimen/margin_small"
+                android:src="@drawable/ic_create_a_message"
+                android:tint="@color/tsu_green"
+                android:visibility="visible"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+        </FrameLayout>
+
+    </com.google.android.material.appbar.AppBarLayout>
+
+    <include layout="@layout/content_main" />
+
+</LinearLayout>

@@ -1,0 +1,621 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.coordinatorlayout.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/user_motion_container"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/profile_background_gray"
+    android:fitsSystemWindows="true">
+
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@android:color/transparent"
+        android:elevation="3dp">
+
+        <androidx.appcompat.widget.Toolbar
+            android:id="@+id/toolbar"
+            android:layout_width="match_parent"
+            android:layout_height="?actionBarSize"
+            app:theme="@style/TSUProfileToolbar">
+
+        </androidx.appcompat.widget.Toolbar>
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <TextView
+                android:id="@+id/toolbar_title"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:fontFamily="@font/lato_bold"
+                android:textColor="@color/white"
+                android:textSize="16sp"
+                android:visibility="visible"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                tools:text="Firstname Lastname" />
+
+            <ImageView
+                android:id="@+id/btn_toolbar_search"
+                android:layout_width="@dimen/toolbar_icon_size"
+                android:layout_height="@dimen/toolbar_icon_size"
+                android:layout_marginEnd="@dimen/margin_default_medium"
+                android:src="@drawable/ic_search"
+                android:tint="@color/toolbar_text"
+                android:visibility="visible"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <ImageView
+                android:id="@+id/btn_toolbar_notify"
+                android:layout_width="@dimen/toolbar_icon_size"
+                android:layout_height="@dimen/toolbar_icon_size"
+                android:layout_marginEnd="@dimen/margin_default_medium"
+                android:src="@drawable/ic_bell"
+                android:tint="@color/toolbar_text"
+                android:visibility="visible"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toStartOf="@id/btn_toolbar_search"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <TextView
+                android:id="@+id/notify_badge"
+                android:layout_width="@dimen/toolbar_icon_badge_size"
+                android:layout_height="@dimen/toolbar_icon_badge_size"
+                android:layout_marginTop="5dp"
+                android:background="@drawable/badge_background"
+                android:gravity="center"
+                android:padding="3dp"
+                android:text="0"
+                android:textColor="@android:color/black"
+                android:textSize="10sp"
+                android:visibility="gone"
+                app:layout_constraintBottom_toTopOf="@id/btn_toolbar_notify"
+                app:layout_constraintEnd_toEndOf="@id/btn_toolbar_notify"
+                app:layout_constraintTop_toTopOf="@id/btn_toolbar_notify"
+                tools:visibility="visible" />
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+    </FrameLayout>
+
+    <com.google.android.material.appbar.AppBarLayout
+        android:id="@+id/appbar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@android:color/transparent"
+        android:elevation="0dp">
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/user_profile_header"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@color/profile_background_gray"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_scrollFlags="scroll">
+
+            <androidx.constraintlayout.widget.Group
+                android:id="@+id/user_info_group"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                app:constraint_referenced_ids="info_container,user_info_buttons_container,user_profile_name,user_info_friends_container,user_info_followers_container,user_info_following_container, user_profile_handle"
+                tools:visibility="visible" />
+
+            <!--TODO: Include in the group above : user_profile_status_icon-->
+            <ImageView
+                android:id="@+id/user_profile_backgroundView"
+                android:layout_width="match_parent"
+                android:layout_height="192dp"
+                android:adjustViewBounds="true"
+                android:foreground="@drawable/gradient_overlay"
+                android:scaleType="centerCrop"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                tools:src="@drawable/cover" />
+
+            <de.hdodenhof.circleimageview.CircleImageView
+                android:id="@+id/user_profile_avatarView"
+                android:layout_width="@dimen/user_profile_avatar_size"
+                android:layout_height="@dimen/user_profile_avatar_size"
+                android:elevation="1dp"
+                android:src="@drawable/user"
+                app:civ_border_color="@color/user_profile_avatar_border"
+                app:layout_constraintBottom_toBottomOf="@id/user_profile_backgroundView"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/user_profile_backgroundView"
+                tools:src="@drawable/fake" />
+
+            <com.google.android.material.floatingactionbutton.FloatingActionButton
+                android:id="@+id/user_profile_action_button"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="@dimen/margin_default_medium"
+                android:src="@drawable/ic_user_profile_edit"
+                app:backgroundTint="@color/profile_background_gray"
+                app:fabCustomSize="@dimen/user_profile_floating_button_size"
+                app:layout_constraintBottom_toBottomOf="@id/user_profile_backgroundView"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/user_profile_backgroundView"
+                app:tint="@color/ib_fr_white" />
+
+            <TextView
+                android:id="@+id/user_profile_name"
+                style="@style/TSUTextAppearance.Title"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/margin_default_medium"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/user_profile_avatarView"
+                tools:text="Firstname Lastname" />
+
+            <TextView
+                android:id="@+id/user_profile_handle"
+                style="@style/TSUTextAppearance.UserInfoLabel"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/margin_default_small"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/user_profile_name"
+                tools:text="\@profile1983" />
+
+            <LinearLayout
+                android:id="@+id/panelBadge"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="20dp"
+                android:background="@drawable/bg_badge"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/user_profile_handle">
+            <androidx.appcompat.widget.AppCompatImageView
+                android:id="@+id/ivBadge"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_margin="6dp"
+                tools:src="@drawable/ic_sup_diamandroid" />
+            </LinearLayout>
+
+            <androidx.appcompat.widget.AppCompatTextView
+                android:id="@+id/tvBadge"
+                style="@style/TSUTextAppearance.UserInfoLabel"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                android:textAllCaps="true"
+                android:textSize="@dimen/font_small"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/panelBadge"
+                tools:text="Diamond Tsuper User" />
+
+            <androidx.constraintlayout.widget.Group
+                android:id="@+id/groupBadge"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:visibility="gone"
+                tools:visibility="visible"
+                app:constraint_referenced_ids="tvBadge,panelBadge" />
+
+            <ImageView
+                android:id="@+id/user_profile_status_icon"
+                android:layout_width="@dimen/user_item_icon_badge_size"
+                android:layout_height="@dimen/user_item_icon_badge_size"
+                android:src="@drawable/ic_verify"
+                android:visibility="gone"
+                app:layout_constraintBottom_toTopOf="@id/user_profile_name"
+                app:layout_constraintStart_toEndOf="@id/user_profile_name"
+                app:layout_constraintTop_toTopOf="@id/user_profile_name"
+                tools:visibility="gone" />
+
+            <TextView
+                android:id="@+id/user_block_message"
+                style="@style/TSUTextAppearance.Title"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/margin_default_medium"
+                android:text="@string/block_message"
+                android:textSize="20sp"
+                android:visibility="gone"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/user_profile_avatarView"
+                tools:visibility="gone" />
+
+            <LinearLayout
+                android:id="@+id/user_info_friends_container"
+                android:layout_width="0dp"
+                android:layout_height="0dp"
+                android:layout_marginStart="@dimen/margin_default_medium"
+                android:layout_marginTop="@dimen/margin_default_medium"
+                android:gravity="center"
+                android:orientation="vertical"
+                android:padding="@dimen/margin_default_small"
+                app:layout_constraintBottom_toBottomOf="@id/user_info_followers_container"
+                app:layout_constraintEnd_toStartOf="@id/user_info_followers_container"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/tvBadge">
+
+                <TextView
+                    android:id="@+id/friendCountText"
+                    style="@style/TSUTextAppearance.CountValue"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textAlignment="textEnd"
+                    tools:text="1,234" />
+
+                <TextView
+                    android:id="@+id/friendCountLabel"
+                    style="@style/TSUTextAppearance.CountLabel"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="2dp"
+                    android:text="@string/user_profile_friends"
+                    android:visibility="invisible"
+                    tools:visibility="visible" />
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/user_info_followers_container"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/margin_default_medium"
+                android:layout_marginEnd="@dimen/margin_default_medium"
+                android:gravity="center"
+                android:orientation="vertical"
+                android:padding="@dimen/margin_default_small"
+                app:layout_constraintBottom_toBottomOf="@id/user_info_friends_container"
+                app:layout_constraintEnd_toEndOf="@id/user_info_following_container"
+                app:layout_constraintStart_toEndOf="@id/user_info_friends_container"
+                app:layout_constraintTop_toBottomOf="@id/tvBadge">
+
+                <TextView
+                    android:id="@+id/followerCountText"
+                    style="@style/TSUTextAppearance.CountValue"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textAlignment="textEnd"
+                    tools:text="5,678,901" />
+
+                <TextView
+                    android:id="@+id/followerCountLabel"
+                    style="@style/TSUTextAppearance.CountLabel"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="2dp"
+                    android:text="@string/user_profile_followers"
+                    android:visibility="invisible"
+                    tools:visibility="visible" />
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/user_info_following_container"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/margin_default_medium"
+                android:layout_marginEnd="@dimen/margin_default_medium"
+                android:gravity="center"
+                android:orientation="vertical"
+                android:padding="@dimen/margin_default_small"
+                app:layout_constraintBottom_toBottomOf="@id/user_info_followers_container"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toEndOf="@id/user_info_followers_container"
+                app:layout_constraintTop_toBottomOf="@id/tvBadge">
+
+                <TextView
+                    android:id="@+id/followingCountText"
+                    style="@style/TSUTextAppearance.CountValue"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textAlignment="textEnd"
+                    tools:text="5,678,901" />
+
+                <TextView
+                    android:id="@+id/followingCountLabel"
+                    style="@style/TSUTextAppearance.CountLabel"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="2dp"
+                    android:text="@string/user_profile_following"
+                    android:visibility="invisible"
+                    tools:visibility="visible" />
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/user_info_buttons_container"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/margin_default_medium"
+                android:layout_marginTop="@dimen/margin_default_medium"
+                android:layout_marginEnd="@dimen/margin_default_medium"
+                android:orientation="vertical"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/user_info_followers_container">
+
+                <LinearLayout
+                    android:id="@+id/user_profile_own_buttons"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:visibility="gone"
+                    tools:visibility="visible">
+
+                    <com.google.android.material.button.MaterialButton
+                        android:id="@+id/user_profile_add_post_btn"
+                        style="@style/TSUButton.WrapContent.Profile"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginEnd="@dimen/margin_default_small"
+                        android:layout_weight="1"
+                        android:text="@string/user_profile_add_post"
+                        android:visibility="visible"
+                        app:icon="@drawable/ic_btn_add"
+                        tools:visibility="visible" />
+
+                    <com.google.android.material.button.MaterialButton
+                        android:id="@+id/user_profile_bank_btn"
+                        style="@style/TSUButton.Grey"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:text="@string/bank"
+                        android:visibility="visible"
+                        app:icon="@drawable/ic_bank"
+                        tools:visibility="visible" />
+
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:id="@+id/user_profile_other_buttons"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal">
+
+                    <com.google.android.material.button.MaterialButton
+                        android:id="@+id/user_profile_friend_btn"
+                        style="@style/TSUButton.WrapContent.Profile"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginEnd="@dimen/user_profile_button_margin"
+                        android:layout_weight="2"
+                        android:text="@string/add_friend"
+                        android:visibility="gone"
+                        app:icon="@drawable/ic_friend"
+                        tools:visibility="visible" />
+
+                    <com.google.android.material.button.MaterialButton
+                        android:id="@+id/user_profile_follow_btn"
+                        style="@style/TSUButton.WrapContent.Profile"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="@dimen/user_profile_button_margin"
+                        android:layout_marginEnd="@dimen/user_profile_button_margin"
+                        android:layout_weight="2"
+                        android:text="@string/btn_follow_txt"
+                        android:visibility="gone"
+                        app:icon="@drawable/ic_follow"
+                        tools:visibility="visible" />
+
+                    <com.google.android.material.button.MaterialButton
+                        android:id="@+id/user_profile_message_btn"
+                        style="@style/TSUButton.WrapContent.Profile"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="@dimen/user_profile_button_margin"
+                        android:layout_marginEnd="@dimen/user_profile_button_margin"
+                        android:layout_weight="0"
+                        android:text="@string/user_profile_message"
+                        android:visibility="gone"
+                        app:icon="@drawable/ic_messages_add"
+                        tools:text=""
+                        tools:visibility="visible" />
+
+                    <com.google.android.material.button.MaterialButton
+                        android:id="@+id/user_profile_support_me_btn"
+                        style="@style/TSUButton.Support"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="@dimen/user_profile_button_margin"
+                        android:layout_weight="0"
+                        android:text="@string/profile_support_me"
+                        android:visibility="gone"
+                        app:icon="@drawable/ic_support"
+                        tools:text=""
+                        tools:visibility="visible" />
+                </LinearLayout>
+
+            </LinearLayout>
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:id="@+id/info_container"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/margin_default_medium"
+                android:layout_marginTop="@dimen/margin_default_large"
+                android:layout_marginEnd="@dimen/margin_default_medium"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/user_info_buttons_container">
+
+                <LinearLayout
+                    android:id="@+id/user_info_row1"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:gravity="center_vertical"
+                    android:orientation="horizontal"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent">
+
+                    <ImageView
+                        android:id="@+id/info_row1_icon"
+                        android:layout_width="24dp"
+                        android:layout_height="24dp"
+                        android:layout_marginEnd="@dimen/margin_default_small"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent"
+                        tools:src="@drawable/user_nav_header" />
+
+                    <TextView
+                        android:id="@+id/info_row1_label"
+                        style="@style/TSUTextAppearance.UserInfoLabel"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginEnd="@dimen/margin_default_xsmall"
+                        android:layout_weight="0"
+                        android:text=""
+                        tools:visibility="gone" />
+
+                    <TextView
+                        android:id="@+id/info_row1_text"
+                        style="@style/TSUTextAppearance.UserInfoText"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:ellipsize="end"
+                        android:maxLines="2"
+                        android:text=""
+                        tools:text="hello worldz" />
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:id="@+id/user_info_row2"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/margin_default_medium"
+                    android:gravity="center_vertical"
+                    android:orientation="horizontal"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/user_info_row1">
+
+                    <ImageView
+                        android:id="@+id/info_row2_icon"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginEnd="@dimen/margin_default_small"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent"
+                        tools:src="@drawable/user_nav_header" />
+
+                    <TextView
+                        android:id="@+id/info_row2_label"
+                        style="@style/TSUTextAppearance.UserInfoLabel"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginEnd="@dimen/margin_default_xsmall"
+                        android:layout_weight="0"
+                        android:text=""
+                        tools:text="Married with" />
+
+                    <TextView
+                        android:id="@+id/info_row2_text"
+                        style="@style/TSUTextAppearance.UserInfoText"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:ellipsize="end"
+                        android:maxLines="2"
+                        android:text=""
+                        tools:text="First Last" />
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:id="@+id/user_info_row_more"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/margin_default_medium"
+                    android:clickable="true"
+                    android:gravity="center_vertical"
+                    android:orientation="horizontal"
+                    android:paddingBottom="@dimen/margin_default_medium"
+                    android:visibility="gone"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/user_info_row2">
+
+                    <ImageView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginEnd="@dimen/margin_default_small"
+                        android:src="@drawable/ic_more_horizontal"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent" />
+
+                    <TextView
+                        android:id="@+id/info_row_more_label"
+                        style="@style/TSUTextAppearance.UserInfoLabel"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:text="See all information" />
+
+                </LinearLayout>
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+        <FrameLayout
+            android:id="@+id/toolbar_placeholder"
+            android:layout_width="wrap_content"
+            android:layout_height="0dp"
+            android:minHeight="?actionBarSize"
+            app:layout_constraintTop_toBottomOf="@id/info_container"
+            app:layout_scrollFlags="scroll|exitUntilCollapsed" />
+
+        <FrameLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <com.google.android.material.tabs.TabLayout
+                android:id="@+id/tabLayout"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/tab_layout_height"
+                android:background="@color/screen_background"
+                android:outlineProvider="none"
+                app:tabGravity="fill"
+                app:tabIndicatorColor="@color/white"
+                app:tabIndicatorHeight="4dp"
+                app:tabPaddingEnd="-1dp"
+                app:tabPaddingStart="-1dp"
+                app:tabRippleColor="@null"
+                app:tabSelectedTextColor="@color/white"
+                app:tabTextAppearance="@style/TSU_Tab_Bar_Text"
+                app:tabTextColor="@color/user_profile_tab_text" />
+
+            <View
+                android:id="@+id/sections_divider"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/divider_standard_height"
+                android:layout_gravity="bottom"
+                android:background="@color/sections_divider" />
+
+        </FrameLayout>
+
+    </com.google.android.material.appbar.AppBarLayout>
+
+    <androidx.viewpager2.widget.ViewPager2
+        android:id="@+id/sectionsViewPager"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@color/screen_background"
+        android:elevation="3dp"
+        app:layout_behavior="com.google.android.material.appbar.AppBarLayout$ScrollingViewBehavior" />
+
+</androidx.coordinatorlayout.widget.CoordinatorLayout>

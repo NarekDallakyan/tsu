@@ -1,0 +1,239 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+
+        <variable
+            name="model"
+            type="social.tsu.android.viewModel.account.EditAccountViewModel" />
+
+    </data>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@color/black">
+
+        <LinearLayout
+            android:id="@+id/edit_account_proceed_container"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:background="@color/button_container"
+            app:layout_constraintBottom_toBottomOf="parent">
+
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/edit_account_proceed"
+                style="@style/TSUButton"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="@dimen/margin_default_medium"
+                android:enabled="@{model.viewForm.isValid()}"
+                android:text="@string/btn_proceed"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:visibleOrGone="@{!model.viewForm.showProgress}" />
+
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/delete_account_proceed"
+                style="@style/TSUButton.Outlined"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="@dimen/margin_default_medium"
+                android:text="@string/btn_delete"
+                android:textColor="@color/tsu_primary"
+                app:strokeColor="@color/tsu_primary"
+                app:visibleOrGone="@{!model.viewForm.showProgress}" />
+
+
+        </LinearLayout>
+
+        <androidx.core.widget.NestedScrollView
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:focusableInTouchMode="true"
+            app:layout_constraintBottom_toTopOf="@id/edit_account_proceed_container"
+            app:layout_constraintTop_toTopOf="parent">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="@dimen/margin_medium"
+                android:animateLayoutChanges="true"
+                android:focusableInTouchMode="true"
+                android:orientation="vertical">
+
+                <TextView
+                    style="@style/TSUTextAppearance.Hint"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="@dimen/margin_default_medium"
+                    android:layout_marginTop="@dimen/margin_default_large"
+                    android:layout_marginEnd="@dimen/margin_default_medium"
+                    android:text="@string/edit_account_username" />
+
+                <com.google.android.material.textfield.TextInputLayout
+                    android:id="@+id/username_layout"
+                    style="@style/TSUTextInputLayout"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="@dimen/margin_default_medium"
+                    android:layout_marginEnd="@dimen/margin_default_medium"
+                    app:errorText="@{model.viewForm.usernameError}">
+
+                    <social.tsu.android.ui.view.ValidationTextInputEditText
+                        android:id="@+id/username"
+                        style="@style/TSUEditText"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:importantForAutofill="no"
+                        android:inputType="text"
+                        android:nextFocusDown="@id/password"
+                        android:text="@={model.viewForm.username}"
+                        tools:text="JohnDoe" />
+                </com.google.android.material.textfield.TextInputLayout>
+
+                <TextView
+                    style="@style/TSUTextAppearance.Hint"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="@dimen/margin_default_medium"
+                    android:layout_marginTop="@dimen/margin_default_large"
+                    android:layout_marginEnd="@dimen/margin_default_medium"
+                    android:text="@string/edit_account_email" />
+
+                <com.google.android.material.textfield.TextInputLayout
+                    android:id="@+id/email_layout"
+                    style="@style/TSUTextInputLayout"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="@dimen/margin_default_medium"
+                    android:layout_marginEnd="@dimen/margin_default_medium"
+                    app:errorText="@{model.viewForm.emailError}">
+
+                    <social.tsu.android.ui.view.ValidationTextInputEditText
+                        android:id="@+id/email"
+                        style="@style/TSUEditText"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:importantForAutofill="no"
+                        android:inputType="textEmailAddress"
+                        android:nextFocusDown="@id/first_name"
+                        android:text="@={model.viewForm.email}" />
+                </com.google.android.material.textfield.TextInputLayout>
+
+                <TextView
+                    style="@style/TSUTextAppearance.Hint"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="@dimen/margin_default_medium"
+                    android:layout_marginTop="@dimen/margin_default_large"
+                    android:layout_marginEnd="@dimen/margin_default_medium"
+                    android:text="@string/edit_account_first_name" />
+
+                <com.google.android.material.textfield.TextInputLayout
+                    android:id="@+id/first_name_layout"
+                    style="@style/TSUTextInputLayout"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="@dimen/margin_default_medium"
+                    android:layout_marginEnd="@dimen/margin_default_medium"
+                    app:errorText="@{model.viewForm.firstNameError}">
+
+                    <social.tsu.android.ui.view.ValidationTextInputEditText
+                        android:id="@+id/first_name"
+                        style="@style/TSUEditText"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:importantForAutofill="no"
+                        android:inputType="textPersonName"
+                        android:nextFocusDown="@id/last_name"
+                        android:text="@={model.viewForm.firstName}" />
+                </com.google.android.material.textfield.TextInputLayout>
+
+                <TextView
+                    style="@style/TSUTextAppearance.Hint"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="@dimen/margin_default_medium"
+                    android:layout_marginTop="@dimen/margin_default_large"
+                    android:layout_marginEnd="@dimen/margin_default_medium"
+                    android:text="@string/edit_account_last_name" />
+
+                <com.google.android.material.textfield.TextInputLayout
+                    android:id="@+id/last_name_layout"
+                    style="@style/TSUTextInputLayout"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="@dimen/margin_default_medium"
+                    android:layout_marginEnd="@dimen/margin_default_medium"
+                    app:errorText="@{model.viewForm.lastNameError}">
+
+                    <social.tsu.android.ui.view.ValidationTextInputEditText
+                        android:id="@+id/last_name"
+                        style="@style/TSUEditText"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:importantForAutofill="no"
+                        android:inputType="textPersonName"
+                        android:nextFocusDown="@id/phone_number"
+                        android:text="@={model.viewForm.lastName}" />
+                </com.google.android.material.textfield.TextInputLayout>
+
+                <TextView
+                    style="@style/TSUTextAppearance.Hint"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="@dimen/margin_default_medium"
+                    android:layout_marginTop="@dimen/margin_default_large"
+                    android:layout_marginEnd="@dimen/margin_default_medium"
+                    android:text="@string/edit_account_phone" />
+
+                <com.google.android.material.textfield.TextInputLayout
+                    android:id="@+id/phone_number_layout"
+                    style="@style/TSUTextInputLayout"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="@dimen/margin_default_medium"
+                    android:layout_marginEnd="@dimen/margin_default_medium"
+                    app:errorText="@{model.viewForm.phoneNumberError}">
+
+                    <social.tsu.android.ui.view.ValidationTextInputEditText
+                        android:id="@+id/phone_number"
+                        style="@style/TSUEditText"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:inputType="phone"
+                        android:nextFocusDown="@id/edit_account_proceed"
+                        android:text="@={model.viewForm.phoneNumber}" />
+                </com.google.android.material.textfield.TextInputLayout>
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="bottom"
+                    android:layout_marginStart="@dimen/margin_default_medium"
+                    android:layout_marginTop="40dp"
+                    android:layout_marginBottom="27dp"
+                    android:text="@string/edit_account_required_label"
+                    android:textColor="#5D5D5D" />
+
+                <ProgressBar
+                    android:id="@+id/progress_bar"
+                    style="?android:attr/progressBarStyleLarge"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_horizontal"
+                    android:layout_marginTop="@dimen/standard_margin"
+                    android:layout_marginBottom="@dimen/standard_margin"
+                    app:visibleOrGone="@{model.viewForm.showProgress}" />
+
+            </LinearLayout>
+
+        </androidx.core.widget.NestedScrollView>
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+
+</layout>

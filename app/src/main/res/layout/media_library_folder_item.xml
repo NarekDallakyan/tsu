@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <ImageView
+        android:id="@+id/folder_thumbnail_imageview"
+        android:layout_width="@dimen/library_folder_thumbnail_size"
+        android:layout_height="@dimen/library_folder_thumbnail_size"
+        android:layout_margin="@dimen/margin_small"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"/>
+
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:layout_marginStart="@dimen/standard_margin"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toEndOf="@id/folder_thumbnail_imageview">
+
+        <TextView
+            android:id="@+id/folder_name_textview"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Recents"
+            android:textAppearance="@style/TextAppearance.MaterialComponents.Headline6"
+            android:textSize="@dimen/font_large"/>
+
+        <TextView
+            android:id="@+id/folder_media_count_textview"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="21"
+            android:textAppearance="@style/TextAppearance.MaterialComponents.Body1"
+            android:textSize="@dimen/font_medium"/>
+    </LinearLayout>
+</androidx.constraintlayout.widget.ConstraintLayout>

@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <dimen name="font_small">13sp</dimen>
+    <dimen name="font_large">17sp</dimen>
+    <dimen name="font_xlarge">23sp</dimen>
+    <dimen name="font_medium">15sp</dimen>
+
+    <dimen name="margin_small">9dp</dimen>
+
+    <dimen name="create_post_button_icon_size">22dp</dimen>
+    <item name="create_post_field_min_lines" type="dimen" format="integer">4</item>
+
+    <dimen name="chat_toolbar_name_width">170dp</dimen>
+    <item name="chat_toolbar_name_margin" type="dimen" format="float">0.8</item>
+
+    <dimen name="field_padding_vertical">10dp</dimen>
+    <dimen name="field_padding_horizontal">8dp</dimen>
+
+    <dimen name="margin_default_large">24dp</dimen>
+    <dimen name="margin_default_medium">16dp</dimen>
+    <dimen name="margin_default_small">8dp</dimen>
+    <dimen name="margin_default_xlarge">32dp</dimen>
+
+    <dimen name="button_icon_size">24dp</dimen>
+    <dimen name="button_min_height">34dp</dimen>
+
+    <dimen name="button_icon_padding_default">5dp</dimen>
+    <dimen name="button_padding_default">12dp</dimen>
+
+    <dimen name="invite_only_icon_width">150dp</dimen>
+
+</resources>

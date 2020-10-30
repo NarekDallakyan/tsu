@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+
+    <de.hdodenhof.circleimageview.CircleImageView
+        android:id="@+id/contact_profile_pic"
+        android:layout_width="@dimen/tsu_contact_image_size"
+        android:layout_height="@dimen/tsu_contact_image_size"
+        android:layout_marginStart="@dimen/margin_default_medium"
+        android:layout_marginTop="@dimen/margin_default_small"
+        android:layout_marginBottom="@dimen/margin_default_small"
+        app:civ_border_color="@color/user_profile_avatar_border"
+        app:civ_border_width="@dimen/user_item_photo_border"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        tools:src="@drawable/fake" />
+
+    <LinearLayout
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/list_item_title_margin_horizontal"
+        android:layout_marginEnd="@dimen/list_item_title_margin_horizontal"
+        android:orientation="vertical"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toStartOf="@+id/action_button"
+        app:layout_constraintStart_toEndOf="@id/contact_profile_pic"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <TextView
+                android:id="@+id/contact_name_textview"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textAppearance="@style/TextAppearance.MaterialComponents.Headline6"
+                android:textSize="@dimen/font_large"
+                tools:text="John Doe;ds;ldl;ssld;lsasasasaaassa" />
+        </LinearLayout>
+
+
+        <TextView
+            android:id="@+id/contact_username_textview"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textAppearance="@style/TextAppearance.MaterialComponents.Body1"
+            android:textSize="@dimen/font_medium"
+            tools:text="\@johndoe" />
+    </LinearLayout>
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/chat_divider_height"
+        android:background="@color/primaryButton"
+        app:layout_constraintBottom_toBottomOf="parent" />
+
+    <ToggleButton
+        android:id="@+id/action_button"
+        style="@style/TSUToggleButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="@dimen/margin_default_medium"
+        android:textOff="@string/invite"
+        android:textOn="@string/invited"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>

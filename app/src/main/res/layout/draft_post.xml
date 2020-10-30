@@ -1,0 +1,156 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+
+        <EditText
+            android:id="@+id/composePost"
+            style="@style/TSUEditText.Multiline"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/margin_default_medium"
+            android:layout_marginTop="@dimen/margin_default_medium"
+            android:layout_marginEnd="@dimen/margin_default_medium"
+            android:hint="@string/create_post_hint"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            tools:text="@string/test_text" />
+
+        <androidx.constraintlayout.widget.Group
+            android:id="@+id/compose_post_visibility_group"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:visibility="gone"
+            app:constraint_referenced_ids="compose_post_visibility, compose_post_visibility_msg, compose_post_radio_group"
+            tools:visibility="visible" />
+
+        <TextView
+            android:id="@+id/compose_post_visibility"
+            style="@style/TSUTextAppearance"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/margin_default_medium"
+            android:layout_marginTop="@dimen/margin_default_medium"
+            android:text="@string/create_post_visibility"
+            android:textColor="@color/field_hint"
+            android:textSize="@dimen/font_medium"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/composePost" />
+
+        <RadioGroup
+            android:id="@+id/compose_post_radio_group"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="@dimen/margin_default_medium"
+            android:layout_marginTop="@dimen/margin_default_medium"
+            android:layout_marginRight="@dimen/margin_default_medium"
+            android:checkedButton="@id/compose_post_public"
+            android:gravity="center"
+            android:orientation="horizontal"
+            app:layout_constraintTop_toBottomOf="@id/compose_post_visibility">
+
+            <RadioButton
+                android:id="@+id/compose_post_public"
+                style="@style/TSUSegmentedControlButton.Left"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="@string/community_public" />
+
+            <RadioButton
+                android:id="@+id/compose_post_private"
+                style="@style/TSUSegmentedControlButton.Right"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="@string/community_private" />
+
+            <RadioButton
+                android:id="@+id/compose_post_exclusive"
+                style="@style/TSUSegmentedControlButton.Right"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:visibility="gone"
+                android:text="@string/community_exclusive" />
+
+        </RadioGroup>
+
+        <TextView
+            android:id="@+id/compose_post_visibility_msg"
+            style="@style/TSUTextAppearance"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/margin_default_medium"
+            android:layout_marginTop="@dimen/margin_default_medium"
+            android:layout_marginEnd="@dimen/margin_default_medium"
+            android:text="@string/create_post_public_msg"
+            android:textColor="@color/field_hint"
+            android:textSize="@dimen/font_medium"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/compose_post_radio_group" />
+
+        <ProgressBar
+            android:id="@+id/progress_bar"
+            style="?android:attr/progressBarStyleLarge"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/padding_small"
+            android:layout_marginBottom="@dimen/standard_margin"
+            android:visibility="gone"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/compose_post_visibility_msg" />
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/btn_add_photo"
+            style="@style/TSUPostCreateIconButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/button_padding_default"
+            android:layout_marginTop="@dimen/margin_default_medium"
+            android:text="@string/create_post_photo_btn"
+            app:icon="@drawable/ic_photo_camera"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/progress_bar" />
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/btn_add_video"
+            style="@style/TSUPostCreateIconButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/create_post_video_btn"
+            app:icon="@drawable/ic_videocam"
+            app:layout_constraintBottom_toBottomOf="@id/btn_add_video"
+            app:layout_constraintStart_toEndOf="@id/btn_add_photo"
+            app:layout_constraintTop_toTopOf="@id/btn_add_photo" />
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/chat_divider_height"
+            android:background="@color/divider_default"
+            app:layout_constraintBottom_toTopOf="@id/btn_add_photo" />
+
+        <ImageView
+            android:id="@+id/imgPreview"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="@dimen/camera_margin_medium"
+            android:layout_marginTop="@dimen/camera_margin_medium"
+            android:adjustViewBounds="true"
+            tools:src="@drawable/tsu"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/btn_add_photo" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</ScrollView>

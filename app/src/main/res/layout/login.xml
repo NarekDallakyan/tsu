@@ -1,0 +1,170 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/login_form"
+    android:focusableInTouchMode="true">
+
+    <TextView
+        android:id="@+id/login_header"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/standard_margin"
+        android:layout_marginTop="@dimen/standard_margin"
+        android:layout_marginEnd="@dimen/standard_margin"
+        android:text="@string/login_header"
+        android:textAllCaps="true"
+        android:textAppearance="@style/TextAppearance.AppCompat.Body2"
+        android:textSize="@dimen/font_xlarge"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/error_message"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/standard_margin"
+        android:layout_marginTop="@dimen/standard_margin"
+        android:layout_marginEnd="@dimen/standard_margin"
+        android:text="@string/unchecked_terms_error"
+        android:textColor="@color/design_error"
+        android:visibility="gone"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/login_header" />
+
+    <TextView
+        android:id="@+id/email_hint"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/standard_margin"
+        android:layout_marginTop="@dimen/standard_margin"
+        android:layout_marginEnd="@dimen/standard_margin"
+        android:textAppearance="@style/TextAppearance.AppCompat.Body1"
+        android:text="@string/hint_username_email"
+        android:textSize="@dimen/font_large"
+        android:gravity="start"
+        app:layout_constraintTop_toBottomOf="@id/error_message"/>
+
+    <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/username_layout"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        app:endIconMode="clear_text"
+        app:errorIconDrawable="@null"
+        android:layout_marginStart="@dimen/standard_margin"
+        android:layout_marginEnd="@dimen/standard_margin"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_chainStyle="spread"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/email_hint">
+
+        <social.tsu.android.ui.view.ValidationTextInputEditText
+            android:id="@+id/username"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:backgroundTint="@android:color/transparent"
+            android:textSize="@dimen/font_medium"
+            android:inputType="text"
+            android:maxLines="1"
+            android:nextFocusDown="@id/last_name" />
+    </com.google.android.material.textfield.TextInputLayout>
+
+    <TextView
+        android:id="@+id/password_hint"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/standard_margin"
+        android:layout_marginTop="@dimen/margin_medium"
+        android:layout_marginEnd="@dimen/standard_margin"
+        android:textAppearance="@style/TextAppearance.AppCompat.Body1"
+        android:text="@string/hint_password"
+        android:textSize="@dimen/font_large"
+        android:gravity="start"
+        app:layout_constraintTop_toBottomOf="@id/username_layout"/>
+
+    <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/password_layout"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        app:passwordToggleEnabled="true"
+        app:errorIconDrawable="@null"
+        app:passwordToggleDrawable="@drawable/selector_password_icon"
+        android:layout_marginStart="@dimen/standard_margin"
+        android:layout_marginEnd="@dimen/standard_margin"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_chainStyle="spread"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/password_hint">
+
+        <social.tsu.android.ui.view.ValidationTextInputEditText
+            android:id="@+id/password"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:inputType="textPassword"
+            android:textSize="@dimen/font_medium"
+            android:backgroundTint="@android:color/transparent"
+            android:maxLines="1"
+            android:nextFocusDown="@id/last_name" />
+    </com.google.android.material.textfield.TextInputLayout>
+
+    <Switch
+        android:id="@+id/remember_me_switch"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:padding="@dimen/padding_standard"
+        android:layout_marginStart="@dimen/margin_small"
+        android:layout_marginTop="@dimen/standard_margin"
+        android:layout_marginEnd="@dimen/margin_medium"
+        android:checked="true"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/password_layout" />
+
+    <TextView
+        android:id="@+id/rememberMe"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="@dimen/margin_medium"
+        android:text="@string/remember_me"
+        android:textSize="@dimen/font_large"
+        app:layout_constraintStart_toEndOf="@id/remember_me_switch"
+        app:layout_constraintBottom_toBottomOf="@id/remember_me_switch"
+        app:layout_constraintTop_toTopOf="@+id/remember_me_switch" />
+
+    <Button
+        android:id="@+id/login"
+        style="@style/RoundButton"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/full_width_button_margin"
+        android:layout_marginTop="@dimen/standard_margin"
+        android:layout_marginEnd="@dimen/full_width_button_margin"
+        android:paddingTop="@dimen/padding_standard"
+        android:paddingBottom="@dimen/padding_standard"
+        android:text="@string/button_login_text"
+        android:textSize="@dimen/font_xlarge"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/remember_me_switch" />
+
+    <Button
+        android:id="@+id/forgot_password"
+        style="@style/Widget.AppCompat.Button.Borderless"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/margin_large"
+        android:layout_marginTop="@dimen/standard_margin"
+        android:layout_marginEnd="@dimen/margin_large"
+        android:backgroundTint="@android:color/transparent"
+        android:paddingTop="@dimen/padding_standard"
+        android:paddingBottom="@dimen/padding_small"
+        android:text="@string/button_forgot_password"
+        android:textColor="@color/tsu_grey"
+        android:textSize="@dimen/font_small"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/login" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>

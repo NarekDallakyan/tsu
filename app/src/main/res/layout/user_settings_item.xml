@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:foreground="?attr/selectableItemBackground"
+    android:minHeight="44dp">
+
+    <TextView
+        android:id="@+id/settings_item_title"
+        style="@style/TSUTextAppearance.UserInfoText"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/margin_default_medium"
+        android:layout_marginTop="@dimen/list_item_title_margin_horizontal"
+        android:layout_marginEnd="@dimen/list_item_title_margin_horizontal"
+        android:layout_marginBottom="@dimen/list_item_title_margin_horizontal"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        tools:text="@string/bank_account_title" />
+
+    <androidx.appcompat.widget.AppCompatImageView
+        android:id="@+id/settings_item_arrow_icon"
+        android:layout_width="@dimen/button_icon_size"
+        android:layout_height="@dimen/button_icon_size"
+        android:layout_marginEnd="@dimen/margin_default_medium"
+        android:scaleType="center"
+        android:src="@drawable/ic_arrow_right_android"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/settings_item_value"
+        style="@style/TSUTextAppearance.AboutItemEmpty"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/margin_default_xsmall"
+        android:layout_marginTop="@dimen/list_item_title_margin_vertical"
+        android:layout_marginEnd="@dimen/margin_default_xsmall"
+        android:layout_marginBottom="@dimen/list_item_title_margin_vertical"
+        android:ellipsize="end"
+        android:maxLines="1"
+        android:textAlignment="viewEnd"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toStartOf="@id/settings_item_arrow_icon"
+        app:layout_constraintStart_toEndOf="@id/settings_item_title"
+        app:layout_constraintTop_toTopOf="parent"
+        tools:text="Christina Owens" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>

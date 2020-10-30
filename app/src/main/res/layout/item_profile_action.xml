@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<de.hdodenhof.circleimageview.CircleImageView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/toolbar_profile_image"
+    android:layout_width="@dimen/top_profile_icon_size"
+    android:layout_height="@dimen/top_profile_icon_size"
+    android:layout_marginEnd="@dimen/margin_small"
+    android:layout_marginStart="@dimen/top_profile_start_margin"
+    android:src="@drawable/user"
+    android:visibility="visible"
+    app:layout_constraintBottom_toBottomOf="parent"
+    app:layout_constraintStart_toStartOf="parent"
+    app:layout_constraintTop_toTopOf="parent" />

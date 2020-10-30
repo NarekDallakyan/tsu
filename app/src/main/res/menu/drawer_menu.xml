@@ -1,0 +1,57 @@
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <item
+        android:id="@+id/showEditProfileFragment"
+        android:title="@string/drawer_item_profile" />
+
+    <item
+        android:id="@+id/editAccountFragment"
+        android:title="@string/drawer_item_account" />
+
+    <item
+        android:id="@+id/bankAccountFragment"
+        android:title="@string/bank" />
+
+    <item
+        android:id="@+id/insightsFragment"
+        android:title="@string/drawer_item_analytics" />
+
+    <item
+        android:id="@+id/inviteFriendsFragment"
+        android:title="@string/drawer_invite_friends" />
+
+    <item
+        android:id="@+id/notificationSubscriptionsFragment"
+        android:title="@string/notifications" />
+
+    <item
+        android:id="@+id/termsOfService"
+        android:title="@string/terms_of_use" />
+
+    <item
+        android:id="@+id/support"
+        android:title="@string/support"/>
+
+    <item
+        android:id="@+id/paymentPolicy"
+        android:title="@string/awards_program" />
+
+    <item
+        android:id="@+id/privacyPolicy"
+        android:title="@string/privacy_policy" />
+
+    <item
+        android:id="@+id/personalizedAds"
+        android:title="@string/personalized_ads" />
+
+    <item
+        android:id="@+id/logout"
+        android:title="@string/drawer_item_logout" />
+
+    <item
+        android:id="@+id/app_version"
+        android:title="Version"
+        android:enabled="false" />
+
+</menu>

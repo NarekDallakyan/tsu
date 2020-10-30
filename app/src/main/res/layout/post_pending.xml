@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+
+    <include
+        android:id="@+id/post_item_header"
+        layout="@layout/post_item_header"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <androidx.appcompat.widget.AppCompatImageView
+        android:id="@+id/post_item_image"
+        style="@style/TSUPostImage"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/post_item_header"
+        tools:srcCompat="@drawable/cover" />
+
+    <Button
+        android:id="@+id/approveButton"
+        style="@style/TSUButton.WrapContent"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/margin_default_medium"
+        android:layout_marginEnd="@dimen/margin_default_small"
+        android:text="@string/approve"
+        app:layout_constraintEnd_toStartOf="@+id/declineButton"
+        app:layout_constraintHorizontal_weight="1"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/post_item_image" />
+
+    <Button
+        android:id="@+id/declineButton"
+        style="@style/TSUButton.Decline"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="@dimen/margin_default_medium"
+        android:text="@string/decline"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_weight="1"
+        app:layout_constraintStart_toEndOf="@+id/approveButton"
+        app:layout_constraintTop_toBottomOf="@+id/post_item_image" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>

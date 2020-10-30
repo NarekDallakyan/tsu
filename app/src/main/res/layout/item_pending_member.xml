@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+
+    <de.hdodenhof.circleimageview.CircleImageView
+        android:id="@+id/user_item_photo"
+        android:layout_width="40dp"
+        android:layout_height="40dp"
+        android:layout_marginStart="@dimen/margin_default_medium"
+        android:layout_marginTop="@dimen/margin_default_small"
+        android:layout_marginBottom="@dimen/margin_default_small"
+        app:civ_border_color="@color/standard_grey"
+        app:civ_border_width="@dimen/user_item_photo_border"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        tools:src="@drawable/fake" />
+
+    <TextView
+        android:id="@+id/user_item_name"
+        style="@style/TSUTextAppearance.ItemTitle"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/list_item_title_margin_horizontal"
+        android:layout_marginTop="@dimen/list_item_title_margin_vertical"
+        android:layout_marginEnd="@dimen/list_item_title_margin_horizontal"
+        android:ellipsize="end"
+        android:maxLines="2"
+        app:layout_constraintEnd_toStartOf="@id/pending_btn_accept"
+        app:layout_constraintStart_toEndOf="@id/user_item_photo"
+        app:layout_constraintTop_toTopOf="parent"
+        tools:text="John Doe"
+        android:lines="1"
+        />
+
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/pending_btn_deny"
+        style="@style/TSUButton.Decline"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="@dimen/margin_default_medium"
+        android:text="@string/deny"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/pending_btn_accept"
+        style="@style/TSUButton.WrapContent"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="@dimen/margin_default_small"
+        android:backgroundTint="@color/colorPrimary"
+        android:text="@string/accept_uncapitalized"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toStartOf="@id/pending_btn_deny"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:visibility="gone"
+        android:id="@+id/friends_count"
+        android:layout_width="0dp"
+        android:textSize="10sp"
+        android:layout_height="wrap_content"
+        android:text="123 Friends"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="@+id/user_item_name"
+        app:layout_constraintStart_toStartOf="@+id/user_item_name"
+        app:layout_constraintTop_toBottomOf="@+id/user_item_name" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>

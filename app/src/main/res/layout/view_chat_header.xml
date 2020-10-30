@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <de.hdodenhof.circleimageview.CircleImageView
+        android:id="@+id/chat_recipient_photo"
+        android:layout_width="@dimen/chat_toolbar_avatar_size"
+        android:layout_height="@dimen/chat_toolbar_avatar_size"
+        android:layout_marginStart="16dp"
+        android:layout_marginEnd="8dp"
+        app:layout_constraintBottom_toBottomOf="@id/chat_recipient_name"
+        app:layout_constraintEnd_toStartOf="@+id/chat_recipient_name"
+        app:layout_constraintHorizontal_chainStyle="packed"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="@id/chat_recipient_name"
+        tools:src="@drawable/fake" />
+
+    <androidx.appcompat.widget.AppCompatTextView
+        android:id="@+id/chat_recipient_name"
+        style="@style/TSUTextAppearance.Medium"
+        android:layout_width="@dimen/chat_toolbar_name_width"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="16dp"
+        android:ellipsize="end"
+        android:fontFamily="@font/lato_medium"
+        android:gravity="center_vertical"
+        android:lines="1"
+        android:textColor="@color/white"
+        android:textSize="@dimen/chat_toolbar_name_text"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/chat_recipient_photo"
+        app:layout_constraintTop_toTopOf="parent"
+        tools:text="Loooooooooooong Name" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>

@@ -1,0 +1,82 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+
+    <EditText
+        android:id="@+id/composePost"
+        style="@style/TSUEditText.Multiline"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/margin_default_medium"
+        android:layout_marginTop="@dimen/margin_default_medium"
+        android:layout_marginEnd="@dimen/margin_default_medium"
+        android:hint="@string/create_post_hint"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        tools:text="@string/test_text" />
+
+    <ProgressBar
+        android:id="@+id/progress_bar"
+        style="?android:attr/progressBarStyleLarge"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/padding_small"
+        android:layout_marginBottom="@dimen/standard_margin"
+        android:visibility="gone"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/composePost" />
+
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/btn_add_photo"
+        style="@style/TSUPostCreateIconButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/button_padding_default"
+        android:layout_marginTop="@dimen/margin_default_medium"
+        android:text="@string/create_post_photo_btn"
+        app:icon="@drawable/ic_photo_camera"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/progress_bar" />
+
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/btn_add_video"
+        style="@style/TSUPostCreateIconButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/create_post_video_btn"
+        app:icon="@drawable/ic_videocam"
+        app:layout_constraintBottom_toBottomOf="@id/btn_add_video"
+        app:layout_constraintStart_toEndOf="@id/btn_add_photo"
+        app:layout_constraintTop_toTopOf="@id/btn_add_photo" />
+
+    <Button
+        android:id="@+id/btn_post"
+        style="@style/TSUButton.WrapContent"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="@dimen/margin_default_medium"
+        android:text="@string/create_post_btn"
+        app:layout_constraintBottom_toBottomOf="@id/btn_add_video"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="1"
+        app:layout_constraintStart_toEndOf="@id/btn_add_video"
+        app:layout_constraintTop_toTopOf="@id/btn_add_video" />
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/chat_divider_height"
+        android:background="@color/divider_default"
+        app:layout_constraintBottom_toTopOf="@id/btn_add_photo" />
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/divider_posts_height"
+        android:background="@drawable/line_divider"
+        app:layout_constraintTop_toBottomOf="@id/btn_add_photo" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>

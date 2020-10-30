@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string-array name="report_reasons_array" >
+        <item>Child Exploitation</item>
+        <item>Suicide or Self-Injury</item>
+        <item>Nudity</item>
+        <item>Violence</item>
+        <item>Terrorism</item>
+        <item>Harassment</item>
+        <item>Hate Speech</item>
+        <item>Animal Cruelty</item>
+        <item>Illegal Activity</item>
+        <item>Fake News &amp; Scams</item>
+        <item>Copyright &amp; Other Infringements</item>
+    </string-array>
+</resources>

@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+
+    <include
+        android:id="@+id/post_item_header"
+        layout="@layout/post_item_header"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <ProgressBar
+        android:id="@+id/picture_progress"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:indeterminate="true"
+        android:visibility="gone"
+        app:layout_constraintBottom_toBottomOf="@+id/post_item_image"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="@+id/post_item_image"
+        app:layout_constraintTop_toBottomOf="@+id/post_item_header" />
+    <androidx.appcompat.widget.AppCompatImageView
+        android:id="@+id/post_item_image"
+        style="@style/TSUPostImage"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:adjustViewBounds="true"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/post_item_header"
+        tools:srcCompat="@drawable/cover" />
+
+    <TextView
+        android:id="@+id/tvSupport"
+        android:layout_width="0dp"
+        app:layout_constraintStart_toStartOf="@id/post_item_image"
+        app:layout_constraintEnd_toEndOf="@id/post_item_image"
+        app:layout_constraintTop_toTopOf="@+id/post_item_image"
+        android:gravity="center"
+        android:paddingStart="50dp"
+        android:paddingEnd="50dp"
+        android:textSize="24sp"
+        android:visibility="gone"
+        android:textColor="@color/black"
+        android:fontFamily="@font/roboto_bold"
+        android:text="@string/support_me_to_view_this_exclusive_content"
+        app:layout_constraintBottom_toBottomOf="@id/post_item_image"
+        android:layout_height="0dp"/>
+
+
+    <include
+        layout="@layout/post_item_footer"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:layout_constraintTop_toBottomOf="@+id/post_item_image" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>

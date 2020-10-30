@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:orientation="horizontal"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_marginTop="@dimen/margin_default_small"
+    android:layout_marginBottom="@dimen/margin_default_small"
+    android:layout_marginStart="@dimen/margin_default_small"
+    android:layout_marginEnd="@dimen/margin_default_small"
+    android:gravity="center_vertical">
+
+    <TextView
+        android:id="@+id/item_header"
+        style="@style/TSUTextAppearance.AboutHeader"
+        android:layout_width="match_parent"
+        android:layout_marginStart="@dimen/margin_default_medium"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/margin_default_small"
+        android:visibility="visible"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        tools:text="Intro"
+        tools:visibility="visible"
+        android:layout_weight="1"/>
+
+</FrameLayout>

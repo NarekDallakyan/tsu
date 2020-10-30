@@ -1,0 +1,181 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources xmlns:tools="http://schemas.android.com/tools">
+    <dimen name="standard_corner_rounding">16dp</dimen>
+
+    <dimen name="padding_standard">15dp</dimen>
+    <dimen name="padding_medium">16dp</dimen>
+    <dimen name="padding_small">5dp</dimen>
+
+    <dimen name="standard_margin">20dp</dimen>
+    <dimen name="margin_xsmall">5dp</dimen>
+    <dimen name="margin_small">10dp</dimen>
+    <dimen name="margin_medium">40dp</dimen>
+    <dimen name="margin_large">60dp</dimen>
+    <dimen name="margin_xlarge">80dp</dimen>
+
+    <dimen name="font_xsmall">12sp</dimen>
+    <dimen name="font_small">14sp</dimen>
+    <dimen name="font_large">18sp</dimen>
+    <dimen name="font_xlarge">24sp</dimen>
+    <dimen name="font_medium">16sp</dimen>
+
+    <dimen name="camera_margin_xsmall">16dp</dimen>
+    <dimen name="camera_margin_small">32dp</dimen>
+    <dimen name="camera_margin_medium">48dp</dimen>
+    <dimen name="camera_margin_xlarge">92dp</dimen>
+
+    <dimen name="camera_spacing_small">4dp</dimen>
+    <dimen name="camera_spacing_medium">8dp</dimen>
+    <dimen name="camera_spacing_large">16dp</dimen>
+
+    <dimen name="stroke_small">4dp</dimen>
+
+    <dimen name="round_button_small">32dp</dimen>
+    <dimen name="round_button_medium">64dp</dimen>
+    <dimen name="round_button_large">92dp</dimen>
+
+    <dimen name="shutter_button_margin">80dp</dimen>
+    <dimen name="full_width_button_margin">20dp</dimen>
+    <!-- Default screen margins, per the Android Design guidelines. -->
+
+    <dimen name="bottom_icon_size">27dp</dimen>
+    <dimen name="bottom_profile_icon_size">35dp</dimen>
+    <dimen name="top_profile_icon_size">35dp</dimen>
+
+    <dimen name="toolbar_icon_size">27dp</dimen>
+    <dimen name="toolbar_icon_badge_size">20dp</dimen>
+
+    <dimen name="drawer_border_width">1dp</dimen>
+    <dimen name="drawer_full_name_text">17sp</dimen>
+    <dimen name="drawer_items_margin">16dp</dimen>
+    <dimen name="drawer_profile_image_margin_top">40dp</dimen>
+    <dimen name="drawer_profile_image_size">80dp</dimen>
+    <dimen name="drawer_username_text">17sp</dimen>
+    <dimen name="drawer_width">310dp</dimen>
+    <dimen name="library_grid_video_indicator_size">25dp</dimen>
+    <dimen name="library_grid_item_height">120dp</dimen>
+    <dimen name="library_folder_thumbnail_size">80dp</dimen>
+
+    <dimen name="video_mute_btn_margin">2dp</dimen>
+    <dimen name="video_mute_btn_padding">15dp</dimen>
+    <dimen name="video_mute_btn_size">56dp</dimen>
+    <dimen name="video_play_btn_padding_bottom">16dp</dimen>
+    <dimen name="video_play_btn_padding_end">18dp</dimen>
+    <dimen name="video_play_btn_padding_start">22dp</dimen>
+    <dimen name="video_play_btn_padding_top">16dp</dimen>
+    <dimen name="video_play_btn_size">56dp</dimen>
+
+    <dimen name="post_user_icon_size">40dp</dimen>
+    <integer name="bounce_duration">500</integer>
+    <integer name="slide_duration">300</integer>
+    <integer name="slide_duration_ltr">400</integer>
+
+    <dimen name="post_link_footer_host">14sp</dimen>
+    <dimen name="post_link_footer_padding">16dp</dimen>
+    <dimen name="post_link_footer_title">16sp</dimen>
+    <dimen name="post_link_footer_title_top">4dp</dimen>
+
+    <dimen name="user_profile_avatar_size">140dp</dimen>
+    <dimen name="user_profile_button_margin">4dp</dimen>
+    <dimen name="user_profile_cover_height">104dp</dimen>
+    <dimen name="user_profile_floating_button_size">40dp</dimen>
+
+    <dimen name="create_post_button_icon_size">22dp</dimen>
+    <item name="create_post_field_min_lines" type="dimen" format="integer">3</item>
+
+    <dimen name="field_padding_vertical">10dp</dimen>
+    <dimen name="field_padding_horizontal">8dp</dimen>
+
+    <dimen name="margin_default_large">24dp</dimen>
+    <dimen name="margin_default_medium">16dp</dimen>
+    <dimen name="margin_default_small">8dp</dimen>
+    <dimen name="margin_default_xlarge">32dp</dimen>
+    <dimen name="margin_default_xsmall">4dp</dimen>
+
+    <dimen name="list_item_title_margin_horizontal">12dp</dimen>
+    <dimen name="list_item_title_margin_vertical">10dp</dimen>
+
+    <dimen name="button_corners">0dp</dimen>
+    <dimen name="button_corners_rounded">4dp</dimen>
+    <dimen name="button_icon_size">24dp</dimen>
+    <dimen name="button_min_height">32dp</dimen>
+    <dimen name="button_icon_padding_default">4dp</dimen>
+    <dimen name="button_padding_default">12dp</dimen>
+
+    <dimen name="divider_standard_height">1dp</dimen>
+    <dimen name="divider_posts_height">8dp</dimen>
+    <dimen name="default_corner_radius">6dp</dimen>
+    <dimen name="tab_layout_height">48dp</dimen>
+
+    <dimen name="tab_indicator_height">3dp</dimen>
+    <dimen name="tsu_contact_image_size">40dp</dimen>
+    <dimen name="tsu_contact_online_status_size">10dp</dimen>
+    <dimen name="tsu_contact_unread_indicator_size">10dp</dimen>
+    <dimen name="tsu_contact_unread_indicator_margin">21dp</dimen>
+    <dimen name="retry_button_size">50dp</dimen>
+
+    <dimen name="community_picture_corners">12dp</dimen>
+
+    <dimen name="chat_badge_size">16dp</dimen>
+
+    <dimen name="chat_field_height">60dp</dimen>
+    <dimen name="chat_field_margin">14dp</dimen>
+    <dimen name="chat_field_radius">10dp</dimen>
+    <dimen name="chat_field_radius_new">18dp</dimen>
+
+    <dimen name="chat_toolbar_avatar_size">36dp</dimen>
+    <dimen name="chat_toolbar_name_width">180dp</dimen>
+    <dimen name="chat_toolbar_name_text">16sp</dimen>
+    <dimen name="chat_divider_height">0.5dp</dimen>
+    <item name="chat_toolbar_name_margin" type="dimen" format="float">0.77</item>
+
+    <dimen name="chat_message_avatar_size">24dp</dimen>
+    <dimen name="chat_live_message_avatar_size">40dp</dimen>
+    <dimen name="chat_message_border_width">0.5dp</dimen>
+    <dimen name="chat_message_container_radius">12dp</dimen>
+    <dimen name="chat_message_image_height">200dp</dimen>
+    <dimen name="chat_message_margins">12dp</dimen>
+    <dimen name="chat_message_text">17sp</dimen>
+    <dimen name="header">48dp</dimen>
+    <item name="chat_message_incoming_margin" type="dimen" format="float">0.8</item>
+    <item name="chat_live_chats_message_incoming_margin" type="dimen" format="float">0.95</item>
+    <item name="chat_message_outcoming_margin" type="dimen" format="float">0.2</item>
+    <item name="chat_live_stream_height_constraint" type="dimen" format="float">0.65</item>
+
+    <dimen name="user_item_icon_size">40dp</dimen>
+    <dimen name="user_item_icon_badge_size">16dp</dimen>
+    <dimen name="user_item_icon_badge_margin">28dp</dimen>
+
+    <dimen name="user_info_icon_btn_size">32dp</dimen>
+    <dimen name="user_info_photo_border">2dp</dimen>
+    <dimen name="user_info_underline_width">1dp</dimen>
+    <dimen name="user_info_value_margin_top">8dp</dimen>
+
+    <dimen name="bank_value_title">10sp</dimen>
+
+    <dimen name="user_item_photo_size">40dp</dimen>
+    <dimen name="user_item_photo_border">2dp</dimen>
+    <dimen name="top_profile_start_margin">8dp</dimen>
+
+    <dimen name="search_item_icon_size">40dp</dimen>
+
+    <dimen name="invite_only_icon_width">150dp</dimen>
+    <dimen name="invite_only_signin_top">26dp</dimen>
+    <dimen name="user_nav_header_icon_size">48dp</dimen>
+
+    <dimen name="notification_request_btn_width">76dp</dimen>
+
+    <dimen name="design_snackbar_padding_vertical_2lines" tools:override="true">12dp</dimen>
+    <dimen name="design_snackbar_padding_vertical" tools:override="true">12dp</dimen>
+
+    <dimen name="grid_item_spacing">1dp</dimen>
+    <dimen name="grid_list_margin">-1dp</dimen>
+    <dimen name="progess_bar_medium">40dp</dimen>
+    <dimen name="min_banner_ad_height">50dp</dimen>
+    <dimen name="family_tree_category_height">36dp</dimen>
+
+    <dimen name="ad_wrapper_height">250dp</dimen>
+    <dimen name="feed_type_item_height">48dp</dimen>
+    <dimen name="marginToast">60dp</dimen>
+
+</resources>

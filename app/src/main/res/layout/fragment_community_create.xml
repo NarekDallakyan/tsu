@@ -1,0 +1,371 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:background="@color/black">
+
+    <ScrollView
+        android:id="@+id/scrollView"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <androidx.constraintlayout.widget.Guideline
+                android:id="@+id/leftGuideline"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                app:layout_constraintGuide_begin="@dimen/margin_default_medium" />
+
+            <androidx.constraintlayout.widget.Guideline
+                android:id="@+id/rightGuideline"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                app:layout_constraintGuide_end="@dimen/margin_default_medium" />
+
+            <TextView
+                android:id="@+id/create_community_description"
+                style="@style/TSUTextAppearance.Description"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/margin_default_large"
+                android:layout_marginBottom="@dimen/margin_default_small"
+                android:text="@string/community_description"
+                android:textAlignment="center"
+                app:layout_constraintBottom_toTopOf="@id/community_name_label"
+                app:layout_constraintEnd_toStartOf="@id/rightGuideline"
+                app:layout_constraintStart_toStartOf="@id/leftGuideline"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <TextView
+                android:id="@+id/community_name_label"
+                style="@style/TSUTextAppearance.Hint"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/margin_default_large"
+                android:text="@string/community_name"
+                app:layout_constraintBottom_toTopOf="@id/community_name_layout"
+                app:layout_constraintStart_toStartOf="@id/leftGuideline"
+                app:layout_constraintTop_toBottomOf="@id/create_community_description" />
+
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/community_name_layout"
+                style="@style/TSUTextInputLayout"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="@dimen/margin_default_large"
+                app:layout_constraintBottom_toTopOf="@id/cover_picture_label"
+                app:layout_constraintEnd_toStartOf="@id/rightGuideline"
+                app:layout_constraintStart_toStartOf="@id/leftGuideline">
+
+                <EditText
+                    android:id="@+id/community_name_edit"
+                    style="@style/TSUEditText"
+                    android:layout_width="match_parent"
+                    android:maxLines="4"
+                    android:layout_height="wrap_content"
+                    android:inputType="textMultiLine" />
+
+            </com.google.android.material.textfield.TextInputLayout>
+
+            <TextView
+                android:id="@+id/cover_picture_label"
+                style="@style/TSUTextAppearance.Hint"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/cover_picture"
+                app:layout_constraintBottom_toTopOf="@id/cover_picture_container"
+                app:layout_constraintStart_toStartOf="@id/leftGuideline" />
+
+            <FrameLayout
+                android:id="@+id/cover_picture_container"
+                android:layout_width="0dp"
+                android:layout_height="148dp"
+                android:layout_marginBottom="@dimen/margin_default_small"
+                app:layout_constraintBottom_toTopOf="@id/cover_picture_error"
+                app:layout_constraintEnd_toStartOf="@id/rightGuideline"
+                app:layout_constraintStart_toStartOf="@id/leftGuideline"
+                app:layout_goneMarginBottom="@dimen/margin_default_large">
+
+                <LinearLayout
+                    android:id="@+id/add_picture_button"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:background="@drawable/bg_add_picture_button"
+                    android:foreground="?attr/selectableItemBackground"
+                    android:gravity="center"
+                    android:orientation="horizontal">
+
+                    <ImageView
+                        android:layout_width="@dimen/button_icon_size"
+                        android:layout_height="@dimen/button_icon_size"
+                        android:layout_marginEnd="4dp"
+                        android:padding="3dp"
+                        android:scaleType="fitCenter"
+                        android:src="@drawable/ic_add"
+                        android:tint="@color/secondaryDarkGray" />
+
+                    <TextView
+                        style="@style/TSUTextAppearance"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/community_add_picture"
+                        android:textColor="@color/secondaryDarkGray"
+                        android:textSize="@dimen/font_medium" />
+
+                </LinearLayout>
+
+                <!--
+                            <Button
+                                android:id="@+id/add_picture_button"
+                                android:layout_width="match_parent"
+                                android:layout_height="match_parent"
+                                android:background="#262626"
+                                android:backgroundTint="#262626"
+                                android:drawableLeft="@drawable/ic_add"
+                                android:text="@string/community_add_picture"
+                                android:textAlignment="center"
+                                android:textAllCaps="false"
+                                android:textColor="#959595"
+                                app:icon="@drawable/ic_add"
+                                app:iconGravity="textStart"
+                                app:iconTint="#959595" />
+                -->
+
+                <ImageView
+                    android:id="@+id/cover_picture"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:adjustViewBounds="true"
+                    android:foreground="?attr/selectableItemBackground"
+                    android:scaleType="centerCrop"
+                    android:visibility="gone" />
+
+            </FrameLayout>
+
+            <TextView
+                android:id="@+id/cover_picture_error"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="@dimen/margin_default_large"
+                android:text="@string/please_add_cover_photo"
+                android:textColor="@color/tsu_primary"
+                android:visibility="gone"
+                app:layout_constraintBottom_toTopOf="@id/description_edit_label"
+                app:layout_constraintStart_toStartOf="@id/leftGuideline"
+                tools:visibility="visible" />
+
+            <TextView
+                android:id="@+id/description_edit_label"
+                style="@style/TSUTextAppearance.Hint"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/description"
+                app:layout_constraintBottom_toTopOf="@id/description_layout"
+                app:layout_constraintStart_toStartOf="@id/leftGuideline" />
+
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/description_layout"
+                style="@style/TSUTextInputLayout"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="@dimen/margin_default_large"
+                app:layout_constraintBottom_toTopOf="@id/topic_edit_label"
+                app:layout_constraintEnd_toStartOf="@id/rightGuideline"
+                app:layout_constraintStart_toStartOf="@id/leftGuideline">
+
+                <EditText
+                    android:id="@+id/description_edit"
+                    style="@style/TSUEditText.Multiline"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:ems="10" />
+
+            </com.google.android.material.textfield.TextInputLayout>
+
+            <TextView
+                android:id="@+id/topic_edit_label"
+                style="@style/TSUTextAppearance.Hint"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/community_choose_a_topic"
+                app:layout_constraintBottom_toTopOf="@id/topic_layout"
+                app:layout_constraintStart_toStartOf="@id/leftGuideline" />
+
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/topic_layout"
+                style="@style/TSUTextInputLayout"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="@dimen/margin_default_large"
+                app:layout_constraintBottom_toTopOf="@id/community_type_label"
+                app:layout_constraintEnd_toStartOf="@id/rightGuideline"
+                app:layout_constraintStart_toStartOf="@id/leftGuideline">
+
+                <EditText
+                    android:id="@+id/topic_edit"
+                    style="@style/TSUEditText"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:editable="false"
+                    android:ems="10"
+                    android:focusableInTouchMode="false"
+                    android:inputType="none"
+                    android:text="@string/communit_create_topic_text" />
+
+            </com.google.android.material.textfield.TextInputLayout>
+
+            <TextView
+                android:id="@+id/community_type_label"
+                style="@style/TSUTextAppearance.Hint"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="@dimen/margin_default_medium"
+                android:text="@string/community_type"
+                app:layout_constraintBottom_toTopOf="@id/community_type_radiogroup"
+                app:layout_constraintStart_toStartOf="@id/leftGuideline" />
+
+            <RadioGroup
+                android:id="@+id/community_type_radiogroup"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="@dimen/margin_default_xlarge"
+                android:background="@color/button_container"
+                android:checkedButton="@id/btn_radio_public"
+                android:divider="@drawable/segmented_control_divider"
+                android:dividerPadding="@dimen/margin_default_small"
+                android:gravity="center"
+                android:orientation="horizontal"
+                android:showDividers="middle"
+                app:layout_constraintBottom_toTopOf="@id/community_compose_visibility_msg"
+                app:layout_constraintEnd_toStartOf="@id/rightGuideline"
+                app:layout_constraintStart_toStartOf="@id/leftGuideline">
+
+                <RadioButton
+                    android:id="@+id/btn_radio_public"
+                    style="@style/TSUSegmentedControlButton.Left"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="@string/community_public" />
+
+                <RadioButton
+                    android:id="@+id/btn_radio_private"
+                    style="@style/TSUSegmentedControlButton.Middle"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="@string/community_private" />
+
+                <RadioButton
+                    android:id="@+id/btn_radio_exclusive"
+                    style="@style/TSUSegmentedControlButton.Right"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="@string/community_exclusive" />
+
+            </RadioGroup>
+
+            <TextView
+                android:id="@+id/community_compose_visibility_msg"
+                style="@style/TSUTextAppearance"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/margin_default_medium"
+                android:layout_marginTop="@dimen/margin_default_small"
+                android:layout_marginEnd="@dimen/margin_default_medium"
+                android:text="@string/community_public_msg"
+                android:textColor="@color/field_hint"
+                android:textSize="@dimen/font_small"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/community_type_radiogroup" />
+
+            <TextView
+                android:id="@+id/content_moderation_label1"
+                style="@style/TSUTextAppearance.Hint"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="16dp"
+                android:text="@string/community_content_moderation1"
+                app:layout_constraintTop_toBottomOf="@+id/community_compose_visibility_msg"
+                app:layout_constraintEnd_toStartOf="@+id/content_moderation_switch"
+                app:layout_constraintStart_toStartOf="@id/leftGuideline" />
+
+            <TextView
+                android:id="@+id/content_moderation_label2"
+                style="@style/TSUTextAppearance.Medium"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="@dimen/margin_default_large"
+                android:text="@string/community_content_moderation2"
+                android:textColor="@color/field_hint"
+                android:textSize="@dimen/font_small"
+                app:layout_constraintTop_toBottomOf="@+id/content_moderation_label1"
+                app:layout_constraintEnd_toStartOf="@+id/content_moderation_switch"
+                app:layout_constraintStart_toStartOf="@id/leftGuideline" />
+
+            <androidx.appcompat.widget.SwitchCompat
+                android:id="@+id/content_moderation_switch"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:checked="false"
+                app:layout_constraintBottom_toBottomOf="@id/content_moderation_label2"
+                app:layout_constraintEnd_toStartOf="@id/rightGuideline"
+                app:layout_constraintTop_toTopOf="@id/content_moderation_label1" />
+
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/delete_button"
+                style="@style/TSUButton.Outlined"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="24dp"
+                android:layout_marginBottom="47dp"
+                android:text="@string/community_edit_delete"
+                android:textColor="@color/tsu_primary"
+                android:visibility="gone"
+                app:layout_constraintBottom_toTopOf="@id/create_button_container"
+                app:layout_constraintEnd_toStartOf="@id/rightGuideline"
+                app:layout_constraintStart_toStartOf="@id/leftGuideline"
+                app:layout_constraintTop_toBottomOf="@+id/content_moderation_label2"
+                app:strokeColor="@color/tsu_primary"
+                tools:visibility="visible" />
+
+            <FrameLayout
+                android:id="@+id/create_button_container"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@color/button_container"
+                app:layout_constraintBottom_toBottomOf="parent">
+
+                <Button
+                    android:id="@+id/create_button"
+                    style="@style/TSUButton"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="@dimen/margin_default_medium"
+                    android:text="@string/community_create_submit" />
+
+            </FrameLayout>
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+    </ScrollView>
+
+    <ProgressBar
+        android:id="@+id/progress_bar"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:visibility="gone"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>

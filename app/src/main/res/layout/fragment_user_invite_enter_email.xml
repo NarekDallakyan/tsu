@@ -1,0 +1,151 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:orientation="vertical">
+
+
+    <LinearLayout
+        android:id="@+id/enter_email_layout"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        android:animateLayoutChanges="true">
+
+        <TextView
+            android:id="@+id/header"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/standard_margin"
+            android:layout_marginTop="@dimen/standard_margin"
+            android:layout_marginEnd="@dimen/standard_margin"
+            android:text="@string/welcome_to_tsu"
+            android:textAllCaps="true"
+            android:textAppearance="@style/TextAppearance.AppCompat.Body2"
+            android:textSize="@dimen/font_xlarge"
+            android:gravity="center"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+        <TextView
+            android:id="@+id/sub_header"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/standard_margin"
+            android:layout_marginTop="@dimen/margin_small"
+            android:layout_marginEnd="@dimen/standard_margin"
+            android:text="@string/welcome_screen_subtitle"
+            android:textAppearance="@style/TextAppearance.AppCompat.Body2"
+            android:textSize="@dimen/font_large"
+            android:gravity="center"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/standard_margin"
+            android:layout_marginTop="@dimen/margin_medium"
+            android:layout_marginEnd="@dimen/standard_margin"
+            android:textAppearance="@style/TextAppearance.AppCompat.Body1"
+            android:text="@string/hint_email"
+            android:textSize="@dimen/font_large"
+            android:gravity="start" />
+
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/email_til"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:endIconMode="clear_text"
+            app:errorIconDrawable="@null"
+            android:layout_marginStart="@dimen/standard_margin"
+            android:layout_marginEnd="@dimen/standard_margin">
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/email_edittext"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:backgroundTint="@android:color/transparent"
+                android:inputType="textEmailAddress"
+                android:textSize="@dimen/font_medium"
+                android:maxLines="1" />
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <Button
+            android:id="@+id/request_old_user_details_button"
+            style="@style/TSUButton.WrapContent"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/full_width_button_margin"
+            android:layout_marginTop="@dimen/margin_medium"
+            android:layout_marginEnd="@dimen/full_width_button_margin"
+            android:paddingTop="@dimen/padding_standard"
+            android:paddingBottom="@dimen/padding_standard"
+            android:text="@string/continueText"
+            android:textSize="@dimen/font_medium" />
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/enter_verification_layout"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:visibility="gone"
+        android:orientation="vertical">
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/standard_margin"
+            android:layout_marginTop="@dimen/standard_margin"
+            android:layout_marginEnd="@dimen/standard_margin"
+            android:text="@string/verification_code_header"
+            android:textColor="@color/colorPrimary"
+            android:textAppearance="@style/TextAppearance.MaterialComponents.Headline4"
+            android:gravity="center"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/verification_code_til"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:endIconMode="clear_text"
+            app:errorIconDrawable="@null"
+            android:layout_marginStart="@dimen/standard_margin"
+            android:layout_marginEnd="@dimen/standard_margin">
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/verification_code_edittext"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:backgroundTint="@android:color/transparent"
+                android:inputType="number"
+                android:textSize="@dimen/font_medium"
+                android:maxLines="1" />
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <Button
+            android:id="@+id/verify_button"
+            style="@style/TSUButton.WrapContent"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/full_width_button_margin"
+            android:layout_marginTop="@dimen/margin_medium"
+            android:layout_marginEnd="@dimen/full_width_button_margin"
+            android:paddingTop="@dimen/padding_standard"
+            android:paddingBottom="@dimen/padding_standard"
+            android:text="@string/continueText"
+            android:textSize="@dimen/font_medium" />
+
+    </LinearLayout>
+
+    <include
+        layout="@layout/progress_layout"
+        android:visibility="gone" />
+</androidx.constraintlayout.widget.ConstraintLayout>

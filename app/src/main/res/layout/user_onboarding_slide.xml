@@ -1,0 +1,105 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+
+    <TextView
+        android:id="@+id/on_boarding_top_title"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/standard_margin"
+        android:layout_marginTop="@dimen/margin_medium"
+        android:layout_marginEnd="@dimen/standard_margin"
+        android:text="@string/login_header"
+        android:textStyle="bold"
+        android:textAllCaps="true"
+        android:textSize="@dimen/font_xlarge"
+        android:textColor="@color/colorPrimary"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <ImageView
+        android:id="@+id/slide_image"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        app:layout_constraintBottom_toTopOf="@id/on_boarding_subtitle"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        android:src="@drawable/user_onboarding_1"
+        android:padding="@dimen/padding_standard"
+        app:layout_constraintTop_toBottomOf="@id/on_boarding_top_title" />
+
+    <TextView
+        android:id="@+id/on_boarding_subtitle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/margin_large"
+        android:layout_marginTop="@dimen/standard_margin"
+        android:layout_marginEnd="@dimen/margin_large"
+        android:text="@string/login_header"
+        android:textAllCaps="true"
+        android:textAppearance="@style/TextAppearance.AppCompat.Body2"
+        android:textSize="@dimen/font_large"
+        android:textColor="@color/colorPrimary"
+        android:textStyle="bold"
+        android:gravity="center"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintBottom_toTopOf="@id/on_boarding_text"
+        android:layout_marginBottom="@dimen/standard_margin" />
+
+    <TextView
+        android:id="@+id/on_boarding_text"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/margin_large"
+        android:layout_marginTop="@dimen/standard_margin"
+        android:layout_marginEnd="@dimen/margin_large"
+        android:text="@string/login_header"
+        android:textStyle="bold"
+        android:textAllCaps="true"
+        android:textAppearance="@style/TextAppearance.AppCompat.Body2"
+        android:textSize="@dimen/font_large"
+        android:gravity="center"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintBottom_toTopOf="@id/edit_profile_button"
+        android:layout_marginBottom="@dimen/standard_margin"
+        app:layout_goneMarginBottom="@dimen/margin_xlarge" />
+
+    <Button
+        android:id="@+id/edit_profile_button"
+        style="@style/TSUButton.WrapContent"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/full_width_button_margin"
+        android:layout_marginTop="@dimen/margin_medium"
+        android:layout_marginEnd="@dimen/full_width_button_margin"
+        android:paddingTop="@dimen/padding_standard"
+        android:paddingBottom="@dimen/padding_standard"
+        android:layout_marginBottom="@dimen/margin_small"
+        android:text="@string/go_to_my_profile"
+        android:textSize="@dimen/font_medium"
+        android:visibility="gone"
+        app:layout_constraintBottom_toTopOf="@id/done_button" />
+
+    <Button
+        android:id="@+id/done_button"
+        style="@style/TSUButton.WrapContent"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/full_width_button_margin"
+        android:layout_marginBottom="@dimen/margin_large"
+        android:layout_marginEnd="@dimen/full_width_button_margin"
+        android:paddingTop="@dimen/padding_standard"
+        android:paddingBottom="@dimen/padding_standard"
+        android:text="@string/done"
+        android:textSize="@dimen/font_medium"
+        android:visibility="gone"
+        app:layout_constraintBottom_toBottomOf="parent" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>

@@ -1,0 +1,87 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:background="@color/black"
+    tools:context="social.tsu.android.ui.InviteFriendsFragment">
+
+    <TextView
+        android:id="@+id/invite_title"
+        style="@style/TSUTextAppearance.Title"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/margin_default_large"
+        android:text="@string/invite_page_title"
+        android:visibility="gone"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        tools:visibility="visible" />
+
+    <TextView
+        android:id="@+id/invite_message"
+        style="@style/TSUTextAppearance.Description"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/margin_default_xlarge"
+        android:layout_marginTop="@dimen/margin_default_small"
+        android:layout_marginEnd="@dimen/margin_default_xlarge"
+        android:text="@string/invite_page_message"
+        android:textAlignment="center"
+        android:visibility="gone"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/invite_title"
+        app:layout_goneMarginTop="@dimen/margin_default_xlarge"
+        tools:visibility="visible" />
+
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/invite_button"
+        style="@style/TSUButton"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="@dimen/margin_default_medium"
+        android:backgroundTint="@color/black"
+        android:enabled="false"
+        android:text="@string/invite_share_link_btn"
+        android:textColor="@color/colorPrimary"
+        android:visibility="gone"
+        app:icon="@drawable/ic_send"
+        app:iconTint="@color/colorPrimary"
+        app:layout_constraintVertical_bias="0.218"
+        app:layout_constraintVertical_chainStyle="packed"
+        app:layout_constraintTop_toBottomOf="@id/invite_message"
+        app:layout_constraintBottom_toTopOf="@id/invite_contact_button"
+        app:layout_constraintEnd_toEndOf="@id/invite_contact_button"
+        app:layout_constraintStart_toStartOf="@id/invite_contact_button"
+        app:rippleColor="@color/colorPrimary"
+        tools:visibility="visible" />
+
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/invite_contact_button"
+        style="@style/TSUButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:enabled="false"
+        android:text="@string/invite_contacts_btn"
+        android:visibility="gone"
+        app:icon="@drawable/ic_contacts_invite"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/invite_button"
+        tools:visibility="visible" />
+
+    <ProgressBar
+        android:id="@+id/progress_bar"
+        style="?android:attr/progressBarStyle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>

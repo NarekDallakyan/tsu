@@ -1,0 +1,163 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+
+    <ImageButton
+        android:id="@+id/likeButton"
+        style="@style/TSUPostImageButton"
+        android:layout_width="40dp"
+        android:layout_height="40dp"
+        android:background="@null"
+        android:contentDescription="@string/description_like_button"
+        android:src="@drawable/ic_like"
+        app:layout_constraintBottom_toTopOf="@+id/post_likes_count"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <ImageButton
+        android:id="@+id/commentButton"
+        style="@style/TSUPostImageButton"
+        android:layout_width="40dp"
+        android:layout_height="40dp"
+        android:contentDescription="@string/description_comment_button"
+        android:src="@drawable/ic_comment"
+        app:layout_constraintBottom_toTopOf="@+id/post_likes_count"
+        app:layout_constraintStart_toEndOf="@+id/likeButton"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <ImageButton
+        android:id="@+id/shareButton"
+        style="@style/TSUPostImageButton"
+        android:layout_width="40dp"
+        android:layout_height="40dp"
+        android:contentDescription="@string/description_share_button"
+        android:src="@drawable/ic_share"
+        app:layout_constraintBottom_toTopOf="@+id/post_comments_count"
+        app:layout_constraintStart_toEndOf="@+id/commentButton"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <ProgressBar
+        android:id="@+id/share_progress"
+        android:layout_width="wrap_content"
+        android:layout_height="0dp"
+        android:layout_margin="@dimen/margin_xsmall"
+        android:indeterminateTint="@color/light_green"
+        android:visibility="gone"
+        app:layout_constraintBottom_toBottomOf="@id/shareButton"
+        app:layout_constraintEnd_toEndOf="@id/shareButton"
+        app:layout_constraintStart_toStartOf="@id/shareButton"
+        app:layout_constraintTop_toTopOf="@id/shareButton" />
+
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/supportButton"
+        style="@style/TSUPostIconButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="1dp"
+        android:text="@string/support_me_button_label"
+        android:visibility="invisible"
+        app:icon="@drawable/ic_support"
+        app:iconTint="#FFB734"
+        app:layout_constraintBottom_toTopOf="@+id/post_comments_count"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        tools:visibility="visible" />
+
+    <androidx.constraintlayout.widget.Barrier
+        android:id="@+id/post_buttons_barrier"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:barrierDirection="bottom"
+        app:constraint_referenced_ids="shareButton, likeButton, commentButton" />
+
+    <View
+        android:id="@+id/post_footer_divider"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/divider_standard_height"
+        android:layout_marginStart="@dimen/margin_default_medium"
+        android:layout_marginEnd="@dimen/margin_default_medium"
+        android:background="@color/divider_default"
+        android:visibility="gone"
+        app:layout_constraintTop_toBottomOf="@id/post_buttons_barrier"
+        tools:visibility="visible" />
+
+    <TextView
+        android:id="@+id/post_likes_count"
+        style="@style/TSUPostPopularityValue"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:visibility="gone"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/post_footer_divider"
+        tools:text="9999 Likes"
+        tools:visibility="visible" />
+
+    <TextView
+        android:id="@+id/post_comments_count"
+        style="@style/TSUPostPopularityValue"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:visibility="gone"
+        app:layout_constraintEnd_toEndOf="@id/post_comments_count_guideline"
+        app:layout_constraintStart_toStartOf="@id/post_comments_count_guideline"
+        app:layout_constraintTop_toBottomOf="@id/post_footer_divider"
+        tools:layout_editor_absoluteX="192dp"
+        tools:text="9999 Comments"
+        tools:visibility="visible" />
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/post_comments_count_guideline"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        app:layout_constraintGuide_percent="0.5"
+        tools:layout_constraintGuide_percent="0.35" />
+
+    <TextView
+        android:id="@+id/post_shares_count"
+        style="@style/TSUPostPopularityValue"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:visibility="gone"
+        app:layout_constraintEnd_toEndOf="@id/post_shares_count_guideline"
+        app:layout_constraintTop_toBottomOf="@id/post_footer_divider"
+        tools:text="9999 Shares"
+        tools:visibility="visible" />
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/post_shares_count_guideline"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        app:layout_constraintGuide_percent="1"
+        tools:layout_constraintGuide_percent="0.75" />
+
+    <TextView
+        android:id="@+id/post_supports_count"
+        style="@style/TSUPostPopularityValue"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:visibility="gone"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/post_footer_divider"
+        tools:text="9999 Supports"
+        tools:visibility="visible" />
+
+    <androidx.constraintlayout.widget.Barrier
+        android:id="@+id/post_popularity_bottom"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        app:barrierDirection="bottom"
+        app:constraint_referenced_ids="post_likes_count,post_comments_count,post_shares_count,post_supports_count" />
+
+    <View
+        android:id="@+id/post_divider"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/divider_posts_height"
+        android:background="@drawable/line_divider"
+        app:layout_constraintTop_toBottomOf="@id/post_popularity_bottom" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>

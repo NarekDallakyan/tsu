@@ -1,0 +1,319 @@
+apply plugin: 'com.android.application'
+
+apply plugin: 'kotlin-android'
+apply plugin: 'kotlin-android-extensions'
+apply plugin: 'io.gitlab.arturbosch.detekt'
+
+apply plugin: "androidx.navigation.safeargs"
+
+apply plugin: 'kotlin-kapt'
+
+apply plugin: 'com.google.gms.google-services'
+// Apply the Crashlytics Gradle plugin
+apply plugin: 'com.google.firebase.crashlytics'
+// Apply the Performance Monitoring plugin
+apply plugin: 'com.google.firebase.firebase-perf'
+
+android {
+    compileSdkVersion 30
+    buildToolsVersion "30.0.2"
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_1_8
+        targetCompatibility JavaVersion.VERSION_1_8
+    }
+    lintOptions {
+        checkReleaseBuilds false
+        // Or, if you prefer, you can continue to check for errors in release builds,
+        // but continue the build even when errors are found:
+        abortOnError false
+    }
+    kotlinOptions {
+        jvmTarget = JavaVersion.VERSION_1_8
+    }
+    defaultConfig {
+        applicationId "social.tsu.android"
+        minSdkVersion 23 // 21?
+        targetSdkVersion 30
+        versionCode 51
+        versionName "1.1.7"
+        testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
+        vectorDrawables.useSupportLibrary = true
+
+    }
+    dataBinding.enabled = true
+    signingConfigs {
+        debug {
+            storeFile file(System.getProperty("tsu.keystoreLocation", "$rootDir/app.keystore"))
+            storePassword System.getProperty("tsu.keystorePassphrase", "")
+            keyAlias "tsu-debug"
+            keyPassword System.getProperty("tsu.debugPassphrase", "")
+            v2SigningEnabled true
+        }
+
+        release {
+            storeFile file(System.getProperty("tsu.keystoreLocation", "$rootDir/app.keystore"))
+            storePassword System.getProperty("tsu.keystorePassphrase", "")
+            keyAlias "tsu-prod"
+            keyPassword System.getProperty("tsu.releasePassphrase", "")
+            v2SigningEnabled true
+        }
+
+    }
+    buildTypes {
+        debug {
+            applicationIdSuffix ".debug"
+            signingConfig signingConfigs.debug
+            debuggable true
+            minifyEnabled false
+            buildConfigField("String","INDICATIVE_API_KEY","\"0b835668-1ee2-41f7-9d51-7cbac0b247a4\"")
+        }
+        local {
+            signingConfig signingConfigs.debug
+            debuggable true
+            minifyEnabled false
+            matchingFallbacks = ['debug', 'release']
+        }
+        release {
+            signingConfig signingConfigs.release
+            minifyEnabled false
+            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+            buildConfigField("String","INDICATIVE_API_KEY","\"b8d511cf-594d-4d02-a9dc-8a93a2d850ad\"")
+        }
+    }
+    testOptions {
+        unitTests.returnDefaultValues = true
+    }
+}
+repositories {
+    maven {
+        url "https://chartboostmobile.bintray.com/Chartboost"
+    }
+    maven {
+        url  "https://adcolony.bintray.com/AdColony"
+    }
+    flatDir {
+        dirs '../libs'
+    }
+}
+
+dependencies {
+    def dagger_version = "2.24"
+    implementation 'com.github.GetStream:stream-chat-android:4.0.13'
+    implementation "com.google.dagger:dagger:$dagger_version"
+    implementation "com.google.dagger:dagger-android:$dagger_version"
+    implementation "com.google.dagger:dagger-android-support:$dagger_version"
+    kapt "com.google.dagger:dagger-android-processor:$dagger_version"
+    implementation 'androidx.legacy:legacy-support-v4:1.0.0'
+    implementation 'androidx.lifecycle:lifecycle-viewmodel-ktx:2.2.0'
+    kapt "com.google.dagger:dagger-compiler:$dagger_version"
+
+    // Testing
+
+    def roboelectric_version = "4.3"
+    def mockito_version = "3.0.0"
+    def mockito_kotlin_version = "2.2.0"
+    def truth_version = "1.0"
+
+    testImplementation 'androidx.test:core:1.2.0'
+    testImplementation "org.robolectric:robolectric:${roboelectric_version}"
+
+    testImplementation "org.mockito:mockito-core:${mockito_version}"
+    testImplementation "org.mockito:mockito-android:${mockito_version}"
+    testImplementation "org.mockito:mockito-inline:${mockito_version}"
+    testImplementation "com.nhaarman.mockitokotlin2:mockito-kotlin:${mockito_kotlin_version}"
+    testImplementation "com.google.truth:truth:$truth_version"
+
+    testImplementation "org.json:json:20140107"
+
+    //Indicative library
+    //implementation fileTree(dir: '../libs', include: ['*.aar'])
+    implementation (name: 'Indicative-Android-1.0.4-SNAPSHOT', ext:'aar')
+    // CameraX
+    //room dependecies
+    def room_version = "2.2.5"
+    kapt "androidx.room:room-compiler:$room_version"
+    implementation "androidx.room:room-ktx:$room_version"
+    implementation "androidx.room:room-rxjava2:$room_version"
+
+    // CameraX core library
+    def camerax_version = "1.0.0-beta06"
+    implementation "androidx.camera:camera-core:${camerax_version}"
+    implementation "androidx.camera:camera-camera2:${camerax_version}"
+    // If you want to use the CameraX View class
+    implementation "androidx.camera:camera-view:1.0.0-alpha13"
+    // If you want to use the CameraX Extensions library
+    implementation "androidx.camera:camera-extensions:1.0.0-alpha13"
+    // If you want to use the CameraX Lifecycle library
+    implementation "androidx.camera:camera-lifecycle:${camerax_version}"
+
+    implementation "androidx.exifinterface:exifinterface:1.2.0"
+
+
+    def nav_version = "2.3.0"
+    implementation "androidx.navigation:navigation-runtime-ktx:$nav_version"
+    implementation "androidx.navigation:navigation-fragment-ktx:$nav_version"
+    implementation "androidx.navigation:navigation-ui-ktx:$nav_version"
+
+    implementation fileTree(dir: 'libs', include: ['*.jar'])
+    implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
+
+    implementation 'androidx.appcompat:appcompat:1.1.0'
+    implementation 'androidx.core:core-ktx:1.1.0'
+    implementation 'androidx.lifecycle:lifecycle-runtime-ktx:2.2.0-beta01'
+
+    implementation 'androidx.constraintlayout:constraintlayout:2.0.0-beta7'
+    //room dependecies
+    kapt 'androidx.room:room-compiler:2.0.0'
+    implementation "androidx.room:room-ktx:2.2.5"
+
+    //Paging
+    implementation "androidx.paging:paging-runtime:2.1.2"
+
+    // Gson library
+    implementation "com.google.code.gson:gson:2.8.5"
+    implementation "com.squareup.retrofit2:converter-gson:2.3.0"
+
+
+    //Scaling Image
+    implementation 'com.jsibbold:zoomage:1.3.1'
+
+    //Time Library
+    implementation "com.jakewharton.threetenabp:threetenabp:1.2.0"
+
+    testImplementation 'junit:junit:4.12'
+    testImplementation("com.squareup.okhttp3:mockwebserver:4.2.2")
+
+    androidTestImplementation 'androidx.test.ext:junit:1.1.1'
+    androidTestImplementation 'androidx.test.espresso:espresso-core:3.2.0'
+
+    implementation 'com.google.android.material:material:1.1.0'
+
+    implementation("com.squareup.okhttp3:okhttp:4.2.2")
+    implementation "com.squareup.okhttp3:logging-interceptor:4.4.0"
+
+    implementation 'com.squareup.retrofit2:retrofit:2.7.1'
+    implementation "com.squareup.retrofit2:converter-moshi:2.6.2"
+
+    implementation "com.squareup.moshi:moshi-kotlin:1.8.0"
+    implementation "com.squareup.moshi:moshi-adapters:1.8.0"
+
+    implementation 'com.squareup.retrofit2:adapter-rxjava2:2.7.1'
+
+    implementation 'io.reactivex.rxjava2:rxjava:2.2.16'
+    implementation 'io.reactivex.rxjava2:rxandroid:2.1.1'
+    implementation("io.reactivex.rxjava2:rxkotlin:2.4.0")
+    //Rx bindings for Android UI views
+    implementation 'com.jakewharton.rxbinding3:rxbinding:3.1.0'
+    implementation 'com.jakewharton.rxbinding3:rxbinding-core:3.1.0'
+    implementation 'com.jakewharton.rxbinding3:rxbinding-material:3.1.0'
+
+    // Flipper
+    debugImplementation 'com.facebook.flipper:flipper:0.28.0'
+    debugImplementation 'com.facebook.soloader:soloader:0.5.1'
+    debugImplementation 'com.facebook.flipper:flipper-network-plugin:0.28.0'
+    releaseImplementation 'com.facebook.flipper:flipper-noop:0.28.0'
+
+    implementation "androidx.security:security-crypto:1.0.0-alpha02"
+    implementation 'androidx.lifecycle:lifecycle-extensions:2.2.0'
+
+    // Glide
+
+    implementation 'com.github.bumptech.glide:glide:4.11.0'
+    kapt 'com.github.bumptech.glide:compiler:4.11.0'
+
+    //Paging
+    implementation "androidx.paging:paging-runtime:2.1.2"
+
+    // Gson library
+    implementation "com.google.code.gson:gson:2.8.5"
+    implementation "com.squareup.retrofit2:converter-gson:2.3.0"
+
+    // Ads
+    implementation 'com.google.android.gms:play-services-ads:19.4.0'
+    implementation 'com.google.ads.mediation:mopub:5.14.0.0'
+    implementation 'com.google.ads.mediation:inmobi:9.1.0.0'
+    implementation 'com.google.ads.mediation:chartboost:8.1.0.0'
+    implementation 'com.google.ads.mediation:adcolony:4.2.4.0'
+    implementation 'com.google.ads.mediation:vungle:6.7.1.0'
+    implementation 'com.google.ads.mediation:applovin:9.13.4.0'
+    implementation 'com.google.ads.mediation:tapjoy:12.7.0.0'
+    // outdated sdk fix, temporary solution until mediation:adcolony update
+    implementation 'com.adcolony:sdk:4.2.2'
+
+    implementation 'com.google.android.ump:user-messaging-platform:1.0.0'
+
+    //uncomment to test ads integration
+//    implementation 'com.google.android.ads:mediation-test-suite:1.4.0'
+
+    // rounded image view
+    implementation 'de.hdodenhof:circleimageview:3.1.0'
+    implementation 'cn.gavinliu:ShapedImageView:0.8.7'
+
+    def work_version = "2.3.1"
+
+    // (Java o)
+    implementation "androidx.work:work-runtime:$work_version"
+
+    // Kotlin + coroutines
+    implementation "androidx.work:work-runtime-ktx:$work_version"
+
+    // image cropping
+    implementation 'com.github.yalantis:ucrop:2.2.6'
+
+    // App update core dependency by google
+    implementation 'com.google.android.play:core:1.8.0'
+    implementation 'com.google.android.play:core-ktx:1.8.1'
+
+    implementation 'com.karumi:dexter:6.2.1'
+
+    // Firebase
+    implementation 'com.google.firebase:firebase-analytics:17.4.3'
+    implementation 'com.google.firebase:firebase-config-ktx:19.1.3'
+    // Add the Firebase SDK for Crashlytics.
+    implementation 'com.google.firebase:firebase-crashlytics:17.2.1'
+    // Add the dependency for the Performance Monitoring library
+    implementation 'com.google.firebase:firebase-perf:19.0.5'
+    // optional - RxJava2 support
+    implementation "androidx.work:work-rxjava2:$work_version"
+
+    implementation 'id.zelory:compressor:3.0.0'
+    // optional - Test helpers
+    androidTestImplementation "androidx.work:work-testing:$work_version"
+
+    def exoplayer_version = "2.11.3"
+    implementation "com.google.android.exoplayer:exoplayer:$exoplayer_version"
+
+    implementation 'com.paypal.sdk:paypal-android-sdk:2.16.0'
+    implementation 'com.google.firebase:firebase-invites:17.0.0'
+
+    implementation 'com.androidadvance:topsnackbar:1.1.1'
+    //firebase cloud messaging
+    implementation 'com.google.firebase:firebase-messaging:20.2.1'
+
+    testImplementation 'androidx.arch.core:core-testing:2.0.0'
+
+    implementation 'io.umehara:ogmapper:1.0.0'
+
+    implementation 'com.daimajia.swipelayout:library:1.2.0'
+    implementation 'at.blogc:expandabletextview:1.0.5'
+    implementation 'com.synnapps:carouselview:0.1.5'
+
+    implementation 'com.ablanco.zoomy:zoomy:1.1.0'
+    //Emoji Utils
+    implementation 'com.vdurmont:emoji-java:5.1.1'
+
+    // graph dependency
+    implementation 'com.github.PhilJay:MPAndroidChart:v3.1.0'
+    //Blur imageView
+    implementation 'jp.wasabeef:blurry:3.0.0'
+
+    implementation 'com.github.AbedElazizShe:LightCompressor:0.7.5'
+
+}
+detekt {
+    config = files("$rootDir/detekt.yml")
+}
+
+androidExtensions {
+    experimental = true
+}

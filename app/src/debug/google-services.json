@@ -1,0 +1,40 @@
+{
+  "project_info": {
+    "project_number": "139243966509",
+    "firebase_url": "https://tsu-android.firebaseio.com",
+    "project_id": "tsu-android",
+    "storage_bucket": "tsu-android.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:139243966509:android:f063931861aae8107728a4",
+        "android_client_info": {
+          "package_name": "social.tsu.android.debug"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "139243966509-65laus32k6vj38j8d57r8udjajs6b12p.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyD2gDX3cre4-rk17fQbNfORL51o2sCgD0g"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "139243966509-65laus32k6vj38j8d57r8udjajs6b12p.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

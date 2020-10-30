@@ -1,0 +1,162 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/screen_background">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+
+        <androidx.appcompat.widget.AppCompatTextView
+            style="@style/TSUTextAppearance.SettingsTitle"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/margin_default_large"
+            android:text="@string/drawer_item_account" />
+
+        <social.tsu.android.ui.view.SettingsItemView
+            android:id="@+id/settings_account"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:item_title="@string/drawer_item_account_settings" />
+
+        <social.tsu.android.ui.view.SettingsItemView
+            android:id="@+id/settings_bank"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:item_title="@string/drawer_item_bank" />
+
+        <social.tsu.android.ui.view.SettingsItemView
+            android:id="@+id/settings_analytics"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:item_title="@string/drawer_item_analytics" />
+
+        <social.tsu.android.ui.view.SettingsItemView
+            android:id="@+id/settings_invite"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:item_title="@string/drawer_item_invite" />
+
+        <social.tsu.android.ui.view.SettingsItemView
+            android:id="@+id/settings_select_account"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:visibility="gone"
+            app:item_title="@string/drawer_item_select_account"
+            tools:item_value="Christina Owens" />
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/divider_standard_height"
+            android:layout_marginStart="@dimen/margin_default_medium"
+            android:layout_marginTop="@dimen/margin_default_medium"
+            android:layout_marginEnd="@dimen/margin_default_medium"
+            android:layout_marginBottom="@dimen/margin_default_medium"
+            android:background="@color/user_sections_divider" />
+
+        <TextView
+            style="@style/TSUTextAppearance.SettingsTitle"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/drawer_item_general" />
+
+        <social.tsu.android.ui.view.SettingsItemView
+            android:id="@+id/settings_notifications"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:item_title="@string/drawer_item_notifications" />
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/divider_standard_height"
+            android:layout_marginStart="@dimen/margin_default_medium"
+            android:layout_marginTop="@dimen/margin_default_medium"
+            android:layout_marginEnd="@dimen/margin_default_medium"
+            android:layout_marginBottom="@dimen/margin_default_medium"
+            android:background="@color/user_sections_divider" />
+
+        <TextView
+            style="@style/TSUTextAppearance.SettingsTitle"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/drawer_item_information" />
+
+        <social.tsu.android.ui.view.SettingsItemView
+            android:id="@+id/settings_terms_of_use"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:item_title="@string/terms_of_use" />
+
+        <social.tsu.android.ui.view.SettingsItemView
+            android:id="@+id/settings_payments_policy"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:item_title="@string/payments_policy" />
+
+        <social.tsu.android.ui.view.SettingsItemView
+            android:id="@+id/settings_privacy_policy"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:item_title="@string/privacy_policy" />
+
+        <social.tsu.android.ui.view.SettingsItemView
+            android:id="@+id/settings_support"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:item_title="@string/drawer_item_support" />
+
+        <social.tsu.android.ui.view.SettingsItemView
+            android:id="@+id/settings_personalized_ads"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:visibility="gone"
+            app:item_title="@string/personalized_ads" />
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/divider_standard_height"
+            android:layout_marginStart="@dimen/margin_default_medium"
+            android:layout_marginTop="@dimen/margin_default_medium"
+            android:layout_marginEnd="@dimen/margin_default_medium"
+            android:layout_marginBottom="@dimen/margin_default_medium"
+            android:background="@color/user_sections_divider" />
+
+        <social.tsu.android.ui.view.SettingsItemView
+            android:id="@+id/settings_sign_out"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:enable_arrow="false"
+            app:item_title="@string/sign_out" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:paddingTop="48dp"
+            android:paddingBottom="48dp">
+
+            <TextView
+                android:id="@+id/settings_version"
+                style="@style/TSUTextAppearance.SettingsTitle"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                tools:text="@string/drawer_item_version" />
+
+            <TextView
+                android:id="@+id/settings_build"
+                style="@style/TSUTextAppearance.SettingsTitle"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:paddingStart="@dimen/margin_default_small"
+                tools:text="@string/drawer_item_build" />
+
+        </LinearLayout>
+
+    </LinearLayout>
+
+</ScrollView>

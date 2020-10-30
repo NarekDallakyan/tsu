@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/notification_item"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@color/black">
+
+    <de.hdodenhof.circleimageview.CircleImageView
+        android:id="@+id/notification_user_icon"
+        android:layout_width="@dimen/user_item_icon_size"
+        android:layout_height="@dimen/user_item_icon_size"
+        android:layout_marginStart="@dimen/margin_default_medium"
+        android:layout_marginTop="@dimen/margin_default_small"
+        android:layout_marginBottom="28dp"
+        app:civ_border_color="@color/user_profile_avatar_border"
+        app:civ_border_width="@dimen/user_item_photo_border"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        tools:src="@drawable/user" />
+
+    <TextView
+        android:id="@+id/notification_text"
+        style="@style/TSUDefaultPostTextStyle"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/list_item_title_margin_horizontal"
+        android:layout_marginEnd="@dimen/margin_default_large"
+        android:gravity="top"
+        android:includeFontPadding="false"
+        app:layout_constraintBottom_toBottomOf="@id/notification_user_icon"
+        app:layout_constraintEnd_toStartOf="@id/notification_more_icon"
+        app:layout_constraintStart_toEndOf="@id/notification_user_icon"
+        app:layout_constraintTop_toTopOf="@id/notification_user_icon"
+        app:layout_constraintVertical_bias="0"
+        tools:text="Joe Cyboski sent you a friend request" />
+
+    <ImageView
+        android:id="@+id/notification_more_icon"
+        android:layout_width="@dimen/button_icon_size"
+        android:layout_height="@dimen/button_icon_size"
+        android:layout_marginEnd="@dimen/margin_default_large"
+        android:background="?attr/selectableItemBackgroundBorderless"
+        android:visibility="gone"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="@id/notification_text"
+        app:srcCompat="@drawable/ic_more_horizontal"
+        tools:visibility="visible" />
+
+    <ProgressBar
+        android:id="@+id/request_action_progress"
+        android:layout_width="30dp"
+        android:layout_height="30dp"
+        android:layout_marginStart="@dimen/margin_default_large"
+        android:layout_marginEnd="@dimen/margin_default_large"
+        android:visibility="gone"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@id/notification_text"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/notification_creation_date"
+        style="@style/TSUTextAppearance.PostDate"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/margin_default_xsmall"
+        app:layout_constraintStart_toStartOf="@id/notification_text"
+        app:layout_constraintTop_toBottomOf="@id/notification_text"
+        tools:text="2 hours ago" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>

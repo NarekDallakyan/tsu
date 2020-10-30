@@ -1,0 +1,136 @@
+<?xml version="1.0" encoding="utf-8"?>
+<com.daimajia.swipe.SwipeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/membership_item_swipe_layout"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:orientation="horizontal"
+        android:layout_height="match_parent">
+
+        <TextView
+            android:id="@+id/accept_invite"
+            style="@style/TSUTextAppearance.Bold"
+            android:layout_width="@dimen/notification_request_btn_width"
+            android:layout_height="match_parent"
+            android:background="@color/colorPrimary"
+            android:gravity="center"
+            android:text="@string/accept"
+            android:textColor="@color/black"
+            android:textSize="@dimen/font_medium" />
+
+        <TextView
+            android:id="@+id/decline_invite"
+            style="@style/TSUTextAppearance.Bold"
+            android:layout_width="@dimen/notification_request_btn_width"
+            android:layout_height="match_parent"
+            android:background="@color/decline_button"
+            android:gravity="center"
+            android:text="@string/decline"
+            android:textColor="@android:color/white"
+            android:textSize="@dimen/font_medium" />
+
+    </LinearLayout>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/membership_item"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <ImageView
+            android:id="@+id/photo"
+            android:layout_width="96dp"
+            android:layout_height="96dp"
+            android:layout_marginStart="16dp"
+            android:layout_marginTop="16dp"
+            android:layout_marginBottom="16dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            tools:src="@drawable/fake" />
+
+        <TextView
+            android:id="@+id/name"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/margin_default_medium"
+            android:layout_marginEnd="@dimen/list_item_title_margin_horizontal"
+            android:ellipsize="end"
+            android:gravity="start"
+            android:lines="1"
+            android:maxLines="1"
+            android:textColor="@color/white"
+            android:textSize="20sp"
+            app:layout_constrainedWidth="true"
+            app:layout_constraintEnd_toStartOf="@+id/action_label"
+            app:layout_constraintStart_toEndOf="@+id/photo"
+            app:layout_constraintTop_toTopOf="@+id/photo"
+            tools:text="TextViewTextViewTextViewTextViewTextViewTextViewTextViewTextView" />
+
+        <LinearLayout
+            android:id="@+id/action_label"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="@dimen/margin_default_medium"
+            android:gravity="center_vertical"
+            android:orientation="horizontal"
+            android:padding="4dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="@id/name">
+
+            <ImageView
+                android:id="@+id/status_icon"
+                android:layout_width="@dimen/button_icon_size"
+                android:layout_height="@dimen/button_icon_size"
+                android:padding="4dp"
+                android:scaleType="fitCenter"
+                app:srcCompat="@drawable/ic_pending" />
+
+            <TextView
+                android:id="@+id/status_text"
+                style="@style/TSUTextAppearance.Bold"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/community_pending"
+                android:textColor="@color/secondaryDarkGray"
+                android:textSize="@dimen/font_medium" />
+
+        </LinearLayout>
+
+        <TextView
+            android:id="@+id/topic"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="16dp"
+            android:text="TextView"
+            android:textSize="14sp"
+            app:layout_constraintBottom_toTopOf="@+id/members_count"
+            app:layout_constraintStart_toEndOf="@+id/photo" />
+
+        <TextView
+            android:id="@+id/members_count"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="16dp"
+            android:text="TextView"
+            android:textSize="10sp"
+            app:layout_constraintBottom_toBottomOf="@+id/photo"
+            app:layout_constraintStart_toEndOf="@+id/photo" />
+
+        <ProgressBar
+            android:id="@+id/progressbar"
+            android:layout_width="32dp"
+            android:layout_height="32dp"
+            android:layout_marginTop="8dp"
+            android:layout_marginEnd="16dp"
+            android:visibility="gone"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/action_label"
+            tools:visibility="visible" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+</com.daimajia.swipe.SwipeLayout>

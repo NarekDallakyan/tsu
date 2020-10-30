@@ -1,0 +1,138 @@
+pipeline {
+    agent {
+        label 'android'
+    }
+
+    environment {
+        CI = 'true'
+    }
+    stages {
+        stage('PR verifications') {
+            when {
+                branch pattern: "PR-.*|develop", comparator: "REGEXP"
+            }
+
+            steps {
+                dir(WORKSPACE) {
+                    sh './gradlew clean lintDebug detekt'
+                }
+
+            }
+            post {
+                always {
+                    androidLint canComputeNew: false, defaultEncoding: '', healthy: '', pattern: '**/build/reports/lint-results*.xml', unHealthy: ''
+
+                    recordIssues(enabledForFailure: true, tools: [java(), kotlin(), detekt(pattern: '**/build/reports/detekt//detekt.xml')])
+
+//                    publishHTML (target: [
+//                            allowMissing: false,
+//                            alwaysLinkToLastBuild: false,
+//                            keepAll: true,
+//                            reportDir: "$WORKSPACE/app/build/reports/tests/testDebugUnitTest/",
+//                            reportFiles: 'index.html',
+//                            reportName: "Test Report"
+//                    ])
+
+                    publishHTML (target: [
+                            allowMissing: false,
+                            alwaysLinkToLastBuild: false,
+                            keepAll: true,
+                            reportDir: "$WORKSPACE/app/build/reports/detekt/",
+                            reportFiles: 'detekt.html',
+                            reportName: "Detekt Report"
+                    ])
+
+                    junit testResults: '**/build/test-results/test*/*.xml', allowEmptyResults: true
+//                    cleanWs()
+                }
+            }
+        }
+        /*
+        withCredentials([
+    string(credentialsId: 'android-keystore-pass', variable: 'KEY_STORE_PASS'),
+    string(credentialsId: 'android-alias-passphrase', variable: 'KEY_ALIAS_PASS'),
+    string(credentialsId: 'android-vault-addr', variable: 'VAULT_ADDR'),
+    string(credentialsId: 'vault-gh-token', variable: 'GH_TOKEN')]) {
+
+        */
+        stage('Deploy for production') {
+            when {
+                branch 'master'
+            }
+            steps {
+                dir(WORKSPACE) {
+                    withCredentials([
+                            string(credentialsId: 'android-keystore-passphrase', variable: 'KEY_STORE_PASS'),
+                            string(credentialsId: 'android-release-passphrase', variable: 'RELEASE_CERT_PASS'),
+                    ]) {
+                        sh './gradlew -Dtsu.keystorePassphrase="$KEY_STORE_PASS" -Dtsu.releasePassphrase="$RELEASE_CERT_PASS" clean assembleRelease'
+
+                    }
+
+                }
+
+            }
+            post {
+                always {
+                    archiveArtifacts artifacts: 'app/build/outputs/apk/**/*.apk', fingerprint: true
+
+                }
+
+            }
+
+        }
+
+
+        stage('Deploy for Development') {
+            when {
+                branch 'develop'
+            }
+            steps {
+                dir(WORKSPACE) {
+                    withCredentials([
+                            string(credentialsId: 'android-keystore-passphrase', variable: 'KEY_STORE_PASS'),
+                            string(credentialsId: 'android-release-passphrase', variable: 'RELEASE_CERT_PASS'),
+                    ]) {
+                        sh './gradlew -Dtsu.keystorePassphrase="$KEY_STORE_PASS" -Dtsu.releasePassphrase="$RELEASE_CERT_PASS" clean assembleRelease assembleDebug'
+
+                    }
+
+                }
+
+            }
+            post {
+                always {
+                    archiveArtifacts artifacts: 'app/build/outputs/apk/**/*.apk', fingerprint: true
+
+                }
+
+            }
+
+        }
+//         stage('Deliver for development') {
+//             when {
+//                 branch 'develop'
+//             }
+//             steps {
+//               withCredentials([
+//                 usernamePassword(credentialsId: 'android-artifactory-creds', usernameVariable: 'ART_USER', passwordVariable: 'ART_PASS')]){
+//                 sh './gradlew -PisSnapshot=true -Dartifactory.username="$ART_USER" -Dartifactory.password="$ART_PASS" clean check publish'
+//               }
+//                archiveArtifacts artifacts: 'build/libs/**/*.jar', fingerprint: true
+// 
+//             }
+//         }
+// 
+//        stage('Deploy for production') {
+//            when {
+//                branch 'master'
+//            }
+//            steps {
+//              withCredentials([
+//                usernamePassword(credentialsId: 'android-artifactory-creds', usernameVariable: 'ART_USER', passwordVariable: 'ART_PASS')]){
+//                sh './gradlew -Dartifactory.username="$ART_USER" -Dartifactory.password="$ART_PASS" clean check publish'
+//              }
+//            }
+//        }
+    }
+}

@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:fitsSystemWindows="false"
+    tools:background="@drawable/drawer_background">
+
+    <LinearLayout
+        android:id="@+id/drawerAvatarContainer"
+        android:gravity="center"
+        android:layout_width="@dimen/drawer_profile_image_size"
+        android:layout_height="@dimen/drawer_profile_image_size"
+        android:layout_marginStart="@dimen/drawer_items_margin"
+        android:layout_marginTop="@dimen/drawer_profile_image_margin_top"
+        android:layout_marginBottom="@dimen/drawer_items_margin"
+        android:background="@drawable/circle_background"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <de.hdodenhof.circleimageview.CircleImageView
+            android:id="@+id/drawerAvatar"
+            android:layout_width="@dimen/user_nav_header_icon_size"
+            android:layout_height="@dimen/user_nav_header_icon_size"
+            android:src="@drawable/user_nav_header" />
+    </LinearLayout>
+
+    <TextView
+        android:id="@+id/drawerFullName"
+        style="@style/TSUDrawerFullNameText"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/drawer_items_margin"
+        android:layout_marginTop="@dimen/drawer_items_margin"
+        android:layout_marginEnd="@dimen/drawer_items_margin"
+        app:layout_constraintBottom_toTopOf="@id/drawerUsername"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@id/drawerAvatarContainer"
+        app:layout_constraintTop_toTopOf="@id/drawerAvatarContainer"
+        app:layout_constraintVertical_chainStyle="packed"
+        tools:text="Full Name" />
+
+    <TextView
+        android:id="@+id/drawerUsername"
+        style="@style/TSUDrawerUsernameText"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/drawer_items_margin"
+        android:layout_marginEnd="@dimen/drawer_items_margin"
+        android:layout_marginBottom="@dimen/drawer_items_margin"
+        app:layout_constraintBottom_toBottomOf="@id/drawerAvatarContainer"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@id/drawerAvatarContainer"
+        app:layout_constraintTop_toBottomOf="@id/drawerFullName"
+        tools:text="@string/username_small" />
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/drawer_border_width"
+        android:background="@color/drawer_text"
+        app:layout_constraintBottom_toBottomOf="parent" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>

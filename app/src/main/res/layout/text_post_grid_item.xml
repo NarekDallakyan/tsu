@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:foreground="?attr/selectableItemBackground"
+    tools:background="@color/button_background_enabled">
+
+    <TextView
+        android:id="@+id/hashtag_preview"
+        style="@style/TSUTextAppearance.Bold"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_marginStart="@dimen/list_item_title_margin_horizontal"
+        android:layout_marginTop="13dp"
+        android:layout_marginEnd="@dimen/list_item_title_margin_horizontal"
+        android:layout_marginBottom="19dp"
+        android:ellipsize="end"
+        android:maxLines="5"
+        android:textColor="@color/black"
+        android:textSize="@dimen/font_small"
+        tools:text="@string/test_text" />
+
+</FrameLayout>
