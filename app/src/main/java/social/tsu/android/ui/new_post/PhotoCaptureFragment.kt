@@ -18,6 +18,7 @@ import androidx.camera.core.ImageCaptureException
 import social.tsu.android.ANIMATION_FAST_MILLIS
 import social.tsu.android.ANIMATION_SLOW_MILLIS
 import social.tsu.android.ui.CameraUtil
+import social.tsu.android.ui.post.view.PostTypesFragment
 import social.tsu.android.utils.pickMediaFromGallery
 import java.io.File
 

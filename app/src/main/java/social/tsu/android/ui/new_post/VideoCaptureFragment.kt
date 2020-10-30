@@ -9,6 +9,7 @@ import android.widget.ImageButton
 import androidx.camera.core.VideoCapture
 import androidx.camera.core.impl.VideoCaptureConfig
 import social.tsu.android.ui.CameraUtil
+import social.tsu.android.ui.post.view.PostTypesFragment
 import social.tsu.android.utils.hide
 import social.tsu.android.utils.pickMediaFromGallery
 import social.tsu.android.utils.show

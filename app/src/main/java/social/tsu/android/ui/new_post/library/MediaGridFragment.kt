@@ -10,7 +10,7 @@ import androidx.navigation.fragment.navArgs
 import kotlinx.android.synthetic.main.fragment_media_grid.*
 import kotlinx.android.synthetic.main.fragment_post_types.*
 import social.tsu.android.R
-import social.tsu.android.ui.new_post.PostTypesFragment
+import social.tsu.android.ui.post.view.PostTypesFragment
 
 class MediaGridFragment : Fragment(){
 

@@ -15,7 +15,7 @@ import kotlinx.android.synthetic.main.fragment_media_library.*
 import kotlinx.android.synthetic.main.fragment_post_types.*
 import social.tsu.android.R
 import social.tsu.android.ui.model.Data
-import social.tsu.android.ui.new_post.PostTypesFragment
+import social.tsu.android.ui.post.view.PostTypesFragment
 import social.tsu.android.utils.snack
 import javax.inject.Inject
 

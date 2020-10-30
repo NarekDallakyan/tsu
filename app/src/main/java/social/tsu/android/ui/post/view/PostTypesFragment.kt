@@ -1,4 +1,4 @@
-package social.tsu.android.ui.new_post
+package social.tsu.android.ui.post.view
 
 import android.content.pm.ActivityInfo
 import android.net.Uri
@@ -9,18 +9,17 @@ import android.view.ViewGroup
 import androidx.appcompat.widget.Toolbar
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.NavOptions
-import androidx.navigation.fragment.NavHostFragment
-import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import kotlinx.android.synthetic.main.fragment_post_types.*
 import social.tsu.android.R
 import social.tsu.android.helper.navigateSafe
+import social.tsu.android.ui.post.view.viewpager.*
 import social.tsu.android.utils.findParentNavController
 import social.tsu.android.utils.setScreenOrientation
 import social.tsu.android.utils.show
 import social.tsu.android.viewModel.SharedViewModel
-import java.lang.Exception
 
 /**
  * Main entry point for choosing media that can be attached to post.
@@ -47,9 +46,13 @@ class PostTypesFragment : Fragment() {
 
     val allowVideo by lazy { args.allowVideo }
 
-    private val navController by lazy {
-        (childFragmentManager
-            .findFragmentById(R.id.post_types_nav_host_fragment) as NavHostFragment).navController
+    // New post view pager fragments
+    private val fragments: ArrayList<Fragment> by lazy {
+        val fragments = ArrayList<Fragment>()
+        fragments.add(CameraPostFragment())
+        fragments.add(VideoPostFragment())
+        fragments.add(GifPostFragment())
+        return@lazy fragments
     }
 
     var sharedViewModel: SharedViewModel? = null
@@ -67,34 +70,40 @@ class PostTypesFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        //setup toolbar with nested nav graph
-        post_types_toolbar.visibility = View.GONE
-//        post_types_toolbar.setupWithNavController(navController)
-//
-//        sharedViewModel = ViewModelProvider(requireActivity()).get(SharedViewModel::class.java)
-//
-//        post_types_toolbar.menu.findItem(R.id.action_cancel).setOnMenuItemClickListener {
-//            post_types_toolbar.visibility = View.VISIBLE
-//            if (args.postingType == PostDraftType.MESSAGE) {
-//                findParentNavController().popBackStack(R.id.chatFragment, false)
-//            } else if (args.postingType == PostDraftType.COMMUNITY) {
-//                findParentNavController().popBackStack(R.id.postDraftFragment, false)
-//            } else {
-//                sharedViewModel!!.select(false)
-//                findParentNavController().popBackStack(R.id.mainFeedFragment, false)
-//            }
-//            return@setOnMenuItemClickListener true
-//        }
-//
-//
-//        toolbar = post_types_toolbar
+        // Init view models
+        initViewModels()
+        // Ui initialization
+        iniUi()
+        // Init on click listeners
+        initOnClicks()
+    }
 
+    private fun initOnClicks() {
+
+        // listen bottom buttons click listeners
         onClickButtons()
+    }
 
-        //restore fragment state if any
-        savedInstanceState?.getInt(STATE_SELECTED_ID)?.let {
-            navController.navigate(it)
-        }
+    private fun iniUi() {
+
+        // Init new post view pager
+        initNewPostViewPagerAdapter()
+        // Set default Camera Mode
+        setChoose(PHOTO_CLICK)
+        // Hide tool bar
+        post_types_toolbar.visibility = View.GONE
+    }
+
+    private fun initViewModels() {
+
+        sharedViewModel = ViewModelProvider(requireActivity()).get(SharedViewModel::class.java)
+    }
+
+    private fun initNewPostViewPagerAdapter() {
+
+        val newPostAdapter = NewPostViewPager(childFragmentManager, fragments.size, fragments)
+        newPostViewPager.setPageTransformer(true, ZoomOutPageTransformer())
+        newPostViewPager.adapter = newPostAdapter
     }
 
     private fun onClickButtons() {
@@ -116,11 +125,12 @@ class PostTypesFragment : Fragment() {
             setUnChoose(LANGUAGE_CLICK)
         }
 
-        view?.findViewById<ConstraintLayout>(R.id.libraryLayout_id)?.setOnClickListener {
-            findNavController().navigate(R.id.mediaLibraryFragment)
+        view?.findViewById<ConstraintLayout>(R.id.mediaLibraryFragment)?.setOnClickListener {
+            findParentNavController().navigate(R.id.mediaLibraryFragment)
         }
 
         view?.findViewById<ConstraintLayout>(R.id.closeLayout_id)?.setOnClickListener {
+            sharedViewModel!!.select(false)
             findParentNavController().popBackStack(R.id.mainFeedFragment, false)
         }
     }

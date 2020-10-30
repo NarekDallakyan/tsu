@@ -349,7 +349,7 @@
     <string name="community_need_moderation_msg">Your post was successfully created but needs to be approved by a community moderator. Once it\'s approved it will show up in this communities feed</string>
     <string name="community_suggested_empty">Oops, we don\'t have suggested communities for you yet. Please try again later</string>
 
-    <plurals name="members_quantity" >
+    <plurals name="members_quantity">
         <item quantity="one">%1$d Member</item>
         <item quantity="few">%1$d Members</item>
         <item quantity="many">%1$d Members</item>
@@ -358,7 +358,7 @@
         <item quantity="two">%1$d Members</item>
     </plurals>
 
-    <plurals name="members_quantity_no_number" >
+    <plurals name="members_quantity_no_number">
         <item quantity="one">Member</item>
         <item quantity="few">Members</item>
         <item quantity="many">Members</item>

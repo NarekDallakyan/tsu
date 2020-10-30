@@ -549,7 +549,7 @@
     </fragment>
     <fragment
         android:id="@+id/postTypesFragment"
-        android:name="social.tsu.android.ui.new_post.PostTypesFragment"
+        android:name="social.tsu.android.ui.post.view.PostTypesFragment"
         android:label="PostTypesFragment" >
         <action
             android:id="@+id/next"
@@ -1129,6 +1129,27 @@
     <fragment
         android:id="@+id/feedSettingsFragment"
         android:name="social.tsu.android.ui.post_feed.feed_type.FeedTypeFragment">
+    </fragment>
+
+    <fragment
+        android:id="@+id/mediaLibraryFragment"
+        android:name="social.tsu.android.ui.new_post.library.MediaLibraryFragment"
+        android:label="@string/select_media_file" >
+        <action
+            android:id="@+id/next"
+            app:destination="@id/mediaGridFragment" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/mediaGridFragment"
+        android:name="social.tsu.android.ui.new_post.library.MediaGridFragment"
+        android:label="" >
+        <argument
+            android:name="mediaList"
+            app:argType="social.tsu.android.ui.new_post.library.LibraryMedia[]" />
+        <argument
+            android:name="title"
+            app:argType="string" />
     </fragment>
     
 </navigation>

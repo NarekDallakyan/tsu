@@ -50,7 +50,7 @@ import social.tsu.android.network.model.UserProfile
 import social.tsu.android.network.model.UserProfileParams
 import social.tsu.android.service.UserProfileImageService
 import social.tsu.android.ui.MainActivity
-import social.tsu.android.ui.new_post.PostTypesFragmentDirections
+import social.tsu.android.ui.post.view.PostTypesFragmentDirections
 import social.tsu.android.ui.setVisibleOrGone
 import social.tsu.android.ui.user_profile.friends.UserFriendListType
 import social.tsu.android.utils.*

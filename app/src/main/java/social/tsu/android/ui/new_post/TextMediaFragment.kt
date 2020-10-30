@@ -42,6 +42,7 @@ import social.tsu.android.ui.new_post.adapter.ColorAdapter
 import social.tsu.android.ui.new_post.adapter.ColorGradientAdapter
 import social.tsu.android.ui.new_post.adapter.ColorTextAdapter
 import social.tsu.android.ui.new_post.adapter.FontAdapter
+import social.tsu.android.ui.post.view.PostTypesFragment
 import social.tsu.android.utils.dismissKeyboard
 import java.io.ByteArrayOutputStream
 import java.io.File
