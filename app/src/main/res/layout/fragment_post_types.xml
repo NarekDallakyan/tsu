@@ -20,7 +20,8 @@
         app:layout_constraintBottom_toTopOf="@+id/post_bottom_navbar"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toTopOf="parent" >
+    </androidx.viewpager.widget.ViewPager>
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/post_bottom_navbar"
@@ -138,7 +139,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginEnd="16dp"
-        app:layout_constraintBottom_toTopOf="@+id/imageView4"
+        app:layout_constraintBottom_toTopOf="@+id/snap_icon_id"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/textView"
         app:layout_constraintVertical_bias="0.6">
@@ -272,7 +273,7 @@
     </androidx.constraintlayout.widget.ConstraintLayout>
 
     <ImageView
-        android:id="@+id/imageView4"
+        android:id="@+id/snap_icon_id"
         android:layout_width="80dp"
         android:layout_height="80dp"
         android:layout_marginBottom="24dp"
@@ -281,5 +282,25 @@
         app:layout_constraintHorizontal_bias="0.498"
         app:layout_constraintStart_toStartOf="parent"
         app:srcCompat="@drawable/circle_snap" />
+
+    <ImageView
+        android:id="@+id/gallery_image_id"
+        android:layout_width="30dp"
+        android:layout_height="30dp"
+        app:layout_constraintBottom_toBottomOf="@+id/snap_icon_id"
+        app:layout_constraintEnd_toStartOf="@+id/snap_icon_id"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/snap_icon_id"
+        app:srcCompat="@drawable/img_white" />
+
+    <ImageView
+        android:id="@+id/camera_rotate_id"
+        android:layout_width="40dp"
+        android:layout_height="40dp"
+        app:layout_constraintBottom_toBottomOf="@+id/snap_icon_id"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/snap_icon_id"
+        app:layout_constraintTop_toTopOf="@+id/snap_icon_id"
+        app:srcCompat="@drawable/camera_rotate_white" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
