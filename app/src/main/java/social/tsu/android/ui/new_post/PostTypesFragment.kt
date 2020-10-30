@@ -9,16 +9,13 @@ import android.view.ViewGroup
 import androidx.appcompat.widget.Toolbar
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.fragment.app.Fragment
-import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.NavOptions
 import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
-import androidx.navigation.ui.setupWithNavController
 import kotlinx.android.synthetic.main.fragment_post_types.*
 import social.tsu.android.R
 import social.tsu.android.helper.navigateSafe
-import social.tsu.android.ui.new_post.library.MediaLibraryFragmentDirections
 import social.tsu.android.utils.findParentNavController
 import social.tsu.android.utils.setScreenOrientation
 import social.tsu.android.utils.show
@@ -132,17 +129,17 @@ class PostTypesFragment : Fragment() {
         when (layout) {
             LANGUAGE_CLICK -> {
                view?.findViewById<ConstraintLayout>(R.id.languageLayout_id)
-                   ?.setBackgroundResource(R.drawable.languages_icon)
+                   ?.setBackgroundResource(R.drawable.ic_languages_white_end)
             }
 
             PHOTO_CLICK -> {
                 view?.findViewById<ConstraintLayout>(R.id.photoLayout_id)
-                    ?.setBackgroundResource(R.drawable.ic_photo_camera)
+                    ?.setBackgroundResource(R.drawable.ic_photo_white)
             }
 
             WIFI_CLICK -> {
                 view?.findViewById<ConstraintLayout>(R.id.wifiLayout_id)
-                    ?.setBackgroundResource(R.drawable.languages_icon)
+                    ?.setBackgroundResource(R.drawable.ic_wifi_white_finish)
             }
         }
     }
@@ -151,17 +148,17 @@ class PostTypesFragment : Fragment() {
         when (layout) {
             LANGUAGE_CLICK -> {
                 view?.findViewById<ConstraintLayout>(R.id.languageLayout_id)
-                    ?.setBackgroundResource(R.drawable.languages_icon)
+                    ?.setBackgroundResource(R.drawable.ic_languages_gray)
             }
 
             PHOTO_CLICK -> {
                 view?.findViewById<ConstraintLayout>(R.id.photoLayout_id)
-                    ?.setBackgroundResource(R.drawable.ic_photo_camera)
+                    ?.setBackgroundResource(R.drawable.ic_photogray)
             }
 
             WIFI_CLICK -> {
                 view?.findViewById<ConstraintLayout>(R.id.wifiLayout_id)
-                    ?.setBackgroundResource(R.drawable.languages_icon)
+                    ?.setBackgroundResource(R.drawable.ic_wifi_gray_finish)
             }
         }
     }
