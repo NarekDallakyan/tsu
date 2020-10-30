@@ -72,6 +72,7 @@
     <color name="field_hint">#909295</color>
     <color name="field_multiline_hint">@color/primaryGray</color>
     <color name="light_green">#c4db6c</color>
+    <color name="next_green">#c6f688</color>
     <color name="shared_color">#647A33</color>
 
     <color name="text_description">#E2E2E2</color>
