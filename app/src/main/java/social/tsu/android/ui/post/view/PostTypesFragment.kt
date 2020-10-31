@@ -22,6 +22,7 @@ import social.tsu.android.ui.post.helper.LayoutChooseHelper.Companion.changeLayo
 import social.tsu.android.ui.post.helper.LayoutChooseHelper.Companion.setChoose
 import social.tsu.android.ui.post.view.viewpager.*
 import social.tsu.android.utils.findParentNavController
+import social.tsu.android.utils.hide
 import social.tsu.android.utils.show
 import social.tsu.android.viewModel.SharedViewModel
 
@@ -102,6 +103,9 @@ class PostTypesFragment : Fragment() {
 
     override fun onStop() {
         super.onStop()
+        if (!DeviceFlashHelper.deviceFlashIsAvailable()) {
+            return
+        }
         // Disable Flash
         DeviceFlashHelper.switchFlashLight(false)
         DeviceFlashHelper.unregisterFlashlightState(requireContext())
@@ -245,6 +249,11 @@ class PostTypesFragment : Fragment() {
             sharedViewModel!!.select(false)
             findParentNavController().popBackStack(R.id.mainFeedFragment, false)
         }
+
+        view?.findViewById<ConstraintLayout>(R.id.nextLayout4_id)?.setOnClickListener {
+            sharedViewModel!!.select(false)
+            findParentNavController().navigate(R.id.postResultFragment)
+        }
     }
 
     override fun onDestroyView() {
@@ -312,6 +321,10 @@ class PostTypesFragment : Fragment() {
 
         fun showToolbar() {
             toolbar?.show()
+        }
+
+        fun hideToolbar() {
+            toolbar?.hide()
         }
     }
 }

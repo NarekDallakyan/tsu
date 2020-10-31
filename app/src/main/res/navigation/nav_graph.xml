@@ -582,6 +582,9 @@
             app:argType="social.tsu.android.network.model.Membership"
             app:nullable="true"
             android:defaultValue="@null" />
+        <action
+            android:id="@+id/action_postTypesFragment_to_postResultFragment"
+            app:destination="@id/postResultFragment" />
     </fragment>
 
     <fragment
@@ -1151,5 +1154,10 @@
             android:name="title"
             app:argType="string" />
     </fragment>
-    
+    <fragment
+        android:id="@+id/postResultFragment"
+        android:name="social.tsu.android.ui.post.view.result.PostResultFragment"
+        android:label="fragment_post_result"
+        tools:layout="@layout/fragment_post_result" />
+
 </navigation>
