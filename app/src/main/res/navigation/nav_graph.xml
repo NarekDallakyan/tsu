@@ -1132,7 +1132,7 @@
     </fragment>
 
     <fragment
-        android:id="@+id/mediaLibraryFragment"
+        android:id="@+id/mediaLibraryLayout_id"
         android:name="social.tsu.android.ui.new_post.library.MediaLibraryFragment"
         android:label="@string/select_media_file" >
         <action

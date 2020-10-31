@@ -211,8 +211,8 @@ class PostTypesFragment : Fragment() {
             )
         }
 
-        view?.findViewById<ConstraintLayout>(R.id.mediaLibraryFragment)?.setOnClickListener {
-            findParentNavController().navigate(R.id.mediaLibraryFragment)
+        view?.findViewById<ConstraintLayout>(R.id.mediaLibraryLayout_id)?.setOnClickListener {
+            findParentNavController().navigate(R.id.mediaLibraryLayout_id)
         }
 
         view?.findViewById<ConstraintLayout>(R.id.closeLayout_id)?.setOnClickListener {

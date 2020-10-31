@@ -259,7 +259,7 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="1.0"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/mediaLibraryFragment">
+            app:layout_constraintTop_toBottomOf="@+id/mediaLibraryLayout_id">
 
             <TextView
                 android:id="@+id/textView4"
@@ -285,7 +285,7 @@
         </androidx.constraintlayout.widget.ConstraintLayout>
 
         <androidx.constraintlayout.widget.ConstraintLayout
-            android:id="@+id/mediaLibraryFragment"
+            android:id="@+id/mediaLibraryLayout_id"
             android:layout_width="wrap_content"
             android:layout_height="40dp"
             app:layout_constraintEnd_toEndOf="parent"
