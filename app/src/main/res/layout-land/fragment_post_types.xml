@@ -81,8 +81,8 @@
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/closeLayout_id"
-        android:layout_width="60dp"
-        android:layout_height="60dp"
+        android:layout_width="45dp"
+        android:layout_height="45dp"
         android:layout_marginStart="16dp"
         android:layout_marginTop="16dp"
         app:layout_constraintStart_toStartOf="parent"
@@ -90,8 +90,8 @@
 
         <ImageView
             android:id="@+id/imageView2"
-            android:layout_width="24dp"
-            android:layout_height="24dp"
+            android:layout_width="20dp"
+            android:layout_height="20dp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
@@ -104,8 +104,8 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Media"
-        android:textColor="@color/ib_fr_white"
-        android:textSize="16sp"
+        android:textColor="@color/black"
+        android:textSize="15sp"
         android:textStyle="bold"
         app:layout_constraintBottom_toBottomOf="@+id/closeLayout_id"
         app:layout_constraintEnd_toStartOf="@+id/nextLayout4_id"
@@ -114,8 +114,8 @@
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/nextLayout4_id"
-        android:layout_width="60dp"
-        android:layout_height="60dp"
+        android:layout_width="45dp"
+        android:layout_height="45dp"
         android:layout_marginTop="16dp"
         android:layout_marginEnd="16dp"
         app:layout_constraintEnd_toEndOf="parent"
@@ -127,7 +127,7 @@
             android:layout_height="wrap_content"
             android:text="Next"
             android:textColor="@color/next_green"
-            android:textSize="18sp"
+            android:textSize="16sp"
             android:textStyle="bold"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
@@ -138,7 +138,9 @@
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
         android:layout_marginEnd="16dp"
+        android:layout_marginBottom="8dp"
         app:layout_constraintBottom_toTopOf="@+id/snap_icon_id"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/nextLayout4_id">
@@ -146,7 +148,7 @@
         <androidx.constraintlayout.widget.ConstraintLayout
             android:id="@+id/soundLayout_id"
             android:layout_width="wrap_content"
-            android:layout_height="40dp"
+            android:layout_height="30dp"
             android:layout_marginTop="8dp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="1.0"
@@ -160,7 +162,7 @@
                 android:layout_marginEnd="8dp"
                 android:text="Sound"
                 android:textColor="@color/ib_fr_white"
-                android:textSize="15sp"
+                android:textSize="14sp"
                 android:textStyle="bold"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toStartOf="@+id/soundImageView3"
@@ -168,8 +170,8 @@
 
             <ImageView
                 android:id="@+id/soundImageView3"
-                android:layout_width="24dp"
-                android:layout_height="24dp"
+                android:layout_width="20dp"
+                android:layout_height="20dp"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
@@ -179,7 +181,7 @@
         <androidx.constraintlayout.widget.ConstraintLayout
             android:id="@+id/filterLayout_id"
             android:layout_width="wrap_content"
-            android:layout_height="40dp"
+            android:layout_height="30dp"
             android:layout_marginTop="8dp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="1.0"
@@ -193,7 +195,7 @@
                 android:layout_marginEnd="8dp"
                 android:text="Filter"
                 android:textColor="@color/ib_fr_white"
-                android:textSize="15sp"
+                android:textSize="14sp"
                 android:textStyle="bold"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toStartOf="@+id/filterImageView3"
@@ -201,8 +203,8 @@
 
             <ImageView
                 android:id="@+id/filterImageView3"
-                android:layout_width="24dp"
-                android:layout_height="24dp"
+                android:layout_width="20dp"
+                android:layout_height="20dp"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
@@ -212,7 +214,7 @@
         <androidx.constraintlayout.widget.ConstraintLayout
             android:id="@+id/flashLayout_id"
             android:layout_width="wrap_content"
-            android:layout_height="40dp"
+            android:layout_height="30dp"
             android:layout_marginTop="8dp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="1.0"
@@ -226,7 +228,7 @@
                 android:layout_marginEnd="8dp"
                 android:text="Flash"
                 android:textColor="@color/ib_fr_white"
-                android:textSize="15sp"
+                android:textSize="14sp"
                 android:textStyle="bold"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toStartOf="@+id/imageView3"
@@ -234,8 +236,8 @@
 
             <ImageView
                 android:id="@+id/imageView3"
-                android:layout_width="24dp"
-                android:layout_height="24dp"
+                android:layout_width="20dp"
+                android:layout_height="20dp"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
@@ -245,7 +247,7 @@
         <androidx.constraintlayout.widget.ConstraintLayout
             android:id="@+id/mediaLibraryFragment"
             android:layout_width="wrap_content"
-            android:layout_height="40dp"
+            android:layout_height="30dp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="1.0"
             app:layout_constraintStart_toStartOf="parent"
@@ -258,7 +260,7 @@
                 android:layout_marginEnd="8dp"
                 android:text="Library"
                 android:textColor="@color/ib_fr_white"
-                android:textSize="15sp"
+                android:textSize="14sp"
                 android:textStyle="bold"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toStartOf="@+id/libraryImageView3"
@@ -266,8 +268,8 @@
 
             <ImageView
                 android:id="@+id/libraryImageView3"
-                android:layout_width="24dp"
-                android:layout_height="24dp"
+                android:layout_width="20dp"
+                android:layout_height="20dp"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
@@ -277,8 +279,8 @@
 
     <ImageView
         android:id="@+id/snap_icon_id"
-        android:layout_width="80dp"
-        android:layout_height="80dp"
+        android:layout_width="60dp"
+        android:layout_height="60dp"
         android:layout_marginBottom="24dp"
         app:layout_constraintBottom_toBottomOf="@+id/newPostViewPager"
         app:layout_constraintEnd_toEndOf="parent"
@@ -288,8 +290,8 @@
 
     <ImageView
         android:id="@+id/gallery_image_id"
-        android:layout_width="30dp"
-        android:layout_height="30dp"
+        android:layout_width="20dp"
+        android:layout_height="20dp"
         app:layout_constraintBottom_toBottomOf="@+id/snap_icon_id"
         app:layout_constraintEnd_toStartOf="@+id/snap_icon_id"
         app:layout_constraintStart_toStartOf="parent"
@@ -298,8 +300,8 @@
 
     <ImageView
         android:id="@+id/camera_rotate_id"
-        android:layout_width="40dp"
-        android:layout_height="40dp"
+        android:layout_width="30dp"
+        android:layout_height="30dp"
         app:layout_constraintBottom_toBottomOf="@+id/snap_icon_id"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toEndOf="@+id/snap_icon_id"

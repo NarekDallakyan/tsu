@@ -1,6 +1,5 @@
 package social.tsu.android.ui.post.view
 
-import android.content.pm.ActivityInfo
 import android.net.Uri
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -19,7 +18,6 @@ import social.tsu.android.helper.DeviceFlashHelper
 import social.tsu.android.helper.navigateSafe
 import social.tsu.android.ui.post.view.viewpager.*
 import social.tsu.android.utils.findParentNavController
-import social.tsu.android.utils.setScreenOrientation
 import social.tsu.android.utils.show
 import social.tsu.android.viewModel.SharedViewModel
 
@@ -66,7 +64,7 @@ class PostTypesFragment : Fragment() {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        setScreenOrientation(ActivityInfo.SCREEN_ORIENTATION_UNSPECIFIED)
+        //setScreenOrientation(ActivityInfo.SCREEN_ORIENTATION_UNSPECIFIED)
         return inflater.inflate(R.layout.fragment_post_types, container, false)
     }
 
@@ -198,12 +196,13 @@ class PostTypesFragment : Fragment() {
         }
     }
 
-
     override fun onDestroyView() {
-        setScreenOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT)
+        //setScreenOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT)
         post_types_toolbar.visibility = View.VISIBLE
         super.onDestroyView()
         sharedViewModel!!.select(false)
+        // Disable Flash
+        DeviceFlashHelper.switchFlashLight(false)
     }
 
     override fun onDestroy() {
