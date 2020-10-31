@@ -16,6 +16,8 @@ import kotlinx.android.synthetic.main.fragment_post_types.*
 import social.tsu.android.R
 import social.tsu.android.helper.DeviceFlashHelper
 import social.tsu.android.helper.navigateSafe
+import social.tsu.android.ui.post.helper.LayoutChooseHelper
+import social.tsu.android.ui.post.helper.LayoutChooseHelper.Companion.setChoose
 import social.tsu.android.ui.post.view.viewpager.*
 import social.tsu.android.utils.findParentNavController
 import social.tsu.android.utils.show
@@ -100,7 +102,12 @@ class PostTypesFragment : Fragment() {
         // Init new post view pager
         initNewPostViewPagerAdapter()
         // Set default Camera Mode
-        setChoose(PHOTO_CLICK)
+        setChoose(
+            PHOTO_CLICK,
+            view?.findViewById(R.id.languageLayout_id)!!,
+            view?.findViewById(R.id.photoLayout_id)!!,
+            view?.findViewById(R.id.wifiLayout_id)!!
+        )
         // Hide tool bar
         post_types_toolbar.visibility = View.GONE
     }
@@ -131,21 +138,30 @@ class PostTypesFragment : Fragment() {
             DeviceFlashHelper.switchFlashLight(!flashIsOn)
         }
         view?.findViewById<ConstraintLayout>(R.id.languageLayout_id)?.setOnClickListener {
-            setChoose(LANGUAGE_CLICK)
-            setUnChoose(PHOTO_CLICK)
-            setUnChoose(WIFI_CLICK)
+            setChoose(
+                LANGUAGE_CLICK,
+                view?.findViewById(R.id.languageLayout_id)!!,
+                view?.findViewById(R.id.photoLayout_id)!!,
+                view?.findViewById(R.id.wifiLayout_id)!!
+            )
         }
 
         view?.findViewById<ConstraintLayout>(R.id.photoLayout_id)?.setOnClickListener {
-            setChoose(PHOTO_CLICK)
-            setUnChoose(LANGUAGE_CLICK)
-            setUnChoose(WIFI_CLICK)
+            setChoose(
+                PHOTO_CLICK,
+                view?.findViewById(R.id.languageLayout_id)!!,
+                view?.findViewById(R.id.photoLayout_id)!!,
+                view?.findViewById(R.id.wifiLayout_id)!!
+            )
         }
 
         view?.findViewById<ConstraintLayout>(R.id.wifiLayout_id)?.setOnClickListener {
-            setChoose(WIFI_CLICK)
-            setUnChoose(PHOTO_CLICK)
-            setUnChoose(LANGUAGE_CLICK)
+            setChoose(
+                WIFI_CLICK,
+                view?.findViewById(R.id.languageLayout_id)!!,
+                view?.findViewById(R.id.photoLayout_id)!!,
+                view?.findViewById(R.id.wifiLayout_id)!!
+            )
         }
 
         view?.findViewById<ConstraintLayout>(R.id.mediaLibraryFragment)?.setOnClickListener {
@@ -158,43 +174,43 @@ class PostTypesFragment : Fragment() {
         }
     }
 
-    private fun setChoose(layout: Int) {
-        when (layout) {
-            LANGUAGE_CLICK -> {
-                view?.findViewById<ConstraintLayout>(R.id.languageLayout_id)
-                    ?.setBackgroundResource(R.drawable.ic_languages_white_end)
-            }
-
-            PHOTO_CLICK -> {
-                view?.findViewById<ConstraintLayout>(R.id.photoLayout_id)
-                    ?.setBackgroundResource(R.drawable.ic_photo_white)
-            }
-
-            WIFI_CLICK -> {
-                view?.findViewById<ConstraintLayout>(R.id.wifiLayout_id)
-                    ?.setBackgroundResource(R.drawable.ic_wifi_white_finish)
-            }
-        }
-    }
-
-    private fun setUnChoose(layout: Int) {
-        when (layout) {
-            LANGUAGE_CLICK -> {
-                view?.findViewById<ConstraintLayout>(R.id.languageLayout_id)
-                    ?.setBackgroundResource(R.drawable.ic_languages_gray)
-            }
-
-            PHOTO_CLICK -> {
-                view?.findViewById<ConstraintLayout>(R.id.photoLayout_id)
-                    ?.setBackgroundResource(R.drawable.ic_photogray)
-            }
-
-            WIFI_CLICK -> {
-                view?.findViewById<ConstraintLayout>(R.id.wifiLayout_id)
-                    ?.setBackgroundResource(R.drawable.ic_wifi_gray_finish)
-            }
-        }
-    }
+//    private fun setChoose(layout: Int) {
+//        when (layout) {
+//            LANGUAGE_CLICK -> {
+//                view?.findViewById<ConstraintLayout>(R.id.languageLayout_id)
+//                    ?.setBackgroundResource(R.drawable.ic_languages_white_end)
+//            }
+//
+//            PHOTO_CLICK -> {
+//                view?.findViewById<ConstraintLayout>(R.id.photoLayout_id)
+//                    ?.setBackgroundResource(R.drawable.ic_photo_white)
+//            }
+//
+//            WIFI_CLICK -> {
+//                view?.findViewById<ConstraintLayout>(R.id.wifiLayout_id)
+//                    ?.setBackgroundResource(R.drawable.ic_wifi_white_finish)
+//            }
+//        }
+//    }
+//
+//    private fun setUnChoose(layout: Int) {
+//        when (layout) {
+//            LANGUAGE_CLICK -> {
+//                view?.findViewById<ConstraintLayout>(R.id.languageLayout_id)
+//                    ?.setBackgroundResource(R.drawable.ic_languages_gray)
+//            }
+//
+//            PHOTO_CLICK -> {
+//                view?.findViewById<ConstraintLayout>(R.id.photoLayout_id)
+//                    ?.setBackgroundResource(R.drawable.ic_photogray)
+//            }
+//
+//            WIFI_CLICK -> {
+//                view?.findViewById<ConstraintLayout>(R.id.wifiLayout_id)
+//                    ?.setBackgroundResource(R.drawable.ic_wifi_gray_finish)
+//            }
+//        }
+//    }
 
     override fun onDestroyView() {
         //setScreenOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT)
@@ -256,9 +272,9 @@ class PostTypesFragment : Fragment() {
 
     companion object {
         private const val STATE_SELECTED_ID = "id"
-        private const val LANGUAGE_CLICK = 1
-        private const val PHOTO_CLICK = 2
-        private const val WIFI_CLICK = 3
+        const val LANGUAGE_CLICK = 1
+        const val PHOTO_CLICK = 2
+        const val WIFI_CLICK = 3
         private var toolbar: Toolbar? = null
 
         fun showToolbar() {

@@ -57,7 +57,7 @@
                 android:id="@+id/wifiLayout_id"
                 android:layout_width="30dp"
                 android:layout_height="30dp"
-                android:background="@drawable/wifi_icon_gray"
+                android:background="@drawable/ic_wifi_gray_ending"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintTop_toTopOf="parent">
