@@ -97,7 +97,7 @@ class VideoCaptureFragment : BaseCameraFragment<VideoCapture>() {
                             onStopRecording()
                             recordingState = RecordingState.Stopped
                             if (cause != null) {
-                                cause.printStackTrace();
+                                cause.printStackTrace()
                                 Log.e(TAG, "Error on save video", cause)
                             }
                         }
@@ -145,7 +145,7 @@ class VideoCaptureFragment : BaseCameraFragment<VideoCapture>() {
     }
 
     private fun onStopRecording() {
-        cameraCaptureButton.isActivated = false
+        cameraCaptureButton?.isActivated = false
         cameraSwitchButton.show()
     }
 

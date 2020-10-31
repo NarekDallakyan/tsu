@@ -2,13 +2,16 @@ package social.tsu.android.ui.post.helper
 
 import android.content.Context
 import android.graphics.Typeface
+import android.os.Handler
 import android.widget.TextView
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.core.content.ContextCompat
-import kotlinx.android.synthetic.main.fragment_post_types.*
+import androidx.fragment.app.Fragment
 import social.tsu.android.R
 import social.tsu.android.helper.DeviceUtils
 import social.tsu.android.ui.post.view.PostTypesFragment
+import social.tsu.android.ui.post.view.viewpager.PhotoCameraPostFragment
+import social.tsu.android.ui.post.view.viewpager.RecordVideoPostFragment
 
 class LayoutChooseHelper {
     companion object {
@@ -196,7 +199,6 @@ class LayoutChooseHelper {
             }
         }
 
-
         fun changeLayoutAlpha(layout: ConstraintLayout) {
             when (layout.alpha) {
                 1F -> {
@@ -207,7 +209,5 @@ class LayoutChooseHelper {
                 }
             }
         }
-
-
     }
 }

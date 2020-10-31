@@ -1,7 +1,5 @@
 package social.tsu.android.ui.post.view
 
-import android.content.Context
-import android.graphics.Typeface
 import android.net.Uri
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -10,7 +8,6 @@ import android.view.ViewGroup
 import android.widget.Toast
 import androidx.appcompat.widget.Toolbar
 import androidx.constraintlayout.widget.ConstraintLayout
-import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.NavOptions
@@ -19,7 +16,6 @@ import androidx.viewpager.widget.ViewPager
 import kotlinx.android.synthetic.main.fragment_post_types.*
 import social.tsu.android.R
 import social.tsu.android.helper.DeviceFlashHelper
-import social.tsu.android.helper.DeviceUtils.Companion.pixelsToSp
 import social.tsu.android.helper.navigateSafe
 import social.tsu.android.ui.post.helper.LayoutChooseHelper
 import social.tsu.android.ui.post.helper.LayoutChooseHelper.Companion.changeLayoutAlpha
@@ -58,8 +54,8 @@ class PostTypesFragment : Fragment() {
     // New post view pager fragments
     private val fragments: ArrayList<Fragment> by lazy {
         val fragments = ArrayList<Fragment>()
-        fragments.add(CameraPostFragment())
-        fragments.add(VideoPostFragment())
+        fragments.add(PhotoCameraPostFragment())
+        fragments.add(RecordVideoPostFragment())
         fragments.add(GifPostFragment())
         return@lazy fragments
     }
@@ -149,7 +145,7 @@ class PostTypesFragment : Fragment() {
             }
 
             override fun onPageSelected(position: Int) {
-                //handle view pager after changing
+                // Handle view pager after changing
                 LayoutChooseHelper.handleViewPagerChange(
                     requireContext(),
                     position,
