@@ -4,19 +4,19 @@ import android.net.Uri
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
+import android.view.View.GONE
+import android.view.View.VISIBLE
 import android.view.ViewGroup
 import android.widget.Toast
 import androidx.appcompat.widget.Toolbar
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
-import androidx.navigation.NavOptions
 import androidx.navigation.fragment.navArgs
 import androidx.viewpager.widget.ViewPager
 import kotlinx.android.synthetic.main.fragment_post_types.*
 import social.tsu.android.R
 import social.tsu.android.helper.DeviceFlashHelper
-import social.tsu.android.helper.navigateSafe
 import social.tsu.android.ui.post.helper.LayoutChooseHelper
 import social.tsu.android.ui.post.helper.LayoutChooseHelper.Companion.changeLayoutAlpha
 import social.tsu.android.ui.post.helper.LayoutChooseHelper.Companion.setChoose
@@ -24,6 +24,8 @@ import social.tsu.android.ui.post.view.viewpager.*
 import social.tsu.android.utils.findParentNavController
 import social.tsu.android.utils.show
 import social.tsu.android.viewModel.SharedViewModel
+import java.util.*
+import kotlin.collections.ArrayList
 
 
 /**
@@ -62,6 +64,11 @@ class PostTypesFragment : Fragment() {
 
     var sharedViewModel: SharedViewModel? = null
 
+    // Video record time
+    private var mTimer: Timer? = null
+    private var timer: TimerTask? = null
+    private var seconds = 0L
+
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -81,6 +88,44 @@ class PostTypesFragment : Fragment() {
         iniUi()
         // Init on click listeners
         initOnClicks()
+    }
+
+    private fun startRecordingTimer(start: Boolean) {
+
+        // Check if timer is null
+        if (timer == null) {
+            timer = object : TimerTask() {
+                override fun run() {
+                    seconds++
+
+                    val hours = seconds / 3600
+                    val minutes = seconds % 3600 / 60
+                    val seconds = seconds % 60
+                    requireActivity().runOnUiThread {
+                        timerText?.text = "$hours:$minutes:$seconds"
+                    }
+                }
+            }
+        }
+
+        if (!start) {
+            // Stop timer case
+            timerText?.visibility = GONE
+            timerText?.text = ""
+            timer?.cancel();
+            timer = null;
+            seconds = 0L
+            return
+        }
+
+        // Start timer case
+        timerText?.text = ""
+        timerText?.visibility = VISIBLE
+        if (timer == null) {
+            return
+        }
+        mTimer = Timer()
+        mTimer?.scheduleAtFixedRate(timer, 0L, 1000L)
     }
 
     override fun onStart() {
@@ -117,6 +162,54 @@ class PostTypesFragment : Fragment() {
 
             handleSwitchCamera()
         }
+
+        // Listen start camera button on click
+        snap_icon_id.setOnClickListener {
+
+            handleStartCamera()
+        }
+    }
+
+    private fun handleStartCamera() {
+
+        // Get view pager current page position
+        when (newPostViewPager.currentItem) {
+            0 -> {
+                val fragment = fragments[0] as PhotoCameraPostFragment
+
+            }
+            1 -> {
+                val fragment = fragments[1] as RecordVideoPostFragment
+
+            }
+            else -> {
+
+                val fragment = fragments[2] as GifPostFragment
+
+                if (isTimerRunning()) {
+                    startRecordingTimer(false)
+                    fragment.stopRecording()
+                    return
+                }
+
+                fragment.recordGif { onCancel: Boolean, onStart: Boolean ->
+
+                    if (onCancel) {
+                        startRecordingTimer(false)
+                        return@recordGif
+                    }
+
+                    if (onStart) {
+                        startRecordingTimer(true)
+                        return@recordGif
+                    }
+                }
+            }
+        }
+    }
+
+    private fun isTimerRunning(): Boolean {
+        return timerText?.visibility == VISIBLE
     }
 
     private fun handleSwitchCamera() {
@@ -276,22 +369,24 @@ class PostTypesFragment : Fragment() {
         videoContentUri: String? = null,
         photoUri: Uri? = null
     ) {
-        val direction = PostTypesFragmentDirections.next(
-            videoPath, videoContentUri, photoUri
-        ).apply {
-            this.postText = args.postText
-            this.recipient = args.recipient
-            this.postingType = args.postingType
-            this.membership = args.membership
-            this.allowVideo = args.allowVideo
-            this.popToDestination = args.popToDestination
-        }
 
-        val navOptions = NavOptions.Builder()
-            .setPopUpTo(args.popToDestination, false)
-            .build()
-
-        findParentNavController().navigateSafe(direction, navOptions)
+        Toast.makeText(requireContext(), "Success", Toast.LENGTH_LONG).show()
+//        val direction = PostTypesFragmentDirections.next(
+//            videoPath, videoContentUri, photoUri
+//        ).apply {
+//            this.postText = args.postText
+//            this.recipient = args.recipient
+//            this.postingType = args.postingType
+//            this.membership = args.membership
+//            this.allowVideo = args.allowVideo
+//            this.popToDestination = args.popToDestination
+//        }
+//
+//        val navOptions = NavOptions.Builder()
+//            .setPopUpTo(args.popToDestination, false)
+//            .build()
+//
+//        findParentNavController().navigateSafe(direction, navOptions)
     }
 
     private fun showNoFlashError() {

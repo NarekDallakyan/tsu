@@ -7,10 +7,13 @@ import android.view.View
 import android.widget.ImageButton
 import androidx.camera.core.VideoCapture
 import androidx.camera.core.impl.VideoCaptureConfig
+import social.tsu.android.ui.CameraUtil
 import social.tsu.android.ui.new_post.BaseCameraFragment
 import social.tsu.android.ui.post.view.PostTypesFragment
 import social.tsu.android.ui.post.view.RecordingState
+import social.tsu.android.utils.hide
 import social.tsu.android.utils.pickMediaFromGallery
+import java.io.File
 
 
 class GifPostFragment : BaseCameraFragment<VideoCapture>() {
@@ -21,6 +24,9 @@ class GifPostFragment : BaseCameraFragment<VideoCapture>() {
     }
 
     private var recordingState: RecordingState = RecordingState.Stopped
+
+    private var callBack: ((onCancel: Boolean, onStart: Boolean) -> Unit)? =
+        null
 
     override fun onPause() {
         if (recordingState is RecordingState.Recording) {
@@ -49,6 +55,66 @@ class GifPostFragment : BaseCameraFragment<VideoCapture>() {
 
     override fun onCaptureImageClick(button: ImageButton) {
 
+        when (recordingState) {
+            is RecordingState.Stopped,
+            is RecordingState.Canceled -> {
+                val videoFile = CameraUtil.createFile(
+                    outputDirectory,
+                    FILENAME,
+                    VIDEO_EXTENSION
+                )
+                recordingState = RecordingState.Recording
+                button.isActivated = true
+                cameraSwitchButton.hide()
+                capture?.startRecording(
+                    videoFile,
+                    cameraExecutor,
+                    object : VideoCapture.OnVideoSavedCallback {
+                        override fun onVideoSaved(file: File) {
+                            if (recordingState != RecordingState.Canceled) {
+                                //Pass recorded file to PostTypesFragment
+                                val fragment = parentFragment
+                                if (fragment is PostTypesFragment) {
+                                    this@GifPostFragment.callBack?.let {
+                                        it(false, false)
+                                    }
+                                    Log.d(TAG, "Saved video $file")
+                                    fragment.next(videoPath = file.toString())
+                                    return
+                                }
+                            }
+
+                            Log.d(TAG, "Recording video canceled.")
+                            this@GifPostFragment.callBack?.let {
+                                it(true, false)
+                            }
+                        }
+
+                        override fun onError(
+                            videoCaptureError: Int,
+                            message: String,
+                            cause: Throwable?
+                        ) {
+                            onStopRecording()
+                            recordingState = RecordingState.Stopped
+                            if (cause != null) {
+                                cause.printStackTrace()
+                                Log.e(TAG, "Error on save video", cause)
+                            }
+
+                            this@GifPostFragment.callBack?.let {
+                                it(true, false)
+                            }
+                        }
+
+                    })
+            }
+            is RecordingState.Recording -> {
+                recordingState = RecordingState.Stopped
+                capture?.stopRecording()
+                onStopRecording()
+            }
+        }
     }
 
     override fun onDisplayChanged(view: View) {
@@ -79,5 +145,33 @@ class GifPostFragment : BaseCameraFragment<VideoCapture>() {
 
     private fun onStopRecording() {
 
+    }
+
+    fun stopRecording() {
+
+        startCapturing {
+
+            if (it) {
+                this.callBack?.let {
+                    it(true, false)
+                }
+            }
+        }
+    }
+
+    fun recordGif(callBack: (onCancel: Boolean, onStart: Boolean) -> Unit) {
+
+        this.callBack = callBack
+        startCapturing {
+
+            if (it) {
+                this.callBack?.let {
+                    it(true, false)
+                }
+            }
+        }
+        this.callBack?.let {
+            it(false, true)
+        }
     }
 }

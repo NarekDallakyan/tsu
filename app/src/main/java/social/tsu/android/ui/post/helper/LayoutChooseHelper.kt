@@ -1,12 +1,17 @@
 package social.tsu.android.ui.post.helper
 
 import android.content.Context
+import android.graphics.Bitmap
+import android.graphics.Color
 import android.graphics.Typeface
 import android.os.Handler
+import android.view.View
+import android.widget.ImageView
 import android.widget.TextView
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
+import jp.wasabeef.blurry.Blurry
 import social.tsu.android.R
 import social.tsu.android.helper.DeviceUtils
 import social.tsu.android.ui.post.view.PostTypesFragment
@@ -19,17 +24,26 @@ class LayoutChooseHelper {
 
         private val mHandle = Handler()
         private var fragments = ArrayList<Fragment>()
+        private var blurImage: ImageView? = null
 
         private val photoRunnable: () -> Unit = {
-            (fragments[0] as PhotoCameraPostFragment).resetCamera()
+
+            val fragment = fragments[0] as PhotoCameraPostFragment
+
+            fragment.resetCamera()
         }
 
         private val videoRunnable: () -> Unit = {
-            (fragments[1] as RecordVideoPostFragment).resetCamera()
+
+            val fragment = fragments[1] as RecordVideoPostFragment
+
+            fragment.resetCamera()
         }
 
         private val gifRunnable: () -> Unit = {
-            (fragments[2] as GifPostFragment).resetCamera()
+
+            val fragment = fragments[2] as GifPostFragment
+            fragment.resetCamera()
         }
 
         fun setChoose(
@@ -115,6 +129,8 @@ class LayoutChooseHelper {
         }
 
 
+
+
         fun handleViewPagerChange(
             context: Context,
             position: Int,
@@ -124,11 +140,13 @@ class LayoutChooseHelper {
             fragments: ArrayList<Fragment>
         ) {
             this.fragments = fragments
+            this.blurImage = blurImage
 
             when (position) {
 
                 // Photo section
                 0 -> {
+
                     // Change text styles
                     newPostPhotoText.setTypeface(newPostPhotoText.typeface, Typeface.BOLD)
                     newPostVideoText.setTypeface(newPostVideoText.typeface, Typeface.NORMAL)
@@ -160,11 +178,12 @@ class LayoutChooseHelper {
                     mHandle.removeCallbacks(gifRunnable)
                     mHandle.removeCallbacks(photoRunnable)
                     mHandle.removeCallbacks(videoRunnable)
-                    mHandle.postDelayed(photoRunnable, 200)
+                    mHandle.postDelayed(photoRunnable, 500)
                 }
 
                 // Video section
                 1 -> {
+
                     // Change text styles
                     newPostPhotoText.setTypeface(newPostPhotoText.typeface, Typeface.NORMAL)
                     newPostVideoText.setTypeface(newPostVideoText.typeface, Typeface.BOLD)
@@ -196,11 +215,12 @@ class LayoutChooseHelper {
                     mHandle.removeCallbacks(gifRunnable)
                     mHandle.removeCallbacks(photoRunnable)
                     mHandle.removeCallbacks(videoRunnable)
-                    mHandle.postDelayed(videoRunnable, 200)
+                    mHandle.postDelayed(videoRunnable, 500)
                 }
 
                 // GIF section
                 2 -> {
+
                     // Change text styles
                     newPostPhotoText.setTypeface(newPostPhotoText.typeface, Typeface.NORMAL)
                     newPostVideoText.setTypeface(newPostVideoText.typeface, Typeface.NORMAL)
@@ -227,7 +247,7 @@ class LayoutChooseHelper {
                     mHandle.removeCallbacks(gifRunnable)
                     mHandle.removeCallbacks(photoRunnable)
                     mHandle.removeCallbacks(videoRunnable)
-                    mHandle.postDelayed(gifRunnable, 200)
+                    mHandle.postDelayed(gifRunnable, 500)
                 }
             }
         }
@@ -241,6 +261,28 @@ class LayoutChooseHelper {
                     layout.alpha = 1F
                 }
             }
+        }
+
+        private fun makeBlur(
+            mContext: Context,
+            radius: Int,
+            sampling: Int,
+            color: Int,
+            from: Bitmap?,
+            into: ImageView
+        ) {
+
+            if (from == null) return
+
+            into.visibility = View.VISIBLE
+
+            Blurry.with(mContext)
+                .radius(radius)
+                .sampling(sampling)
+                .color(color)
+                .async()
+                .from(from)
+                .into(into)
         }
     }
 }
