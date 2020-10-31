@@ -9,6 +9,7 @@ import androidx.camera.core.VideoCapture
 import androidx.camera.core.impl.VideoCaptureConfig
 import social.tsu.android.ui.new_post.BaseCameraFragment
 import social.tsu.android.ui.post.view.PostTypesFragment
+import social.tsu.android.ui.post.view.RecordingState
 import social.tsu.android.utils.pickMediaFromGallery
 
 class RecordVideoPostFragment : BaseCameraFragment<VideoCapture>() {
@@ -78,10 +79,4 @@ class RecordVideoPostFragment : BaseCameraFragment<VideoCapture>() {
     private fun onStopRecording() {
 
     }
-}
-
-sealed class RecordingState {
-    object Recording : RecordingState()
-    object Stopped : RecordingState()
-    object Canceled : RecordingState()
 }

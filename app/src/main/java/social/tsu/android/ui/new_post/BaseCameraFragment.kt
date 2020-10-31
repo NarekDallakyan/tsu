@@ -178,7 +178,7 @@ abstract class BaseCameraFragment<Capture : UseCase> : Fragment() {
     }
 
     @SuppressLint("RestrictedApi")
-    private fun resetCamera() {
+    fun resetCamera() {
         cameraProviderFuture = ProcessCameraProvider.getInstance(requireContext())
         cameraProviderFuture.addListener(Runnable {
             try {

@@ -121,7 +121,8 @@ class PostTypesFragment : Fragment() {
             0,
             newPostPhotoText,
             newPostVideoText,
-            newPostGifText
+            newPostGifText,
+            fragments
         )
     }
 
@@ -151,7 +152,8 @@ class PostTypesFragment : Fragment() {
                     position,
                     newPostPhotoText,
                     newPostVideoText,
-                    newPostGifText
+                    newPostGifText,
+                    fragments
                 )
             }
 
@@ -288,4 +290,10 @@ class PostTypesFragment : Fragment() {
             toolbar?.show()
         }
     }
+}
+
+sealed class RecordingState {
+    object Recording : RecordingState()
+    object Stopped : RecordingState()
+    object Canceled : RecordingState()
 }

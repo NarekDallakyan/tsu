@@ -10,11 +10,27 @@ import androidx.fragment.app.Fragment
 import social.tsu.android.R
 import social.tsu.android.helper.DeviceUtils
 import social.tsu.android.ui.post.view.PostTypesFragment
+import social.tsu.android.ui.post.view.viewpager.GifPostFragment
 import social.tsu.android.ui.post.view.viewpager.PhotoCameraPostFragment
 import social.tsu.android.ui.post.view.viewpager.RecordVideoPostFragment
 
 class LayoutChooseHelper {
     companion object {
+
+        private val mHandle = Handler()
+        private var fragments = ArrayList<Fragment>()
+
+        private val photoRunnable: () -> Unit = {
+            (fragments[0] as PhotoCameraPostFragment).resetCamera()
+        }
+
+        private val videoRunnable: () -> Unit = {
+            (fragments[1] as RecordVideoPostFragment).resetCamera()
+        }
+
+        private val gifRunnable: () -> Unit = {
+            (fragments[2] as GifPostFragment).resetCamera()
+        }
 
         fun setChoose(
             layout: Int,
@@ -104,8 +120,10 @@ class LayoutChooseHelper {
             position: Int,
             newPostPhotoText: TextView,
             newPostVideoText: TextView,
-            newPostGifText: TextView
+            newPostGifText: TextView,
+            fragments: ArrayList<Fragment>
         ) {
+            this.fragments = fragments
 
             when (position) {
 
@@ -138,6 +156,11 @@ class LayoutChooseHelper {
                             R.color.ib_fr_white
                         )
                     )
+
+                    mHandle.removeCallbacks(gifRunnable)
+                    mHandle.removeCallbacks(photoRunnable)
+                    mHandle.removeCallbacks(videoRunnable)
+                    mHandle.postDelayed(photoRunnable, 200)
                 }
 
                 // Video section
@@ -169,6 +192,11 @@ class LayoutChooseHelper {
                             R.color.ib_fr_white
                         )
                     )
+
+                    mHandle.removeCallbacks(gifRunnable)
+                    mHandle.removeCallbacks(photoRunnable)
+                    mHandle.removeCallbacks(videoRunnable)
+                    mHandle.postDelayed(videoRunnable, 200)
                 }
 
                 // GIF section
@@ -195,6 +223,11 @@ class LayoutChooseHelper {
                         )
                     )
                     newPostGifText.setTextColor(ContextCompat.getColor(context, R.color.next_green))
+
+                    mHandle.removeCallbacks(gifRunnable)
+                    mHandle.removeCallbacks(photoRunnable)
+                    mHandle.removeCallbacks(videoRunnable)
+                    mHandle.postDelayed(gifRunnable, 200)
                 }
             }
         }
