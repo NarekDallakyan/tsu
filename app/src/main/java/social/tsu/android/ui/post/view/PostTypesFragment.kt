@@ -86,6 +86,18 @@ class PostTypesFragment : Fragment() {
     override fun onStart() {
         super.onStart()
         DeviceFlashHelper.registerFlashlightState(requireContext())
+        // Get view pager current page position
+        val currentPagePosition = newPostViewPager.currentItem
+        // Handle view pager after changing
+        LayoutChooseHelper.handleViewPagerChange(
+            requireContext(),
+            currentPagePosition,
+            newPostPhotoText,
+            newPostVideoText,
+            newPostGifText,
+            fragments
+        )
+
     }
 
     override fun onStop() {
@@ -114,16 +126,6 @@ class PostTypesFragment : Fragment() {
         )
         // Hide tool bar
         post_types_toolbar.visibility = View.GONE
-
-        //handle view pager after changing
-        LayoutChooseHelper.handleViewPagerChange(
-            requireContext(),
-            0,
-            newPostPhotoText,
-            newPostVideoText,
-            newPostGifText,
-            fragments
-        )
     }
 
     private fun initViewModels() {
