@@ -16,7 +16,6 @@ import androidx.navigation.fragment.navArgs
 import androidx.viewpager.widget.ViewPager
 import kotlinx.android.synthetic.main.fragment_post_types.*
 import social.tsu.android.R
-import social.tsu.android.helper.DeviceFlashHelper
 import social.tsu.android.ui.post.helper.LayoutChooseHelper
 import social.tsu.android.ui.post.helper.LayoutChooseHelper.Companion.changeLayoutAlpha
 import social.tsu.android.ui.post.helper.LayoutChooseHelper.Companion.setChoose
@@ -69,6 +68,8 @@ class PostTypesFragment : Fragment() {
     private var mTimer: Timer? = null
     private var timer: TimerTask? = null
     private var seconds = 0L
+
+    private var filePath: String? = null
 
 
     override fun onCreateView(
@@ -131,7 +132,6 @@ class PostTypesFragment : Fragment() {
 
     override fun onStart() {
         super.onStart()
-        DeviceFlashHelper.registerFlashlightState(requireContext())
         // Get view pager current page position
         val currentPagePosition = newPostViewPager.currentItem
         // Handle view pager after changing
@@ -143,17 +143,6 @@ class PostTypesFragment : Fragment() {
             newPostGifText,
             fragments
         )
-
-    }
-
-    override fun onStop() {
-        super.onStop()
-        if (!DeviceFlashHelper.deviceFlashIsAvailable()) {
-            return
-        }
-        // Disable Flash
-        DeviceFlashHelper.switchFlashLight(false)
-        DeviceFlashHelper.unregisterFlashlightState(requireContext())
     }
 
     private fun initOnClicks() {
@@ -171,6 +160,11 @@ class PostTypesFragment : Fragment() {
         snap_icon_id.setOnClickListener {
 
             handleStartCamera()
+        }
+
+        // Listen library button on click
+        gallery_image_id.setOnClickListener {
+            findParentNavController().navigate(R.id.mediaLibraryLayout_id)
         }
     }
 
@@ -232,6 +226,11 @@ class PostTypesFragment : Fragment() {
         }
     }
 
+    private fun getScreenType(): Int {
+
+        return newPostViewPager.currentItem
+    }
+
     private fun iniUi() {
 
         // Init new post view pager
@@ -288,18 +287,21 @@ class PostTypesFragment : Fragment() {
 
         view?.findViewById<ConstraintLayout>(R.id.flashLayout_id)?.setOnClickListener {
 
-            if (!DeviceFlashHelper.deviceFlashIsAvailable()) {
-                showNoFlashError()
-                return@setOnClickListener
+            // Get view pager current page position
+            when (newPostViewPager.currentItem) {
+                0 -> {
+                    (fragments[0] as PhotoCameraPostFragment).handleFlash()
+                }
+                1 -> {
+                    (fragments[1] as RecordVideoPostFragment).handleFlash()
+                }
+                else -> {
+                    (fragments[2] as GifPostFragment).handleFlash()
+                }
             }
-
-            val flashIsOn = DeviceFlashHelper.isFlashlightOn
-
-            DeviceFlashHelper.switchFlashLight(!flashIsOn)
 
             // Changing layout alpha after clicking
             changeLayoutAlpha(flashLayout_id)
-
         }
 
         view?.findViewById<ConstraintLayout>(R.id.soundLayout_id)?.setOnClickListener {
@@ -344,14 +346,28 @@ class PostTypesFragment : Fragment() {
         }
 
         view?.findViewById<ConstraintLayout>(R.id.nextLayout4_id)?.setOnClickListener {
+
+            if (filePath == null) {
+                Toast.makeText(
+                    requireContext(),
+                    "Can not continue, file is empty.",
+                    Toast.LENGTH_LONG
+                ).show()
+                return@setOnClickListener
+            }
+
             sharedViewModel!!.select(false)
-            findParentNavController().navigate(R.id.postResultFragment)
+            val mBundle = Bundle()
+            mBundle.putString("filePath", filePath)
+            mBundle.putInt("fromScreenType", getScreenType())
+
+            findParentNavController().navigate(R.id.postResultFragment, mBundle)
         }
     }
 
     override fun onDestroyView() {
         //setScreenOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT)
-        post_types_toolbar.visibility = View.VISIBLE
+        post_types_toolbar.visibility = View.GONE
         super.onDestroyView()
         sharedViewModel!!.select(false)
     }
@@ -379,32 +395,22 @@ class PostTypesFragment : Fragment() {
         photoUri: Uri? = null
     ) {
 
+        if (videoPath != null) {
+            this.filePath = videoPath
+            return
+        }
+
+        if (videoContentUri != null) {
+            this.filePath = videoContentUri
+            return
+        }
+
+        if (photoUri != null) {
+            this.filePath = photoUri.toString()
+            return
+        }
+
         Toast.makeText(requireContext(), "Success", Toast.LENGTH_LONG).show()
-//        val direction = PostTypesFragmentDirections.next(
-//            videoPath, videoContentUri, photoUri
-//        ).apply {
-//            this.postText = args.postText
-//            this.recipient = args.recipient
-//            this.postingType = args.postingType
-//            this.membership = args.membership
-//            this.allowVideo = args.allowVideo
-//            this.popToDestination = args.popToDestination
-//        }
-//
-//        val navOptions = NavOptions.Builder()
-//            .setPopUpTo(args.popToDestination, false)
-//            .build()
-//
-//        findParentNavController().navigateSafe(direction, navOptions)
-    }
-
-    private fun showNoFlashError() {
-
-        Toast.makeText(
-            requireContext(),
-            "Flash not available in this device...",
-            Toast.LENGTH_LONG
-        ).show()
     }
 
     companion object {

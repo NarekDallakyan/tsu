@@ -62,6 +62,8 @@ abstract class BaseCameraFragment<Capture : UseCase> : Fragment() {
     private var displayId = -1
     protected var lensFacing = CameraSelector.LENS_FACING_BACK
 
+    protected lateinit var camera: Camera
+    protected var cameraControl: CameraControl? = null
     protected lateinit var preview: Preview
     protected lateinit var cameraSwitchButton: ImageButton
     protected lateinit var cameraCaptureButton: ImageButton
@@ -183,13 +185,13 @@ abstract class BaseCameraFragment<Capture : UseCase> : Fragment() {
 
     private fun setUpPinchToZoom(camera: androidx.camera.core.Camera) {
 
-        val cameraControl = camera.cameraControl
+        cameraControl = camera.cameraControl
         val cameraInfo = camera.cameraInfo
         val listener = object : ScaleGestureDetector.SimpleOnScaleGestureListener() {
             override fun onScale(detector: ScaleGestureDetector): Boolean {
                 val currentZoomRatio: Float = cameraInfo.zoomState.value?.zoomRatio ?: 0F
                 val delta = detector.scaleFactor
-                cameraControl.setZoomRatio(currentZoomRatio * delta)
+                cameraControl?.setZoomRatio(currentZoomRatio * delta)
                 return true
             }
         }
@@ -243,7 +245,7 @@ abstract class BaseCameraFragment<Capture : UseCase> : Fragment() {
         cameraProvider.unbindAll()
 
         try {
-            val camera = cameraProvider.bindToLifecycle(
+            camera = cameraProvider.bindToLifecycle(
                 this,
                 cameraSelector,
                 capture,
@@ -254,6 +256,12 @@ abstract class BaseCameraFragment<Capture : UseCase> : Fragment() {
         } catch (e: Exception) {
             Log.e(TAG, "Use case binding failed", e)
         }
+    }
+
+    fun handleFlash() {
+
+        val isEnable = camera.cameraInfo.torchState.value == 1
+        cameraControl?.enableTorch(!isEnable)
     }
 
     fun switchCamera() {

@@ -860,7 +860,7 @@ class MainActivity : DaggerAppCompatActivity(), NavController.OnDestinationChang
         }
     }
 
-    private fun applyToolbar(toolbar: Toolbar?) {
+    fun applyToolbar(toolbar: Toolbar?) {
         setSupportActionBar(toolbar)
         supportActionBar?.setDisplayShowTitleEnabled(false)
         supportActionBar?.title = ""

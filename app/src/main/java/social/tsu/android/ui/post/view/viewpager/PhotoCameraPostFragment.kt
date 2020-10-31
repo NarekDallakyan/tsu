@@ -10,6 +10,8 @@ import android.view.View
 import android.widget.ImageButton
 import androidx.camera.core.CameraSelector
 import androidx.camera.core.ImageCapture
+import androidx.camera.core.ImageCapture.FLASH_MODE_AUTO
+import androidx.camera.core.ImageCapture.FLASH_MODE_ON
 import androidx.camera.core.ImageCaptureException
 import social.tsu.android.ANIMATION_FAST_MILLIS
 import social.tsu.android.ANIMATION_SLOW_MILLIS
@@ -29,7 +31,8 @@ class PhotoCameraPostFragment : BaseCameraFragment<ImageCapture>() {
     override fun createCapture(aspectRatio: Int, rotation: Int): ImageCapture {
 
         return ImageCapture.Builder()
-            .setCaptureMode(ImageCapture.CAPTURE_MODE_MINIMIZE_LATENCY)
+            .setCaptureMode(ImageCapture.CAPTURE_MODE_MAXIMIZE_QUALITY)
+            .setFlashMode(FLASH_MODE_AUTO)
             .setTargetAspectRatio(aspectRatio)
             .setTargetRotation(rotation)
             .build()

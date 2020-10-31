@@ -28,9 +28,8 @@
     <ImageView
         android:id="@+id/textView"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_height="30dp"
         android:src="@drawable/ic_tsu_logo"
-        android:text="Media"
         android:textColor="@color/ib_fr_white"
         android:textSize="16sp"
         android:textStyle="bold"
