@@ -49,7 +49,7 @@ abstract class BaseCameraFragment<Capture : UseCase> : Fragment() {
     protected lateinit var cameraContainer: ConstraintLayout
     protected lateinit var cameraExecutor: Executor
 
-    private lateinit var viewFinder: PreviewView
+    lateinit var viewFinder: PreviewView
     private lateinit var displayManager: DisplayManager
 
     /**
@@ -66,6 +66,18 @@ abstract class BaseCameraFragment<Capture : UseCase> : Fragment() {
     protected lateinit var cameraSwitchButton: ImageButton
     protected lateinit var cameraCaptureButton: ImageButton
     protected lateinit var photoPickButton: ImageButton
+
+    private var onReady: (() -> Unit)? = null
+
+    fun onReady(onReady: () -> Unit) {
+        this.onReady = onReady
+
+        if (view != null) {
+            this.onReady?.let {
+                it()
+            }
+        }
+    }
 
     private val displayListener = object : DisplayManager.DisplayListener {
         override fun onDisplayAdded(displayId: Int) = Unit
@@ -100,18 +112,31 @@ abstract class BaseCameraFragment<Capture : UseCase> : Fragment() {
         cameraSwitchButton = view.findViewById(R.id.camera_switch_button)
         cameraCaptureButton = view.findViewById(R.id.camera_capture_button)
         photoPickButton = view.findViewById(R.id.photo_view_button)
-
         return view
+    }
+
+    fun startCapturing(onError: ((Boolean)->Unit)? = null) {
+
+        try {
+            onCaptureImageClick(cameraCaptureButton)
+        } catch (e: Exception) {
+            Log.e(TAG, "onCaptureImageClick", e)
+            onError?.let {
+                it(true)
+            }
+        }
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-
+        onReady?.let {
+            it()
+        }
         // Listener for button used to capture photo
         cameraCaptureButton.setOnClickListener {
             try {
                 onCaptureImageClick(cameraCaptureButton)
-            } catch (e: Exception){
+            } catch (e: Exception) {
                 Log.e(TAG, "onCaptureImageClick", e)
             }
         }

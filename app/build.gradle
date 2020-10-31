@@ -305,7 +305,7 @@ dependencies {
     // graph dependency
     implementation 'com.github.PhilJay:MPAndroidChart:v3.1.0'
     //Blur imageView
-    implementation 'jp.wasabeef:blurry:3.0.0'
+    implementation 'jp.wasabeef:blurry:4.0.0'
 
     implementation 'com.github.AbedElazizShe:LightCompressor:0.7.5'
 
