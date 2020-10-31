@@ -111,6 +111,28 @@ class PostTypesFragment : Fragment() {
 
         // listen bottom buttons click listeners
         onClickButtons()
+
+        // Listen camera switch button on click
+        camera_rotate_id.setOnClickListener {
+
+            handleSwitchCamera()
+        }
+    }
+
+    private fun handleSwitchCamera() {
+
+        // Get view pager current page position
+        when (newPostViewPager.currentItem) {
+            0 -> {
+                (fragments[0] as PhotoCameraPostFragment).switchCamera()
+            }
+            1 -> {
+                (fragments[1] as RecordVideoPostFragment).switchCamera()
+            }
+            else -> {
+                (fragments[2] as GifPostFragment).switchCamera()
+            }
+        }
     }
 
     private fun iniUi() {

@@ -231,6 +231,26 @@ abstract class BaseCameraFragment<Capture : UseCase> : Fragment() {
         }
     }
 
+    fun switchCamera() {
+
+        if (!canSwitchCamera()) return
+
+        val cameraProvider = cameraProviderFuture.get()
+
+        lensFacing = if (CameraSelector.LENS_FACING_FRONT == lensFacing) {
+            CameraSelector.LENS_FACING_BACK
+        } else {
+            CameraSelector.LENS_FACING_FRONT
+        }
+
+        try {
+            cameraProvider.unbindAll()
+            bindCameraUseCases(cameraProvider)
+        } catch (exc: CameraInfoUnavailableException) {
+            // Do nothing
+        }
+    }
+
     @SuppressLint("RestrictedApi")
     private fun setupCameraSwitchButton(cameraProvider: ProcessCameraProvider) {
         // Listener for button used to switch cameras
