@@ -1,7 +1,13 @@
 package social.tsu.android.ui.post.helper
 
+import android.content.Context
+import android.graphics.Typeface
+import android.widget.TextView
 import androidx.constraintlayout.widget.ConstraintLayout
+import androidx.core.content.ContextCompat
+import kotlinx.android.synthetic.main.fragment_post_types.*
 import social.tsu.android.R
+import social.tsu.android.helper.DeviceUtils
 import social.tsu.android.ui.post.view.PostTypesFragment
 
 class LayoutChooseHelper {
@@ -85,6 +91,119 @@ class LayoutChooseHelper {
 
                 PostTypesFragment.WIFI_CLICK -> {
                     wifiLayout?.setBackgroundResource(R.drawable.ic_wifi_gray_ending)
+                }
+            }
+        }
+
+
+        fun handleViewPagerChange(
+            context: Context,
+            position: Int,
+            newPostPhotoText: TextView,
+            newPostVideoText: TextView,
+            newPostGifText: TextView
+        ) {
+
+            when (position) {
+
+                // Photo section
+                0 -> {
+                    // Change text styles
+                    newPostPhotoText.setTypeface(newPostPhotoText.typeface, Typeface.BOLD)
+                    newPostVideoText.setTypeface(newPostVideoText.typeface, Typeface.NORMAL)
+                    newPostGifText.setTypeface(newPostGifText.typeface, Typeface.NORMAL)
+                    // Changes text sizes
+                    newPostPhotoText.textSize = DeviceUtils.pixelsToSp(context, 50f)
+                    newPostVideoText.textSize = DeviceUtils.pixelsToSp(context, 40f)
+                    newPostGifText.textSize = DeviceUtils.pixelsToSp(context, 40f)
+                    // Change text colors
+                    newPostPhotoText.setTextColor(
+                        ContextCompat.getColor(
+                            context,
+                            R.color.next_green
+                        )
+                    )
+                    newPostVideoText.setTextColor(
+                        ContextCompat.getColor(
+                            context,
+                            R.color.ib_fr_white
+                        )
+                    )
+                    newPostGifText.setTextColor(
+                        ContextCompat.getColor(
+                            context,
+                            R.color.ib_fr_white
+                        )
+                    )
+                }
+
+                // Video section
+                1 -> {
+                    // Change text styles
+                    newPostPhotoText.setTypeface(newPostPhotoText.typeface, Typeface.NORMAL)
+                    newPostVideoText.setTypeface(newPostVideoText.typeface, Typeface.BOLD)
+                    newPostGifText.setTypeface(newPostGifText.typeface, Typeface.NORMAL)
+                    // Changes text sizes
+                    newPostPhotoText.textSize = DeviceUtils.pixelsToSp(context, 40f)
+                    newPostVideoText.textSize = DeviceUtils.pixelsToSp(context, 50f)
+                    newPostGifText.textSize = DeviceUtils.pixelsToSp(context, 40f)
+                    // Change text colors
+                    newPostPhotoText.setTextColor(
+                        ContextCompat.getColor(
+                            context,
+                            R.color.ib_fr_white
+                        )
+                    )
+                    newPostVideoText.setTextColor(
+                        ContextCompat.getColor(
+                            context,
+                            R.color.next_green
+                        )
+                    )
+                    newPostGifText.setTextColor(
+                        ContextCompat.getColor(
+                            context,
+                            R.color.ib_fr_white
+                        )
+                    )
+                }
+
+                // GIF section
+                2 -> {
+                    // Change text styles
+                    newPostPhotoText.setTypeface(newPostPhotoText.typeface, Typeface.NORMAL)
+                    newPostVideoText.setTypeface(newPostVideoText.typeface, Typeface.NORMAL)
+                    newPostGifText.setTypeface(newPostGifText.typeface, Typeface.BOLD)
+                    // Changes text sizes
+                    newPostPhotoText.textSize = DeviceUtils.pixelsToSp(context, 40f)
+                    newPostVideoText.textSize = DeviceUtils.pixelsToSp(context, 40f)
+                    newPostGifText.textSize = DeviceUtils.pixelsToSp(context, 50f)
+                    // Change text colors
+                    newPostPhotoText.setTextColor(
+                        ContextCompat.getColor(
+                            context,
+                            R.color.ib_fr_white
+                        )
+                    )
+                    newPostVideoText.setTextColor(
+                        ContextCompat.getColor(
+                            context,
+                            R.color.ib_fr_white
+                        )
+                    )
+                    newPostGifText.setTextColor(ContextCompat.getColor(context, R.color.next_green))
+                }
+            }
+        }
+
+
+        fun changeLayoutAlpha(layout: ConstraintLayout) {
+            when (layout.alpha) {
+                1F -> {
+                    layout.alpha = 0.7F
+                }
+                0.7F -> {
+                    layout.alpha = 1F
                 }
             }
         }
