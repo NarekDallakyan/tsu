@@ -546,4 +546,9 @@
     <string name="platinum_user_badge">Platinum Tsūper User</string>
     <string name="diamond_user_badge">Diamond Tsūper User</string>
 
+    <!--New Post Screen-->
+    <string name="new_post_photo">Photo</string>
+    <string name="new_post_video">Video</string>
+    <string name="new_post_gif">GIF</string>
+
 </resources>

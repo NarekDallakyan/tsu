@@ -1,5 +1,6 @@
 package social.tsu.android.ui.post.view
 
+import android.graphics.Typeface
 import android.net.Uri
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -8,13 +9,16 @@ import android.view.ViewGroup
 import android.widget.Toast
 import androidx.appcompat.widget.Toolbar
 import androidx.constraintlayout.widget.ConstraintLayout
+import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.NavOptions
 import androidx.navigation.fragment.navArgs
+import androidx.viewpager.widget.ViewPager
 import kotlinx.android.synthetic.main.fragment_post_types.*
 import social.tsu.android.R
 import social.tsu.android.helper.DeviceFlashHelper
+import social.tsu.android.helper.DeviceUtils.Companion.pixelsToSp
 import social.tsu.android.helper.navigateSafe
 import social.tsu.android.ui.post.helper.LayoutChooseHelper
 import social.tsu.android.ui.post.helper.LayoutChooseHelper.Companion.setChoose
@@ -88,6 +92,8 @@ class PostTypesFragment : Fragment() {
 
     override fun onStop() {
         super.onStop()
+        // Disable Flash
+        DeviceFlashHelper.switchFlashLight(false)
         DeviceFlashHelper.unregisterFlashlightState(requireContext())
     }
 
@@ -110,6 +116,7 @@ class PostTypesFragment : Fragment() {
         )
         // Hide tool bar
         post_types_toolbar.visibility = View.GONE
+        handleViewPagerChange(0)
     }
 
     private fun initViewModels() {
@@ -121,8 +128,81 @@ class PostTypesFragment : Fragment() {
 
         val newPostAdapter = NewPostViewPager(childFragmentManager, fragments.size, fragments)
         newPostViewPager.setPageTransformer(true, ZoomOutPageTransformer())
+        newPostViewPager.offscreenPageLimit = 3
         newPostViewPager.adapter = newPostAdapter
+        newPostViewPager.addOnPageChangeListener(object : ViewPager.OnPageChangeListener {
+            override fun onPageScrolled(
+                position: Int,
+                positionOffset: Float,
+                positionOffsetPixels: Int
+            ) {
+
+            }
+
+            override fun onPageSelected(position: Int) {
+                handleViewPagerChange(position)
+            }
+
+            override fun onPageScrollStateChanged(state: Int) {
+
+            }
+        })
     }
+
+    private fun handleViewPagerChange(position: Int) {
+
+        when (position) {
+
+            // Photo section
+            0 -> {
+                // Change text styles
+                newPostPhotoText?.setTypeface(newPostPhotoText?.typeface, Typeface.BOLD)
+                newPostVideoText?.setTypeface(newPostVideoText?.typeface, Typeface.NORMAL)
+                newPostGifText?.setTypeface(newPostGifText?.typeface, Typeface.NORMAL)
+                // Changes text sizes
+                newPostPhotoText?.textSize = pixelsToSp(requireContext(), 50f)
+                newPostVideoText?.textSize = pixelsToSp(requireContext(), 40f)
+                newPostGifText?.textSize = pixelsToSp(requireContext(), 40f)
+                // Change text colors
+                newPostPhotoText?.setTextColor(ContextCompat.getColor(requireContext(), R.color.next_green))
+                newPostVideoText?.setTextColor(ContextCompat.getColor(requireContext(), R.color.ib_fr_white))
+                newPostGifText?.setTextColor(ContextCompat.getColor(requireContext(), R.color.ib_fr_white))
+            }
+
+            // Video section
+            1 -> {
+                // Change text styles
+                newPostPhotoText?.setTypeface(newPostPhotoText?.typeface, Typeface.NORMAL)
+                newPostVideoText?.setTypeface(newPostVideoText?.typeface, Typeface.BOLD)
+                newPostGifText?.setTypeface(newPostGifText?.typeface, Typeface.NORMAL)
+                // Changes text sizes
+                newPostPhotoText?.textSize = pixelsToSp(requireContext(), 40f)
+                newPostVideoText?.textSize = pixelsToSp(requireContext(), 50f)
+                newPostGifText?.textSize = pixelsToSp(requireContext(), 40f)
+                // Change text colors
+                newPostPhotoText?.setTextColor(ContextCompat.getColor(requireContext(), R.color.ib_fr_white))
+                newPostVideoText?.setTextColor(ContextCompat.getColor(requireContext(), R.color.next_green))
+                newPostGifText?.setTextColor(ContextCompat.getColor(requireContext(), R.color.ib_fr_white))
+            }
+
+            // GIF section
+            2 -> {
+                // Change text styles
+                newPostPhotoText?.setTypeface(newPostPhotoText?.typeface, Typeface.NORMAL)
+                newPostVideoText?.setTypeface(newPostVideoText?.typeface, Typeface.NORMAL)
+                newPostGifText?.setTypeface(newPostGifText?.typeface, Typeface.BOLD)
+                // Changes text sizes
+                newPostPhotoText?.textSize = pixelsToSp(requireContext(), 40f)
+                newPostVideoText?.textSize = pixelsToSp(requireContext(), 40f)
+                newPostGifText?.textSize = pixelsToSp(requireContext(), 50f)
+                // Change text colors
+                newPostPhotoText?.setTextColor(ContextCompat.getColor(requireContext(), R.color.ib_fr_white))
+                newPostVideoText?.setTextColor(ContextCompat.getColor(requireContext(), R.color.ib_fr_white))
+                newPostGifText?.setTextColor(ContextCompat.getColor(requireContext(), R.color.next_green))
+            }
+        }
+    }
+
 
     private fun onClickButtons() {
 
@@ -140,27 +220,27 @@ class PostTypesFragment : Fragment() {
         view?.findViewById<ConstraintLayout>(R.id.languageLayout_id)?.setOnClickListener {
             setChoose(
                 LANGUAGE_CLICK,
-                view?.findViewById(R.id.languageLayout_id)!!,
-                view?.findViewById(R.id.photoLayout_id)!!,
-                view?.findViewById(R.id.wifiLayout_id)!!
+                view?.findViewById(R.id.languageLayout_id),
+                view?.findViewById(R.id.photoLayout_id),
+                view?.findViewById(R.id.wifiLayout_id)
             )
         }
 
         view?.findViewById<ConstraintLayout>(R.id.photoLayout_id)?.setOnClickListener {
             setChoose(
                 PHOTO_CLICK,
-                view?.findViewById(R.id.languageLayout_id)!!,
-                view?.findViewById(R.id.photoLayout_id)!!,
-                view?.findViewById(R.id.wifiLayout_id)!!
+                view?.findViewById(R.id.languageLayout_id),
+                view?.findViewById(R.id.photoLayout_id),
+                view?.findViewById(R.id.wifiLayout_id)
             )
         }
 
         view?.findViewById<ConstraintLayout>(R.id.wifiLayout_id)?.setOnClickListener {
             setChoose(
                 WIFI_CLICK,
-                view?.findViewById(R.id.languageLayout_id)!!,
-                view?.findViewById(R.id.photoLayout_id)!!,
-                view?.findViewById(R.id.wifiLayout_id)!!
+                view?.findViewById(R.id.languageLayout_id),
+                view?.findViewById(R.id.photoLayout_id),
+                view?.findViewById(R.id.wifiLayout_id)
             )
         }
 
@@ -174,51 +254,11 @@ class PostTypesFragment : Fragment() {
         }
     }
 
-//    private fun setChoose(layout: Int) {
-//        when (layout) {
-//            LANGUAGE_CLICK -> {
-//                view?.findViewById<ConstraintLayout>(R.id.languageLayout_id)
-//                    ?.setBackgroundResource(R.drawable.ic_languages_white_end)
-//            }
-//
-//            PHOTO_CLICK -> {
-//                view?.findViewById<ConstraintLayout>(R.id.photoLayout_id)
-//                    ?.setBackgroundResource(R.drawable.ic_photo_white)
-//            }
-//
-//            WIFI_CLICK -> {
-//                view?.findViewById<ConstraintLayout>(R.id.wifiLayout_id)
-//                    ?.setBackgroundResource(R.drawable.ic_wifi_white_finish)
-//            }
-//        }
-//    }
-//
-//    private fun setUnChoose(layout: Int) {
-//        when (layout) {
-//            LANGUAGE_CLICK -> {
-//                view?.findViewById<ConstraintLayout>(R.id.languageLayout_id)
-//                    ?.setBackgroundResource(R.drawable.ic_languages_gray)
-//            }
-//
-//            PHOTO_CLICK -> {
-//                view?.findViewById<ConstraintLayout>(R.id.photoLayout_id)
-//                    ?.setBackgroundResource(R.drawable.ic_photogray)
-//            }
-//
-//            WIFI_CLICK -> {
-//                view?.findViewById<ConstraintLayout>(R.id.wifiLayout_id)
-//                    ?.setBackgroundResource(R.drawable.ic_wifi_gray_finish)
-//            }
-//        }
-//    }
-
     override fun onDestroyView() {
         //setScreenOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT)
         post_types_toolbar.visibility = View.VISIBLE
         super.onDestroyView()
         sharedViewModel!!.select(false)
-        // Disable Flash
-        DeviceFlashHelper.switchFlashLight(false)
     }
 
     override fun onDestroy() {

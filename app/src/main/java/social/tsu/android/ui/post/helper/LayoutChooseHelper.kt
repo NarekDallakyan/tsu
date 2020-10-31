@@ -9,14 +9,15 @@ class LayoutChooseHelper {
 
         fun setChoose(
             layout: Int,
-            languageLayout: ConstraintLayout,
-            photoLayout: ConstraintLayout,
-            wifiLayout: ConstraintLayout
+            languageLayout: ConstraintLayout?,
+            photoLayout: ConstraintLayout?,
+            wifiLayout: ConstraintLayout?
         ) {
 
             when (layout) {
+
                 PostTypesFragment.LANGUAGE_CLICK -> {
-                    languageLayout.setBackgroundResource(R.drawable.ic_languages_white_end)
+                    languageLayout?.setBackgroundResource(R.drawable.ic_languages_white_end)
                     setUnChoose(
                         PostTypesFragment.PHOTO_CLICK,
                         languageLayout,
@@ -32,7 +33,7 @@ class LayoutChooseHelper {
                 }
 
                 PostTypesFragment.PHOTO_CLICK -> {
-                    photoLayout.setBackgroundResource(R.drawable.ic_photo_white)
+                    photoLayout?.setBackgroundResource(R.drawable.ic_photo_white)
 
                     setUnChoose(
                         PostTypesFragment.LANGUAGE_CLICK,
@@ -49,7 +50,7 @@ class LayoutChooseHelper {
                 }
 
                 PostTypesFragment.WIFI_CLICK -> {
-                    wifiLayout.setBackgroundResource(R.drawable.ic_wifi_white_finish)
+                    wifiLayout?.setBackgroundResource(R.drawable.ic_wifi_white_finish)
                     setUnChoose(
                         PostTypesFragment.LANGUAGE_CLICK,
                         languageLayout,
@@ -69,21 +70,21 @@ class LayoutChooseHelper {
 
         private fun setUnChoose(
             layout: Int,
-            languageLayout: ConstraintLayout,
-            photoLayout: ConstraintLayout,
-            wifiLayout: ConstraintLayout
+            languageLayout: ConstraintLayout?,
+            photoLayout: ConstraintLayout?,
+            wifiLayout: ConstraintLayout?
         ) {
             when (layout) {
                 PostTypesFragment.LANGUAGE_CLICK -> {
-                    languageLayout.setBackgroundResource(R.drawable.ic_languages_gray)
+                    languageLayout?.setBackgroundResource(R.drawable.ic_languages_gray)
                 }
 
                 PostTypesFragment.PHOTO_CLICK -> {
-                    photoLayout.setBackgroundResource(R.drawable.ic_photogray)
+                    photoLayout?.setBackgroundResource(R.drawable.ic_photogray)
                 }
 
                 PostTypesFragment.WIFI_CLICK -> {
-                    wifiLayout.setBackgroundResource(R.drawable.ic_wifi_gray_ending)
+                    wifiLayout?.setBackgroundResource(R.drawable.ic_wifi_gray_ending)
                 }
             }
         }
