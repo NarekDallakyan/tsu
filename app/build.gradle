@@ -309,6 +309,10 @@ dependencies {
 
     implementation 'com.github.AbedElazizShe:LightCompressor:0.7.5'
 
+//    // Load modules
+    implementation project(":filter")
+    implementation project(":trimmer")
+
 }
 detekt {
     config = files("$rootDir/detekt.yml")
