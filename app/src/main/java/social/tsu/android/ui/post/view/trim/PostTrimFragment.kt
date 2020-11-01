@@ -2,6 +2,8 @@ package social.tsu.android.ui.post.view.trim
 
 import android.net.Uri
 import android.os.Bundle
+import android.os.Handler
+import android.os.Looper
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -74,6 +76,8 @@ class PostTrimFragment : Fragment(), OnTrimVideoListener {
     private fun initOnClicks() {
 
         closeLayout_id.setOnClickListener {
+
+            mVideoTrimmerView.destroy()
             sharedViewModel!!.select(false)
             findParentNavController().popBackStack(R.id.postTypesFragment, false)
         }
@@ -123,7 +127,7 @@ class PostTrimFragment : Fragment(), OnTrimVideoListener {
         }
         val filePath = uri.toString()
         requireActivity().runOnUiThread {
-
+            mVideoTrimmerView.destroy()
             val mBundle = Bundle()
             mBundle.putString("filePath", filePath)
             mBundle.putInt("fromScreenType", fromScreenType!!)
@@ -134,6 +138,7 @@ class PostTrimFragment : Fragment(), OnTrimVideoListener {
 
     override fun onTrimCancel() {
 
+        mVideoTrimmerView.destroy()
         requireActivity().runOnUiThread {
             Toast.makeText(
                 requireContext(),

@@ -43,14 +43,15 @@ class CameraHelper(
 
     private var sampleGLView: SampleGLView? = null
     private var cameraRecorder: CameraRecorder? = null
-    private val filepath: String? = null
+    private var filepath: String? = null
     private var lensFacing: LensFacing = LensFacing.BACK
-    private var cameraWidth = 1280
-    private var cameraHeight = 720
-    private var videoWidth = 720
-    private var videoHeight = 720
+    private var cameraWidth = 640
+    private var cameraHeight = 480
+    private var videoWidth = 640
+    private var videoHeight = 480
     private var toggleClick = false
     private var cameraView: ViewGroup? = null
+    private var completeRecording: ((String?) -> Unit)? = null
 
     fun isRecording() = isRecording
 
@@ -111,7 +112,7 @@ class CameraHelper(
 
                     override fun onRecordComplete() {
                         if (filepath != null) {
-                            exportMp4ToGallery(context.applicationContext, filepath)
+                            exportMp4ToGallery(context.applicationContext, filepath!!)
                         }
                     }
 
@@ -147,6 +148,9 @@ class CameraHelper(
                 Uri.parse("file://$filePath")
             )
         )
+        completeRecording?.let {
+            it(filePath)
+        }
     }
 
     private fun changeFilter(filters: Filters) {
@@ -157,7 +161,6 @@ class CameraHelper(
             )
         )
     }
-
 
     private interface BitmapReadyCallbacks {
         fun onBitmapReady(bitmap: Bitmap?)
@@ -272,13 +275,56 @@ class CameraHelper(
         }
     }
 
-    fun startRecording(filePath: String) {
-
-        cameraRecorder?.start(filePath)
+    fun startRecording(path: String) {
+        this.filepath = path
+        cameraRecorder?.start(filepath)
     }
 
-    fun stopRecording() {
-
+    fun stopRecording(function: ((String?) -> Unit)? = null) {
+        this.completeRecording = function
         cameraRecorder?.stop()
+    }
+
+    fun capturePicture(function: ((String) -> Unit)? = null) {
+
+        captureBitmap(object : BitmapReadyCallbacks {
+            override fun onBitmapReady(bitmap: Bitmap?) {
+                if (bitmap == null) {
+                    Toast.makeText(
+                        context,
+                        "Capture image problem, please try again.",
+                        Toast.LENGTH_LONG
+                    ).show()
+                    return
+                }
+                val imagePath = saveBitmap(bitmap)
+                if (imagePath != null) {
+                    function?.let {
+                        activity.runOnUiThread {
+                            it(imagePath)
+                        }
+                    }
+                }
+            }
+        })
+    }
+
+    fun saveBitmap(bitmap: Bitmap): String? {
+        val imagePath = File(
+            Environment.getExternalStorageDirectory()
+                .toString() + "/Piyush.png"
+        )
+        val fos: FileOutputStream
+        return try {
+            fos = FileOutputStream(imagePath)
+            bitmap.compress(Bitmap.CompressFormat.JPEG, 100, fos)
+            fos.flush()
+            fos.close()
+            imagePath.path
+        } catch (e: FileNotFoundException) {
+            null
+        } catch (e: IOException) {
+            null
+        }
     }
 }

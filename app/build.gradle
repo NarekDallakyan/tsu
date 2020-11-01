@@ -309,6 +309,8 @@ dependencies {
 
     implementation 'com.github.AbedElazizShe:LightCompressor:0.7.5'
 
+    implementation "io.coil-kt:coil:0.9.5"
+
 //    // Load modules
     implementation project(":filter")
     implementation project(":trimmer")

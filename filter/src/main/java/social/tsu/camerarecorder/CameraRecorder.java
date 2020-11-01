@@ -265,27 +265,24 @@ public class CameraRecorder {
         if (!started) return;
         try {
 
-            new Handler().post(new Runnable() {
-                @Override
-                public void run() {
-                    // stop recording and release camera
-                    try {
-                        // stop the recording
-                        if (muxer != null) {
-                            muxer.stopRecording();
-                            muxer = null;
-                            //  you should not wait here
-                        }
-                    } catch (Exception e) {
-                        // RuntimeException is thrown when stop() is called immediately after start().
-                        // In this case the output file is not properly constructed ans should be deleted.
-                        Log.d("TAG", "RuntimeException: stop() is called immediately after start()");
-                        //noinspection ResultOfMethodCallIgnored
-                        notifyOnError(e);
+            new Handler().post(() -> {
+                // stop recording and release camera
+                try {
+                    // stop the recording
+                    if (muxer != null) {
+                        muxer.stopRecording();
+                        muxer = null;
+                        //  you should not wait here
                     }
-
-                    notifyOnDone();
+                } catch (Exception e) {
+                    // RuntimeException is thrown when stop() is called immediately after start().
+                    // In this case the output file is not properly constructed ans should be deleted.
+                    Log.d("TAG", "RuntimeException: stop() is called immediately after start()");
+                    //noinspection ResultOfMethodCallIgnored
+                    notifyOnError(e);
                 }
+
+                notifyOnDone();
             });
 
         } catch (Exception e) {

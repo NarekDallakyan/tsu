@@ -3,6 +3,8 @@ package social.tsu.android.ui.post.view
 import android.app.AlertDialog
 import android.net.Uri
 import android.os.Bundle
+import android.os.Handler
+import android.os.Looper
 import android.view.LayoutInflater
 import android.view.View
 import android.view.View.GONE
@@ -169,6 +171,8 @@ class PostTypesFragment : Fragment(), Serializable {
         // Listen start camera button on click
         snap_icon_id.setOnClickListener {
 
+            snap_icon_id.isEnabled = false
+            snap_icon_id.isClickable = false
             handleStartCamera()
         }
 
@@ -185,10 +189,67 @@ class PostTypesFragment : Fragment(), Serializable {
             0 -> {
                 val fragment = fragments[0] as PhotoCameraPostFragment
 
+                fragment.capturePicture {
+                    this.filePath = it
+
+                    if (this.filePath == null) {
+                        Toast.makeText(
+                            requireContext(),
+                            "Can not continue, file is empty.",
+                            Toast.LENGTH_LONG
+                        ).show()
+                        return@capturePicture
+                    }
+
+                    val mBundle = Bundle()
+                    mBundle.putString("filePath", filePath)
+                    mBundle.putInt("fromScreenType", getScreenType())
+                    sharedViewModel!!.select(false)
+                    findParentNavController().navigate(R.id.postPreviewFragment, mBundle)
+                }
             }
             1 -> {
                 val fragment = fragments[1] as RecordVideoPostFragment
 
+                if (isTimerRunning()) {
+                    startRecordingTimer(false)
+                    fragment.stopRecording {
+                        this.filePath = it
+
+                        if (this.filePath == null) {
+                            Toast.makeText(
+                                requireContext(),
+                                "Can not continue, file is empty.",
+                                Toast.LENGTH_LONG
+                            ).show()
+                            return@stopRecording
+                        }
+
+                        val mBundle = Bundle()
+                        mBundle.putString("filePath", filePath)
+                        mBundle.putInt("fromScreenType", getScreenType())
+                        sharedViewModel!!.select(false)
+                        Handler(Looper.getMainLooper()).postDelayed({
+                            findParentNavController().navigate(R.id.postPreviewFragment, mBundle)
+                        }, 200)
+                    }
+                    return
+                }
+
+                fragment.recordVideo { onCancel: Boolean, onStart: Boolean ->
+
+                    if (onCancel) {
+                        this.filePath = null
+                        startRecordingTimer(false)
+                        return@recordVideo
+                    }
+
+                    if (onStart) {
+                        this.filePath = null
+                        startRecordingTimer(true)
+                        return@recordVideo
+                    }
+                }
             }
             else -> {
 
@@ -212,7 +273,9 @@ class PostTypesFragment : Fragment(), Serializable {
                         mBundle.putString("filePath", filePath)
                         mBundle.putInt("fromScreenType", getScreenType())
                         sharedViewModel!!.select(false)
-                        findParentNavController().navigate(R.id.postTrimFragment, mBundle)
+                        Handler(Looper.getMainLooper()).postDelayed({
+                            findParentNavController().navigate(R.id.postTrimFragment, mBundle)
+                        }, 200)
                     }
                     return
                 }
@@ -273,6 +336,10 @@ class PostTypesFragment : Fragment(), Serializable {
         )
         // Hide tool bar
         post_types_toolbar.visibility = View.GONE
+
+
+        snap_icon_id.isEnabled = true
+        snap_icon_id.isClickable = true
     }
 
     private fun initViewModels() {

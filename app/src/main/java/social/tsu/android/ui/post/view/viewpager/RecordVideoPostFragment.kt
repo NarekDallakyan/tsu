@@ -48,7 +48,7 @@ class RecordVideoPostFragment : Fragment() {
 
     fun recordVideo(function: (onCancel: Boolean, onStart: Boolean) -> Unit) {
 
-        if (cameraHelper?.isRecording() == true) {
+        if (cameraHelper?.isRecording() == false) {
 
             filePath = cameraHelper?.getVideoFilePath()
             filePath?.let {
@@ -58,8 +58,8 @@ class RecordVideoPostFragment : Fragment() {
         }
     }
 
-    fun stopRecording() {
+    fun stopRecording(function: ((String?) -> Unit)? = null) {
 
-        cameraHelper?.stopRecording()
+        cameraHelper?.stopRecording(function)
     }
 }
