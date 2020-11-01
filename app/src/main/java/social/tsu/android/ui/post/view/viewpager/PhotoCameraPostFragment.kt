@@ -1,114 +1,49 @@
 package social.tsu.android.ui.post.view.viewpager
 
-import android.content.Intent
-import android.graphics.Color
-import android.graphics.drawable.ColorDrawable
-import android.net.Uri
-import android.os.Build
-import android.util.Log
+import android.os.Bundle
+import android.view.LayoutInflater
 import android.view.View
-import android.widget.ImageButton
-import androidx.camera.core.CameraSelector
-import androidx.camera.core.ImageCapture
-import androidx.camera.core.ImageCapture.FLASH_MODE_AUTO
-import androidx.camera.core.ImageCapture.FLASH_MODE_ON
-import androidx.camera.core.ImageCaptureException
-import social.tsu.android.ANIMATION_FAST_MILLIS
-import social.tsu.android.ANIMATION_SLOW_MILLIS
-import social.tsu.android.ui.CameraUtil
-import social.tsu.android.ui.new_post.BaseCameraFragment
-import social.tsu.android.ui.post.view.PostTypesFragment
-import social.tsu.android.utils.pickMediaFromGallery
+import android.view.ViewGroup
+import androidx.fragment.app.Fragment
+import social.tsu.android.R
+import social.tsu.android.ui.post.helper.CameraHelper
 
 
-class PhotoCameraPostFragment : BaseCameraFragment<ImageCapture>() {
+class PhotoCameraPostFragment : Fragment() {
 
-    companion object {
-        private const val FILENAME = "yyyy-MM-dd-HH-mm-ss-SSS"
-        const val PHOTO_EXTENSION = ".jpg"
+    private var cameraHelper: CameraHelper? = null
+
+    fun handleOnResume() {
+        // Initialize camera helper
+        cameraHelper = CameraHelper(requireActivity(), requireContext(), requireView())
+        cameraHelper?.onResume()
     }
 
-    override fun createCapture(aspectRatio: Int, rotation: Int): ImageCapture {
-
-        return ImageCapture.Builder()
-            .setCaptureMode(ImageCapture.CAPTURE_MODE_MAXIMIZE_QUALITY)
-            .setFlashMode(FLASH_MODE_AUTO)
-            .setTargetAspectRatio(aspectRatio)
-            .setTargetRotation(rotation)
-            .build()
+    fun handleOnStop() {
+        cameraHelper?.onStop()
     }
 
-    override fun onCaptureImageClick(button: ImageButton) {
-
-        // Handle capture image
-        handleCaptureImage()
+    override fun onStop() {
+        super.onStop()
+        cameraHelper?.onStop()
     }
 
-    private fun handleCaptureImage() {
 
-        // Create output file to hold the image
-        val photoFile = CameraUtil.createFile(
-            outputDirectory,
-            FILENAME,
-            PHOTO_EXTENSION
-        )
-
-        // Setup image capture metadata
-        val metadata = ImageCapture.Metadata().apply {
-            // Mirror image when using the front camera
-            isReversedHorizontal = lensFacing == CameraSelector.LENS_FACING_FRONT
-        }
-
-        // Setup image capture listener which is triggered after photo has been taken
-        val options = ImageCapture.OutputFileOptions.Builder(photoFile)
-            .setMetadata(metadata)
-            .build()
-
-        // Take picture
-        capture?.takePicture(options, cameraExecutor, object : ImageCapture.OnImageSavedCallback {
-            override fun onImageSaved(outputFileResults: ImageCapture.OutputFileResults) {
-                println()
-            }
-
-            override fun onError(exception: ImageCaptureException) {
-                Log.e(TAG, "Photo capture failed", exception)
-            }
-        })
-
-        // We can only change the foreground Drawable using API level 23+ API
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-
-            // Display flash animation to indicate that photo was captured
-            view?.postDelayed({
-                view?.foreground = ColorDrawable(Color.WHITE)
-                view?.postDelayed(
-                    { view?.foreground = null }, ANIMATION_FAST_MILLIS
-                )
-            }, ANIMATION_SLOW_MILLIS)
-        }
+    override fun onCreateView(
+        inflater: LayoutInflater,
+        container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View? {
+        //setScreenOrientation(ActivityInfo.SCREEN_ORIENTATION_UNSPECIFIED)
+        return inflater.inflate(R.layout.fragment_camera_post, container, false)
     }
 
-    override fun onDisplayChanged(view: View) {
-        capture?.targetRotation = view.display.rotation
+    fun switchCamera() {
+
+        cameraHelper?.switchCamera()
     }
 
-    override fun onGetPickResult(data: Intent?) {
-
-        if (data != null) {
-            data.data?.let { photoUri ->
-                proceedNext(photoUri)
-            }
-        }
-    }
-
-    override fun pickFromGallery() {
-        pickMediaFromGallery(REQUEST_PICK_LIBRARY, "image/*")
-    }
-
-    private fun proceedNext(photoUri: Uri) {
-        val fragment = requireParentFragment().requireParentFragment()
-        if (fragment is PostTypesFragment) {
-            fragment.next(photoUri = photoUri)
-        }
+    fun handleFlash() {
+        cameraHelper?.handleFlash()
     }
 }

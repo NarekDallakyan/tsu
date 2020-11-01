@@ -67,7 +67,7 @@ public class TimeLineView extends View {
                                                /* Retrieve media data*/
                                                long videoLengthInMs = Integer.parseInt(mediaMetadataRetriever.extractMetadata(MediaMetadataRetriever.METADATA_KEY_DURATION)) * 1000;
 
-                                                /*Set thumbnail properties (Thumbs are squares)*/
+                                               /*Set thumbnail properties (Thumbs are squares)*/
                                                final int thumbWidth = mHeightView;
                                                final int thumbHeight = mHeightView;
 

@@ -196,18 +196,37 @@ class PostTypesFragment : Fragment(), Serializable {
 
                 if (isTimerRunning()) {
                     startRecordingTimer(false)
-                    fragment.stopRecording()
+                    fragment.stopRecording {
+                        this.filePath = it
+
+                        if (this.filePath == null) {
+                            Toast.makeText(
+                                requireContext(),
+                                "Can not continue, file is empty.",
+                                Toast.LENGTH_LONG
+                            ).show()
+                            return@stopRecording
+                        }
+
+                        val mBundle = Bundle()
+                        mBundle.putString("filePath", filePath)
+                        mBundle.putInt("fromScreenType", getScreenType())
+                        sharedViewModel!!.select(false)
+                        findParentNavController().navigate(R.id.postTrimFragment, mBundle)
+                    }
                     return
                 }
 
                 fragment.recordGif { onCancel: Boolean, onStart: Boolean ->
 
                     if (onCancel) {
+                        this.filePath = null
                         startRecordingTimer(false)
                         return@recordGif
                     }
 
                     if (onStart) {
+                        this.filePath = null
                         startRecordingTimer(true)
                         return@recordGif
                     }
@@ -446,22 +465,6 @@ class PostTypesFragment : Fragment(), Serializable {
         if (photoUri != null) {
             this.filePath = photoUri.toString()
         }
-
-        if (filePath == null) {
-            Toast.makeText(
-                requireContext(),
-                "Can not continue, file is empty.",
-                Toast.LENGTH_LONG
-            ).show()
-            return
-        }
-
-
-        val mBundle = Bundle()
-        mBundle.putString("filePath", filePath)
-        mBundle.putInt("fromScreenType", getScreenType())
-        sharedViewModel!!.select(false)
-        findParentNavController().navigate(R.id.postTrimFragment, mBundle)
     }
 
     companion object {

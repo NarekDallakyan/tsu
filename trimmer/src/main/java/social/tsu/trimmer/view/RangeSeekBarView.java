@@ -20,7 +20,8 @@ import social.tsu.trimmer.interfaces.OnRangeSeekBarListener;
 public class RangeSeekBarView extends View {
 
     private static final String TAG = RangeSeekBarView.class.getSimpleName();
-
+    private final Paint mShadow = new Paint();
+    private final Paint mLine = new Paint();
     private int mHeightTimeLine;
     private List<Thumb> mThumbs;
     private List<OnRangeSeekBarListener> mListeners;
@@ -32,9 +33,7 @@ public class RangeSeekBarView extends View {
     private float mPixelRangeMax;
     private float mScaleRangeMax;
     private boolean mFirstRun;
-
-    private final Paint mShadow = new Paint();
-    private final Paint mLine = new Paint();
+    private int currentThumb = 0;
 
     public RangeSeekBarView(@NonNull Context context, AttributeSet attrs) {
         this(context, attrs, 0);
@@ -110,8 +109,6 @@ public class RangeSeekBarView extends View {
         drawThumbs(canvas);
     }
 
-    private int currentThumb = 0;
-
     @Override
     public boolean onTouchEvent(@NonNull MotionEvent ev) {
         final Thumb mThumb;
@@ -121,7 +118,7 @@ public class RangeSeekBarView extends View {
 
         switch (action) {
             case MotionEvent.ACTION_DOWN: {
-                 /*Remember where we started*/
+                /*Remember where we started*/
                 currentThumb = getClosestThumb(coordinate);
 
                 if (currentThumb == -1) {

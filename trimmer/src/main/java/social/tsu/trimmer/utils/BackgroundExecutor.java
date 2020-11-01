@@ -14,12 +14,11 @@ import java.util.concurrent.atomic.AtomicBoolean;
 
 public final class BackgroundExecutor {
 
-    private static final String TAG = "BackgroundExecutor";
-
     public static final Executor DEFAULT_EXECUTOR = Executors.newScheduledThreadPool(2 * Runtime.getRuntime().availableProcessors());
-    private static Executor executor = DEFAULT_EXECUTOR;
+    private static final String TAG = "BackgroundExecutor";
     private static final List<Task> TASKS = new ArrayList<>();
     private static final ThreadLocal<String> CURRENT_SERIAL = new ThreadLocal<>();
+    private static Executor executor = DEFAULT_EXECUTOR;
 
     private BackgroundExecutor() {
     }
@@ -131,17 +130,17 @@ public final class BackgroundExecutor {
                 if (task.future != null) {
                     task.future.cancel(mayInterruptIfRunning);
                     if (!task.managed.getAndSet(true)) {
-						/*
-						 * the task has been submitted to the executor, but its
-						 * execution has not started yet, so that its run()
-						 * method will never call postExecute()
-						 */
+                        /*
+                         * the task has been submitted to the executor, but its
+                         * execution has not started yet, so that its run()
+                         * method will never call postExecute()
+                         */
                         task.postExecute();
                     }
                 } else if (task.executionAsked) {
                     Log.w(TAG, "A task with id " + task.id + " cannot be cancelled (the executor set does not support it)");
                 } else {
-					/* this task has not been submitted to the executor */
+                    /* this task has not been submitted to the executor */
                     TASKS.remove(i);
                 }
             }
@@ -204,22 +203,22 @@ public final class BackgroundExecutor {
 
         private void postExecute() {
             if (id == null && serial == null) {
-				/* nothing to do */
+                /* nothing to do */
                 return;
             }
             CURRENT_SERIAL.set(null);
             synchronized (BackgroundExecutor.class) {
-				/* execution complete */
+                /* execution complete */
                 TASKS.remove(this);
 
                 if (serial != null) {
                     Task next = take(serial);
                     if (next != null) {
                         if (next.remainingDelay != 0) {
-							/* the delay may not have elapsed yet */
+                            /* the delay may not have elapsed yet */
                             next.remainingDelay = Math.max(0L, targetTimeMillis - System.currentTimeMillis());
                         }
-						/* a task having the same serial was queued, execute it */
+                        /* a task having the same serial was queued, execute it */
                         BackgroundExecutor.execute(next);
                     }
                 }

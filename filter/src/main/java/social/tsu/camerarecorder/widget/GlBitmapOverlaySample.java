@@ -3,7 +3,8 @@ package social.tsu.camerarecorder.widget;
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
 
-import com.daasuu.camerarecorder.egl.filter.GlOverlayFilter;
+import social.tsu.camerarecorder.egl.filter.GlOverlayFilter;
+
 
 public class GlBitmapOverlaySample extends GlOverlayFilter {
 

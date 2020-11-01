@@ -16,12 +16,10 @@ import social.tsu.trimmer.interfaces.OnRangeSeekBarListener;
 
 public class ProgressBarView extends View implements OnRangeSeekBarListener, OnProgressVideoListener {
 
-    private int mProgressHeight;
-    private int mViewWidth;
-
     private final Paint mBackgroundColor = new Paint();
     private final Paint mProgressColor = new Paint();
-
+    private int mProgressHeight;
+    private int mViewWidth;
     private Rect mBackgroundRect;
     private Rect mProgressRect;
 

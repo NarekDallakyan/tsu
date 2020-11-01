@@ -3,6 +3,6 @@
     android:color="@color/black_translucent">
     <item
         android:id="@android:id/mask"
-        android:drawable="@android:color/black"/>
-    <item android:drawable="@android:color/black"/>
+        android:drawable="@android:color/black" />
+    <item android:drawable="@android:color/black" />
 </ripple>

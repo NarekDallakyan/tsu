@@ -46,7 +46,9 @@ public class TsuVideoTrimmerView extends FrameLayout implements MediaPlayer.OnEr
 
     private static final String TAG = TsuVideoTrimmerView.class.getSimpleName();
     private static final int MIN_TIME_FRAME = 1000;
-
+    private static final int SHOW_PROGRESS = 2;
+    @NonNull
+    private final MessageHandler mMessageHandler = new MessageHandler(this);
     private SeekBar mHolderTopView;
     private RangeSeekBarView mRangeSeekBarView;
     private RelativeLayout mLinearVideo;
@@ -56,27 +58,18 @@ public class TsuVideoTrimmerView extends FrameLayout implements MediaPlayer.OnEr
     private TextView mTextTimeFrame;
     private TextView mTextTime;
     private TimeLineView mTimeLineView;
-
     private Uri mSrc;
     private String mFinalPath;
-
     private int mMaxDuration;
     private List<OnProgressVideoListener> mListeners;
     private OnTrimVideoListener mOnTrimVideoListener;
-
     private int mDuration = 0;
-    private int maxFileSize= 25;
+    private int maxFileSize = 25;
     private int mTimeVideo = 0;
     private int mStartPosition = 0;
     private int mEndPosition = 0;
     private long mOriginSizeFile;
     private boolean mResetSeekBar = true;
-    @NonNull
-    private final MessageHandler mMessageHandler = new MessageHandler(this);
-    private static final int SHOW_PROGRESS = 2;
-    private boolean letUserProceed;
-    private GestureDetector mGestureDetector;
-    private int initialLength;
     @NonNull
     private final GestureDetector.SimpleOnGestureListener mGestureListener = new GestureDetector.SimpleOnGestureListener() {
         @Override
@@ -99,7 +92,8 @@ public class TsuVideoTrimmerView extends FrameLayout implements MediaPlayer.OnEr
             return true;
         }
     };
-
+    private boolean letUserProceed;
+    private GestureDetector mGestureDetector;
     @NonNull
     private final View.OnTouchListener mTouchListener = new OnTouchListener() {
         @Override
@@ -108,6 +102,7 @@ public class TsuVideoTrimmerView extends FrameLayout implements MediaPlayer.OnEr
             return true;
         }
     };
+    private int initialLength;
 
     public TsuVideoTrimmerView(@NonNull Context context, AttributeSet attrs) {
         this(context, attrs, 0);
@@ -118,7 +113,7 @@ public class TsuVideoTrimmerView extends FrameLayout implements MediaPlayer.OnEr
         init(context);
     }
 
-    public void onSave(){
+    public void onSave() {
 
         if (letUserProceed) {
             if (mStartPosition <= 0 && mEndPosition >= mDuration) {
@@ -154,12 +149,12 @@ public class TsuVideoTrimmerView extends FrameLayout implements MediaPlayer.OnEr
 
         mHolderTopView = findViewById(R.id.handlerTop);
         ProgressBarView progressVideoView = findViewById(R.id.timeVideoView);
-        mRangeSeekBarView =  findViewById(R.id.timeLineBar);
+        mRangeSeekBarView = findViewById(R.id.timeLineBar);
         mLinearVideo = findViewById(R.id.layout_surface_view);
         mVideoView = findViewById(R.id.video_loader);
         mPlayView = findViewById(R.id.icon_video_play);
         mTextSize = findViewById(R.id.textSize);
-        mTextTimeFrame =  findViewById(R.id.textTimeSelection);
+        mTextTimeFrame = findViewById(R.id.textTimeSelection);
         mTextTime = findViewById(R.id.textTime);
         mTimeLineView = findViewById(R.id.timeLineView);
         View viewButtonCancel = findViewById(R.id.btCancel);
@@ -472,29 +467,6 @@ public class TsuVideoTrimmerView extends FrameLayout implements MediaPlayer.OnEr
         return false;
     }
 
-    private static class MessageHandler extends Handler {
-
-        @NonNull
-        private final WeakReference<TsuVideoTrimmerView> mView;
-
-        MessageHandler(TsuVideoTrimmerView view) {
-            mView = new WeakReference<>(view);
-        }
-
-        @Override
-        public void handleMessage(Message msg) {
-            TsuVideoTrimmerView view = mView.get();
-            if (view == null || view.mVideoView == null) {
-                return;
-            }
-
-            view.updateProgress(true);
-            if (view.mVideoView.isPlaying()) {
-                sendEmptyMessageDelayed(0, 10);
-            }
-        }
-    }
-
     private void updateProgress(boolean all) {
         if (mDuration == 0) return;
 
@@ -529,7 +501,6 @@ public class TsuVideoTrimmerView extends FrameLayout implements MediaPlayer.OnEr
         setTimeVideo(time);
     }
 
-
     private void setProgressBarPosition(int position) {
         if (mDuration > 0) {
             long pos = 1000L * position / mDuration;
@@ -540,5 +511,28 @@ public class TsuVideoTrimmerView extends FrameLayout implements MediaPlayer.OnEr
     public void destroy() {
         BackgroundExecutor.cancelAll("", true);
         UiThreadExecutor.cancelAll("");
+    }
+
+    private static class MessageHandler extends Handler {
+
+        @NonNull
+        private final WeakReference<TsuVideoTrimmerView> mView;
+
+        MessageHandler(TsuVideoTrimmerView view) {
+            mView = new WeakReference<>(view);
+        }
+
+        @Override
+        public void handleMessage(Message msg) {
+            TsuVideoTrimmerView view = mView.get();
+            if (view == null || view.mVideoView == null) {
+                return;
+            }
+
+            view.updateProgress(true);
+            if (view.mVideoView.isPlaying()) {
+                sendEmptyMessageDelayed(0, 10);
+            }
+        }
     }
 }

@@ -2,7 +2,6 @@ package social.tsu.android.ui.post.helper
 
 import android.content.Context
 import android.graphics.Bitmap
-import android.graphics.Color
 import android.graphics.Typeface
 import android.os.Handler
 import android.view.View
@@ -28,22 +27,37 @@ class LayoutChooseHelper {
 
         private val photoRunnable: () -> Unit = {
 
+            val fragment1 = fragments[1] as RecordVideoPostFragment
+            val fragment2 = fragments[2] as GifPostFragment
+            fragment1.handleOnStop()
+            fragment2.handleOnStop()
+
             val fragment = fragments[0] as PhotoCameraPostFragment
 
-            fragment.resetCamera()
+            fragment.handleOnResume()
         }
 
         private val videoRunnable: () -> Unit = {
 
+            val fragment1 = fragments[2] as GifPostFragment
+            val fragment2 = fragments[0] as PhotoCameraPostFragment
+            fragment1.handleOnStop()
+            fragment2.handleOnStop()
+
             val fragment = fragments[1] as RecordVideoPostFragment
 
-            fragment.resetCamera()
+            fragment.handleOnResume()
         }
 
         private val gifRunnable: () -> Unit = {
 
+            val fragment1 = fragments[1] as RecordVideoPostFragment
+            val fragment2 = fragments[0] as PhotoCameraPostFragment
+            fragment1.handleOnStop()
+            fragment2.handleOnStop()
             val fragment = fragments[2] as GifPostFragment
-            fragment.resetCamera()
+            fragment.handleOnResume()
+
         }
 
         fun setChoose(
@@ -127,9 +141,6 @@ class LayoutChooseHelper {
                 }
             }
         }
-
-
-
 
         fun handleViewPagerChange(
             context: Context,

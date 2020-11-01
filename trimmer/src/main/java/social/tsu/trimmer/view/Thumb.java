@@ -27,6 +27,36 @@ public class Thumb {
         mPos = 0;
     }
 
+    @NonNull
+    public static List<Thumb> initThumbs(Resources resources) {
+
+        List<Thumb> thumbs = new Vector<>();
+
+        for (int i = 0; i < 2; i++) {
+            Thumb th = new Thumb();
+            th.setIndex(i);
+            if (i == 0) {
+                int resImageLeft = R.drawable.text_select_handle_left;
+                th.setBitmap(BitmapFactory.decodeResource(resources, resImageLeft));
+            } else {
+                int resImageRight = R.drawable.select_handle_right;
+                th.setBitmap(BitmapFactory.decodeResource(resources, resImageRight));
+            }
+
+            thumbs.add(th);
+        }
+
+        return thumbs;
+    }
+
+    public static int getWidthBitmap(@NonNull List<Thumb> thumbs) {
+        return thumbs.get(0).getWidthBitmap();
+    }
+
+    public static int getHeightBitmap(@NonNull List<Thumb> thumbs) {
+        return thumbs.get(0).getHeightBitmap();
+    }
+
     public int getIndex() {
         return mIndex;
     }
@@ -59,36 +89,6 @@ public class Thumb {
         mBitmap = bitmap;
         mWidthBitmap = bitmap.getWidth();
         mHeightBitmap = bitmap.getHeight();
-    }
-
-    @NonNull
-    public static List<Thumb> initThumbs(Resources resources) {
-
-        List<Thumb> thumbs = new Vector<>();
-
-        for (int i = 0; i < 2; i++) {
-            Thumb th = new Thumb();
-            th.setIndex(i);
-            if (i == 0) {
-                int resImageLeft = R.drawable.text_select_handle_left;
-                th.setBitmap(BitmapFactory.decodeResource(resources, resImageLeft));
-            } else {
-                int resImageRight = R.drawable.select_handle_right;
-                th.setBitmap(BitmapFactory.decodeResource(resources, resImageRight));
-            }
-
-            thumbs.add(th);
-        }
-
-        return thumbs;
-    }
-
-    public static int getWidthBitmap(@NonNull List<Thumb> thumbs) {
-        return thumbs.get(0).getWidthBitmap();
-    }
-
-    public static int getHeightBitmap(@NonNull List<Thumb> thumbs) {
-        return thumbs.get(0).getHeightBitmap();
     }
 
     public float getLastTouchX() {

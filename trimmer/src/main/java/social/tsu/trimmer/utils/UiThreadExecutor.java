@@ -10,6 +10,7 @@ import java.util.Map;
 
 public final class UiThreadExecutor {
 
+    private static final Map<String, Token> TOKENS = new HashMap<>();
     private static final Handler HANDLER = new Handler(Looper.getMainLooper()) {
         @Override
         public void handleMessage(Message msg) {
@@ -22,8 +23,6 @@ public final class UiThreadExecutor {
             }
         }
     };
-
-    private static final Map<String, Token> TOKENS = new HashMap<>();
 
     private UiThreadExecutor() {
     }
@@ -88,8 +87,8 @@ public final class UiThreadExecutor {
     }
 
     private static final class Token {
-        int runnablesCount = 0;
         final String id;
+        int runnablesCount = 0;
 
         private Token(String id) {
             this.id = id;

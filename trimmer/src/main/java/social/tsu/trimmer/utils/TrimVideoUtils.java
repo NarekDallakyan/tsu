@@ -2,7 +2,9 @@ package social.tsu.trimmer.utils;
 
 import android.net.Uri;
 import android.util.Log;
+
 import androidx.annotation.NonNull;
+
 import com.coremedia.iso.boxes.Container;
 import com.googlecode.mp4parser.FileDataSourceViaHeapImpl;
 import com.googlecode.mp4parser.authoring.Movie;
@@ -11,6 +13,7 @@ import com.googlecode.mp4parser.authoring.builder.DefaultMp4Builder;
 import com.googlecode.mp4parser.authoring.container.mp4.MovieCreator;
 import com.googlecode.mp4parser.authoring.tracks.AppendTrack;
 import com.googlecode.mp4parser.authoring.tracks.CroppedTrack;
+
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
