@@ -437,12 +437,12 @@ class PostTypesFragment : Fragment(), Serializable {
             return
         }
 
-        sharedViewModel!!.select(false)
+
         val mBundle = Bundle()
         mBundle.putString("filePath", filePath)
         mBundle.putInt("fromScreenType", getScreenType())
-
-        findParentNavController().navigate(R.id.postResultFragment, mBundle)
+        sharedViewModel!!.select(false)
+        findParentNavController().navigate(R.id.postTrimFragment, mBundle)
     }
 
     companion object {

@@ -584,7 +584,7 @@
             android:defaultValue="@null" />
         <action
             android:id="@+id/action_postTypesFragment_to_postResultFragment"
-            app:destination="@id/postResultFragment" />
+            app:destination="@id/postTrimFragment" />
     </fragment>
 
     <fragment
@@ -1155,9 +1155,16 @@
             app:argType="string" />
     </fragment>
     <fragment
-        android:id="@+id/postResultFragment"
-        android:name="social.tsu.android.ui.post.view.result.PostResultFragment"
+        android:id="@+id/postTrimFragment"
+        android:name="social.tsu.android.ui.post.view.trim.PostTrimFragment"
         android:label="fragment_post_result"
-        tools:layout="@layout/fragment_post_result" />
+        tools:layout="@layout/fragment_post_trim" />
+
+    <fragment
+        android:id="@+id/postPreviewFragment"
+        android:name="social.tsu.android.ui.post.view.preview.PostPreviewFragment"
+        android:label="fragment_post_preview"
+        tools:layout="@layout/fragment_post_preview"
+        />
 
 </navigation>

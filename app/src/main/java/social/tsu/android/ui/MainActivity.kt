@@ -174,6 +174,7 @@ class MainActivity : DaggerAppCompatActivity(), NavController.OnDestinationChang
             checkPermissions(
                 arrayOf(
                     Manifest.permission.CAMERA,
+                    Manifest.permission.WRITE_EXTERNAL_STORAGE,
                     Manifest.permission.READ_EXTERNAL_STORAGE,
                     Manifest.permission.RECORD_AUDIO
                 ),
@@ -744,10 +745,10 @@ class MainActivity : DaggerAppCompatActivity(), NavController.OnDestinationChang
                 toolbarTitle?.show()
                 toolbarTitle?.setText(R.string.feed_type_screen_title)
             }
-                    R.id.discoveryFeedFragment -> {
-                        toolbarTitle?.show()
-                        toolbarTitle?.setText(R.string.discovery_feed_title)
-                    }
+            R.id.discoveryFeedFragment -> {
+                toolbarTitle?.show()
+                toolbarTitle?.setText(R.string.discovery_feed_title)
+            }
             else -> {
                 toolbarTitle?.hide()
             }
