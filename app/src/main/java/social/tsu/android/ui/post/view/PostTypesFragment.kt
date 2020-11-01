@@ -1,5 +1,6 @@
 package social.tsu.android.ui.post.view
 
+import android.app.AlertDialog
 import android.net.Uri
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -16,6 +17,7 @@ import androidx.navigation.fragment.navArgs
 import androidx.viewpager.widget.ViewPager
 import kotlinx.android.synthetic.main.fragment_post_types.*
 import social.tsu.android.R
+import social.tsu.android.ui.post.helper.Filters
 import social.tsu.android.ui.post.helper.LayoutChooseHelper
 import social.tsu.android.ui.post.helper.LayoutChooseHelper.Companion.changeLayoutAlpha
 import social.tsu.android.ui.post.helper.LayoutChooseHelper.Companion.setChoose
@@ -24,6 +26,7 @@ import social.tsu.android.utils.findParentNavController
 import social.tsu.android.utils.hide
 import social.tsu.android.utils.show
 import social.tsu.android.viewModel.SharedViewModel
+import social.tsu.camerarecorder.CameraRecorder
 import java.io.Serializable
 import java.util.*
 import kotlin.collections.ArrayList
@@ -51,6 +54,12 @@ import kotlin.collections.ArrayList
 class PostTypesFragment : Fragment(), Serializable {
 
     private val args: PostTypesFragmentArgs by navArgs()
+
+    //filter dialog field
+    private var filterDialog: AlertDialog? = null
+
+    protected var cameraRecorder: CameraRecorder? = null
+
 
     val allowVideo by lazy { args.allowVideo }
 
@@ -349,24 +358,34 @@ class PostTypesFragment : Fragment(), Serializable {
             findParentNavController().popBackStack(R.id.mainFeedFragment, false)
         }
 
-        view?.findViewById<ConstraintLayout>(R.id.nextLayout4_id)?.setOnClickListener {
-
-//            if (filePath == null) {
-//                Toast.makeText(
-//                    requireContext(),
-//                    "Can not continue, file is empty.",
-//                    Toast.LENGTH_LONG
-//                ).show()
-//                return@setOnClickListener
-//            }
-//
-//            sharedViewModel!!.select(false)
-//            val mBundle = Bundle()
-//            mBundle.putString("filePath", filePath)
-//            mBundle.putInt("fromScreenType", getScreenType())
-//
-//            findParentNavController().navigate(R.id.postResultFragment, mBundle)
+        view?.findViewById<ConstraintLayout>(R.id.filterLayout_id)?.setOnClickListener {
+            if (filterDialog == null) {
+                val builder: AlertDialog.Builder = AlertDialog.Builder(requireContext())
+                builder.setTitle("Choose a filter")
+                builder.setOnDismissListener { dialog ->
+                    filterDialog = null
+                }
+                val filters = Filters.values()
+                val charList =
+                    arrayOfNulls<CharSequence>(filters.size)
+                var i = 0
+                val n = filters.size
+                while (i < n) {
+                    charList[i] = filters[i].name
+                    i++
+                }
+                builder.setItems(charList) { dialog, item ->
+                    changeFilter(filters[item])
+                }
+                filterDialog = builder.show()
+            } else {
+                filterDialog!!.dismiss()
+            }
         }
+    }
+
+    private fun changeFilter(filters: Filters) {
+        cameraRecorder?.setFilter(Filters.getFilterInstance(filters, requireContext()))
     }
 
     override fun onDestroyView() {
