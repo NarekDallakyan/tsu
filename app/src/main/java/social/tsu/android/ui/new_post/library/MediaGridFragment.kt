@@ -12,17 +12,13 @@ import kotlinx.android.synthetic.main.fragment_post_types.*
 import social.tsu.android.R
 import social.tsu.android.ui.post.view.PostTypesFragment
 
-class MediaGridFragment : Fragment(){
+class MediaGridFragment : Fragment() {
+
+    private var postTypeFragment: PostTypesFragment? = null
+    private var mediaContentList: ArrayList<LibraryMedia>? = null
+    private var folderName: String? = null
 
     private val args: MediaGridFragmentArgs by navArgs()
-
-    private val title by lazy {
-        args.title
-    }
-
-    private val mediaList by lazy {
-        args.mediaList
-    }
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -34,23 +30,36 @@ class MediaGridFragment : Fragment(){
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        // Get argument data
+        getArgumentData()
+        requireActivity().post_types_toolbar?.title = folderName
 
-        requireActivity().post_types_toolbar?.title = title
-
-        val adapter = LibraryMediaAdapter{
+        val adapter = LibraryMediaAdapter {
             val imageUri = if (it.isImage()) it.uri else null
-            val videoUri = if(it.isVideo()) it.uri.toString() else null
+            val videoUri = if (it.isVideo()) it.uri.toString() else null
 
-            (requireParentFragment().requireParentFragment() as PostTypesFragment).next(
+            (postTypeFragment)?.next(
                 videoContentUri = videoUri,
-                photoUri = imageUri
+                photoUri = imageUri,
+                fromGrid = true
             )
         }
 
-        adapter.submitNewList(mediaList.toList())
+        mediaContentList?.let {
+            adapter.submitNewList(it.toList())
+            media_grid_recycler.adapter = adapter
+        }
+    }
 
-        media_grid_recycler.adapter = adapter
+    private fun getArgumentData() {
 
+        if (arguments == null) return
+
+        postTypeFragment =
+            requireArguments().getSerializable("postTypeFragment") as? PostTypesFragment
+        mediaContentList =
+            requireArguments().getParcelableArrayList<LibraryMedia>("mediaContentList")
+        folderName = requireArguments().getString("folderName")
     }
 
 }

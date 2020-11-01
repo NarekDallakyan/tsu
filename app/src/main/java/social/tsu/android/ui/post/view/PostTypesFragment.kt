@@ -24,6 +24,7 @@ import social.tsu.android.utils.findParentNavController
 import social.tsu.android.utils.hide
 import social.tsu.android.utils.show
 import social.tsu.android.viewModel.SharedViewModel
+import java.io.Serializable
 import java.util.*
 import kotlin.collections.ArrayList
 
@@ -47,7 +48,7 @@ import kotlin.collections.ArrayList
  * create completely custom fragment if you need more customization
  */
 
-class PostTypesFragment : Fragment() {
+class PostTypesFragment : Fragment(), Serializable {
 
     private val args: PostTypesFragmentArgs by navArgs()
 
@@ -337,7 +338,10 @@ class PostTypesFragment : Fragment() {
         }
 
         view?.findViewById<ConstraintLayout>(R.id.mediaLibraryLayout_id)?.setOnClickListener {
-            findParentNavController().navigate(R.id.mediaLibraryLayout_id)
+
+            val mBundle = Bundle()
+            mBundle.putSerializable("postTypeFragment", this)
+            findParentNavController().navigate(R.id.mediaLibraryLayout_id, mBundle)
         }
 
         view?.findViewById<ConstraintLayout>(R.id.closeLayout_id)?.setOnClickListener {
@@ -347,21 +351,21 @@ class PostTypesFragment : Fragment() {
 
         view?.findViewById<ConstraintLayout>(R.id.nextLayout4_id)?.setOnClickListener {
 
-            if (filePath == null) {
-                Toast.makeText(
-                    requireContext(),
-                    "Can not continue, file is empty.",
-                    Toast.LENGTH_LONG
-                ).show()
-                return@setOnClickListener
-            }
-
-            sharedViewModel!!.select(false)
-            val mBundle = Bundle()
-            mBundle.putString("filePath", filePath)
-            mBundle.putInt("fromScreenType", getScreenType())
-
-            findParentNavController().navigate(R.id.postResultFragment, mBundle)
+//            if (filePath == null) {
+//                Toast.makeText(
+//                    requireContext(),
+//                    "Can not continue, file is empty.",
+//                    Toast.LENGTH_LONG
+//                ).show()
+//                return@setOnClickListener
+//            }
+//
+//            sharedViewModel!!.select(false)
+//            val mBundle = Bundle()
+//            mBundle.putString("filePath", filePath)
+//            mBundle.putInt("fromScreenType", getScreenType())
+//
+//            findParentNavController().navigate(R.id.postResultFragment, mBundle)
         }
     }
 
@@ -392,25 +396,53 @@ class PostTypesFragment : Fragment() {
     fun next(
         videoPath: String? = null,
         videoContentUri: String? = null,
-        photoUri: Uri? = null
+        photoUri: Uri? = null,
+        fromGrid: Boolean? = null
     ) {
+
+        if (fromGrid == true) {
+
+            val mBundle = Bundle()
+            mBundle.putString("videoPath", videoPath)
+            mBundle.putString("videoContentUri", videoContentUri)
+            mBundle.putString("photoUri", photoUri?.toString())
+            mBundle.putString("postText", args.postText)
+            mBundle.putParcelable("recipient", args.recipient)
+            mBundle.putSerializable("postingType", args.postingType)
+            mBundle.putParcelable("membership", args.membership)
+            mBundle.putBoolean("allowVideo", args.allowVideo)
+            mBundle.putInt("popToDestination", args.popToDestination)
+            findParentNavController().navigate(R.id.postDraftFragment, mBundle)
+            return
+        }
 
         if (videoPath != null) {
             this.filePath = videoPath
-            return
         }
 
         if (videoContentUri != null) {
             this.filePath = videoContentUri
-            return
         }
 
         if (photoUri != null) {
             this.filePath = photoUri.toString()
+        }
+
+        if (filePath == null) {
+            Toast.makeText(
+                requireContext(),
+                "Can not continue, file is empty.",
+                Toast.LENGTH_LONG
+            ).show()
             return
         }
 
-        Toast.makeText(requireContext(), "Success", Toast.LENGTH_LONG).show()
+        sharedViewModel!!.select(false)
+        val mBundle = Bundle()
+        mBundle.putString("filePath", filePath)
+        mBundle.putInt("fromScreenType", getScreenType())
+
+        findParentNavController().navigate(R.id.postResultFragment, mBundle)
     }
 
     companion object {

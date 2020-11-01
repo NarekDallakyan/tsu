@@ -24,7 +24,6 @@ import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.whenStarted
 import androidx.navigation.NavOptions
 import androidx.navigation.fragment.findNavController
-import androidx.navigation.fragment.navArgs
 import androidx.navigation.navOptions
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.resource.gif.GifDrawable
@@ -50,6 +49,7 @@ import social.tsu.android.data.local.dao.PostFeedDao
 import social.tsu.android.data.local.entity.FeedSource
 import social.tsu.android.data.local.entity.Post
 import social.tsu.android.data.local.entity.PostPayload
+import social.tsu.android.data.local.models.PostUser
 import social.tsu.android.execute
 import social.tsu.android.helper.AnalyticsHelper
 import social.tsu.android.helper.AuthenticationHelper
@@ -59,10 +59,6 @@ import social.tsu.android.network.api.PostImageApi
 import social.tsu.android.network.api.StreamApi
 import social.tsu.android.network.model.*
 import social.tsu.android.rx.plusAssign
-import social.tsu.android.service.ChatService
-import social.tsu.android.service.ServiceCallback
-import social.tsu.android.service.getNetworkCallErrorMessage
-import social.tsu.android.service.handleResponse
 import social.tsu.android.service.*
 import social.tsu.android.ui.CameraUtil
 import social.tsu.android.ui.MainActivity
@@ -79,12 +75,13 @@ import social.tsu.android.workmanager.workers.UploadVideoWorker
 import java.io.ByteArrayOutputStream
 import java.io.File
 import java.io.IOException
+import java.io.Serializable
 import java.nio.ByteBuffer
 import java.text.SimpleDateFormat
 import java.util.concurrent.TimeUnit
 import javax.inject.Inject
 
-enum class PostDraftType {
+enum class PostDraftType : Serializable {
     POST, MESSAGE, COMMUNITY
 }
 
@@ -145,7 +142,7 @@ class PostDraftFragment : Fragment() {
     private var compositeDisposable = CompositeDisposable()
     private var composeEditText: EditText? = null
 
-    val args: PostDraftFragmentArgs by navArgs()
+    //val args: PostDraftFragmentArgs by navArgs()
 
     private var lastSnackbar: Snackbar? = null
 
@@ -173,7 +170,6 @@ class PostDraftFragment : Fragment() {
         }
 
         override fun afterTextChanged(arg0: Editable) {
-
             val value = arg0.toString()
             if (value.isNullOrEmpty()) {
                 return
@@ -209,6 +205,9 @@ class PostDraftFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View? {
 
+        // Get argument data
+        getArgumentData()
+
         val fragmentComponent = (activity?.application as TsuApplication)
             .appComponent.fragmentComponent().create()
         fragmentComponent.inject(this)
@@ -240,7 +239,7 @@ class PostDraftFragment : Fragment() {
             addVideoToPost()
         }
 
-        when (args.postingType) {
+        when (postDraftType) {
             PostDraftType.POST -> {
                 visibilityRadioGroup = view.findViewById(R.id.compose_post_radio_group)
                 visibilityMessage = view.findViewById(R.id.compose_post_visibility_msg)
@@ -271,6 +270,32 @@ class PostDraftFragment : Fragment() {
 
         setHasOptionsMenu(true)
         return view
+    }
+
+    // Argument properties
+    private var videoPath: String? = null
+    private var videoContentUri: String? = null
+    private var photoUri: String? = null
+    private var postText: String? = null
+    private var postUser: PostUser? = null
+    private var postDraftType: PostDraftType? = null
+    private var membership: Membership? = null
+    private var allowVideo: Boolean? = null
+    private var popToDestination: Int? = null
+
+    private fun getArgumentData() {
+
+        if (arguments == null) return
+
+        videoPath = requireArguments().getString("videoPath")
+        videoContentUri = requireArguments().getString("videoContentUri")
+        photoUri = requireArguments().getString("photoUri")
+        postText = requireArguments().getString("postText")
+        postUser = requireArguments().getParcelable("recipient")
+        postDraftType = requireArguments().getSerializable("postingType") as? PostDraftType?
+        membership = requireArguments().getParcelable("membership")
+        allowVideo = requireArguments().getBoolean("allowVideo")
+        popToDestination = requireArguments().getInt("popToDestination")
     }
 
     override fun onResume() {
@@ -313,7 +338,7 @@ class PostDraftFragment : Fragment() {
         composeEditText?.text?.let {
             if (it.toString().isBlank()) {
                 view?.findViewById<EditText>(R.id.composePost)
-                    ?.setText(SpannableString(args.postText))
+                    ?.setText(SpannableString(postText))
             }
         }
 
@@ -321,20 +346,20 @@ class PostDraftFragment : Fragment() {
         //URIs comes in fragment arguments typically from PostTypesFragment after it's done with capture
         //or selection
 
-        args.photoUri?.let {
+        photoUri?.let {
             try {
-                handlePhoto(it)
+                handlePhoto(Uri.parse(it))
             } catch (e: Exception) {
                 snack(getString(R.string.unable_to_load_attached_photo))
             }
             return
         }
 
-        args.videoPath?.let {
+        videoPath?.let {
             handleVideo(it)
             return
         }
-        args.videoContentUri?.let {
+        videoContentUri?.let {
             handleVideoContentPath(it)
             return
         }
@@ -377,7 +402,7 @@ class PostDraftFragment : Fragment() {
         UploadVideoWorker.start(
             videoPath,
             message,
-            args.membership?.group?.id ?: -1,
+            membership?.group?.id ?: -1,
             privacy = privacy
         )
         if (privacy == Post.PRIVACY_EXCLUSIVE)
@@ -414,7 +439,7 @@ class PostDraftFragment : Fragment() {
         UploadVideoWorker.start(
             videoPath,
             message,
-            args.membership?.group?.id ?: -1,
+            membership?.group?.id ?: -1,
             privacy = privacy
         )
         if (privacy == Post.PRIVACY_EXCLUSIVE)
@@ -486,11 +511,11 @@ class PostDraftFragment : Fragment() {
                 val action = MainFeedFragmentDirections
                     .showPostTypesFragment(text).apply {
                         defaultPostType = mediaType
-                        postingType = args.postingType
-                        membership = args.membership
-                        recipient = args.recipient
-                        allowVideo = args.allowVideo
-                        popToDestination = args.popToDestination
+                        postingType = postDraftType ?: PostDraftType.POST
+                        membership = membership
+                        recipient = postUser
+                        allowVideo = allowVideo
+                        popToDestination = popToDestination
                     }
                 findNavController().navigate(action)
             }
@@ -716,7 +741,7 @@ class PostDraftFragment : Fragment() {
             }
         }
 
-        when (args.postingType) {
+        when (postDraftType) {
             PostDraftType.MESSAGE -> sendMessage(text, imageData)
             else -> {
                 val privacy =
@@ -741,7 +766,7 @@ class PostDraftFragment : Fragment() {
 
     private fun sendMessage(composePostText: String, imageData: String?) {
         val senderId = AuthenticationHelper.currentUserId
-        val recipientId = args.recipient?.id
+        val recipientId = postUser?.id
 
         if (recipientId == null || senderId == null) {
             Log.e(
@@ -781,7 +806,7 @@ class PostDraftFragment : Fragment() {
     }
 
     private fun createPost(postText: String, imageData: String?, privacy: Int) {
-        val createPostRequest = when (args.postingType) {
+        val createPostRequest = when (postDraftType) {
             PostDraftType.POST -> {
                 if (imageData == null) {
                     postApi.createPost(CreatePostPayload(postText, privacy = privacy))
@@ -809,7 +834,7 @@ class PostDraftFragment : Fragment() {
                 }
             }
             else -> {
-                val membership = args.membership
+                val membership = membership
                 if (membership == null) {
                     snack(R.string.create_post_error)
                     return
@@ -907,7 +932,7 @@ class PostDraftFragment : Fragment() {
                                 dspTimer?.dispose()
                                 startTimer()
                             }
-                            if (post == null && args.postingType == PostDraftType.COMMUNITY) {
+                            if (post == null && postDraftType == PostDraftType.COMMUNITY) {
                                 lastSnackbar?.dismiss()
                                 snack(R.string.community_need_moderation_msg)
                             }
@@ -925,7 +950,7 @@ class PostDraftFragment : Fragment() {
                             if (post?.has_gif != null) {
                                 properties["has_gif"] = post.has_gif
                             }
-                            if (!args.postText.isEmpty()) {
+                            if (postText.isNotEmpty()) {
                                 properties["has_text"] = true
                             }
                             analyticsHelper.logEvent("post_created", properties)
@@ -962,10 +987,10 @@ class PostDraftFragment : Fragment() {
      * Returns to correct destination depending on posting type
      */
     private fun popBackStack() {
-        when (args.postingType) {
+        when (postDraftType) {
             PostDraftType.COMMUNITY -> {
                 val action = CommunityFeedFragmentDirections.openCommunityFeedFragment()
-                action.membership = args.membership
+                action.membership = membership
                 findNavController().navigate(
                     action,
                     NavOptions.Builder().setPopUpTo(R.id.communityFeedFragment, true).build()
@@ -976,7 +1001,7 @@ class PostDraftFragment : Fragment() {
                     findNavController().navigate(
                         R.id.chatFragment,
                         ChatFragmentArgs.Builder()
-                            .setRecipient(args.recipient)
+                            .setRecipient(postUser)
                             .build().toBundle(),
                         navOptions {
                             popUpTo(R.id.recentContactsFragment) { inclusive = false }
@@ -1028,7 +1053,7 @@ class PostDraftFragment : Fragment() {
         val view = requireView()
         val message = view.findViewById<TextView>(R.id.composePost)?.text.toString()
 
-        if (args.postingType != PostDraftType.MESSAGE && message.hashtags().size > PostApi.MAX_HASHTAG_COUNT) {
+        if (postDraftType != PostDraftType.MESSAGE && message.hashtags().size > PostApi.MAX_HASHTAG_COUNT) {
             snack(R.string.create_post_hashtag_error)
             return
         }
@@ -1042,11 +1067,11 @@ class PostDraftFragment : Fragment() {
         lastSnackbar?.show()
 
         when {
-            (args.videoPath != null) -> {
-                postVideo(args.videoPath as String, message)
+            (videoPath != null) -> {
+                postVideo(videoPath as String, message)
             }
-            (args.videoContentUri != null) -> {
-                postVideoPath(Uri.parse(args.videoContentUri), message)
+            (videoContentUri != null) -> {
+                postVideoPath(Uri.parse(videoContentUri), message)
             }
             else -> {
                 try {

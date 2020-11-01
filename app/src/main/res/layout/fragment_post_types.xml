@@ -169,6 +169,7 @@
         app:layout_constraintTop_toTopOf="@+id/closeLayout_id" />
 
     <androidx.constraintlayout.widget.ConstraintLayout
+        android:visibility="gone"
         android:id="@+id/nextLayout4_id"
         android:layout_width="60dp"
         android:layout_height="60dp"
