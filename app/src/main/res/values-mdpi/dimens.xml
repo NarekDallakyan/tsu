@@ -29,4 +29,6 @@
 
     <dimen name="invite_only_icon_width">100dp</dimen>
 
+    <dimen name="frames_video_height">60dip</dimen>
+
 </resources>

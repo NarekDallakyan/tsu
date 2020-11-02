@@ -16,6 +16,8 @@ import android.widget.Toast
 import androidx.fragment.app.FragmentActivity
 import com.applovin.sdk.AppLovinSdkUtils.runOnUiThread
 import social.tsu.android.R
+import social.tsu.android.helper.DeviceUtils.Companion.getDeviceFullHeight
+import social.tsu.android.helper.DeviceUtils.Companion.getDeviceWidth
 import social.tsu.camerarecorder.CameraRecordListener
 import social.tsu.camerarecorder.CameraRecorder
 import social.tsu.camerarecorder.CameraRecorderBuilder
@@ -46,10 +48,10 @@ class CameraHelper(
     private var cameraRecorder: CameraRecorder? = null
     private var filepath: String? = null
     private var lensFacing: LensFacing = LensFacing.BACK
-    private var cameraWidth = 640
-    private var cameraHeight = 480
-    private var videoWidth = 640
-    private var videoHeight = 480
+    private var cameraWidth = getDeviceWidth(activity)
+    private var cameraHeight = getDeviceFullHeight(context)
+    private var videoWidth = getDeviceWidth(activity)
+    private var videoHeight = getDeviceFullHeight(context)
     private var toggleClick = false
     private var cameraView: ViewGroup? = null
     private var completeRecording: ((String?) -> Unit)? = null
@@ -131,8 +133,8 @@ class CameraHelper(
                         toggleClick = false
                     }
                 })
-                .videoSize(videoWidth, videoHeight)
-                .cameraSize(cameraWidth, cameraHeight)
+                .videoSize(videoWidth.toInt(), videoHeight.toInt())
+                .cameraSize(cameraWidth.toInt(), cameraHeight.toInt())
                 .lensFacing(lensFacing)
                 .build()
     }

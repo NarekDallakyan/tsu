@@ -310,7 +310,6 @@ dependencies {
     implementation 'com.github.AbedElazizShe:LightCompressor:0.7.5'
 
     implementation "io.coil-kt:coil:0.9.5"
-    implementation 'com.github.cjiahuan:TrimmerVideoView:0.0.5'
 
 //    // Load modules
     implementation project(":filter")

@@ -29,6 +29,7 @@ import social.tsu.android.utils.hide
 import social.tsu.android.utils.show
 import social.tsu.android.viewModel.SharedViewModel
 import social.tsu.camerarecorder.CameraRecorder
+import social.tsu.trimmer.features.trim.VideoTrimmerUtil
 import java.io.Serializable
 import java.util.*
 import kotlin.collections.ArrayList
@@ -157,6 +158,7 @@ class PostTypesFragment : Fragment(), Serializable {
         )
     }
 
+
     private fun initOnClicks() {
 
         // listen bottom buttons click listeners
@@ -232,6 +234,8 @@ class PostTypesFragment : Fragment(), Serializable {
                         mBundle.putInt("fromScreenType", getScreenType())
                         mBundle.putSerializable("postTypeFragment", this)
                         sharedViewModel!!.select(false)
+                        // Configure trimmer video limitation
+                        VideoTrimmerUtil.TYPE = 1
                         Handler(Looper.getMainLooper()).postDelayed({
                             findParentNavController().navigate(R.id.postTrimFragment, mBundle)
                         }, 200)
@@ -277,6 +281,8 @@ class PostTypesFragment : Fragment(), Serializable {
                         mBundle.putInt("fromScreenType", getScreenType())
                         mBundle.putSerializable("postTypeFragment", this)
                         sharedViewModel!!.select(false)
+                        // Configure trimmer video limitation
+                        VideoTrimmerUtil.TYPE = 2
                         Handler(Looper.getMainLooper()).postDelayed({
                             findParentNavController().navigate(R.id.postTrimFragment, mBundle)
                         }, 200)
