@@ -233,7 +233,7 @@ class PostTypesFragment : Fragment(), Serializable {
                         mBundle.putSerializable("postTypeFragment", this)
                         sharedViewModel!!.select(false)
                         Handler(Looper.getMainLooper()).postDelayed({
-                            findParentNavController().navigate(R.id.postPreviewFragment, mBundle)
+                            findParentNavController().navigate(R.id.postTrimFragment, mBundle)
                         }, 200)
                     }
                     return
@@ -432,13 +432,6 @@ class PostTypesFragment : Fragment(), Serializable {
                 view?.findViewById(R.id.photoLayout_id),
                 view?.findViewById(R.id.wifiLayout_id)
             )
-        }
-
-        view?.findViewById<ConstraintLayout>(R.id.mediaLibraryLayout_id)?.setOnClickListener {
-
-            val mBundle = Bundle()
-            mBundle.putSerializable("postTypeFragment", this)
-            findParentNavController().navigate(R.id.mediaLibraryLayout_id, mBundle)
         }
 
         view?.findViewById<ConstraintLayout>(R.id.closeLayout_id)?.setOnClickListener {

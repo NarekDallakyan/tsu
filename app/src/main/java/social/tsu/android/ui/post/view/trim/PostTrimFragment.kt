@@ -66,7 +66,11 @@ class PostTrimFragment : Fragment(), OnTrimVideoListener {
         }
 
         // Ready to preview trimmer view
-        mVideoTrimmerView.setMaxDuration(6)
+        if (fromScreenType == 2) {
+            mVideoTrimmerView.setMaxDuration(6)
+        } else {
+            mVideoTrimmerView.setMaxDuration(-1)
+        }
         mVideoTrimmerView.setOnTrimVideoListener(this)
         mVideoTrimmerView.setVideoURI(Uri.parse(filePath))
     }
