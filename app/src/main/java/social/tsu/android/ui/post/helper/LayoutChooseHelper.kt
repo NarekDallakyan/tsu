@@ -10,6 +10,8 @@ import android.widget.TextView
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
+import coil.api.clear
+import coil.api.load
 import jp.wasabeef.blurry.Blurry
 import social.tsu.android.R
 import social.tsu.android.helper.DeviceUtils
@@ -148,6 +150,7 @@ class LayoutChooseHelper {
             newPostPhotoText: TextView,
             newPostVideoText: TextView,
             newPostGifText: TextView,
+            captureBtn: ImageView,
             fragments: ArrayList<Fragment>
         ) {
             this.fragments = fragments
@@ -157,6 +160,9 @@ class LayoutChooseHelper {
 
                 // Photo section
                 0 -> {
+
+                    captureBtn.clear()
+                    captureBtn.load(R.drawable.photo_capture_image)
 
                     // Change text styles
                     newPostPhotoText.setTypeface(newPostPhotoText.typeface, Typeface.BOLD)
@@ -195,6 +201,9 @@ class LayoutChooseHelper {
                 // Video section
                 1 -> {
 
+                    captureBtn.clear()
+                    captureBtn.load(R.drawable.record_video_not_start)
+
                     // Change text styles
                     newPostPhotoText.setTypeface(newPostPhotoText.typeface, Typeface.NORMAL)
                     newPostVideoText.setTypeface(newPostVideoText.typeface, Typeface.BOLD)
@@ -231,6 +240,9 @@ class LayoutChooseHelper {
 
                 // GIF section
                 2 -> {
+
+                    captureBtn.clear()
+                    captureBtn.load(R.drawable.record_video_not_start)
 
                     // Change text styles
                     newPostPhotoText.setTypeface(newPostPhotoText.typeface, Typeface.NORMAL)

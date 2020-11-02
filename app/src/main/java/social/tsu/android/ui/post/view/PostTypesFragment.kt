@@ -17,16 +17,18 @@ import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.navArgs
 import androidx.viewpager.widget.ViewPager
+import coil.api.clear
+import coil.api.load
 import kotlinx.android.synthetic.main.fragment_post_types.*
 import social.tsu.android.R
+import social.tsu.android.ext.hide
+import social.tsu.android.ext.show
 import social.tsu.android.ui.post.helper.Filters
 import social.tsu.android.ui.post.helper.LayoutChooseHelper
 import social.tsu.android.ui.post.helper.LayoutChooseHelper.Companion.changeLayoutAlpha
 import social.tsu.android.ui.post.helper.LayoutChooseHelper.Companion.setChoose
 import social.tsu.android.ui.post.view.viewpager.*
 import social.tsu.android.utils.findParentNavController
-import social.tsu.android.utils.hide
-import social.tsu.android.utils.show
 import social.tsu.android.viewModel.SharedViewModel
 import social.tsu.camerarecorder.CameraRecorder
 import social.tsu.trimmer.features.trim.VideoTrimmerUtil
@@ -54,14 +56,14 @@ import kotlin.collections.ArrayList
  * create completely custom fragment if you need more customization
  */
 
-class PostTypesFragment : Fragment(), Serializable {
+open class PostTypesFragment : Fragment(), Serializable {
 
     private val args: PostTypesFragmentArgs by navArgs()
 
     //filter dialog field
     private var filterDialog: AlertDialog? = null
 
-    protected var cameraRecorder: CameraRecorder? = null
+    private var cameraRecorder: CameraRecorder? = null
 
 
     val allowVideo by lazy { args.allowVideo }
@@ -84,6 +86,37 @@ class PostTypesFragment : Fragment(), Serializable {
 
     private var filePath: String? = null
 
+    private fun recordingMode(recording: Boolean) {
+
+        if (recording) {
+
+            camera_rotate_id?.hide(animate = true)
+            post_bottom_navbar?.hide(invisible = true, animate = true)
+            (newPostViewPager as? TsuViewPager)?.enableSwiping(false)
+            snap_icon_id.clear()
+            snap_icon_id.load(R.drawable.video_record_start)
+            sectionsLayout?.hide(animate = true)
+            optionsLayout?.hide(animate = true)
+            gallery_image_id?.hide(animate = true)
+        } else {
+
+            snap_icon_id.clear()
+            snap_icon_id.load(R.drawable.record_video_not_start)
+            (newPostViewPager as? TsuViewPager)?.enableSwiping(true)
+            sectionsLayout?.show(animate = true)
+            optionsLayout?.show(animate = true)
+            gallery_image_id?.show(animate = true)
+            camera_rotate_id?.show(animate = true)
+            post_bottom_navbar?.show(animate = true)
+        }
+
+    }
+
+    override fun onStop() {
+        super.onStop()
+        recordingMode(false)
+    }
+
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -96,7 +129,7 @@ class PostTypesFragment : Fragment(), Serializable {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-
+        recordingMode(false)
         // Init view models
         initViewModels()
         // Ui initialization
@@ -105,7 +138,7 @@ class PostTypesFragment : Fragment(), Serializable {
         initOnClicks()
     }
 
-    private fun startRecordingTimer(start: Boolean) {
+    private fun startRecordingTimer(start: Boolean, ignoreRecordingUi: Boolean = false) {
 
         // Check if timer is null
         if (timer == null) {
@@ -130,6 +163,9 @@ class PostTypesFragment : Fragment(), Serializable {
             timer?.cancel();
             timer = null;
             seconds = 0L
+            if (!ignoreRecordingUi) {
+                recordingMode(false)
+            }
             return
         }
 
@@ -141,12 +177,15 @@ class PostTypesFragment : Fragment(), Serializable {
         }
         mTimer = Timer()
         mTimer?.scheduleAtFixedRate(timer, 0L, 1000L)
+        if (!ignoreRecordingUi) {
+            recordingMode(true)
+        }
     }
 
     override fun onStart() {
         super.onStart()
         // Get view pager current page position
-        val currentPagePosition = newPostViewPager.currentItem
+        val currentPagePosition = (newPostViewPager as TsuViewPager).currentItem
         // Handle view pager after changing
         LayoutChooseHelper.handleViewPagerChange(
             requireContext(),
@@ -154,6 +193,7 @@ class PostTypesFragment : Fragment(), Serializable {
             newPostPhotoText,
             newPostVideoText,
             newPostGifText,
+            snap_icon_id,
             fragments
         )
     }
@@ -188,7 +228,7 @@ class PostTypesFragment : Fragment(), Serializable {
     private fun handleStartCamera() {
 
         // Get view pager current page position
-        when (newPostViewPager.currentItem) {
+        when ((newPostViewPager as TsuViewPager).currentItem) {
             0 -> {
                 val fragment = fragments[0] as PhotoCameraPostFragment
 
@@ -216,7 +256,7 @@ class PostTypesFragment : Fragment(), Serializable {
                 val fragment = fragments[1] as RecordVideoPostFragment
 
                 if (isTimerRunning()) {
-                    startRecordingTimer(false)
+                    startRecordingTimer(false, ignoreRecordingUi = true)
                     fragment.stopRecording {
                         this.filePath = it
 
@@ -263,7 +303,7 @@ class PostTypesFragment : Fragment(), Serializable {
                 val fragment = fragments[2] as GifPostFragment
 
                 if (isTimerRunning()) {
-                    startRecordingTimer(false)
+                    startRecordingTimer(false, ignoreRecordingUi = true)
                     fragment.stopRecording {
                         this.filePath = it
 
@@ -315,7 +355,7 @@ class PostTypesFragment : Fragment(), Serializable {
     private fun handleSwitchCamera() {
 
         // Get view pager current page position
-        when (newPostViewPager.currentItem) {
+        when ((newPostViewPager as TsuViewPager).currentItem) {
             0 -> {
                 (fragments[0] as PhotoCameraPostFragment).switchCamera()
             }
@@ -330,7 +370,7 @@ class PostTypesFragment : Fragment(), Serializable {
 
     private fun getScreenType(): Int {
 
-        return newPostViewPager.currentItem
+        return (newPostViewPager as TsuViewPager).currentItem
     }
 
     private fun iniUi() {
@@ -355,10 +395,11 @@ class PostTypesFragment : Fragment(), Serializable {
     private fun initNewPostViewPagerAdapter() {
 
         val newPostAdapter = NewPostViewPager(childFragmentManager, fragments.size, fragments)
-        newPostViewPager.setPageTransformer(true, ZoomOutPageTransformer())
-        newPostViewPager.offscreenPageLimit = 3
-        newPostViewPager.adapter = newPostAdapter
-        newPostViewPager.addOnPageChangeListener(object : ViewPager.OnPageChangeListener {
+        (newPostViewPager as TsuViewPager).setPageTransformer(true, ZoomOutPageTransformer())
+        (newPostViewPager as TsuViewPager).offscreenPageLimit = 3
+        (newPostViewPager as TsuViewPager).adapter = newPostAdapter
+        (newPostViewPager as TsuViewPager).addOnPageChangeListener(object :
+            ViewPager.OnPageChangeListener {
             override fun onPageScrolled(
                 position: Int,
                 positionOffset: Float,
@@ -375,10 +416,11 @@ class PostTypesFragment : Fragment(), Serializable {
                     newPostPhotoText,
                     newPostVideoText,
                     newPostGifText,
+                    snap_icon_id,
                     fragments
                 )
 
-                startRecordingTimer(false)
+                startRecordingTimer(false, ignoreRecordingUi = true)
             }
 
             override fun onPageScrollStateChanged(state: Int) {
@@ -392,7 +434,7 @@ class PostTypesFragment : Fragment(), Serializable {
         view?.findViewById<ConstraintLayout>(R.id.flashLayout_id)?.setOnClickListener {
 
             // Get view pager current page position
-            when (newPostViewPager.currentItem) {
+            when ((newPostViewPager as TsuViewPager).currentItem) {
                 0 -> {
                     (fragments[0] as PhotoCameraPostFragment).handleFlash()
                 }
