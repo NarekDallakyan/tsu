@@ -523,7 +523,7 @@ open class PostTypesFragment : Fragment(), Serializable {
 
     private fun getViewPagerActiveView(filters: Filters) {
 
-        return when (newPostViewPager.currentItem) {
+        return when ((newPostViewPager as TsuViewPager).currentItem) {
             0 -> {
                 (fragments[0] as PhotoCameraPostFragment).handleFilter(filters)
             }
