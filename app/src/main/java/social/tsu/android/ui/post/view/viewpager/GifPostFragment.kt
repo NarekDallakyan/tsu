@@ -66,9 +66,6 @@ class GifPostFragment : Fragment() {
 
     fun stopRecording(function: ((String?) -> Unit)? = null) {
 
-        cameraHelper?.stopRecording()
-        function?.let {
-            it(filePath)
-        }
+        cameraHelper?.stopRecording(function)
     }
 }

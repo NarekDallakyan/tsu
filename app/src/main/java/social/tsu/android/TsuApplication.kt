@@ -25,6 +25,7 @@ import social.tsu.android.network.api.ProjectEnvironment
 import social.tsu.android.service.SharedPrefManager
 import social.tsu.android.utils.AppVersion
 import social.tsu.android.workmanager.DaggerWorkerFactory
+import social.tsu.trimmer.features.trim.VideoTrimmerActivity
 import java.text.SimpleDateFormat
 import javax.inject.Inject
 
@@ -58,6 +59,7 @@ open class TsuApplication : Application(),HasAndroidInjector,   CameraXConfig.Pr
     override fun onCreate() {
         super.onCreate()
         mContext = this
+        VideoTrimmerActivity.initContext(this)
         AppVersion.init(this)
         setNetworkEnviorement()
         appComponent.inject(this)

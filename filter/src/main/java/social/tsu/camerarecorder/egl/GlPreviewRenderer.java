@@ -6,6 +6,7 @@ import android.opengl.GLES20;
 import android.opengl.GLSurfaceView;
 import android.opengl.Matrix;
 import android.os.Handler;
+
 import javax.microedition.khronos.egl.EGLConfig;
 
 import social.tsu.camerarecorder.Resolution;
@@ -70,16 +71,9 @@ public class GlPreviewRenderer extends GlFrameBufferObjectRenderer implements Su
     }
 
     public void onStartPreview(float cameraPreviewWidth, float cameraPreviewHeight, boolean isLandscapeDevice) {
-        // 傾き、サイズ調整
+
         Matrix.setIdentityM(MMatrix, 0);
         Matrix.rotateM(MMatrix, 0, -angle, 0.0f, 0.0f, 1.0f);
-
-//        Log.d("CameraRecorder ", "angle" + angle);
-//        Log.d("CameraRecorder ", "getMeasuredHeight " + glView.getMeasuredHeight());
-//        Log.d("CameraRecorder ", "getMeasuredWidth " + glView.getMeasuredWidth());
-//        Log.d("CameraRecorder ", "cameraPreviewWidth " + cameraPreviewWidth);
-//        Log.d("CameraRecorder ", "cameraPreviewHeight " + cameraPreviewHeight);
-
 
         if (isLandscapeDevice) {
 
@@ -97,13 +91,6 @@ public class GlPreviewRenderer extends GlFrameBufferObjectRenderer implements Su
             }
 
         } else {
-            // Portlate
-            // View 1920 1080 Camera 1280 720 OK
-            // View 1920 1080 Camera 800 600 OK
-            // View 1440 1080 Camera 800 600 OK
-            // View 1080 1080 Camera 1280 720 Need Scale
-            // View 1080 1080 Camera 800 600 Need Scale
-
 
             float viewAspect = (float) glView.getMeasuredHeight() / glView.getMeasuredWidth();
             float cameraAspect = cameraPreviewWidth / cameraPreviewHeight;
@@ -118,16 +105,13 @@ public class GlPreviewRenderer extends GlFrameBufferObjectRenderer implements Su
     }
 
     public void setGlFilter(final GlFilter filter) {
-        glView.queueEvent(new Runnable() {
-            @Override
-            public void run() {
-                if (glFilter != null) {
-                    glFilter.release();
-                }
-                glFilter = filter;
-                isNewShader = true;
-                glView.requestRender();
+        glView.queueEvent(() -> {
+            if (glFilter != null) {
+                glFilter.release();
             }
+            glFilter = filter;
+            isNewShader = true;
+            glView.requestRender();
         });
     }
 
@@ -190,6 +174,7 @@ public class GlPreviewRenderer extends GlFrameBufferObjectRenderer implements Su
     @Override
     public void onSurfaceChanged(int width, int height) {
 
+
         filterFramebufferObject.setup(width, height);
         previewShader.setFrameSize(width, height);
         if (glFilter != null) {
@@ -202,7 +187,6 @@ public class GlPreviewRenderer extends GlFrameBufferObjectRenderer implements Su
     @Override
     public void onDrawFrame(GLES20FramebufferObject fbo) {
 
-        // ここのタイミングで以前指定したscaleを
         if (drawScale != gestureScale) {
 
             float tempScale = 1 / drawScale;

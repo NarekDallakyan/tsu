@@ -297,6 +297,8 @@ class MainFeedFragment : BaseFeedFragment<MainFeedViewModel>(), RetryCallback {
                 feedTypeAppBar.setExpanded(true)
                 return@setOnMenuItemClickListener true
             }
+        val mainActivity = requireActivity() as? MainActivity
+        mainActivity?.supportActionBar?.show()
     }
 
     override fun onPause() {

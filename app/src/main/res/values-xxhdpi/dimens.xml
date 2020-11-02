@@ -13,4 +13,6 @@
 
     <dimen name="button_min_height">36dp</dimen>
 
+    <dimen name="frames_video_height">60dip</dimen>
+
 </resources>

@@ -178,4 +178,6 @@
     <dimen name="feed_type_item_height">48dp</dimen>
     <dimen name="marginToast">60dp</dimen>
 
+    <dimen name="frames_video_height">60dip</dimen>
+
 </resources>

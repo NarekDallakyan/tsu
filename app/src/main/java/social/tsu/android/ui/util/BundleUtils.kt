@@ -7,12 +7,16 @@ class BundleUtils {
 
     companion object {
         fun getBundleSizeInBytes(bundle: Bundle?): Int {
-            val parcel = Parcel.obtain()
-            val size: Int
-            parcel.writeBundle(bundle)
-            size = parcel.dataSize()
-            parcel.recycle()
-            return size
+            return try {
+                val parcel = Parcel.obtain()
+                val size: Int
+                parcel.writeBundle(bundle)
+                size = parcel.dataSize()
+                parcel.recycle()
+                size
+            } catch (erro: Exception) {
+                0
+            }
         }
     }
 }

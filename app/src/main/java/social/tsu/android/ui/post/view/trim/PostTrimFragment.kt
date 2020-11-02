@@ -1,6 +1,5 @@
 package social.tsu.android.ui.post.view.trim
 
-import android.net.Uri
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -11,14 +10,13 @@ import androidx.lifecycle.ViewModelProvider
 import kotlinx.android.synthetic.main.fragment_post_trim.*
 import social.tsu.android.R
 import social.tsu.android.ui.MainActivity
+import social.tsu.android.ui.post.view.PostTypesFragment
 import social.tsu.android.utils.findParentNavController
 import social.tsu.android.viewModel.SharedViewModel
-import social.tsu.trimmer.TsuVideoTrimmerView
-import social.tsu.trimmer.interfaces.OnTrimVideoListener
-import social.tsu.trimmer.view.RangeSeekBarView
+import social.tsu.trimmer.features.trim.VideoTrimmerActivity
 
 
-class PostTrimFragment : Fragment(), OnTrimVideoListener {
+class PostTrimFragment : Fragment() {
 
     var sharedViewModel: SharedViewModel? = null
 
@@ -26,9 +24,11 @@ class PostTrimFragment : Fragment(), OnTrimVideoListener {
     private var filePath: String? = null
     private var fromScreenType: Int? = null
 
-    // Sub views
-    private lateinit var mVideoTrimmerView: TsuVideoTrimmerView
-    private lateinit var mTimeLineBar: RangeSeekBarView
+    private var postTypeFragment: PostTypesFragment? = null
+
+    private var fromNext: Boolean = false
+    private var videoTrimmerActivity = VideoTrimmerActivity()
+
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -38,50 +38,22 @@ class PostTrimFragment : Fragment(), OnTrimVideoListener {
         return inflater.inflate(R.layout.fragment_post_trim, container, false)
     }
 
+    override fun onStart() {
+        super.onStart()
+        val mainActivity = requireActivity() as? MainActivity
+        mainActivity?.supportActionBar?.hide()
+    }
+
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        // Initialization views
-        initViews()
+        // Init View Models
+        initViewModels()
         // Get Arguments
         getArgumentData()
-        // Init view models
-        initViewModels()
-        // Listen on click listeners
+        // Init on clicks
         initOnClicks()
         // Handle trimmer preview
         handleTrimmerPreview()
-    }
-
-    private fun handleTrimmerPreview() {
-
-        if (filePath == null) {
-            Toast.makeText(requireContext(), "Can't trim this file.", Toast.LENGTH_LONG).show()
-            return
-        }
-
-        // Ready to preview trimmer view
-        mVideoTrimmerView.setMaxDuration(6)
-        mVideoTrimmerView.setOnTrimVideoListener(this)
-        mVideoTrimmerView.setVideoURI(Uri.parse(filePath))
-    }
-
-    private fun initViews() {
-
-        mVideoTrimmerView = requireView().findViewById(R.id.videoTrimmerView)
-        mTimeLineBar = requireView().findViewById(R.id.timeLineBar)
-    }
-
-    private fun initOnClicks() {
-
-        closeLayout_id.setOnClickListener {
-            sharedViewModel!!.select(false)
-            findParentNavController().popBackStack(R.id.postTypesFragment, false)
-        }
-
-        nextLayout4_id.setOnClickListener {
-
-            mVideoTrimmerView.onSave()
-        }
     }
 
     private fun initViewModels() {
@@ -89,29 +61,27 @@ class PostTrimFragment : Fragment(), OnTrimVideoListener {
         sharedViewModel = ViewModelProvider(requireActivity()).get(SharedViewModel::class.java)
     }
 
-    override fun onStart() {
-        super.onStart()
-        val mainActivity = requireActivity() as? MainActivity
-        mainActivity?.supportActionBar?.hide()
+    private fun initOnClicks() {
+
+        closeLayout_id.setOnClickListener {
+
+            sharedViewModel!!.select(false)
+            findParentNavController().popBackStack(R.id.postTypesFragment, false)
+        }
+
+        nextLayout4_id.setOnClickListener {
+
+            videoTrimmerActivity.onSave {
+
+                // Handle trim video completed
+                handleTrimVideoResult(it)
+            }
+        }
     }
 
-    override fun onStop() {
-        super.onStop()
-        val mainActivity = requireActivity() as? MainActivity
-        mainActivity?.supportActionBar?.show()
-    }
+    private fun handleTrimVideoResult(it: String?) {
 
-    private fun getArgumentData() {
-
-        if (arguments == null) return
-
-        filePath = requireArguments().getString("filePath")
-        fromScreenType = requireArguments().getInt("fromScreenType")
-    }
-
-    override fun onTrimResult(uri: Uri?) {
-
-        if (uri == null) {
+        if (it == null) {
             requireActivity().runOnUiThread {
                 Toast.makeText(
                     requireContext(),
@@ -121,25 +91,45 @@ class PostTrimFragment : Fragment(), OnTrimVideoListener {
             }
             return
         }
-        val filePath = uri.toString()
+        val filePath = it.toString()
         requireActivity().runOnUiThread {
-
             val mBundle = Bundle()
             mBundle.putString("filePath", filePath)
             mBundle.putInt("fromScreenType", fromScreenType!!)
+            mBundle.putSerializable("postTypeFragment", postTypeFragment)
             sharedViewModel!!.select(false)
             findParentNavController().navigate(R.id.postPreviewFragment, mBundle)
         }
     }
 
-    override fun onTrimCancel() {
+    private fun handleTrimmerPreview() {
 
-        requireActivity().runOnUiThread {
-            Toast.makeText(
-                requireContext(),
-                "Oops, Can't trim this file, please try again.",
-                Toast.LENGTH_LONG
-            ).show()
+        if (filePath == null) {
+            Toast.makeText(requireContext(), "Can't trim this file.", Toast.LENGTH_LONG).show()
+            return
         }
+
+        // Starting preview trimmer view
+        videoTrimmerActivity.initUI(trimmer_view, filePath, requireContext())
+    }
+
+    private fun getArgumentData() {
+
+        if (arguments == null) return
+
+        filePath = requireArguments().getString("filePath")
+        fromScreenType = requireArguments().getInt("fromScreenType")
+        postTypeFragment =
+            requireArguments().getSerializable("postTypeFragment") as? PostTypesFragment?
+    }
+
+    override fun onPause() {
+        super.onPause()
+        videoTrimmerActivity.onPause()
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        videoTrimmerActivity.onDestroy()
     }
 }

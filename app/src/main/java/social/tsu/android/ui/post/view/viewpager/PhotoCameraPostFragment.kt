@@ -51,4 +51,12 @@ class PhotoCameraPostFragment : Fragment() {
     fun handleFlash() {
         cameraHelper?.handleFlash()
     }
+
+    fun capturePicture(function: ((String?) -> Unit)? = null) {
+
+        if (cameraHelper?.isCapturing() == true) {
+            return
+        }
+        cameraHelper?.capturePicture(function)
+    }
 }
