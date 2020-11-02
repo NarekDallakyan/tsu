@@ -171,14 +171,15 @@ class PostTypesFragment : Fragment(), Serializable {
         // Listen start camera button on click
         snap_icon_id.setOnClickListener {
 
-            snap_icon_id.isEnabled = false
-            snap_icon_id.isClickable = false
             handleStartCamera()
         }
 
         // Listen library button on click
         gallery_image_id.setOnClickListener {
-            findParentNavController().navigate(R.id.mediaLibraryLayout_id)
+
+            val mBundle = Bundle()
+            mBundle.putSerializable("postTypeFragment", this)
+            findParentNavController().navigate(R.id.mediaLibraryLayout_id, mBundle)
         }
     }
 
@@ -204,6 +205,7 @@ class PostTypesFragment : Fragment(), Serializable {
                     val mBundle = Bundle()
                     mBundle.putString("filePath", filePath)
                     mBundle.putInt("fromScreenType", getScreenType())
+                    mBundle.putSerializable("postTypeFragment", this)
                     sharedViewModel!!.select(false)
                     findParentNavController().navigate(R.id.postPreviewFragment, mBundle)
                 }
@@ -228,6 +230,7 @@ class PostTypesFragment : Fragment(), Serializable {
                         val mBundle = Bundle()
                         mBundle.putString("filePath", filePath)
                         mBundle.putInt("fromScreenType", getScreenType())
+                        mBundle.putSerializable("postTypeFragment", this)
                         sharedViewModel!!.select(false)
                         Handler(Looper.getMainLooper()).postDelayed({
                             findParentNavController().navigate(R.id.postPreviewFragment, mBundle)
@@ -272,6 +275,7 @@ class PostTypesFragment : Fragment(), Serializable {
                         val mBundle = Bundle()
                         mBundle.putString("filePath", filePath)
                         mBundle.putInt("fromScreenType", getScreenType())
+                        mBundle.putSerializable("postTypeFragment", this)
                         sharedViewModel!!.select(false)
                         Handler(Looper.getMainLooper()).postDelayed({
                             findParentNavController().navigate(R.id.postTrimFragment, mBundle)
@@ -336,10 +340,6 @@ class PostTypesFragment : Fragment(), Serializable {
         )
         // Hide tool bar
         post_types_toolbar.visibility = View.GONE
-
-
-        snap_icon_id.isEnabled = true
-        snap_icon_id.isClickable = true
     }
 
     private fun initViewModels() {
@@ -371,6 +371,8 @@ class PostTypesFragment : Fragment(), Serializable {
                     newPostGifText,
                     fragments
                 )
+
+                startRecordingTimer(false)
             }
 
             override fun onPageScrollStateChanged(state: Int) {

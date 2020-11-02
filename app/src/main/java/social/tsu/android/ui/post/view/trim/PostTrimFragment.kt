@@ -2,8 +2,6 @@ package social.tsu.android.ui.post.view.trim
 
 import android.net.Uri
 import android.os.Bundle
-import android.os.Handler
-import android.os.Looper
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -13,6 +11,7 @@ import androidx.lifecycle.ViewModelProvider
 import kotlinx.android.synthetic.main.fragment_post_trim.*
 import social.tsu.android.R
 import social.tsu.android.ui.MainActivity
+import social.tsu.android.ui.post.view.PostTypesFragment
 import social.tsu.android.utils.findParentNavController
 import social.tsu.android.viewModel.SharedViewModel
 import social.tsu.trimmer.TsuVideoTrimmerView
@@ -31,6 +30,11 @@ class PostTrimFragment : Fragment(), OnTrimVideoListener {
     // Sub views
     private lateinit var mVideoTrimmerView: TsuVideoTrimmerView
     private lateinit var mTimeLineBar: RangeSeekBarView
+
+    private var postTypeFragment: PostTypesFragment? = null
+
+    private var fromNext: Boolean = false
+
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -77,6 +81,7 @@ class PostTrimFragment : Fragment(), OnTrimVideoListener {
 
         closeLayout_id.setOnClickListener {
 
+            fromNext = false
             mVideoTrimmerView.destroy()
             sharedViewModel!!.select(false)
             findParentNavController().popBackStack(R.id.postTypesFragment, false)
@@ -84,13 +89,9 @@ class PostTrimFragment : Fragment(), OnTrimVideoListener {
 
         nextLayout4_id.setOnClickListener {
 
+            fromNext = true
             mVideoTrimmerView.onSave()
         }
-    }
-
-    private fun initViewModels() {
-
-        sharedViewModel = ViewModelProvider(requireActivity()).get(SharedViewModel::class.java)
     }
 
     override fun onStart() {
@@ -99,10 +100,9 @@ class PostTrimFragment : Fragment(), OnTrimVideoListener {
         mainActivity?.supportActionBar?.hide()
     }
 
-    override fun onStop() {
-        super.onStop()
-        val mainActivity = requireActivity() as? MainActivity
-        mainActivity?.supportActionBar?.show()
+    private fun initViewModels() {
+
+        sharedViewModel = ViewModelProvider(requireActivity()).get(SharedViewModel::class.java)
     }
 
     private fun getArgumentData() {
@@ -111,6 +111,8 @@ class PostTrimFragment : Fragment(), OnTrimVideoListener {
 
         filePath = requireArguments().getString("filePath")
         fromScreenType = requireArguments().getInt("fromScreenType")
+        postTypeFragment =
+            requireArguments().getSerializable("postTypeFragment") as? PostTypesFragment?
     }
 
     override fun onTrimResult(uri: Uri?) {
@@ -131,6 +133,7 @@ class PostTrimFragment : Fragment(), OnTrimVideoListener {
             val mBundle = Bundle()
             mBundle.putString("filePath", filePath)
             mBundle.putInt("fromScreenType", fromScreenType!!)
+            mBundle.putSerializable("postTypeFragment", postTypeFragment)
             sharedViewModel!!.select(false)
             findParentNavController().navigate(R.id.postPreviewFragment, mBundle)
         }

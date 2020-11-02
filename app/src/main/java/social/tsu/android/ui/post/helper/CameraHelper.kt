@@ -40,6 +40,7 @@ class CameraHelper(
 ) {
 
     private var isRecording: Boolean = false
+    private var isCapturing: Boolean = false
 
     private var sampleGLView: SampleGLView? = null
     private var cameraRecorder: CameraRecorder? = null
@@ -54,6 +55,8 @@ class CameraHelper(
     private var completeRecording: ((String?) -> Unit)? = null
 
     fun isRecording() = isRecording
+
+    fun isCapturing() = isCapturing
 
     fun onResume() {
         initViews()
@@ -287,6 +290,7 @@ class CameraHelper(
 
     fun capturePicture(function: ((String) -> Unit)? = null) {
 
+        isCapturing = true
         captureBitmap(object : BitmapReadyCallbacks {
             override fun onBitmapReady(bitmap: Bitmap?) {
                 if (bitmap == null) {
@@ -305,6 +309,7 @@ class CameraHelper(
                         }
                     }
                 }
+                isCapturing = false
             }
         })
     }

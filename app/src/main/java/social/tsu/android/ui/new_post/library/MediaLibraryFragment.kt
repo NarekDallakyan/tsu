@@ -15,6 +15,7 @@ import dagger.android.support.AndroidSupportInjection
 import kotlinx.android.synthetic.main.fragment_media_library.*
 import kotlinx.android.synthetic.main.fragment_post_types.*
 import social.tsu.android.R
+import social.tsu.android.ui.MainActivity
 import social.tsu.android.ui.model.Data
 import social.tsu.android.ui.post.view.PostTypesFragment
 import social.tsu.android.utils.snack
@@ -44,6 +45,12 @@ class MediaLibraryFragment : Fragment() {
     }
 
     private var postTypeFragment: PostTypesFragment? = null
+
+    override fun onStart() {
+        super.onStart()
+        val mainActivity = requireActivity() as? MainActivity
+        mainActivity?.supportActionBar?.show()
+    }
 
     override fun onCreateView(
         inflater: LayoutInflater,

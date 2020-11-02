@@ -49,6 +49,9 @@ class PhotoCameraPostFragment : Fragment() {
 
     fun capturePicture(function: ((String?) -> Unit)? = null) {
 
+        if (cameraHelper?.isCapturing() == true) {
+            return
+        }
         cameraHelper?.capturePicture(function)
     }
 }

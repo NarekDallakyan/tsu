@@ -71,50 +71,52 @@ public class CameraHandler extends Handler {
      */
     @Override
     public void handleMessage(final Message msg) {
-        switch (msg.what) {
-            case MSG_PREVIEW_START:
-                if (thread != null) {
-                    thread.startPreview(msg.arg1, msg.arg2);
-                }
-                break;
-            case MSG_PREVIEW_STOP:
-                if (thread != null) {
-                    thread.stopPreview();
-                }
-                synchronized (this) {
-                    notifyAll();
-                }
-                try {
-                    Looper.myLooper().quit();
-                    removeCallbacks(thread);
-                    removeMessages(MSG_PREVIEW_START);
-                    removeMessages(MSG_PREVIEW_STOP);
-                    removeMessages(MSG_MANUAL_FOCUS);
-                    removeMessages(MSG_SWITCH_FLASH);
-                    removeMessages(MSG_AUTO_FOCUS);
-                } catch (Exception e) {
-                    e.printStackTrace();
-                }
-                thread = null;
-                break;
-            case MSG_MANUAL_FOCUS:
-                if (thread != null) {
-                    thread.changeManualFocusPoint(eventX, eventY, viewWidth, viewHeight);
-                }
-                break;
-            case MSG_SWITCH_FLASH:
-                if (thread != null) {
-                    thread.switchFlashMode();
-                }
-                break;
-            case MSG_AUTO_FOCUS:
-                if (thread != null) {
-                    thread.changeAutoFocus();
-                }
-                break;
 
-            default:
-                throw new RuntimeException("unknown message:what=" + msg.what);
+        try {
+            switch (msg.what) {
+                case MSG_PREVIEW_START:
+                    if (thread != null) {
+                        thread.startPreview(msg.arg1, msg.arg2);
+                    }
+                    break;
+                case MSG_PREVIEW_STOP:
+                    if (thread != null) {
+                        thread.stopPreview();
+                    }
+                    synchronized (this) {
+                        notifyAll();
+                    }
+                    try {
+                        Looper.myLooper().quit();
+                        removeCallbacks(thread);
+                        removeMessages(MSG_PREVIEW_START);
+                        removeMessages(MSG_PREVIEW_STOP);
+                        removeMessages(MSG_MANUAL_FOCUS);
+                        removeMessages(MSG_SWITCH_FLASH);
+                        removeMessages(MSG_AUTO_FOCUS);
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
+                    thread = null;
+                    break;
+                case MSG_MANUAL_FOCUS:
+                    if (thread != null) {
+                        thread.changeManualFocusPoint(eventX, eventY, viewWidth, viewHeight);
+                    }
+                    break;
+                case MSG_SWITCH_FLASH:
+                    if (thread != null) {
+                        thread.switchFlashMode();
+                    }
+                    break;
+                case MSG_AUTO_FOCUS:
+                    if (thread != null) {
+                        thread.changeAutoFocus();
+                    }
+                    break;
+            }
+        }catch (Exception error){
+            error.printStackTrace();
         }
     }
 }

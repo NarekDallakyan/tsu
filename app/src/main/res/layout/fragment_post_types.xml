@@ -159,6 +159,7 @@
         android:id="@+id/textView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginEnd="60dp"
         android:text="Media"
         android:textColor="@color/ib_fr_white"
         android:textSize="16sp"
