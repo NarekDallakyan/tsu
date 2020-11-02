@@ -46,8 +46,8 @@ public enum Filters {
     WEAKPIXELINCLUSION,
     FILTER_GROUP;
 
-    public static GlFilter getFilterInstance(Filters filter, Context context) {
-        switch (filter) {
+    public static GlFilter getFilterInstance(Filters filters, Context applicationContext) {
+        switch (filters) {
             case BILATERAL:
                 return new GlBilateralFilter();
             case BOX_BLUR:
@@ -63,7 +63,7 @@ public enum Filters {
             case INVERT:
                 return new GlInvertFilter();
             case LOOKUP_TABLE:
-                return new GlLookUpTableFilter(BitmapFactory.decodeResource(context.getResources(), R.drawable.lookup_sample));
+                return new GlLookUpTableFilter(BitmapFactory.decodeResource(applicationContext.getResources(), R.drawable.lookup_sample));
             case MONOCHROME:
                 return new GlMonochromeFilter();
             case SEPIA:
@@ -74,7 +74,7 @@ public enum Filters {
                 return new GlSphereRefractionFilter();
             case TONE_CURVE:
                 try {
-                    InputStream inputStream = context.getAssets().open("acv/tone_cuver_sample.acv");
+                    InputStream inputStream = applicationContext.getAssets().open("acv/tone_cuver_sample.acv");
                     return new GlToneCurveFilter(inputStream);
                 } catch (Exception e) {
                     return new GlFilter();
@@ -91,7 +91,5 @@ public enum Filters {
             default:
                 return new GlFilter();
         }
-
     }
-
 }

@@ -11,22 +11,22 @@ import android.view.ViewGroup
 import android.widget.Toast
 import androidx.appcompat.widget.Toolbar
 import androidx.constraintlayout.widget.ConstraintLayout
+import androidx.core.graphics.toColor
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.navArgs
 import androidx.viewpager.widget.ViewPager
 import kotlinx.android.synthetic.main.fragment_post_types.*
 import social.tsu.android.R
-import social.tsu.android.ui.post.helper.Filters
+import social.tsu.android.ui.post.helper.CameraHelper
 import social.tsu.android.ui.post.helper.LayoutChooseHelper
 import social.tsu.android.ui.post.helper.LayoutChooseHelper.Companion.changeLayoutAlpha
 import social.tsu.android.ui.post.helper.LayoutChooseHelper.Companion.setChoose
 import social.tsu.android.ui.post.view.viewpager.*
 import social.tsu.android.utils.findParentNavController
-import social.tsu.android.utils.hide
 import social.tsu.android.utils.show
 import social.tsu.android.viewModel.SharedViewModel
-import social.tsu.camerarecorder.CameraRecorder
+import social.tsu.camerarecorder.widget.Filters
 import java.io.Serializable
 import java.util.*
 import kotlin.collections.ArrayList
@@ -58,7 +58,7 @@ class PostTypesFragment : Fragment(), Serializable {
     //filter dialog field
     private var filterDialog: AlertDialog? = null
 
-    protected var cameraRecorder: CameraRecorder? = null
+    private var cameraHelper: CameraHelper? = null
 
 
     val allowVideo by lazy { args.allowVideo }
@@ -100,6 +100,12 @@ class PostTypesFragment : Fragment(), Serializable {
         iniUi()
         // Init on click listeners
         initOnClicks()
+        //init camera helper
+        initCameraHelper()
+    }
+
+    private fun initCameraHelper() {
+        cameraHelper = CameraHelper(requireActivity(), requireContext(), requireView())
     }
 
     private fun startRecordingTimer(start: Boolean) {
@@ -393,6 +399,7 @@ class PostTypesFragment : Fragment(), Serializable {
                     charList[i] = filters[i].name
                     i++
                 }
+
                 builder.setItems(charList) { dialog, item ->
                     changeFilter(filters[item])
                 }
@@ -403,8 +410,23 @@ class PostTypesFragment : Fragment(), Serializable {
         }
     }
 
+    private fun getViewPagerActiveView(filters: Filters) {
+
+        return when (newPostViewPager.currentItem) {
+            0 -> {
+                (fragments[0] as PhotoCameraPostFragment).handleFilter(filters)
+            }
+            1 -> {
+                (fragments[1] as RecordVideoPostFragment).handleFilter(filters)
+            }
+            else -> {
+                (fragments[2] as GifPostFragment).handleFilter(filters)
+            }
+        }
+    }
+
     private fun changeFilter(filters: Filters) {
-        cameraRecorder?.setFilter(Filters.getFilterInstance(filters, requireContext()))
+        getViewPagerActiveView(filters)
     }
 
     override fun onDestroyView() {
@@ -476,10 +498,6 @@ class PostTypesFragment : Fragment(), Serializable {
 
         fun showToolbar() {
             toolbar?.show()
-        }
-
-        fun hideToolbar() {
-            toolbar?.hide()
         }
     }
 }

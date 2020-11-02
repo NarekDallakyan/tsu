@@ -7,6 +7,7 @@ import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import social.tsu.android.R
 import social.tsu.android.ui.post.helper.CameraHelper
+import social.tsu.camerarecorder.widget.Filters
 
 
 class PhotoCameraPostFragment : Fragment() {
@@ -21,6 +22,10 @@ class PhotoCameraPostFragment : Fragment() {
 
     fun handleOnStop() {
         cameraHelper?.onStop()
+    }
+
+    fun handleFilter(filters: Filters) {
+        cameraHelper?.changeFilter(filters)
     }
 
     override fun onStop() {

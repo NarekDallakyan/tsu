@@ -57,10 +57,10 @@ class CameraHelper(
     fun onResume() {
         initViews()
         setUpCamera()
+        print("")
     }
 
     private fun initViews() {
-
         cameraView = rootView.findViewById(R.id.wrap_view)
     }
 
@@ -68,7 +68,7 @@ class CameraHelper(
         releaseCamera()
     }
 
-    private fun setUpCameraView() {
+    fun setUpCameraView() {
 
         activity.runOnUiThread {
             val frameLayout: FrameLayout = cameraView as FrameLayout
@@ -84,7 +84,7 @@ class CameraHelper(
         }
     }
 
-    private fun releaseCamera() {
+    fun releaseCamera() {
 
         if (sampleGLView != null) {
             sampleGLView!!.onPause()
@@ -149,7 +149,10 @@ class CameraHelper(
         )
     }
 
-    private fun changeFilter(filters: Filters) {
+    fun changeFilter(filters: Filters) {
+        if (cameraRecorder == null) {
+            return
+        }
         cameraRecorder!!.setFilter(
             Filters.getFilterInstance(
                 filters,

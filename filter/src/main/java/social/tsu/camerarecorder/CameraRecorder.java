@@ -135,7 +135,8 @@ public class CameraRecorder {
 
 
     public void setFilter(final GlFilter filter) {
-        if (filter == null) return;
+        if (filter == null)
+            return;
         glPreviewRenderer.setGlFilter(filter);
     }
 

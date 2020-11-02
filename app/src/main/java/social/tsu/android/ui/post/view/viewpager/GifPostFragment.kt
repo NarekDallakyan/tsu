@@ -7,6 +7,7 @@ import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import social.tsu.android.R
 import social.tsu.android.ui.post.helper.CameraHelper
+import social.tsu.camerarecorder.widget.Filters
 
 
 class GifPostFragment : Fragment() {
@@ -45,6 +46,10 @@ class GifPostFragment : Fragment() {
 
     fun handleFlash() {
         cameraHelper?.handleFlash()
+    }
+
+    fun handleFilter(filters: Filters) {
+        cameraHelper?.changeFilter(filters)
     }
 
     fun recordGif(function: (onCancel: Boolean, onStart: Boolean) -> Unit) {
