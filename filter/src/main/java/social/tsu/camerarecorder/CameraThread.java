@@ -293,7 +293,6 @@ public class CameraThread extends Thread {
     }
 
 
-    // フラッシュ切り替え
     void switchFlashMode() {
         if (!flashSupport) return;
 

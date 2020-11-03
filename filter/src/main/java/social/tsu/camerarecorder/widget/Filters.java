@@ -26,25 +26,35 @@ import social.tsu.camerarecorder.egl.filter.GlWeakPixelInclusionFilter;
 import social.tsu.filter.R;
 
 public enum Filters {
-    NORMAL,
-    BILATERAL,
-    BOX_BLUR,
-    BULGE_DISTORTION,
-    CGA_COLOR_SPACE,
-    GAUSSIAN_BLUR,
-    GLAY_SCALE,
-    INVERT,
-    LOOKUP_TABLE,
-    MONOCHROME,
-    OVERLAY,
-    SEPIA,
-    SHARPEN,
-    SPHERE_REFRACTION,
-    TONE_CURVE,
-    TONE,
-    VIGNETTE,
-    WEAKPIXELINCLUSION,
-    FILTER_GROUP;
+    NORMAL("Normal"),
+    BILATERAL("Bilateral"),
+    BOX_BLUR("Box Blur"),
+    BULGE_DISTORTION("Bulge Distortion"),
+    CGA_COLOR_SPACE("CGA Color Space"),
+    GAUSSIAN_BLUR("Guassian Blur"),
+    GLAY_SCALE("Gray Scale"),
+    INVERT("Invert"),
+    LOOKUP_TABLE("Lookup Table"),
+    MONOCHROME("Monochrome"),
+    OVERLAY("Overlay"),
+    SEPIA("Sepia"),
+    SHARPEN("Sharpen"),
+    SPHERE_REFRACTION("Sphere Refraction"),
+    TONE_CURVE("Tone Curve"),
+    TONE("Tone"),
+    VIGNETTE("Vignette"),
+    WEAKPIXELINCLUSION("Wwak Pixel Inclusion"),
+    FILTER_GROUP("Filter group");
+
+    private String value;
+
+    Filters(String value) {
+        this.value = value;
+    }
+
+    public String getValue() {
+        return value;
+    }
 
     public static GlFilter getFilterInstance(Filters filters, Context applicationContext) {
         switch (filters) {

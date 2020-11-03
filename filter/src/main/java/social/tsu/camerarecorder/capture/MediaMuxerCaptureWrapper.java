@@ -143,7 +143,6 @@ public class MediaMuxerCaptureWrapper {
      * @param byteBuf
      * @param bufferInfo
      */
-    /*package*/
     synchronized void writeSampleData(final int trackIndex, final ByteBuffer byteBuf, final MediaCodec.BufferInfo bufferInfo) {
         //bufferInfo.presentationTimeUs
         if (startedCount <= 0) return;

@@ -218,42 +218,37 @@ public class CameraRecorder {
         if (started) return;
 
 
-        new Handler().post(new Runnable() {
-            @Override
-            public void run() {
-                try {
-                    muxer = new MediaMuxerCaptureWrapper(filePath);
+        new Handler().post(() -> {
+            try {
+                muxer = new MediaMuxerCaptureWrapper(filePath);
 
-                    // for video capturing
-                    // ここにcamera width , heightもわたす。
-                    // 差分をいろいろと吸収する。
-                    new MediaVideoEncoder(
-                            muxer,
-                            mediaEncoderListener,
-                            fileWidth,
-                            fileHeight,
-                            flipHorizontal,
-                            flipVertical,
-                            glSurfaceView.getMeasuredWidth(),
-                            glSurfaceView.getMeasuredHeight(),
-                            recordNoFilter,
-                            glPreviewRenderer.getFilter()
-                    );
-                    if (!mute) {
-                        // for audio capturing
-                        new MediaAudioEncoder(muxer, mediaEncoderListener);
-                    }
-                    muxer.prepare();
-                    muxer.startRecording();
-
-                    if (cameraRecordListener != null) {
-                        cameraRecordListener.onRecordStart();
-                    }
-                } catch (Exception e) {
-                    notifyOnError(e);
+                // for video capturing
+                new MediaVideoEncoder(
+                        muxer,
+                        mediaEncoderListener,
+                        fileWidth,
+                        fileHeight,
+                        flipHorizontal,
+                        flipVertical,
+                        glSurfaceView.getMeasuredWidth(),
+                        glSurfaceView.getMeasuredHeight(),
+                        recordNoFilter,
+                        glPreviewRenderer.getFilter()
+                );
+                if (!mute) {
+                    // for audio capturing
+                    new MediaAudioEncoder(muxer, mediaEncoderListener);
                 }
+                muxer.prepare();
+                muxer.startRecording();
 
+                if (cameraRecordListener != null) {
+                    cameraRecordListener.onRecordStart();
+                }
+            } catch (Exception e) {
+                notifyOnError(e);
             }
+
         });
 
         started = true;

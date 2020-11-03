@@ -1,6 +1,5 @@
 package social.tsu.android.ui.post.view
 
-import android.app.AlertDialog
 import android.net.Uri
 import android.os.Bundle
 import android.os.Handler
@@ -16,6 +15,7 @@ import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.navArgs
+import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.viewpager.widget.ViewPager
 import coil.api.clear
 import coil.api.load
@@ -27,9 +27,10 @@ import social.tsu.android.ui.post.helper.CameraHelper
 import social.tsu.android.ui.post.helper.LayoutChooseHelper
 import social.tsu.android.ui.post.helper.LayoutChooseHelper.Companion.changeLayoutAlpha
 import social.tsu.android.ui.post.helper.LayoutChooseHelper.Companion.setChoose
+import social.tsu.android.ui.post.model.FilterVideoModel
+import social.tsu.android.ui.post.view.filter.FilterVideoAdapter
 import social.tsu.android.ui.post.view.viewpager.*
 import social.tsu.android.utils.findParentNavController
-import social.tsu.android.utils.show
 import social.tsu.android.viewModel.SharedViewModel
 import social.tsu.camerarecorder.widget.Filters
 import social.tsu.trimmer.features.trim.VideoTrimmerUtil
@@ -61,9 +62,6 @@ open class PostTypesFragment : Fragment(), Serializable {
 
     private val args: PostTypesFragmentArgs by navArgs()
 
-    //filter dialog field
-    private var filterDialog: AlertDialog? = null
-
     private var cameraHelper: CameraHelper? = null
 
 
@@ -86,6 +84,10 @@ open class PostTypesFragment : Fragment(), Serializable {
     private var seconds = 0L
 
     private var filePath: String? = null
+
+    // Filters
+    private var filterVideoAdapter: FilterVideoAdapter? = null
+    private var selectedFilterItemPosition: Int = -1
 
     private fun recordingMode(recording: Boolean) {
 
@@ -124,7 +126,6 @@ open class PostTypesFragment : Fragment(), Serializable {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        //setScreenOrientation(ActivityInfo.SCREEN_ORIENTATION_UNSPECIFIED)
         return inflater.inflate(R.layout.fragment_post_types, container, false)
     }
 
@@ -203,6 +204,12 @@ open class PostTypesFragment : Fragment(), Serializable {
             snap_icon_id,
             fragments
         )
+
+        if ((newPostViewPager as TsuViewPager).currentItem == 0) {
+
+            filterLayout_id.hide()
+            handleFilterMode(true)
+        }
     }
 
 
@@ -230,6 +237,18 @@ open class PostTypesFragment : Fragment(), Serializable {
             mBundle.putSerializable("postTypeFragment", this)
             findParentNavController().navigate(R.id.mediaLibraryLayout_id, mBundle)
         }
+
+        // Listen filter close layout
+        filterCancel?.setOnClickListener {
+
+            handleFilterMode(true)
+        }
+
+        // Listen apply filter
+        filterDone?.setOnClickListener {
+
+            handleFilterMode(applyFilter = true)
+        }
     }
 
     private fun handleStartCamera() {
@@ -239,119 +258,134 @@ open class PostTypesFragment : Fragment(), Serializable {
             0 -> {
                 val fragment = fragments[0] as PhotoCameraPostFragment
 
-                fragment.capturePicture {
-                    this.filePath = it
-
-                    if (this.filePath == null) {
-                        Toast.makeText(
-                            requireContext(),
-                            "Can not continue, file is empty.",
-                            Toast.LENGTH_LONG
-                        ).show()
-                        return@capturePicture
-                    }
-
-                    val mBundle = Bundle()
-                    mBundle.putString("filePath", filePath)
-                    mBundle.putInt("fromScreenType", getScreenType())
-                    mBundle.putSerializable("postTypeFragment", this)
-                    sharedViewModel!!.select(false)
-                    findParentNavController().navigate(R.id.postPreviewFragment, mBundle)
-                }
+                handlePhotoCaptureClicked(fragment)
             }
             1 -> {
                 val fragment = fragments[1] as RecordVideoPostFragment
 
-                if (isTimerRunning()) {
-                    startRecordingTimer(false, ignoreRecordingUi = true)
-                    fragment.stopRecording {
-                        this.filePath = it
-
-                        if (this.filePath == null) {
-                            Toast.makeText(
-                                requireContext(),
-                                "Can not continue, file is empty.",
-                                Toast.LENGTH_LONG
-                            ).show()
-                            return@stopRecording
-                        }
-
-                        val mBundle = Bundle()
-                        mBundle.putString("filePath", filePath)
-                        mBundle.putInt("fromScreenType", getScreenType())
-                        mBundle.putSerializable("postTypeFragment", this)
-                        sharedViewModel!!.select(false)
-                        // Configure trimmer video limitation
-                        VideoTrimmerUtil.TYPE = 1
-                        Handler(Looper.getMainLooper()).postDelayed({
-                            findParentNavController().navigate(R.id.postTrimFragment, mBundle)
-                        }, 200)
-                    }
-                    return
-                }
-
-                fragment.recordVideo { onCancel: Boolean, onStart: Boolean ->
-
-                    if (onCancel) {
-                        this.filePath = null
-                        startRecordingTimer(false)
-                        return@recordVideo
-                    }
-
-                    if (onStart) {
-                        this.filePath = null
-                        startRecordingTimer(true)
-                        return@recordVideo
-                    }
-                }
+                handleVideoRecordClicked(fragment)
             }
             else -> {
 
                 val fragment = fragments[2] as GifPostFragment
 
-                if (isTimerRunning()) {
-                    startRecordingTimer(false, ignoreRecordingUi = true)
-                    fragment.stopRecording {
-                        this.filePath = it
-
-                        if (this.filePath == null) {
-                            Toast.makeText(
-                                requireContext(),
-                                "Can not continue, file is empty.",
-                                Toast.LENGTH_LONG
-                            ).show()
-                            return@stopRecording
-                        }
-
-                        val mBundle = Bundle()
-                        mBundle.putString("filePath", filePath)
-                        mBundle.putInt("fromScreenType", getScreenType())
-                        mBundle.putSerializable("postTypeFragment", this)
-                        sharedViewModel!!.select(false)
-                        // Configure trimmer video limitation
-                        VideoTrimmerUtil.TYPE = 2
-                        Handler(Looper.getMainLooper()).postDelayed({
-                            findParentNavController().navigate(R.id.postTrimFragment, mBundle)
-                        }, 200)
-                    }
-                    return
-                }
-
-                fragment.recordGif { onCancel: Boolean, onStart: Boolean ->
-
-                    if (onCancel) {
-                        this.filePath = null
-                        startRecordingTimer(false)
-                        return@recordGif
-                    }
-
-                    if (onStart) {
-                        this.filePath = null
-                        startRecordingTimer(true)
-                        return@recordGif
-                    }
-                }
+                handleRecordGifClicked(fragment)
             }
+        }
+    }
+
+    private fun handleRecordGifClicked(fragment: GifPostFragment) {
+
+        if (isTimerRunning()) {
+            startRecordingTimer(false, ignoreRecordingUi = true)
+            fragment.stopRecording {
+                this.filePath = it
+
+                if (this.filePath == null) {
+                    Toast.makeText(
+                        requireContext(),
+                        "Can not continue, file is empty.",
+                        Toast.LENGTH_LONG
+                    ).show()
+                    return@stopRecording
+                }
+
+                val mBundle = Bundle()
+                mBundle.putString("filePath", filePath)
+                mBundle.putInt("fromScreenType", getScreenType())
+                mBundle.putSerializable("postTypeFragment", this)
+                sharedViewModel!!.select(false)
+                // Configure trimmer video limitation
+                VideoTrimmerUtil.TYPE = 2
+                Handler(Looper.getMainLooper()).postDelayed({
+                    findParentNavController().navigate(R.id.postTrimFragment, mBundle)
+                }, 200)
+            }
+            return
+        }
+
+        fragment.recordGif { onCancel: Boolean, onStart: Boolean ->
+
+            if (onCancel) {
+                this.filePath = null
+                startRecordingTimer(false)
+                return@recordGif
+            }
+
+            if (onStart) {
+                this.filePath = null
+                startRecordingTimer(true)
+                return@recordGif
+            }
+        }
+    }
+
+    private fun handleVideoRecordClicked(fragment: RecordVideoPostFragment) {
+
+        if (isTimerRunning()) {
+            startRecordingTimer(false, ignoreRecordingUi = true)
+            fragment.stopRecording {
+                this.filePath = it
+
+                if (this.filePath == null) {
+                    Toast.makeText(
+                        requireContext(),
+                        "Can not continue, file is empty.",
+                        Toast.LENGTH_LONG
+                    ).show()
+                    return@stopRecording
+                }
+
+                val mBundle = Bundle()
+                mBundle.putString("filePath", filePath)
+                mBundle.putInt("fromScreenType", getScreenType())
+                mBundle.putSerializable("postTypeFragment", this)
+                sharedViewModel!!.select(false)
+                // Configure trimmer video limitation
+                VideoTrimmerUtil.TYPE = 1
+                Handler(Looper.getMainLooper()).postDelayed({
+                    findParentNavController().navigate(R.id.postTrimFragment, mBundle)
+                }, 200)
+            }
+            return
+        }
+
+        fragment.recordVideo { onCancel: Boolean, onStart: Boolean ->
+
+            if (onCancel) {
+                this.filePath = null
+                startRecordingTimer(false)
+                return@recordVideo
+            }
+
+            if (onStart) {
+                this.filePath = null
+                startRecordingTimer(true)
+                return@recordVideo
+            }
+        }
+    }
+
+    private fun handlePhotoCaptureClicked(fragment: PhotoCameraPostFragment) {
+
+        fragment.capturePicture {
+            this.filePath = it
+
+            if (this.filePath == null) {
+                Toast.makeText(
+                    requireContext(),
+                    "Can not continue, file is empty.",
+                    Toast.LENGTH_LONG
+                ).show()
+                return@capturePicture
+            }
+
+            val mBundle = Bundle()
+            mBundle.putString("filePath", filePath)
+            mBundle.putInt("fromScreenType", getScreenType())
+            mBundle.putSerializable("postTypeFragment", this)
+            sharedViewModel!!.select(false)
+            findParentNavController().navigate(R.id.postPreviewFragment, mBundle)
         }
     }
 
@@ -428,6 +462,19 @@ open class PostTypesFragment : Fragment(), Serializable {
                 )
 
                 startRecordingTimer(false, ignoreRecordingUi = true)
+
+                if ((newPostViewPager as TsuViewPager).currentItem == 0) {
+
+                    filterLayout_id.hide()
+                    handleFilterMode(true)
+
+                    if (isFilterPending()) {
+                        // Gone filter list layout
+                        filterListLayout?.hide()
+                    }
+                } else {
+                    filterLayout_id.show()
+                }
             }
 
             override fun onPageScrollStateChanged(state: Int) {
@@ -495,38 +542,99 @@ open class PostTypesFragment : Fragment(), Serializable {
         }
 
         view?.findViewById<ConstraintLayout>(R.id.filterLayout_id)?.setOnClickListener {
-            if (filterDialog == null) {
-                val builder: AlertDialog.Builder = AlertDialog.Builder(requireContext())
-                builder.setTitle("Choose a filter")
-                builder.setOnDismissListener { dialog ->
-                    filterDialog = null
-                }
-                val filters = Filters.values()
-                val charList =
-                    arrayOfNulls<CharSequence>(filters.size)
-                var i = 0
-                val n = filters.size
-                while (i < n) {
-                    charList[i] = filters[i].name
-                    i++
-                }
 
-                builder.setItems(charList) { dialog, item ->
-                    changeFilter(filters[item])
-                }
-                filterDialog = builder.show()
-            } else {
-                filterDialog!!.dismiss()
+            // Handle filter clicked
+            handleFilterMode()
+        }
+    }
+
+    private fun handleFilterMode(hideFilter: Boolean = false, applyFilter: Boolean = false) {
+
+        selectedFilterItemPosition = -1
+        val pagePosition = (newPostViewPager as TsuViewPager).currentItem
+
+        if (pagePosition == 0) return
+
+        var filterLayoutIsVisible = isFilterPending()
+
+        if (hideFilter) {
+            filterLayoutIsVisible = true
+        }
+
+        if (applyFilter) {
+            filterLayoutIsVisible = true
+        }
+
+        if (!filterLayoutIsVisible) {
+
+            // Init filter adapter
+            initFilterAdapter()
+            // Visible filter list layout
+            filterListLayout?.show(animate = true, duration = 500)
+            post_bottom_navbar?.hide()
+            snap_icon_id?.hide()
+            gallery_image_id?.hide()
+            camera_rotate_id?.hide()
+            (newPostViewPager as? TsuViewPager)?.enableSwiping(false)
+        } else {
+
+            // Gone filter list layout
+            filterNameLayout?.hide()
+            filterListLayout?.hide()
+            post_bottom_navbar?.show(animate = true, duration = 500)
+            snap_icon_id?.show(animate = true, duration = 500)
+            gallery_image_id?.show(animate = true, duration = 500)
+            camera_rotate_id?.show(animate = true, duration = 500)
+            (newPostViewPager as? TsuViewPager)?.enableSwiping(true)
+            if (!applyFilter) {
+                changeCameraFilter((filterVideoAdapter?.getData()?.get(0)?.filterObject as Filters))
             }
         }
     }
 
-    private fun getViewPagerActiveView(filters: Filters) {
+    private fun initFilterAdapter() {
+
+        filterRecyclerView?.layoutManager =
+            LinearLayoutManager(requireContext(), LinearLayoutManager.HORIZONTAL, false)
+        filterVideoAdapter = FilterVideoAdapter()
+
+        val filters = Filters.values()
+        val filterItems = arrayListOf<FilterVideoModel>()
+        filters.forEach {
+            filterItems.add(FilterVideoModel(R.drawable.cover, it))
+        }
+        filterVideoAdapter?.addItemClickListener { position: Int, itemModel: FilterVideoModel ->
+
+            // Handle filter item clicked
+            filterNameLayout?.show(animate = true, duration = 500)
+            handleFilterItemClicked(position, itemModel)
+        }
+        filterVideoAdapter?.submitList(filterItems)
+        filterRecyclerView?.adapter = filterVideoAdapter
+    }
+
+    private fun handleFilterItemClicked(position: Int, itemModel: FilterVideoModel) {
+
+        val currentItems = filterVideoAdapter?.getData() ?: return
+
+        if (selectedFilterItemPosition > -1) {
+            currentItems[selectedFilterItemPosition].select(false)
+            filterVideoAdapter?.notifyItemChanged(selectedFilterItemPosition)
+        }
+        currentItems[position].select(true)
+        filterVideoAdapter?.notifyItemChanged(position)
+
+        selectedFilterItemPosition = position
+
+        filterNameBuble?.text = (itemModel.filterObject as Filters).value
+        changeCameraFilter((itemModel.filterObject as Filters))
+    }
+
+    private fun isFilterPending(): Boolean = filterListLayout?.visibility == VISIBLE
+
+    private fun changeCameraFilter(filters: Filters) {
 
         return when ((newPostViewPager as TsuViewPager).currentItem) {
-            0 -> {
-                (fragments[0] as PhotoCameraPostFragment).handleFilter(filters)
-            }
             1 -> {
                 (fragments[1] as RecordVideoPostFragment).handleFilter(filters)
             }
@@ -536,12 +644,7 @@ open class PostTypesFragment : Fragment(), Serializable {
         }
     }
 
-    private fun changeFilter(filters: Filters) {
-        getViewPagerActiveView(filters)
-    }
-
     override fun onDestroyView() {
-        //setScreenOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT)
         post_types_toolbar.visibility = View.GONE
         super.onDestroyView()
         sharedViewModel!!.select(false)

@@ -216,7 +216,7 @@ public class EGLBase {
             attribList[offset++] = EGL14.EGL_DEPTH_SIZE;
             attribList[offset++] = 16;
         }
-        if (isRecordable && (Build.VERSION.SDK_INT >= 18)) {// MediaCodecの入力用Surfaceの場合
+        if (isRecordable && (Build.VERSION.SDK_INT >= 18)) {
             attribList[offset++] = EGL_RECORDABLE_ANDROID;
             attribList[offset++] = 1;
         }
