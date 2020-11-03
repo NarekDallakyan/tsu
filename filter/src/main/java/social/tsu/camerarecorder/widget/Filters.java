@@ -10,18 +10,15 @@ import social.tsu.camerarecorder.egl.filter.GlBoxBlurFilter;
 import social.tsu.camerarecorder.egl.filter.GlBulgeDistortionFilter;
 import social.tsu.camerarecorder.egl.filter.GlCGAColorspaceFilter;
 import social.tsu.camerarecorder.egl.filter.GlFilter;
-import social.tsu.camerarecorder.egl.filter.GlFilterGroup;
 import social.tsu.camerarecorder.egl.filter.GlGaussianBlurFilter;
 import social.tsu.camerarecorder.egl.filter.GlGrayScaleFilter;
 import social.tsu.camerarecorder.egl.filter.GlInvertFilter;
 import social.tsu.camerarecorder.egl.filter.GlLookUpTableFilter;
-import social.tsu.camerarecorder.egl.filter.GlMonochromeFilter;
 import social.tsu.camerarecorder.egl.filter.GlSepiaFilter;
 import social.tsu.camerarecorder.egl.filter.GlSharpenFilter;
 import social.tsu.camerarecorder.egl.filter.GlSphereRefractionFilter;
 import social.tsu.camerarecorder.egl.filter.GlToneCurveFilter;
 import social.tsu.camerarecorder.egl.filter.GlToneFilter;
-import social.tsu.camerarecorder.egl.filter.GlVignetteFilter;
 import social.tsu.camerarecorder.egl.filter.GlWeakPixelInclusionFilter;
 import social.tsu.filter.R;
 
@@ -31,20 +28,17 @@ public enum Filters {
     BOX_BLUR("Box Blur"),
     BULGE_DISTORTION("Bulge Distortion"),
     CGA_COLOR_SPACE("CGA Color Space"),
-    GAUSSIAN_BLUR("Guassian Blur"),
+    GAUSSIAN_BLUR("Gaussian Blur"),
     GLAY_SCALE("Gray Scale"),
     INVERT("Invert"),
     LOOKUP_TABLE("Lookup Table"),
-    MONOCHROME("Monochrome"),
     OVERLAY("Overlay"),
     SEPIA("Sepia"),
     SHARPEN("Sharpen"),
     SPHERE_REFRACTION("Sphere Refraction"),
     TONE_CURVE("Tone Curve"),
     TONE("Tone"),
-    VIGNETTE("Vignette"),
-    WEAKPIXELINCLUSION("Wwak Pixel Inclusion"),
-    FILTER_GROUP("Filter group");
+    WEAKPIXELINCLUSION("Weak Pixel Inclusion");
 
     private String value;
 
@@ -74,8 +68,6 @@ public enum Filters {
                 return new GlInvertFilter();
             case LOOKUP_TABLE:
                 return new GlLookUpTableFilter(BitmapFactory.decodeResource(applicationContext.getResources(), R.drawable.lookup_sample));
-            case MONOCHROME:
-                return new GlMonochromeFilter();
             case SEPIA:
                 return new GlSepiaFilter();
             case SHARPEN:
@@ -91,13 +83,8 @@ public enum Filters {
                 }
             case TONE:
                 return new GlToneFilter();
-            case VIGNETTE:
-                return new GlVignetteFilter();
             case WEAKPIXELINCLUSION:
                 return new GlWeakPixelInclusionFilter();
-            case FILTER_GROUP:
-                return new GlFilterGroup(new GlMonochromeFilter(), new GlVignetteFilter());
-
             default:
                 return new GlFilter();
         }

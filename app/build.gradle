@@ -310,10 +310,12 @@ dependencies {
     implementation 'com.github.AbedElazizShe:LightCompressor:0.7.5'
 
     implementation "io.coil-kt:coil:0.9.5"
+    implementation 'nl.bravobit:android-ffmpeg:1.1.7'
+    implementation 'com.github.iknow4:android-utils-sdk:1.1.2'
 
-//    // Load modules
+    // Load modules
     implementation project(":filter")
-    implementation project(":trimmer")
+    //implementation project(":trimmer")
 
 }
 detekt {

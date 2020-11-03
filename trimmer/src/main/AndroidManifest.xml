@@ -8,10 +8,11 @@
     <uses-permission android:name="android.permission.CAMERA"/>
 
     <application
-        android:allowBackup="false"
+        android:allowBackup="true"
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
-        tools:ignore="GoogleAppIndexingWarning, LockedOrientationActivity">
+        tools:ignore="GoogleAppIndexingWarning, LockedOrientationActivity"
+        android:requestLegacyExternalStorage="true">
         <activity
             android:name="social.tsu.trimmer.features.select.VideoSelectActivity"
             android:screenOrientation="portrait">

@@ -58,7 +58,7 @@
             app:layout_constraintTop_toTopOf="parent" />
     </androidx.constraintlayout.widget.ConstraintLayout>
 
-    <social.tsu.trimmer.widget.VideoTrimmerView
+    <social.tsu.android.ui.post.view.trim.widget.VideoTrimmerView
         android:id="@+id/trimmer_view"
         android:layout_width="0dp"
         android:layout_height="0dp"

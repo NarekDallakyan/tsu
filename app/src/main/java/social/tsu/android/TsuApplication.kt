@@ -16,6 +16,8 @@ import com.jakewharton.threetenabp.AndroidThreeTen
 import dagger.android.AndroidInjector
 import dagger.android.DispatchingAndroidInjector
 import dagger.android.HasAndroidInjector
+import iknow.android.utils.BaseUtils
+import nl.bravobit.ffmpeg.FFmpeg
 import social.tsu.android.data.repository.PostFeedRepository
 import social.tsu.android.di.AppComponent
 import social.tsu.android.di.DaggerAppComponent
@@ -25,7 +27,6 @@ import social.tsu.android.network.api.ProjectEnvironment
 import social.tsu.android.service.SharedPrefManager
 import social.tsu.android.utils.AppVersion
 import social.tsu.android.workmanager.DaggerWorkerFactory
-import social.tsu.trimmer.features.trim.VideoTrimmerActivity
 import java.text.SimpleDateFormat
 import javax.inject.Inject
 
@@ -56,10 +57,17 @@ open class TsuApplication : Application(),HasAndroidInjector,   CameraXConfig.Pr
         lateinit var mContext: Context
     }
 
+    private fun initFFmpegBinary(context: Context) {
+        if (!FFmpeg.getInstance(context).isSupported) {
+            Log.e("ZApplication", "Android cup arch not supported!")
+        }
+    }
+
     override fun onCreate() {
         super.onCreate()
+        BaseUtils.init(this)
+        initFFmpegBinary(this)
         mContext = this
-        VideoTrimmerActivity.initContext(this)
         AppVersion.init(this)
         setNetworkEnviorement()
         appComponent.inject(this)

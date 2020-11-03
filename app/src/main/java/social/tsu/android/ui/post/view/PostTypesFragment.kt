@@ -29,11 +29,11 @@ import social.tsu.android.ui.post.helper.LayoutChooseHelper.Companion.changeLayo
 import social.tsu.android.ui.post.helper.LayoutChooseHelper.Companion.setChoose
 import social.tsu.android.ui.post.model.FilterVideoModel
 import social.tsu.android.ui.post.view.filter.FilterVideoAdapter
+import social.tsu.android.ui.post.view.trim.features.trim.VideoTrimmerUtil
 import social.tsu.android.ui.post.view.viewpager.*
 import social.tsu.android.utils.findParentNavController
 import social.tsu.android.viewModel.SharedViewModel
 import social.tsu.camerarecorder.widget.Filters
-import social.tsu.trimmer.features.trim.VideoTrimmerUtil
 import java.io.Serializable
 import java.util.*
 import kotlin.collections.ArrayList

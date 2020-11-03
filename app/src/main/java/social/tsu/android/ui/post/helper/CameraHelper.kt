@@ -150,7 +150,7 @@ class CameraHelper(
         context.sendBroadcast(
             Intent(
                 Intent.ACTION_MEDIA_SCANNER_SCAN_FILE,
-                Uri.parse("file://$filePath")
+                Uri.parse(filePath)
             )
         )
         completeRecording?.let {
@@ -237,7 +237,7 @@ class CameraHelper(
     }
 
     fun getAndroidMoviesFolder(): File {
-        return Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_MOVIES)
+        return Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS)
     }
 
     private fun exportPngToGallery(context: Context, filePath: String) {
