@@ -4,20 +4,18 @@ import android.content.Context;
 import android.util.AttributeSet;
 import android.widget.FrameLayout;
 
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
 
 public class PortraitFrameLayout extends FrameLayout {
 
-    public PortraitFrameLayout(@NonNull Context context) {
+    public PortraitFrameLayout(Context context) {
         super(context);
     }
 
-    public PortraitFrameLayout(@NonNull Context context, @Nullable AttributeSet attrs) {
+    public PortraitFrameLayout(Context context, AttributeSet attrs) {
         super(context, attrs);
     }
 
-    public PortraitFrameLayout(@NonNull Context context, @Nullable AttributeSet attrs, int defStyleAttr) {
+    public PortraitFrameLayout(Context context, AttributeSet attrs, int defStyleAttr) {
         super(context, attrs, defStyleAttr);
     }
 

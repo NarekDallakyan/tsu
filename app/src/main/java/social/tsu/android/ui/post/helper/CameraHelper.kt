@@ -63,7 +63,6 @@ class CameraHelper(
     fun onResume() {
         initViews()
         setUpCamera()
-        print("")
     }
 
     private fun initViews() {

@@ -44,7 +44,6 @@ public class GlFilter {
                     "gl_FragColor = texture2D(sTexture, vTextureCoord);\n" +
                     "}\n";
 
-    // 傾きには関係があった。
     private static final float[] VERTICES_DATA = new float[]{
             // X, Y, Z, U, V
             -1.0f, 1.0f, 0.0f, 0.0f, 1.0f,
@@ -106,7 +105,6 @@ public class GlFilter {
         // do nothing
     }
 
-    // 違う部分。DeleteShaderとかはしていない。
     public void release() {
         GLES20.glDeleteProgram(program);
         program = 0;
@@ -120,12 +118,6 @@ public class GlFilter {
         handleMap.clear();
     }
 
-    //  リセットは行っていない。
-    //    GLES20.glViewport(0, 0, out.width(), out.height());
-    //
-    //    GLES20.glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
-    //    GLES20.glClear(GLES20.GL_DEPTH_BUFFER_BIT | GLES20.GL_COLOR_BUFFER_BIT);
-    //
     public void draw(final int texName, final GLES20FramebufferObject fbo) {
         useProgram();
 
