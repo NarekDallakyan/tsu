@@ -17,8 +17,6 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.navArgs
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.viewpager.widget.ViewPager
-import coil.api.clear
-import coil.api.load
 import kotlinx.android.synthetic.main.fragment_post_types.*
 import social.tsu.android.R
 import social.tsu.android.ext.hide
@@ -96,15 +94,13 @@ open class PostTypesFragment : Fragment(), Serializable {
             camera_rotate_id?.hide(animate = true)
             post_bottom_navbar?.hide(invisible = true, animate = true)
             (newPostViewPager as? TsuViewPager)?.enableSwiping(false)
-            snap_icon_id.clear()
-            snap_icon_id.load(R.drawable.video_record_start)
+            snap_icon_id.setImageResource(R.drawable.video_record_start)
             sectionsLayout?.hide(animate = true)
             optionsLayout?.hide(animate = true)
             gallery_image_id?.hide(animate = true)
         } else {
 
-            snap_icon_id.clear()
-            snap_icon_id.load(R.drawable.record_video_not_start)
+            snap_icon_id.setImageResource(R.drawable.record_video_not_start)
             (newPostViewPager as? TsuViewPager)?.enableSwiping(true)
             sectionsLayout?.show(animate = true)
             optionsLayout?.show(animate = true)

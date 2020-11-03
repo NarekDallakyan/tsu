@@ -10,7 +10,6 @@ import android.widget.MediaController
 import android.widget.VideoView
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
-import coil.api.load
 import kotlinx.android.synthetic.main.fragment_post_preview.*
 import social.tsu.android.R
 import social.tsu.android.ui.MainActivity
@@ -66,7 +65,7 @@ class PostPreviewFragment : Fragment() {
             // File type is image
             videoPreview?.visibility = View.GONE
             imagePreview?.visibility = View.VISIBLE
-            imagePreview?.load(Uri.parse("file://".plus(filePath)))
+            imagePreview?.setImageURI(Uri.parse("file://".plus(filePath)))
         } else {
             // File type is video
             videoPreview?.visibility = View.VISIBLE

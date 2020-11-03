@@ -1,18 +1,13 @@
 package social.tsu.android.ui.post.helper
 
 import android.content.Context
-import android.graphics.Bitmap
 import android.graphics.Typeface
 import android.os.Handler
-import android.view.View
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
-import coil.api.clear
-import coil.api.load
-import jp.wasabeef.blurry.Blurry
 import social.tsu.android.R
 import social.tsu.android.helper.DeviceUtils
 import social.tsu.android.ui.post.view.PostTypesFragment
@@ -161,8 +156,7 @@ class LayoutChooseHelper {
                 // Photo section
                 0 -> {
 
-                    captureBtn.clear()
-                    captureBtn.load(R.drawable.photo_capture_image)
+                    captureBtn.setImageResource(R.drawable.photo_capture_image)
 
                     // Change text styles
                     newPostPhotoText.setTypeface(newPostPhotoText.typeface, Typeface.BOLD)
@@ -201,8 +195,8 @@ class LayoutChooseHelper {
                 // Video section
                 1 -> {
 
-                    captureBtn.clear()
-                    captureBtn.load(R.drawable.record_video_not_start)
+
+                    captureBtn.setImageResource(R.drawable.record_video_not_start)
 
                     // Change text styles
                     newPostPhotoText.setTypeface(newPostPhotoText.typeface, Typeface.NORMAL)
@@ -241,8 +235,7 @@ class LayoutChooseHelper {
                 // GIF section
                 2 -> {
 
-                    captureBtn.clear()
-                    captureBtn.load(R.drawable.record_video_not_start)
+                    captureBtn.setImageResource(R.drawable.record_video_not_start)
 
                     // Change text styles
                     newPostPhotoText.setTypeface(newPostPhotoText.typeface, Typeface.NORMAL)
@@ -284,28 +277,6 @@ class LayoutChooseHelper {
                     layout.alpha = 1F
                 }
             }
-        }
-
-        private fun makeBlur(
-            mContext: Context,
-            radius: Int,
-            sampling: Int,
-            color: Int,
-            from: Bitmap?,
-            into: ImageView
-        ) {
-
-            if (from == null) return
-
-            into.visibility = View.VISIBLE
-
-            Blurry.with(mContext)
-                .radius(radius)
-                .sampling(sampling)
-                .color(color)
-                .async()
-                .from(from)
-                .into(into)
         }
     }
 }

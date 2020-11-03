@@ -14,6 +14,7 @@ import iknow.android.utils.UnitConverter;
 import iknow.android.utils.callback.SingleCallback;
 import iknow.android.utils.thread.BackgroundExecutor;
 import social.tsu.android.ui.post.view.trim.interfaces.VideoTrimListener;
+
 import static com.arthenica.mobileffmpeg.Config.RETURN_CODE_CANCEL;
 import static com.arthenica.mobileffmpeg.Config.RETURN_CODE_SUCCESS;
 import static social.tsu.android.ui.post.view.trim.widget.VideoTrimmerView.getMaxDuration;
@@ -57,14 +58,12 @@ public class VideoTrimmerUtil {
     callback.onStartTrim();
     try {
       final String tempOutFile = outputFile;
-      FFmpeg.executeAsync(command, (executionId, returnCode) -> {
-
-        if (returnCode == RETURN_CODE_SUCCESS) {
-          callback.onFinishTrim(tempOutFile);
-        } else if (returnCode == RETURN_CODE_CANCEL) {
-          callback.onCancel();
-        }
-      });
+      int result = FFmpeg.execute(command);
+      if (result == RETURN_CODE_SUCCESS) {
+        callback.onFinishTrim(tempOutFile);
+      } else if (result == RETURN_CODE_CANCEL) {
+        callback.onCancel();
+      }
     } catch (Exception e) {
       e.printStackTrace();
     }
