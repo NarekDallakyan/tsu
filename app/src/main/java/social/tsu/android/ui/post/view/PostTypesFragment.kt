@@ -11,7 +11,6 @@ import android.view.View.VISIBLE
 import android.view.ViewGroup
 import android.widget.Toast
 import androidx.appcompat.widget.Toolbar
-import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.navArgs
@@ -22,16 +21,14 @@ import social.tsu.android.R
 import social.tsu.android.ext.hide
 import social.tsu.android.ext.show
 import social.tsu.android.ui.post.helper.CameraHelper
-import social.tsu.android.ui.post.helper.LayoutChooseHelper
-import social.tsu.android.ui.post.helper.LayoutChooseHelper.Companion.changeLayoutAlpha
-import social.tsu.android.ui.post.helper.LayoutChooseHelper.Companion.setChoose
+import social.tsu.android.ui.post.helper.PostTypeUiHelper
 import social.tsu.android.ui.post.model.FilterVideoModel
 import social.tsu.android.ui.post.view.filter.FilterVideoAdapter
-import social.tsu.android.ui.post.view.trim.features.trim.VideoTrimmerUtil
 import social.tsu.android.ui.post.view.viewpager.*
 import social.tsu.android.utils.findParentNavController
 import social.tsu.android.viewModel.SharedViewModel
 import social.tsu.camerarecorder.widget.Filters
+import social.tsu.trimmer.features.trim.VideoTrimmerUtil
 import java.io.Serializable
 import java.util.*
 import kotlin.collections.ArrayList
@@ -60,9 +57,6 @@ open class PostTypesFragment : Fragment(), Serializable {
 
     private val args: PostTypesFragmentArgs by navArgs()
 
-    private var cameraHelper: CameraHelper? = null
-
-
     val allowVideo by lazy { args.allowVideo }
 
     // New post view pager fragments
@@ -76,17 +70,25 @@ open class PostTypesFragment : Fragment(), Serializable {
 
     var sharedViewModel: SharedViewModel? = null
 
+    // Helper
+    private var cameraHelper: CameraHelper? = null
+    private val postTypeUiHelper = PostTypeUiHelper
+
     // Video record time
     private var mTimer: Timer? = null
     private var timer: TimerTask? = null
     private var seconds = 0L
 
+    // File variables
     private var filePath: String? = null
 
     // Filters
     private var filterVideoAdapter: FilterVideoAdapter? = null
     private var selectedFilterItemPosition: Int = -1
 
+    /**
+     *  Handling record mode UI
+     */
     private fun recordingMode(recording: Boolean) {
 
         if (recording) {
@@ -113,6 +115,7 @@ open class PostTypesFragment : Fragment(), Serializable {
 
     override fun onStop() {
         super.onStop()
+        // remove recording mode
         recordingMode(false)
     }
 
@@ -138,10 +141,16 @@ open class PostTypesFragment : Fragment(), Serializable {
         initCameraHelper()
     }
 
+    /**
+     *  Initialize Camera helper
+     */
     private fun initCameraHelper() {
         cameraHelper = CameraHelper(requireActivity(), requireContext(), requireView())
     }
 
+    /**
+     *  Handling timer recording functionality
+     */
     private fun startRecordingTimer(start: Boolean, ignoreRecordingUi: Boolean = false) {
 
         // Check if timer is null
@@ -191,13 +200,10 @@ open class PostTypesFragment : Fragment(), Serializable {
         // Get view pager current page position
         val currentPagePosition = (newPostViewPager as TsuViewPager).currentItem
         // Handle view pager after changing
-        LayoutChooseHelper.handleViewPagerChange(
+        postTypeUiHelper.handleViewPagerChange(
             requireContext(),
             currentPagePosition,
-            newPostPhotoText,
-            newPostVideoText,
-            newPostGifText,
-            snap_icon_id,
+            view,
             fragments
         )
 
@@ -210,9 +216,6 @@ open class PostTypesFragment : Fragment(), Serializable {
 
 
     private fun initOnClicks() {
-
-        // listen bottom buttons click listeners
-        onClickButtons()
 
         // Listen camera switch button on click
         camera_rotate_id.setOnClickListener {
@@ -234,19 +237,81 @@ open class PostTypesFragment : Fragment(), Serializable {
             findParentNavController().navigate(R.id.mediaLibraryLayout_id, mBundle)
         }
 
-        // Listen filter close layout
+        // Listen filter close layout on click
         filterCancel?.setOnClickListener {
 
             handleFilterMode(true)
         }
 
-        // Listen apply filter
+        // Listen apply filter on click
         filterDone?.setOnClickListener {
 
             handleFilterMode(applyFilter = true)
         }
+
+        // Listen apply flash on click
+        flashLayout_id?.setOnClickListener {
+
+            // Handling camera flash mode functionality
+            when ((newPostViewPager as TsuViewPager).currentItem) {
+                0 -> {
+                    (fragments[0] as PhotoCameraPostFragment).handleFlash()
+                }
+                1 -> {
+                    (fragments[1] as RecordVideoPostFragment).handleFlash()
+                }
+                else -> {
+                    (fragments[2] as GifPostFragment).handleFlash()
+                }
+            }
+
+            // Changing layout alpha after clicking
+            postTypeUiHelper.changeLayoutAlpha(flashLayout_id)
+        }
+
+        // Listen sound button on click
+        soundLayout_id?.setOnClickListener {
+            // Changing layout alpha after clicking
+            postTypeUiHelper.changeLayoutAlpha(soundLayout_id)
+        }
+
+        // Listen language button on click
+        languageLayout_id?.setOnClickListener {
+            postTypeUiHelper.setChoose(
+                LANGUAGE_CLICK,
+                view
+            )
+        }
+
+        photoLayout_id?.setOnClickListener {
+            postTypeUiHelper.setChoose(
+                PHOTO_CLICK,
+                view
+            )
+        }
+
+        wifiLayout_id?.setOnClickListener {
+            postTypeUiHelper.setChoose(
+                WIFI_CLICK,
+                view
+            )
+        }
+
+        closeLayout_id?.setOnClickListener {
+            sharedViewModel!!.select(false)
+            findParentNavController().popBackStack(R.id.mainFeedFragment, false)
+        }
+
+        filterLayout_id?.setOnClickListener {
+
+            // Handle filter clicked
+            handleFilterMode()
+        }
     }
 
+    /**
+     *  Initialize and start camera
+     */
     private fun handleStartCamera() {
 
         // Get view pager current page position
@@ -270,6 +335,9 @@ open class PostTypesFragment : Fragment(), Serializable {
         }
     }
 
+    /**
+     *  Changing Ui when user click gif record button and handle this functionality
+     */
     private fun handleRecordGifClicked(fragment: GifPostFragment) {
 
         if (isTimerRunning()) {
@@ -316,6 +384,9 @@ open class PostTypesFragment : Fragment(), Serializable {
         }
     }
 
+    /**
+     *  Changing Ui when user click video record button and handle this functionality
+     */
     private fun handleVideoRecordClicked(fragment: RecordVideoPostFragment) {
 
         if (isTimerRunning()) {
@@ -362,6 +433,9 @@ open class PostTypesFragment : Fragment(), Serializable {
         }
     }
 
+    /**
+     *  Changing Ui when user click capture button and handle this functionality
+     */
     private fun handlePhotoCaptureClicked(fragment: PhotoCameraPostFragment) {
 
         fragment.capturePicture {
@@ -376,19 +450,23 @@ open class PostTypesFragment : Fragment(), Serializable {
                 return@capturePicture
             }
 
-            val mBundle = Bundle()
-            mBundle.putString("filePath", filePath)
-            mBundle.putInt("fromScreenType", getScreenType())
-            mBundle.putSerializable("postTypeFragment", this)
-            sharedViewModel!!.select(false)
-            findParentNavController().navigate(R.id.postPreviewFragment, mBundle)
+            next(
+                photoUri = Uri.parse("file://".plus(filePath)),
+                fromGrid = true
+            )
         }
     }
 
+    /**
+     *  Return is timer is running
+     */
     private fun isTimerRunning(): Boolean {
         return timerText?.visibility == VISIBLE
     }
 
+    /**
+     *  Changing Camera id when user click camera switch button
+     */
     private fun handleSwitchCamera() {
 
         // Get view pager current page position
@@ -405,6 +483,13 @@ open class PostTypesFragment : Fragment(), Serializable {
         }
     }
 
+    /**
+     *  Return screen type
+     *
+     *  - 0 value is Photo section
+     *  - 1 value is Video section
+     *  - 2 value is Gif section
+     */
     private fun getScreenType(): Int {
 
         return (newPostViewPager as TsuViewPager).currentItem
@@ -415,20 +500,24 @@ open class PostTypesFragment : Fragment(), Serializable {
         // Init new post view pager
         initNewPostViewPagerAdapter()
         // Set default Camera Mode
-        setChoose(
+        postTypeUiHelper.setChoose(
             PHOTO_CLICK,
-            view?.findViewById(R.id.languageLayout_id)!!,
-            view?.findViewById(R.id.photoLayout_id)!!,
-            view?.findViewById(R.id.wifiLayout_id)!!
+            view
         )
         // Hide tool bar
         post_types_toolbar.visibility = View.GONE
     }
 
+    /**
+     *  Initialize view models
+     */
     private fun initViewModels() {
         sharedViewModel = ViewModelProvider(requireActivity()).get(SharedViewModel::class.java)
     }
 
+    /**
+     *  Initialize <Photo, Video, Gif> view pagers
+     */
     private fun initNewPostViewPagerAdapter() {
 
         val newPostAdapter = NewPostViewPager(childFragmentManager, fragments.size, fragments)
@@ -447,13 +536,10 @@ open class PostTypesFragment : Fragment(), Serializable {
 
             override fun onPageSelected(position: Int) {
                 // Handle view pager after changing
-                LayoutChooseHelper.handleViewPagerChange(
+                postTypeUiHelper.handleViewPagerChange(
                     requireContext(),
                     position,
-                    newPostPhotoText,
-                    newPostVideoText,
-                    newPostGifText,
-                    snap_icon_id,
+                    view,
                     fragments
                 )
 
@@ -479,71 +565,9 @@ open class PostTypesFragment : Fragment(), Serializable {
         })
     }
 
-    private fun onClickButtons() {
-
-        view?.findViewById<ConstraintLayout>(R.id.flashLayout_id)?.setOnClickListener {
-
-            // Get view pager current page position
-            when ((newPostViewPager as TsuViewPager).currentItem) {
-                0 -> {
-                    (fragments[0] as PhotoCameraPostFragment).handleFlash()
-                }
-                1 -> {
-                    (fragments[1] as RecordVideoPostFragment).handleFlash()
-                }
-                else -> {
-                    (fragments[2] as GifPostFragment).handleFlash()
-                }
-            }
-
-            // Changing layout alpha after clicking
-            changeLayoutAlpha(flashLayout_id)
-        }
-
-        view?.findViewById<ConstraintLayout>(R.id.soundLayout_id)?.setOnClickListener {
-            // Changing layout alpha after clicking
-            changeLayoutAlpha(soundLayout_id)
-        }
-
-        view?.findViewById<ConstraintLayout>(R.id.languageLayout_id)?.setOnClickListener {
-            setChoose(
-                LANGUAGE_CLICK,
-                view?.findViewById(R.id.languageLayout_id),
-                view?.findViewById(R.id.photoLayout_id),
-                view?.findViewById(R.id.wifiLayout_id)
-            )
-        }
-
-        view?.findViewById<ConstraintLayout>(R.id.photoLayout_id)?.setOnClickListener {
-            setChoose(
-                PHOTO_CLICK,
-                view?.findViewById(R.id.languageLayout_id),
-                view?.findViewById(R.id.photoLayout_id),
-                view?.findViewById(R.id.wifiLayout_id)
-            )
-        }
-
-        view?.findViewById<ConstraintLayout>(R.id.wifiLayout_id)?.setOnClickListener {
-            setChoose(
-                WIFI_CLICK,
-                view?.findViewById(R.id.languageLayout_id),
-                view?.findViewById(R.id.photoLayout_id),
-                view?.findViewById(R.id.wifiLayout_id)
-            )
-        }
-
-        view?.findViewById<ConstraintLayout>(R.id.closeLayout_id)?.setOnClickListener {
-            sharedViewModel!!.select(false)
-            findParentNavController().popBackStack(R.id.mainFeedFragment, false)
-        }
-
-        view?.findViewById<ConstraintLayout>(R.id.filterLayout_id)?.setOnClickListener {
-
-            // Handle filter clicked
-            handleFilterMode()
-        }
-    }
-
+    /**
+     *  Changing Ui when user click filter section
+     */
     private fun handleFilterMode(hideFilter: Boolean = false, applyFilter: Boolean = false) {
 
         selectedFilterItemPosition = -1
@@ -588,6 +612,9 @@ open class PostTypesFragment : Fragment(), Serializable {
         }
     }
 
+    /**
+     *  Initialize filter recycler view
+     */
     private fun initFilterAdapter() {
 
         filterRecyclerView?.layoutManager =
@@ -609,6 +636,9 @@ open class PostTypesFragment : Fragment(), Serializable {
         filterRecyclerView?.adapter = filterVideoAdapter
     }
 
+    /**
+     *  Handling when user click filter section
+     */
     private fun handleFilterItemClicked(position: Int, itemModel: FilterVideoModel) {
 
         val currentItems = filterVideoAdapter?.getData() ?: return
@@ -626,8 +656,14 @@ open class PostTypesFragment : Fragment(), Serializable {
         changeCameraFilter((itemModel.filterObject as Filters))
     }
 
+    /**
+     *  Return is filter mode
+     */
     private fun isFilterPending(): Boolean = filterListLayout?.visibility == VISIBLE
 
+    /**
+     *  Changing Camera filter
+     */
     private fun changeCameraFilter(filters: Filters) {
 
         return when ((newPostViewPager as TsuViewPager).currentItem) {
@@ -700,7 +736,6 @@ open class PostTypesFragment : Fragment(), Serializable {
     }
 
     companion object {
-        private const val STATE_SELECTED_ID = "id"
         const val LANGUAGE_CLICK = 1
         const val PHOTO_CLICK = 2
         const val WIFI_CLICK = 3
@@ -710,10 +745,4 @@ open class PostTypesFragment : Fragment(), Serializable {
             toolbar?.show()
         }
     }
-}
-
-sealed class RecordingState {
-    object Recording : RecordingState()
-    object Stopped : RecordingState()
-    object Canceled : RecordingState()
 }

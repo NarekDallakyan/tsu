@@ -11,9 +11,9 @@ import kotlinx.android.synthetic.main.fragment_post_trim.*
 import social.tsu.android.R
 import social.tsu.android.ui.MainActivity
 import social.tsu.android.ui.post.view.PostTypesFragment
-import social.tsu.android.ui.post.view.trim.features.trim.VideoTrimmerActivity
 import social.tsu.android.utils.findParentNavController
 import social.tsu.android.viewModel.SharedViewModel
+import social.tsu.trimmer.features.trim.VideoTrimmerActivity
 
 
 class PostTrimFragment : Fragment() {

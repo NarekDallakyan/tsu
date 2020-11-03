@@ -16,7 +16,6 @@ import com.jakewharton.threetenabp.AndroidThreeTen
 import dagger.android.AndroidInjector
 import dagger.android.DispatchingAndroidInjector
 import dagger.android.HasAndroidInjector
-import iknow.android.utils.BaseUtils
 import social.tsu.android.data.repository.PostFeedRepository
 import social.tsu.android.di.AppComponent
 import social.tsu.android.di.DaggerAppComponent
@@ -26,6 +25,7 @@ import social.tsu.android.network.api.ProjectEnvironment
 import social.tsu.android.service.SharedPrefManager
 import social.tsu.android.utils.AppVersion
 import social.tsu.android.workmanager.DaggerWorkerFactory
+import social.tsu.trimmer.widget.VideoTrimmerView
 import java.text.SimpleDateFormat
 import javax.inject.Inject
 
@@ -62,7 +62,7 @@ open class TsuApplication : Application(),HasAndroidInjector,   CameraXConfig.Pr
 
     override fun onCreate() {
         super.onCreate()
-        BaseUtils.init(this)
+        VideoTrimmerView.initBaseUtils(this)
         initFFmpegBinary(this)
         mContext = this
         AppVersion.init(this)

@@ -137,13 +137,4 @@
     <color name="tsu_dark_yellow">#976304</color>
     <color name="transparent">#00FFFFFF</color>
 
-    <color name="background_video_color">#2f3031</color>
-    <color name="background_progress_color">#6C6D6D</color>
-    <color name="progress_color">#aacc0000</color>
-    <color name="line_color">#FF15FF00</color>
-    <color name="shadow_color">#7F000000</color>
-    <color name="line_button">#565758</color>
-    <color name="black_translucent">#50000000</color>
-    <color name="top_bottom">#42BAF8</color>
-
 </resources>

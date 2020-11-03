@@ -124,19 +124,10 @@ class PostPreviewFragment : Fragment() {
             val mainActivity = requireActivity() as? MainActivity
             mainActivity?.supportActionBar?.show()
 
-            if (fromScreenType == 0) {
-
-                (postTypeFragment)?.next(
-                    photoUri = Uri.parse("file://".plus(filePath)),
-                    fromGrid = true
-                )
-            } else {
-
-                (postTypeFragment)?.next(
-                    videoPath = filePath,
-                    fromGrid = true
-                )
-            }
+            (postTypeFragment)?.next(
+                videoPath = filePath,
+                fromGrid = true
+            )
         }
     }
 }

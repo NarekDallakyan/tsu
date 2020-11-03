@@ -128,9 +128,6 @@ dependencies {
     //Indicative library
     //implementation fileTree(dir: '../libs', include: ['*.aar'])
     implementation (name: 'Indicative-Android-1.0.4-SNAPSHOT', ext:'aar')
-    implementation(name:'ffmpeg', ext:'aar')
-
-
 
     // CameraX
     //room dependecies
@@ -313,10 +310,9 @@ dependencies {
 
     implementation 'com.github.AbedElazizShe:LightCompressor:0.7.5'
 
-    implementation 'com.github.iknow4:android-utils-sdk:1.1.2'
-
     // Load modules
-    implementation project(":filter")
+    implementation project(':camera')
+    implementation project(':trimmer')
 
 }
 detekt {
