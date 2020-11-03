@@ -6,12 +6,10 @@ import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.text.TextUtils;
-import android.util.Log;
 
 import androidx.fragment.app.FragmentActivity;
 
 import iknow.android.utils.BaseUtils;
-import nl.bravobit.ffmpeg.FFmpeg;
 import social.tsu.android.ui.post.view.trim.interfaces.VideoTrimListener;
 import social.tsu.android.ui.post.view.trim.widget.VideoTrimmerView;
 
@@ -37,9 +35,7 @@ public class VideoTrimmerActivity implements VideoTrimListener {
   }
 
   private static void initFFmpegBinary(Context context) {
-    if (!FFmpeg.getInstance(context).isSupported()) {
-      Log.e("ZApplication", "Android cup arch not supported!");
-    }
+
   }
 
   public static void initContext(Context context) {

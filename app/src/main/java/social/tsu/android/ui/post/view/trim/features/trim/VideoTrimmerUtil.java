@@ -5,19 +5,17 @@ import android.graphics.Bitmap;
 import android.media.MediaMetadataRetriever;
 import android.net.Uri;
 import android.text.TextUtils;
-
+import com.arthenica.mobileffmpeg.FFmpeg;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Locale;
-
 import iknow.android.utils.DeviceUtil;
 import iknow.android.utils.UnitConverter;
 import iknow.android.utils.callback.SingleCallback;
 import iknow.android.utils.thread.BackgroundExecutor;
-import nl.bravobit.ffmpeg.ExecuteBinaryResponseHandler;
-import nl.bravobit.ffmpeg.FFmpeg;
 import social.tsu.android.ui.post.view.trim.interfaces.VideoTrimListener;
-
+import static com.arthenica.mobileffmpeg.Config.RETURN_CODE_CANCEL;
+import static com.arthenica.mobileffmpeg.Config.RETURN_CODE_SUCCESS;
 import static social.tsu.android.ui.post.view.trim.widget.VideoTrimmerView.getMaxDuration;
 
 public class VideoTrimmerUtil {
@@ -56,18 +54,15 @@ public class VideoTrimmerUtil {
     //{"ffmpeg", "-ss", "" + startTime, "-y", "-i", inputFile, "-t", "" + induration, "-vcodec", "mpeg4", "-b:v", "2097152", "-b:a", "48000", "-ac", "2", "-ar", "22050", outputFile}
     //String cmd = "-ss " + start + " -y " + "-i " + inputFile + " -t " + duration + " -vcodec " + "mpeg4 " + "-b:v " + "2097152 " + "-b:a " + "48000 " + "-ac " + "2 " + "-ar " + "22050 "+ outputFile;
     String[] command = cmd.split(" ");
+    callback.onStartTrim();
     try {
       final String tempOutFile = outputFile;
-      FFmpeg.getInstance(context).execute(command, new ExecuteBinaryResponseHandler() {
+      FFmpeg.executeAsync(command, (executionId, returnCode) -> {
 
-        @Override
-        public void onSuccess(String s) {
+        if (returnCode == RETURN_CODE_SUCCESS) {
           callback.onFinishTrim(tempOutFile);
-        }
-
-        @Override
-        public void onStart() {
-          callback.onStartTrim();
+        } else if (returnCode == RETURN_CODE_CANCEL) {
+          callback.onCancel();
         }
       });
     } catch (Exception e) {

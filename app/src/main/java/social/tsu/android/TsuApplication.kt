@@ -17,7 +17,6 @@ import dagger.android.AndroidInjector
 import dagger.android.DispatchingAndroidInjector
 import dagger.android.HasAndroidInjector
 import iknow.android.utils.BaseUtils
-import nl.bravobit.ffmpeg.FFmpeg
 import social.tsu.android.data.repository.PostFeedRepository
 import social.tsu.android.di.AppComponent
 import social.tsu.android.di.DaggerAppComponent
@@ -58,9 +57,7 @@ open class TsuApplication : Application(),HasAndroidInjector,   CameraXConfig.Pr
     }
 
     private fun initFFmpegBinary(context: Context) {
-        if (!FFmpeg.getInstance(context).isSupported) {
-            Log.e("ZApplication", "Android cup arch not supported!")
-        }
+
     }
 
     override fun onCreate() {

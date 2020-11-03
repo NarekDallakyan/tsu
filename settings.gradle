@@ -1,4 +1,3 @@
-include ':trimmer'
 include ':filter'
 include ':app'
 rootProject.name='Tsu'
