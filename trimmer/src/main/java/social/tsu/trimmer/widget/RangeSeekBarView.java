@@ -155,9 +155,6 @@ public class RangeSeekBarView extends View {
     canvas.drawRect(leftRect, mShadow);
     canvas.drawRect(rightRect, mShadow);
 
-    //canvas.drawRect(rangeL, thumbPaddingTop + paddingTop, rangeR, thumbPaddingTop + UnitConverter.dpToPx(2) + paddingTop, rectPaint);
-    //canvas.drawRect(rangeL, getHeight() - UnitConverter.dpToPx(2), rangeR, getHeight(), rectPaint);
-
     drawThumb(normalizedToScreen(normalizedMinValue), false, canvas, true);
     drawThumb(normalizedToScreen(normalizedMaxValue), false, canvas, false);
     drawVideoTrimTimeText(canvas);
@@ -248,7 +245,6 @@ public class RangeSeekBarView extends View {
         break;
       case MotionEvent.ACTION_POINTER_DOWN:
         final int index = event.getPointerCount() - 1;
-        // final int index = ev.getActionIndex();
         mDownMotionX = event.getX(index);
         mActivePointerId = event.getPointerId(index);
         invalidate();
@@ -341,7 +337,7 @@ public class RangeSeekBarView extends View {
         double resultTime = (current_width - padding) / (width - 2 * thumbWidth);
         normalizedMinValueTime = Math.min(1d, Math.max(0d, resultTime));
         double result = (current_width - padding) / (width - 2 * padding);
-        return Math.min(1d, Math.max(0d, result));// 保证该该值为0-1之间，但是什么时候这个判断有用呢？
+        return Math.min(1d, Math.max(0d, result));
       } else {
         if (isInThumbRange(screenCoord, normalizedMaxValue, 0.5)) {
           return normalizedMaxValue;

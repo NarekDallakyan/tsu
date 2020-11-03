@@ -123,7 +123,7 @@ public class VideoTrimmerView extends FrameLayout implements IVideoTrimmerView {
             mThumbsTotalCount = (int) (mDuration * 1.0f / (getMaxShootDuration() * 1.0f) * MAX_COUNT_RANGE);
             mRightProgressPos = getMaxShootDuration();
         }
-        mVideoThumbRecyclerView.addItemDecoration(new SpacesItemDecoration2(RECYCLER_VIEW_PADDING, mThumbsTotalCount));
+        mVideoThumbRecyclerView.addItemDecoration(new SpacesItemDecoration(RECYCLER_VIEW_PADDING, mThumbsTotalCount));
         mRangeSeekBarView = new RangeSeekBarView(mContext, mLeftProgressPos, mRightProgressPos);
         mRangeSeekBarView.setSelectedMinValue(mLeftProgressPos);
         mRangeSeekBarView.setSelectedMaxValue(mRightProgressPos);
@@ -148,17 +148,14 @@ public class VideoTrimmerView extends FrameLayout implements IVideoTrimmerView {
 
     private void startShootVideoThumbs(final Context context, final Uri videoUri, int totalThumbsCount, long startPosition, long endPosition) {
         VideoTrimmerUtil.shootVideoThumbInBackground(context, videoUri, totalThumbsCount, startPosition, endPosition,
-                new SingleCallback<Bitmap, Integer>() {
-                    @Override
-                    public void onSingleCallback(final Bitmap bitmap, final Integer interval) {
-                        if (bitmap != null) {
-                            UiThreadExecutor.runTask("", new Runnable() {
-                                @Override
-                                public void run() {
-                                    mVideoThumbAdapter.addBitmaps(bitmap);
-                                }
-                            }, 0L);
-                        }
+                (bitmap, interval) -> {
+                    if (bitmap != null) {
+                        UiThreadExecutor.runTask("", new Runnable() {
+                            @Override
+                            public void run() {
+                                mVideoThumbAdapter.addBitmaps(bitmap);
+                            }
+                        }, 0L);
                     }
                 });
     }
@@ -220,7 +217,7 @@ public class VideoTrimmerView extends FrameLayout implements IVideoTrimmerView {
 
     public void onVideoPause() {
         if (mVideoView.isPlaying()) {
-            seekTo(mLeftProgressPos);//复位
+            seekTo(mLeftProgressPos);
             mVideoView.pause();
             setPlayPauseViewIcon(false);
             mRedProgressIcon.setVisibility(GONE);
@@ -317,13 +314,11 @@ public class VideoTrimmerView extends FrameLayout implements IVideoTrimmerView {
             super.onScrolled(recyclerView, dx, dy);
             isSeeking = false;
             int scrollX = calcScrollXDistance();
-            //达不到滑动的距离
             if (Math.abs(lastScrollX - scrollX) < mScaledTouchSlop) {
                 isOverScaledTouchSlop = false;
                 return;
             }
             isOverScaledTouchSlop = true;
-            //初始状态,why ? 因为默认的时候有35dp的空白！
             if (scrollX == -RECYCLER_VIEW_PADDING) {
                 scrollPos = 0;
             } else {
@@ -346,9 +341,6 @@ public class VideoTrimmerView extends FrameLayout implements IVideoTrimmerView {
         }
     };
 
-    /**
-     * 水平滑动了多少px
-     */
     private int calcScrollXDistance() {
         LinearLayoutManager layoutManager = (LinearLayoutManager) mVideoThumbRecyclerView.getLayoutManager();
         int position = layoutManager.findFirstVisibleItemPosition();
@@ -391,13 +383,7 @@ public class VideoTrimmerView extends FrameLayout implements IVideoTrimmerView {
         }
     }
 
-    private Runnable mAnimationRunnable = new Runnable() {
-
-        @Override
-        public void run() {
-            updateVideoProgress();
-        }
-    };
+    private Runnable mAnimationRunnable = () -> updateVideoProgress();
 
     private void updateVideoProgress() {
         long currentPosition = mVideoView.getCurrentPosition();

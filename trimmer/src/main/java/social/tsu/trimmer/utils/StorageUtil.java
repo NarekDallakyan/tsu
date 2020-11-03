@@ -8,7 +8,6 @@ import android.util.Log;
 
 import java.io.File;
 import java.io.IOException;
-import java.util.Locale;
 
 import iknow.android.utils.BaseUtils;
 import iknow.android.utils.BuildConfig;
@@ -91,98 +90,5 @@ public class StorageUtil {
   private static File getCacheDirManual(Context context) {
     String cacheDirPath = "/data/data/" + context.getPackageName() + "/cache";
     return new File(cacheDirPath);
-  }
-
-  // 功能描述:删除文件夹下所有文件和文件夹
-  public static boolean delFiles(String path) {
-    File cacheFile = new File(path);
-    if (!cacheFile.exists()) {
-      return false;
-    }
-    File[] files = cacheFile.listFiles();
-    for (int i = 0; i < files.length; i++) {
-      // 是文件则直接删除
-      if (files[i].exists() && files[i].isFile()) {
-        files[i].delete();
-      } else if (files[i].exists() && files[i].isDirectory()) {
-        // 递归删除文件
-        delFiles(files[i].getAbsolutePath());
-        // 删除完目录下面的所有文件后再删除该文件夹
-        files[i].delete();
-      }
-    }
-
-    return true;
-  }
-
-  public static long sizeOfDirectory(File dir) {
-    if (dir.exists()) {
-      long result = 0;
-      File[] fileList = dir.listFiles();
-      for (int i = 0; i < fileList.length; i++) {
-        // Recursive call if it's a directory
-        if (fileList[i].isDirectory()) {
-          result += sizeOfDirectory(fileList[i]);
-        } else {
-          // Sum the file size in bytes
-          result += fileList[i].length();
-        }
-      }
-      return result; // return the file size
-    }
-    return 0;
-  }
-
-  /**
-   * @param length 长度 byte为单位
-   * 将文件大小转换为KB,MB格式
-   */
-  public static String getFileSize(long length) {
-    int MB = 1024 * 1024;
-    if (length < MB) {
-      double resultKB = length * 1.0 / 1024;
-      return String.format(Locale.getDefault(), "%.1f", resultKB) + "Kb";
-    }
-    double resultMB = length * 1.0 / MB;
-    return String.format(Locale.getDefault(), "%.1f", resultMB) + "Mb";
-  }
-
-  public static boolean isFileExist(String path) {
-    if (TextUtils.isEmpty(path)) return false;
-    File file = new File(path);
-    return file.exists();
-  }
-
-  /**
-   * @param path 路径
-   * @return 是否删除成功
-   */
-  public static boolean deleteFile(String path) {
-    if (TextUtils.isEmpty(path)) return true;
-    return deleteFile(new File(path));
-  }
-
-  /**
-   * @return 是否删除成功
-   */
-  public static boolean deleteFile(File file) {
-    if (file == null || !file.exists()) return true;
-
-    if (file.isFile()) {
-      return file.delete();
-    }
-
-    if (!file.isDirectory()) {
-      return false;
-    }
-
-    for (File f : file.listFiles()) {
-      if (f.isFile()) {
-        f.delete();
-      } else if (f.isDirectory()) {
-        deleteFile(f);
-      }
-    }
-    return file.delete();
   }
 }
