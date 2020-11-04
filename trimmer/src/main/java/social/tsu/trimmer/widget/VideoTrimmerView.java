@@ -77,8 +77,8 @@ public class VideoTrimmerView extends FrameLayout implements IVideoTrimmerView {
         init(context);
     }
 
-    public int videoDurationMilliseconds() {
-        return mDuration;
+    public long getVideoTrimDuration() {
+        return mRangeSeekBarView.getVideoTrimDuration();
     }
 
     private void init(Context context) {

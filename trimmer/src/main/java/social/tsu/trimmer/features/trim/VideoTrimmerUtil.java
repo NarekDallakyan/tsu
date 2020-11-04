@@ -4,7 +4,6 @@ import android.content.Context;
 import android.graphics.Bitmap;
 import android.media.MediaMetadataRetriever;
 import android.net.Uri;
-import android.text.TextUtils;
 
 import com.arthenica.mobileffmpeg.FFmpeg;
 
@@ -26,8 +25,8 @@ public class VideoTrimmerUtil {
 
   public static final long MIN_SHOOT_DURATION = 1000L;
   public static long TYPE = -1;
-  public static int VIDEO_MAX_TIME = 3600;
-  public static int GIF_MAX_TIME = 7;
+  public static int VIDEO_MAX_TIME = 7200;
+  public static int GIF_MAX_TIME = 7200;
   public static final long MAX_SHOOT_DURATION_VIDEO = VIDEO_MAX_TIME * 1000L;
   public static final long MAX_SHOOT_DURATION_GIF = GIF_MAX_TIME * 1000L;
 

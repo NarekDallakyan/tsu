@@ -36,8 +36,8 @@ public class VideoTrimmerHandler implements VideoTrimListener {
     trimmerView.initVideoByURI(Uri.parse(path));
   }
 
-  public int getVideoDurationMilliseconds() {
-    return trimmerView.videoDurationMilliseconds();
+  public long getVideoTrimDuration() {
+    return trimmerView.getVideoTrimDuration();
   }
 
 

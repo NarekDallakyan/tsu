@@ -70,7 +70,32 @@ class PostTrimFragment : Fragment() {
 
         nextLayout4_id.setOnClickListener {
 
-            val videoDurationSeconds = videoTrimmerHandler.videoDurationMilliseconds / 1000
+            val videoDurationSeconds = videoTrimmerHandler.videoTrimDuration
+
+            if (videoDurationSeconds > 7 && fromScreenType == 2) {
+
+                Toast.makeText(
+                    requireContext(),
+                    "Maximum duration for GIF is 7 second.",
+                    Toast.LENGTH_LONG
+                ).show()
+                return@setOnClickListener
+            } else if (fromScreenType == 1) {
+
+                videoTrimmerHandler.onSave {
+                    // Handle trim video completed
+                    handleTrimVideoResult(it)
+                }
+            } else if (fromScreenType == 2 && videoDurationSeconds <= 7) {
+                videoTrimmerHandler.onSave {
+                    // Handle trim video completed
+                    handleTrimVideoResult(it)
+                }
+            }
+
+
+
+
 
             if (videoDurationSeconds > 7 && fromScreenType == 2) {
 

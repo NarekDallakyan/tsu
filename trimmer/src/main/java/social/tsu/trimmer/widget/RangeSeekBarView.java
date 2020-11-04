@@ -24,7 +24,6 @@ import iknow.android.utils.DateUtil;
 import iknow.android.utils.UnitConverter;
 import social.tsu.trimmer.R;
 import social.tsu.trimmer.features.trim.VideoTrimmerUtil;
-import social.tsu.trimmer.utils.TsuDateUtil;
 
 public class RangeSeekBarView extends View {
   private static final String TAG = RangeSeekBarView.class.getSimpleName();
@@ -163,7 +162,11 @@ public class RangeSeekBarView extends View {
 
   private void drawThumb(float screenCoord, boolean pressed, Canvas canvas, boolean isLeft) {
     canvas.drawBitmap(pressed ? thumbPressedImage : (isLeft ? thumbImageLeft : thumbImageRight), screenCoord - (isLeft ? 0 : thumbWidth), paddingTop,
-        paint);
+            paint);
+  }
+
+  public long getVideoTrimDuration() {
+    return mEndPosition - mStartPosition;
   }
 
   private void drawVideoTrimTimeText(Canvas canvas) {
