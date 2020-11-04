@@ -265,14 +265,14 @@ open class PostTypesFragment : Fragment(), Serializable {
                 }
             }
 
-            // Changing layout alpha after clicking
-            postTypeUiHelper.changeLayoutAlpha(flashLayout_id)
+            handleFlashIcon()
         }
 
         // Listen sound button on click
         soundLayout_id?.setOnClickListener {
             // Changing layout alpha after clicking
-            postTypeUiHelper.changeLayoutAlpha(soundLayout_id)
+
+            handleSoundIcon()
         }
 
         // Listen language button on click
@@ -543,6 +543,8 @@ open class PostTypesFragment : Fragment(), Serializable {
                     fragments
                 )
 
+                handleFlashIcon(false)
+                handleSoundIcon(true)
                 startRecordingTimer(false, ignoreRecordingUi = true)
 
                 if ((newPostViewPager as TsuViewPager).currentItem == 0) {
@@ -563,6 +565,56 @@ open class PostTypesFragment : Fragment(), Serializable {
 
             }
         })
+    }
+
+    /**
+     *  Handling Sound icon visibility
+     */
+    private fun handleSoundIcon(enable: Boolean? = null){
+
+        var soundTag = soundIcon?.tag as? String
+
+        if (enable != null) {
+
+            soundTag = if (enable) {
+                "off"
+            } else {
+                "on"
+            }
+        }
+
+        if (soundTag == "on") {
+            soundIcon?.setImageResource(R.drawable.sound_off)
+            soundIcon?.tag = "off"
+        } else {
+            soundIcon?.setImageResource(R.drawable.sound_on)
+            soundIcon?.tag = "on"
+        }
+    }
+
+    /**
+     *  Handling Flash icon visibility
+     */
+    private fun handleFlashIcon(enable: Boolean? = null) {
+
+        var flashTag = flashIcon?.tag as? String
+
+        if (enable != null) {
+
+            flashTag = if (enable) {
+                "off"
+            } else {
+                "on"
+            }
+        }
+
+        if (flashTag == "on") {
+            flashIcon?.setImageResource(R.drawable.ic_flash_offwhite)
+            flashIcon?.tag = "off"
+        } else {
+            flashIcon?.setImageResource(R.drawable.flash_on)
+            flashIcon?.tag = "on"
+        }
     }
 
     /**

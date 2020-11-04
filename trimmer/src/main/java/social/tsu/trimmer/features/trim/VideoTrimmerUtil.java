@@ -24,11 +24,10 @@ import static social.tsu.trimmer.widget.VideoTrimmerView.getMaxDuration;
 
 public class VideoTrimmerUtil {
 
-  private static final String TAG = VideoTrimmerUtil.class.getSimpleName();
   public static final long MIN_SHOOT_DURATION = 1000L;
   public static long TYPE = -1;
   public static int VIDEO_MAX_TIME = 3600;
-  public static int GIF_MAX_TIME = 6;
+  public static int GIF_MAX_TIME = 7;
   public static final long MAX_SHOOT_DURATION_VIDEO = VIDEO_MAX_TIME * 1000L;
   public static final long MAX_SHOOT_DURATION_GIF = GIF_MAX_TIME * 1000L;
 
@@ -46,17 +45,8 @@ public class VideoTrimmerUtil {
 
     String start = convertSecondsToTime(startMs / 1000);
     String duration = convertSecondsToTime((endMs - startMs) / 1000);
-    //String start = String.valueOf(startMs);
-    //String duration = String.valueOf(endMs - startMs);
-
-    //TODO: Here are some instructions
-    //https://trac.ffmpeg.org/wiki/Seeking
-    //https://superuser.com/questions/138331/using-ffmpeg-to-cut-up-video
 
     String cmd = "-ss " + start + " -t " + duration + " -accurate_seek" + " -i " + inputFile + " -codec copy -avoid_negative_ts 1 " + outputFile;
-    //String cmd = "-ss " + start + " -i " + inputFile + " -ss " + start + " -t " + duration + " -vcodec copy " + outputFile;
-    //{"ffmpeg", "-ss", "" + startTime, "-y", "-i", inputFile, "-t", "" + induration, "-vcodec", "mpeg4", "-b:v", "2097152", "-b:a", "48000", "-ac", "2", "-ar", "22050", outputFile}
-    //String cmd = "-ss " + start + " -y " + "-i " + inputFile + " -t " + duration + " -vcodec " + "mpeg4 " + "-b:v " + "2097152 " + "-b:a " + "48000 " + "-ac " + "2 " + "-ar " + "22050 "+ outputFile;
     String[] command = cmd.split(" ");
     callback.onStartTrim();
     try {
@@ -99,17 +89,6 @@ public class VideoTrimmerUtil {
         }
       }
     });
-  }
-
-  public static String getVideoFilePath(String url) {
-    if (TextUtils.isEmpty(url) || url.length() < 5) return "";
-    if (url.substring(0, 4).equalsIgnoreCase("http")) {
-
-    } else {
-      url = "file://" + url;
-    }
-
-    return url;
   }
 
   private static String convertSecondsToTime(long seconds) {
