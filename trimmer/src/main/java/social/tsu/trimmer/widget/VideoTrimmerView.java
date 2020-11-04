@@ -18,7 +18,6 @@ import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.Toast;
 
-import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -76,6 +75,10 @@ public class VideoTrimmerView extends FrameLayout implements IVideoTrimmerView {
     public VideoTrimmerView(Context context, AttributeSet attrs, int defStyleAttr) {
         super(context, attrs, defStyleAttr);
         init(context);
+    }
+
+    public int videoDurationMilliseconds() {
+        return mDuration;
     }
 
     private void init(Context context) {

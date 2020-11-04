@@ -70,7 +70,9 @@ class PostTrimFragment : Fragment() {
 
         nextLayout4_id.setOnClickListener {
 
-            videoTrimmerHandler.onSave {
+            val videoDurationSeconds = videoTrimmerHandler.videoDurationMilliseconds / 1000
+
+            if (videoDurationSeconds > 7 && fromScreenType == 2) {
 
                 Toast.makeText(
                     requireContext(),
@@ -78,6 +80,14 @@ class PostTrimFragment : Fragment() {
                     Toast.LENGTH_LONG
                 ).show()
 
+                videoTrimmerHandler.onSave {
+                    // Handle trim video completed
+                    handleTrimVideoResult(it)
+                    return@onSave
+                }
+            }
+
+            videoTrimmerHandler.onSave {
                 Handler().postDelayed({
                     // Handle trim video completed
                     handleTrimVideoResult(it)
