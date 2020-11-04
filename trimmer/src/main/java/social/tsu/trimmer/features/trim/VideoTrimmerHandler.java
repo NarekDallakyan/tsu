@@ -14,7 +14,7 @@ import social.tsu.trimmer.interfaces.VideoTrimListener;
 import social.tsu.trimmer.widget.VideoTrimmerView;
 
 
-public class VideoTrimmerActivity implements VideoTrimListener {
+public class VideoTrimmerHandler implements VideoTrimListener {
 
   private static final String VIDEO_PATH_KEY = "video-file-path";
   public static final int VIDEO_TRIM_REQUEST_CODE = 0x001;
@@ -28,7 +28,7 @@ public class VideoTrimmerActivity implements VideoTrimListener {
     if (!TextUtils.isEmpty(videoPath)) {
       Bundle bundle = new Bundle();
       bundle.putString(VIDEO_PATH_KEY, videoPath);
-      Intent intent = new Intent(from, VideoTrimmerActivity.class);
+      Intent intent = new Intent(from, VideoTrimmerHandler.class);
       intent.putExtras(bundle);
       from.startActivityForResult(intent, VIDEO_TRIM_REQUEST_CODE);
     }

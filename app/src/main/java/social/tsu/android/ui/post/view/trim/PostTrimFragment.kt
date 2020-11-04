@@ -1,6 +1,7 @@
 package social.tsu.android.ui.post.view.trim
 
 import android.os.Bundle
+import android.os.Handler
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -13,7 +14,7 @@ import social.tsu.android.ui.MainActivity
 import social.tsu.android.ui.post.view.PostTypesFragment
 import social.tsu.android.utils.findParentNavController
 import social.tsu.android.viewModel.SharedViewModel
-import social.tsu.trimmer.features.trim.VideoTrimmerActivity
+import social.tsu.trimmer.features.trim.VideoTrimmerHandler
 
 
 class PostTrimFragment : Fragment() {
@@ -25,9 +26,7 @@ class PostTrimFragment : Fragment() {
     private var fromScreenType: Int? = null
 
     private var postTypeFragment: PostTypesFragment? = null
-
-    private var fromNext: Boolean = false
-    private var videoTrimmerActivity = VideoTrimmerActivity()
+    private var videoTrimmerHandler = VideoTrimmerHandler()
 
 
     override fun onCreateView(
@@ -71,10 +70,18 @@ class PostTrimFragment : Fragment() {
 
         nextLayout4_id.setOnClickListener {
 
-            videoTrimmerActivity.onSave {
+            videoTrimmerHandler.onSave {
 
-                // Handle trim video completed
-                handleTrimVideoResult(it)
+                Toast.makeText(
+                    requireContext(),
+                    "Maximum duration for GIF is 7 second.",
+                    Toast.LENGTH_LONG
+                ).show()
+
+                Handler().postDelayed({
+                    // Handle trim video completed
+                    handleTrimVideoResult(it)
+                }, 1000)
             }
         }
     }
@@ -110,7 +117,7 @@ class PostTrimFragment : Fragment() {
         }
 
         // Starting preview trimmer view
-        videoTrimmerActivity.initUI(trimmer_view, filePath, requireContext())
+        videoTrimmerHandler.initUI(trimmer_view, filePath, requireContext())
     }
 
     private fun getArgumentData() {
@@ -125,11 +132,11 @@ class PostTrimFragment : Fragment() {
 
     override fun onPause() {
         super.onPause()
-        videoTrimmerActivity.onPause()
+        videoTrimmerHandler.onPause()
     }
 
     override fun onDestroy() {
         super.onDestroy()
-        videoTrimmerActivity.onDestroy()
+        videoTrimmerHandler.onDestroy()
     }
 }

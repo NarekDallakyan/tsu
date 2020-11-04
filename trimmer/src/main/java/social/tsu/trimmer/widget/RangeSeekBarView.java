@@ -20,6 +20,7 @@ import androidx.annotation.Nullable;
 
 import java.text.DecimalFormat;
 
+import iknow.android.utils.DateUtil;
 import iknow.android.utils.UnitConverter;
 import social.tsu.trimmer.R;
 import social.tsu.trimmer.features.trim.VideoTrimmerUtil;
@@ -166,8 +167,8 @@ public class RangeSeekBarView extends View {
   }
 
   private void drawVideoTrimTimeText(Canvas canvas) {
-    String leftThumbsTime = TsuDateUtil.INSTANCE.calculateTime(mStartPosition);
-    String rightThumbsTime = TsuDateUtil.INSTANCE.calculateTime(mEndPosition);
+    String leftThumbsTime = DateUtil.convertSecondsToTime(mStartPosition);
+    String rightThumbsTime = DateUtil.convertSecondsToTime(mEndPosition);
     canvas.drawText(leftThumbsTime, normalizedToScreen(normalizedMinValue), TextPositionY, mVideoTrimTimePaintL);
     canvas.drawText(rightThumbsTime, normalizedToScreen(normalizedMaxValue), TextPositionY, mVideoTrimTimePaintR);
   }

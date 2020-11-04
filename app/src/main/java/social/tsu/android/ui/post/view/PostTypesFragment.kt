@@ -262,6 +262,12 @@ open class PostTypesFragment : Fragment(), Serializable {
             handleFlashIcon()
         }
 
+        // Listen apply speed icon in click
+        speedLayout?.setOnClickListener {
+
+            handleSpeedIcon()
+        }
+
         // Listen sound button on click
         soundLayout_id?.setOnClickListener {
             // Changing layout alpha after clicking
@@ -537,6 +543,7 @@ open class PostTypesFragment : Fragment(), Serializable {
                     fragments
                 )
 
+                handleSpeedIcon(false)
                 handleFlashIcon(false)
                 handleSoundIcon(true)
                 startRecordingTimer(false, ignoreRecordingUi = true)
@@ -570,6 +577,27 @@ open class PostTypesFragment : Fragment(), Serializable {
         } else {
             soundIcon?.setImageResource(R.drawable.sound_on)
             soundIcon?.tag = "on"
+        }
+    }
+
+    private fun handleSpeedIcon(enable: Boolean? = null){
+
+        var speedTag = speedIcon?.tag as? String
+        if (enable != null) {
+
+            speedTag = if (enable) {
+                "off"
+            } else {
+                "on"
+            }
+        }
+
+        if (speedTag == "on") {
+            speedIcon?.setImageResource(R.drawable.ic_speed_off)
+            speedIcon?.tag = "off"
+        } else {
+            speedIcon?.setImageResource(R.drawable.ic_speed_on)
+            speedIcon?.tag = "on"
         }
     }
 
