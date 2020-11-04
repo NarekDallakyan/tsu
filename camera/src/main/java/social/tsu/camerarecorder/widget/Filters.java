@@ -26,19 +26,19 @@ public enum Filters {
     NORMAL("Normal"),
     BILATERAL("Bilateral"),
     BOX_BLUR("Box Blur"),
-    BULGE_DISTORTION("Bulge Distortion"),
-    CGA_COLOR_SPACE("CGA Color Space"),
-    GAUSSIAN_BLUR("Gaussian Blur"),
-    GLAY_SCALE("Gray Scale"),
+    BULGE_DISTORTION("Bulge"),
+    CGA_COLOR_SPACE("CGA"),
+    GAUSSIAN_BLUR("Gaussian"),
+    GLAY_SCALE("Gray"),
     INVERT("Invert"),
-    LOOKUP_TABLE("Lookup Table"),
+    LOOKUP_TABLE("Lookup"),
     OVERLAY("Overlay"),
     SEPIA("Sepia"),
     SHARPEN("Sharpen"),
-    SPHERE_REFRACTION("Sphere Refraction"),
-    TONE_CURVE("Tone Curve"),
+    SPHERE_REFRACTION("Sphere"),
+    TONE_CURVE("Curve"),
     TONE("Tone"),
-    WEAKPIXELINCLUSION("Weak Pixel Inclusion");
+    WEAKPIXELINCLUSION("Inclusion");
 
     private String value;
 

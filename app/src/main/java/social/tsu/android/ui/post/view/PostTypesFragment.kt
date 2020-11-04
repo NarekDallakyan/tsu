@@ -206,12 +206,6 @@ open class PostTypesFragment : Fragment(), Serializable {
             view,
             fragments
         )
-
-        if ((newPostViewPager as TsuViewPager).currentItem == 0) {
-
-            filterLayout_id.hide()
-            handleFilterMode(true)
-        }
     }
 
 
@@ -546,19 +540,6 @@ open class PostTypesFragment : Fragment(), Serializable {
                 handleFlashIcon(false)
                 handleSoundIcon(true)
                 startRecordingTimer(false, ignoreRecordingUi = true)
-
-                if ((newPostViewPager as TsuViewPager).currentItem == 0) {
-
-                    filterLayout_id.hide()
-                    handleFilterMode(true)
-
-                    if (isFilterPending()) {
-                        // Gone filter list layout
-                        filterListLayout?.hide()
-                    }
-                } else {
-                    filterLayout_id.show()
-                }
             }
 
             override fun onPageScrollStateChanged(state: Int) {
@@ -623,9 +604,6 @@ open class PostTypesFragment : Fragment(), Serializable {
     private fun handleFilterMode(hideFilter: Boolean = false, applyFilter: Boolean = false) {
 
         selectedFilterItemPosition = -1
-        val pagePosition = (newPostViewPager as TsuViewPager).currentItem
-
-        if (pagePosition == 0) return
 
         var filterLayoutIsVisible = isFilterPending()
 
@@ -719,6 +697,9 @@ open class PostTypesFragment : Fragment(), Serializable {
     private fun changeCameraFilter(filters: Filters) {
 
         return when ((newPostViewPager as TsuViewPager).currentItem) {
+            0 ->{
+                (fragments[0] as PhotoCameraPostFragment).handleFilter(filters)
+            }
             1 -> {
                 (fragments[1] as RecordVideoPostFragment).handleFilter(filters)
             }

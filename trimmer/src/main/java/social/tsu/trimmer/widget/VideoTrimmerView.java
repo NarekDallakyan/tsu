@@ -2,7 +2,6 @@ package social.tsu.trimmer.widget;
 
 import android.animation.ValueAnimator;
 import android.content.Context;
-import android.graphics.Bitmap;
 import android.media.MediaPlayer;
 import android.net.Uri;
 import android.os.Handler;
@@ -19,11 +18,11 @@ import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.Toast;
 
+import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import iknow.android.utils.BaseUtils;
-import iknow.android.utils.callback.SingleCallback;
 import iknow.android.utils.thread.BackgroundExecutor;
 import iknow.android.utils.thread.UiThreadExecutor;
 import social.tsu.trimmer.R;
@@ -80,6 +79,7 @@ public class VideoTrimmerView extends FrameLayout implements IVideoTrimmerView {
     }
 
     private void init(Context context) {
+
         this.mContext = context;
         LayoutInflater.from(context).inflate(R.layout.video_trimmer_view, this, true);
 
@@ -105,7 +105,7 @@ public class VideoTrimmerView extends FrameLayout implements IVideoTrimmerView {
         }
     }
 
-    public static int getMaxDuration(){
+    public static int getMaxDuration() {
         if (VideoTrimmerUtil.TYPE == 1) {
             return VideoTrimmerUtil.VIDEO_MAX_TIME;
         } else {
