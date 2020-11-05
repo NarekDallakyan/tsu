@@ -54,8 +54,7 @@
                     android:id="@+id/imageView"
                     android:layout_width="match_parent"
                     android:layout_height="15dp"
-                    android:scaleType="fitXY"
-                    android:src="@drawable/ruller" />
+                    android:scaleType="fitXY" />
 
                 <androidx.recyclerview.widget.RecyclerView
                     android:id="@+id/video_frames_recyclerView"

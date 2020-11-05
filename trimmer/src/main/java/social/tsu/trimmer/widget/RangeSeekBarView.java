@@ -5,6 +5,7 @@ import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
+import android.graphics.Color;
 import android.graphics.Matrix;
 import android.graphics.Paint;
 import android.graphics.Rect;
@@ -12,6 +13,7 @@ import android.os.Bundle;
 import android.os.Parcelable;
 import android.util.AttributeSet;
 import android.util.Log;
+import android.util.TypedValue;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewConfiguration;
@@ -63,6 +65,11 @@ public class RangeSeekBarView extends View {
   private boolean notifyWhileDragging = false;
   private OnRangeSeekBarChangeListener mRangeSeekBarChangeListener;
   private int whiteColorRes = getContext().getResources().getColor(R.color.white);
+
+  private float firstPointer = 0;
+  private float secondPointer = 0;
+
+  private Canvas mCanvas;
 
   public enum Thumb {
     MIN, MAX
@@ -146,6 +153,7 @@ public class RangeSeekBarView extends View {
   @SuppressLint("DrawAllocation") @Override
   protected void onDraw(Canvas canvas) {
     super.onDraw(canvas);
+    this.mCanvas = mCanvas;
     float bg_middle_left = 0;
     float bg_middle_right = getWidth() - getPaddingRight();
     float rangeL = normalizedToScreen(normalizedMinValue);
@@ -155,14 +163,47 @@ public class RangeSeekBarView extends View {
     canvas.drawRect(leftRect, mShadow);
     canvas.drawRect(rightRect, mShadow);
 
-    drawThumb(normalizedToScreen(normalizedMinValue), false, canvas, true);
-    drawThumb(normalizedToScreen(normalizedMaxValue), false, canvas, false);
+    drawThumb(normalizedToScreen(normalizedMaxValue), false, canvas, false, leftRect, rightRect);
+    drawThumb(normalizedToScreen(normalizedMinValue), false, canvas, true, leftRect, rightRect);
     drawVideoTrimTimeText(canvas);
   }
 
-  private void drawThumb(float screenCoord, boolean pressed, Canvas canvas, boolean isLeft) {
+
+  private void drawThumb(float screenCoord, boolean pressed, Canvas canvas, boolean isLeft, Rect leftRect, Rect rightRect) {
+
+    if (isLeft) {
+      firstPointer = screenCoord;
+    } else {
+      secondPointer = screenCoord - thumbWidth;
+    }
+
     canvas.drawBitmap(pressed ? thumbPressedImage : (isLeft ? thumbImageLeft : thumbImageRight), screenCoord - (isLeft ? 0 : thumbWidth), paddingTop,
             paint);
+
+    Paint textPaint = new Paint(Paint.ANTI_ALIAS_FLAG | Paint.DITHER_FLAG);
+
+    textPaint.setColor(Color.WHITE);
+    textPaint.setTextSize(
+            (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_SP,
+                    18,
+                    getResources().getDisplayMetrics()));
+    textPaint.setTextAlign(Paint.Align.CENTER);
+
+    String intervalText = getVideoTrimDuration() + "s";
+
+    float x = ((secondPointer - firstPointer) / 2) + firstPointer;
+    float y = (int) ((canvas.getHeight() / 2) - ((textPaint.descent() + textPaint.ascent()) / 2));
+
+    Paint rectangularPoint = new Paint();
+
+    rectangularPoint.setAntiAlias(true);
+    rectangularPoint.setTextAlign(Paint.Align.CENTER);
+    rectangularPoint.setColor(Color.BLACK);
+    rectangularPoint.setAlpha(90);
+    rectangularPoint.setStrokeWidth(150);
+    canvas.drawPoint(x, canvas.getHeight() / 2, rectangularPoint);
+
+    canvas.drawText(intervalText, x, y, textPaint);
   }
 
   public long getVideoTrimDuration() {
@@ -196,6 +237,7 @@ public class RangeSeekBarView extends View {
         mActivePointerId = event.getPointerId(event.getPointerCount() - 1);
         pointerIndex = event.findPointerIndex(mActivePointerId);
         mDownMotionX = event.getX(pointerIndex);
+        firstPointer = mDownMotionX;
         pressedThumb = evalPressedThumb(mDownMotionX);
         if (pressedThumb == null) return super.onTouchEvent(event);
         setPressed(true);
@@ -225,7 +267,7 @@ public class RangeSeekBarView extends View {
           }
           if (notifyWhileDragging && mRangeSeekBarChangeListener != null) {
             mRangeSeekBarChangeListener.onRangeSeekBarValuesChanged(this, getSelectedMinValue(), getSelectedMaxValue(), MotionEvent.ACTION_MOVE,
-                isMin, pressedThumb);
+                    isMin, pressedThumb);
           }
         }
         break;
@@ -243,13 +285,14 @@ public class RangeSeekBarView extends View {
         invalidate();
         if (mRangeSeekBarChangeListener != null) {
           mRangeSeekBarChangeListener.onRangeSeekBarValuesChanged(this, getSelectedMinValue(), getSelectedMaxValue(), MotionEvent.ACTION_UP, isMin,
-              pressedThumb);
+                  pressedThumb);
         }
         pressedThumb = null;
         break;
       case MotionEvent.ACTION_POINTER_DOWN:
         final int index = event.getPointerCount() - 1;
         mDownMotionX = event.getX(index);
+        firstPointer = mDownMotionX;
         mActivePointerId = event.getPointerId(index);
         invalidate();
         break;
@@ -276,6 +319,7 @@ public class RangeSeekBarView extends View {
     if (pointerId == mActivePointerId) {
       final int newPointerIndex = pointerIndex == 0 ? 1 : 0;
       mDownMotionX = ev.getX(newPointerIndex);
+      secondPointer = mDownMotionX;
       mActivePointerId = ev.getPointerId(newPointerIndex);
     }
   }
