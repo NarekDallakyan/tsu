@@ -2,6 +2,8 @@ package social.tsu.android
 
 import android.app.Application
 import android.content.Context
+import android.graphics.Bitmap
+import android.graphics.BitmapFactory
 import android.util.Log
 import androidx.appcompat.app.AppCompatDelegate
 import androidx.camera.camera2.Camera2Config
@@ -16,6 +18,7 @@ import com.jakewharton.threetenabp.AndroidThreeTen
 import dagger.android.AndroidInjector
 import dagger.android.DispatchingAndroidInjector
 import dagger.android.HasAndroidInjector
+import jp.co.cyberagent.android.gpuimage.GPUImage
 import social.tsu.android.data.repository.PostFeedRepository
 import social.tsu.android.di.AppComponent
 import social.tsu.android.di.DaggerAppComponent
@@ -23,8 +26,11 @@ import social.tsu.android.helper.AnalyticsHelper
 import social.tsu.android.network.api.Environment
 import social.tsu.android.network.api.ProjectEnvironment
 import social.tsu.android.service.SharedPrefManager
+import social.tsu.android.ui.post.model.FilterVideoModel
+import social.tsu.android.ui.post.view.filter.GPUImageFilterTools
 import social.tsu.android.utils.AppVersion
 import social.tsu.android.workmanager.DaggerWorkerFactory
+import social.tsu.camerarecorder.widget.Filters
 import social.tsu.trimmer.widget.VideoTrimmerView
 import java.text.SimpleDateFormat
 import javax.inject.Inject
@@ -52,18 +58,96 @@ open class TsuApplication : Application(),HasAndroidInjector,   CameraXConfig.Pr
     lateinit var postFeedRepository: PostFeedRepository
 
 
-    companion object{
+    companion object {
         lateinit var mContext: Context
-    }
 
-    private fun initFFmpegBinary(context: Context) {
+        private fun createBitmap(filter: GPUImageFilterTools.FilterType?): Bitmap? {
 
+            val originalBitmap = BitmapFactory.decodeResource(
+                this.mContext.resources, R.drawable.video_trim_girl
+            )
+
+            if (filter == null) {
+
+                return originalBitmap
+            }
+            val gpuImage = GPUImage(this.mContext)
+            gpuImage.setImage(originalBitmap)
+            gpuImage.setFilter(GPUImageFilterTools.createFilterForType(this.mContext, filter))
+
+            return gpuImage.bitmapWithFilterApplied
+        }
+
+        val filterItems: ArrayList<FilterVideoModel> by lazy {
+
+            val filterItems = ArrayList<FilterVideoModel>()
+            filterItems.add(
+                FilterVideoModel(
+                    R.drawable.cover, Filters.NORMAL, bitmaps =
+                    createBitmap(null)
+                )
+            );
+            filterItems.add(
+                FilterVideoModel(
+                    R.drawable.cover, Filters.BILATERAL, bitmaps =
+                    createBitmap(GPUImageFilterTools.FilterType.BILATERAL_BLUR)
+                )
+            )
+            filterItems.add(
+                FilterVideoModel(
+                    R.drawable.cover, Filters.BULGE_DISTORTION, bitmaps =
+                    createBitmap(GPUImageFilterTools.FilterType.BULGE_DISTORTION)
+                )
+            )
+            filterItems.add(
+                FilterVideoModel(
+                    R.drawable.cover, Filters.CGA_COLOR_SPACE, bitmaps =
+                    createBitmap(GPUImageFilterTools.FilterType.CGA_COLORSPACE)
+                )
+            )
+            filterItems.add(
+                FilterVideoModel(
+                    R.drawable.cover, Filters.GAUSSIAN_BLUR, bitmaps =
+                    createBitmap(GPUImageFilterTools.FilterType.GAUSSIAN_BLUR)
+                )
+            )
+            filterItems.add(
+                FilterVideoModel(
+                    R.drawable.cover, Filters.GLAY_SCALE, bitmaps =
+                    createBitmap(GPUImageFilterTools.FilterType.GRAYSCALE)
+                )
+            )
+            filterItems.add(
+                FilterVideoModel(
+                    R.drawable.cover, Filters.INVERT, bitmaps =
+                    createBitmap(GPUImageFilterTools.FilterType.INVERT)
+                )
+            )
+            filterItems.add(
+                FilterVideoModel(
+                    R.drawable.cover, Filters.SEPIA, bitmaps =
+                    createBitmap(GPUImageFilterTools.FilterType.SEPIA)
+                )
+            )
+            filterItems.add(
+                FilterVideoModel(
+                    R.drawable.cover, Filters.SHARPEN, bitmaps =
+                    createBitmap(GPUImageFilterTools.FilterType.SHARPEN)
+                )
+            )
+            filterItems.add(
+                FilterVideoModel(
+                    R.drawable.cover, Filters.WEAKPIXELINCLUSION, bitmaps =
+                    createBitmap(GPUImageFilterTools.FilterType.WEAK_PIXEL_INCLUSION)
+                )
+            )
+            return@lazy filterItems
+        }
     }
 
     override fun onCreate() {
         super.onCreate()
         VideoTrimmerView.initBaseUtils(this)
-        initFFmpegBinary(this)
         mContext = this
         AppVersion.init(this)
         setNetworkEnviorement()
@@ -84,6 +168,7 @@ open class TsuApplication : Application(),HasAndroidInjector,   CameraXConfig.Pr
         initAds()
         Indicative.launch(applicationContext, BuildConfig.INDICATIVE_API_KEY);
 
+        val loadLazy = filterItems
     }
 
     private fun initAds() {
@@ -137,7 +222,6 @@ open class TsuApplication : Application(),HasAndroidInjector,   CameraXConfig.Pr
     }
 
     override fun androidInjector(): AndroidInjector<Any> = androidInjector
-
 }
 
 fun Application.appComponent(): AppComponent {

@@ -1,9 +1,11 @@
 package social.tsu.android.ui.post.view.filter
 
+import android.graphics.BitmapFactory
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
+import jp.co.cyberagent.android.gpuimage.GPUImage
 import kotlinx.android.synthetic.main.vh_trim_video.view.*
 import social.tsu.android.R
 import social.tsu.android.ext.show
@@ -50,6 +52,9 @@ class FilterVideoAdapter : RecyclerView.Adapter<FilterVideoAdapter.TrimVideoView
 
             val chooseLayer = itemView.chooseLayer
             val filterText = itemView.filterNameText
+
+            itemView.profile_image.setImageBitmap(itemModel.bitmaps)
+
             itemView.setOnClickListener {
                 itemClickListener?.let {
                     it(adapterPosition, itemModel)

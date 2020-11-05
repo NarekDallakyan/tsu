@@ -6,6 +6,7 @@ import android.opengl.GLES20;
 import android.opengl.GLSurfaceView;
 import android.opengl.Matrix;
 import android.os.Handler;
+import android.widget.ImageView;
 
 import javax.microedition.khronos.egl.EGLConfig;
 
@@ -242,15 +243,12 @@ public class GlPreviewRenderer extends GlFrameBufferObjectRenderer implements Su
     }
 
     public void setVideoEncoder(final MediaVideoEncoder encoder) {
-        glView.queueEvent(new Runnable() {
-            @Override
-            public void run() {
-                synchronized (GlPreviewRenderer.this) {
-                    if (encoder != null) {
-                        encoder.setEglContext(EGL14.eglGetCurrentContext(), texName);
-                    }
-                    videoEncoder = encoder;
+        glView.queueEvent(() -> {
+            synchronized (GlPreviewRenderer.this) {
+                if (encoder != null) {
+                    encoder.setEglContext(EGL14.eglGetCurrentContext(), texName);
                 }
+                videoEncoder = encoder;
             }
         });
 

@@ -1,10 +1,22 @@
 package social.tsu.camerarecorder.widget;
 
 import android.content.Context;
-import android.graphics.BitmapFactory;
 
 import java.io.InputStream;
 
+import jp.co.cyberagent.android.gpuimage.filter.GPUImageBilateralBlurFilter;
+import jp.co.cyberagent.android.gpuimage.filter.GPUImageBoxBlurFilter;
+import jp.co.cyberagent.android.gpuimage.filter.GPUImageBulgeDistortionFilter;
+import jp.co.cyberagent.android.gpuimage.filter.GPUImageCGAColorspaceFilter;
+import jp.co.cyberagent.android.gpuimage.filter.GPUImageColorInvertFilter;
+import jp.co.cyberagent.android.gpuimage.filter.GPUImageFilter;
+import jp.co.cyberagent.android.gpuimage.filter.GPUImageGaussianBlurFilter;
+import jp.co.cyberagent.android.gpuimage.filter.GPUImageGrayscaleFilter;
+import jp.co.cyberagent.android.gpuimage.filter.GPUImageHalftoneFilter;
+import jp.co.cyberagent.android.gpuimage.filter.GPUImageSepiaToneFilter;
+import jp.co.cyberagent.android.gpuimage.filter.GPUImageSharpenFilter;
+import jp.co.cyberagent.android.gpuimage.filter.GPUImageSphereRefractionFilter;
+import jp.co.cyberagent.android.gpuimage.filter.GPUImageWeakPixelInclusionFilter;
 import social.tsu.camerarecorder.egl.filter.GlBilateralFilter;
 import social.tsu.camerarecorder.egl.filter.GlBoxBlurFilter;
 import social.tsu.camerarecorder.egl.filter.GlBulgeDistortionFilter;
@@ -13,14 +25,12 @@ import social.tsu.camerarecorder.egl.filter.GlFilter;
 import social.tsu.camerarecorder.egl.filter.GlGaussianBlurFilter;
 import social.tsu.camerarecorder.egl.filter.GlGrayScaleFilter;
 import social.tsu.camerarecorder.egl.filter.GlInvertFilter;
-import social.tsu.camerarecorder.egl.filter.GlLookUpTableFilter;
 import social.tsu.camerarecorder.egl.filter.GlSepiaFilter;
 import social.tsu.camerarecorder.egl.filter.GlSharpenFilter;
 import social.tsu.camerarecorder.egl.filter.GlSphereRefractionFilter;
 import social.tsu.camerarecorder.egl.filter.GlToneCurveFilter;
 import social.tsu.camerarecorder.egl.filter.GlToneFilter;
 import social.tsu.camerarecorder.egl.filter.GlWeakPixelInclusionFilter;
-import social.tsu.filter.R;
 
 public enum Filters {
     NORMAL("Normal"),
@@ -31,7 +41,6 @@ public enum Filters {
     GAUSSIAN_BLUR("Gaussian"),
     GLAY_SCALE("Gray"),
     INVERT("Invert"),
-    LOOKUP_TABLE("Lookup"),
     OVERLAY("Overlay"),
     SEPIA("Sepia"),
     SHARPEN("Sharpen"),
@@ -44,6 +53,37 @@ public enum Filters {
 
     Filters(String value) {
         this.value = value;
+    }
+
+    public static GPUImageFilter create(Filters filters) {
+        switch (filters) {
+            case BILATERAL:
+                return new GPUImageBilateralBlurFilter();
+            case BOX_BLUR:
+                return new GPUImageBoxBlurFilter();
+            case BULGE_DISTORTION:
+                return new GPUImageBulgeDistortionFilter();
+            case CGA_COLOR_SPACE:
+                return new GPUImageCGAColorspaceFilter();
+            case GAUSSIAN_BLUR:
+                return new GPUImageGaussianBlurFilter();
+            case GLAY_SCALE:
+                return new GPUImageGrayscaleFilter();
+            case INVERT:
+                return new GPUImageColorInvertFilter();
+            case SEPIA:
+                return new GPUImageSepiaToneFilter();
+            case SHARPEN:
+                return new GPUImageSharpenFilter();
+            case SPHERE_REFRACTION:
+                return new GPUImageSphereRefractionFilter();
+            case TONE:
+                return new GPUImageHalftoneFilter();
+            case WEAKPIXELINCLUSION:
+                return new GPUImageWeakPixelInclusionFilter();
+            default:
+                return new GPUImageFilter();
+        }
     }
 
     public static GlFilter getFilterInstance(Filters filters, Context applicationContext) {
@@ -62,8 +102,6 @@ public enum Filters {
                 return new GlGrayScaleFilter();
             case INVERT:
                 return new GlInvertFilter();
-            case LOOKUP_TABLE:
-                return new GlLookUpTableFilter(BitmapFactory.decodeResource(applicationContext.getResources(), R.drawable.lookup_sample));
             case SEPIA:
                 return new GlSepiaFilter();
             case SHARPEN:

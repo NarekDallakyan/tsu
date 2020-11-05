@@ -1,5 +1,7 @@
 package social.tsu.android.ui.post.view
 
+import android.graphics.Bitmap
+import android.graphics.BitmapFactory
 import android.net.Uri
 import android.os.Bundle
 import android.os.Handler
@@ -16,14 +18,17 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.navArgs
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.viewpager.widget.ViewPager
+import jp.co.cyberagent.android.gpuimage.GPUImage
 import kotlinx.android.synthetic.main.fragment_post_types.*
 import social.tsu.android.R
+import social.tsu.android.TsuApplication.Companion.filterItems
 import social.tsu.android.ext.hide
 import social.tsu.android.ext.show
 import social.tsu.android.ui.post.helper.CameraHelper
 import social.tsu.android.ui.post.helper.PostTypeUiHelper
 import social.tsu.android.ui.post.model.FilterVideoModel
 import social.tsu.android.ui.post.view.filter.FilterVideoAdapter
+import social.tsu.android.ui.post.view.filter.GPUImageFilterTools
 import social.tsu.android.ui.post.view.viewpager.*
 import social.tsu.android.utils.findParentNavController
 import social.tsu.android.viewModel.SharedViewModel
@@ -679,11 +684,6 @@ open class PostTypesFragment : Fragment(), Serializable {
             LinearLayoutManager(requireContext(), LinearLayoutManager.HORIZONTAL, false)
         filterVideoAdapter = FilterVideoAdapter()
 
-        val filters = Filters.values()
-        val filterItems = arrayListOf<FilterVideoModel>()
-        filters.forEach {
-            filterItems.add(FilterVideoModel(R.drawable.cover, it))
-        }
         filterVideoAdapter?.addItemClickListener { position: Int, itemModel: FilterVideoModel ->
 
             // Handle filter item clicked

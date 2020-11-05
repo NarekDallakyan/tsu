@@ -309,6 +309,7 @@ dependencies {
     implementation 'jp.wasabeef:blurry:4.0.0'
 
     implementation 'com.github.AbedElazizShe:LightCompressor:0.7.5'
+    implementation 'jp.co.cyberagent.android:gpuimage:2.1.0'
 
     // Load modules
     implementation project(':camera')

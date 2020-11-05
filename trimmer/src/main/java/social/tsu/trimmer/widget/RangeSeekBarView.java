@@ -197,11 +197,10 @@ public class RangeSeekBarView extends View {
     Paint rectangularPoint = new Paint();
 
     rectangularPoint.setAntiAlias(true);
-    rectangularPoint.setTextAlign(Paint.Align.CENTER);
     rectangularPoint.setColor(Color.BLACK);
     rectangularPoint.setAlpha(90);
     rectangularPoint.setStrokeWidth(150);
-    canvas.drawPoint(x, canvas.getHeight() / 2, rectangularPoint);
+    canvas.drawPoint(x, y, rectangularPoint);
 
     canvas.drawText(intervalText, x, y, textPaint);
   }
