@@ -70,6 +70,8 @@ public class RangeSeekBarView extends View {
   private float secondPointer = 0;
 
   private Canvas mCanvas;
+  private int w;
+  private int h;
 
   public enum Thumb {
     MIN, MAX
@@ -193,15 +195,12 @@ public class RangeSeekBarView extends View {
 
     float x = ((secondPointer - firstPointer) / 2) + firstPointer;
     float y = (int) ((canvas.getHeight() / 2) - ((textPaint.descent() + textPaint.ascent()) / 2));
-
     Paint rectangularPoint = new Paint();
-
-    rectangularPoint.setAntiAlias(true);
     rectangularPoint.setColor(Color.BLACK);
     rectangularPoint.setAlpha(90);
     rectangularPoint.setStrokeWidth(150);
-    canvas.drawPoint(x, y, rectangularPoint);
-
+    //canvas.drawPoint(x, y, rectangularPoint);
+    //canvas.drawBitmap(thumbImageLeft, (x - thumbImageLeft.getWidth()) / 2, (h - thumbImageLeft.getHeight()) / 2, rectangularPoint);
     canvas.drawText(intervalText, x, y, textPaint);
   }
 
@@ -214,6 +213,12 @@ public class RangeSeekBarView extends View {
     String rightThumbsTime = DateUtil.convertSecondsToTime(mEndPosition);
     canvas.drawText(leftThumbsTime, normalizedToScreen(normalizedMinValue), TextPositionY, mVideoTrimTimePaintL);
     canvas.drawText(rightThumbsTime, normalizedToScreen(normalizedMaxValue), TextPositionY, mVideoTrimTimePaintR);
+  }
+
+  @Override
+  protected void onSizeChanged(int w, int h, int oldw, int oldh) {
+    this.w = w;
+    this.h = h;
   }
 
   @Override
