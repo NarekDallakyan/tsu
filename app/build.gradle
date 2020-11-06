@@ -243,9 +243,6 @@ dependencies {
 
     implementation 'com.google.android.ump:user-messaging-platform:1.0.0'
 
-    //uncomment to test ads integration
-//    implementation 'com.google.android.ads:mediation-test-suite:1.4.0'
-
     // rounded image view
     implementation 'de.hdodenhof:circleimageview:3.1.0'
     implementation 'cn.gavinliu:ShapedImageView:0.8.7'
