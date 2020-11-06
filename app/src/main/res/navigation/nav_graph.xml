@@ -31,13 +31,13 @@
         tools:layout="@layout/profile_edit_fragment">
         <argument
             android:name="oldUserDetails"
+            android:defaultValue="@null"
             app:argType="social.tsu.android.data.local.models.OldUserDetails"
-            app:nullable="true"
-            android:defaultValue="@null" />
+            app:nullable="true" />
         <argument
             android:name="isNewUser"
-            app:argType="boolean"
-            android:defaultValue="false" />
+            android:defaultValue="false"
+            app:argType="boolean" />
     </fragment>
 
     <fragment
@@ -158,8 +158,8 @@
             app:destination="@id/videoCaptureFragment" />
         <argument
             android:name="dividerColor"
-            app:argType="integer"
-            android:defaultValue="0" />
+            android:defaultValue="0"
+            app:argType="integer" />
     </fragment>
     <fragment
         android:id="@+id/editPostFragment"
@@ -237,7 +237,8 @@
             app:nullable="true" />
     </action>
 
-    <fragment android:id="@+id/userFriendsFragment"
+    <fragment
+        android:id="@+id/userFriendsFragment"
         android:name="social.tsu.android.ui.user_profile.friends.UserFriendsFragment"
         tools:layout="@layout/users_list">
         <argument
@@ -250,8 +251,8 @@
             app:argType="integer" />
         <argument
             android:name="toolbar_title"
-            app:nullable="true"
-            app:argType="string" />
+            app:argType="string"
+            app:nullable="true" />
     </fragment>
 
     <fragment
@@ -272,11 +273,11 @@
         android:id="@+id/searchFragment"
         android:name="social.tsu.android.ui.search.SearchFragment"
         android:label="SearchFragment"
-        tools:layout="@layout/search" >
+        tools:layout="@layout/search">
         <argument
             android:name="searchType"
-            app:argType="integer"
-            android:defaultValue="0" />
+            android:defaultValue="0"
+            app:argType="integer" />
         <argument
             android:name="mentionType"
             android:defaultValue="0"
@@ -341,8 +342,8 @@
             app:nullable="true" />
         <argument
             android:name="postText"
-            app:argType="string"
-            android:defaultValue='' />
+            android:defaultValue=''
+            app:argType="string" />
         <argument
             android:name="recipient"
             android:defaultValue="@null"
@@ -354,9 +355,9 @@
             app:argType="social.tsu.android.ui.new_post.PostDraftType" />
         <argument
             android:name="membership"
+            android:defaultValue="@null"
             app:argType="social.tsu.android.network.model.Membership"
-            app:nullable="true"
-            android:defaultValue="@null" />
+            app:nullable="true" />
     </fragment>
 
     <fragment
@@ -491,8 +492,8 @@
         <argument
             android:name="recipient"
             android:defaultValue="@null"
-            app:nullable="true"
-            app:argType="social.tsu.android.data.local.models.PostUser" />
+            app:argType="social.tsu.android.data.local.models.PostUser"
+            app:nullable="true" />
 
         <action
             android:id="@+id/action_chatFragment_To_mentionSearchFragment"
@@ -550,7 +551,7 @@
     <fragment
         android:id="@+id/postTypesFragment"
         android:name="social.tsu.android.ui.post.view.PostTypesFragment"
-        android:label="PostTypesFragment" >
+        android:label="PostTypesFragment">
         <action
             android:id="@+id/next"
             app:destination="@id/postDraftFragment" />
@@ -571,17 +572,17 @@
         <argument
             android:name="recipient"
             android:defaultValue="@null"
-            app:nullable="true"
-            app:argType="social.tsu.android.data.local.models.PostUser" />
+            app:argType="social.tsu.android.data.local.models.PostUser"
+            app:nullable="true" />
         <argument
             android:name="postingType"
             android:defaultValue="POST"
             app:argType="social.tsu.android.ui.new_post.PostDraftType" />
         <argument
             android:name="membership"
+            android:defaultValue="@null"
             app:argType="social.tsu.android.network.model.Membership"
-            app:nullable="true"
-            android:defaultValue="@null" />
+            app:nullable="true" />
         <action
             android:id="@+id/action_postTypesFragment_to_postResultFragment"
             app:destination="@id/postTrimFragment" />
@@ -598,14 +599,14 @@
         app:destination="@id/createAccountFragment"
         app:enterAnim="@anim/nav_default_enter_anim"
         app:exitAnim="@anim/nav_default_exit_anim"
-        app:launchSingleTop="true"/>
+        app:launchSingleTop="true" />
 
     <action
         android:id="@+id/showLoginFragment"
         app:destination="@id/oldUserEnterEmailFragment"
         app:enterAnim="@anim/nav_default_enter_anim"
         app:exitAnim="@anim/nav_default_exit_anim"
-        app:launchSingleTop="true"/>
+        app:launchSingleTop="true" />
 
 
     <action
@@ -619,7 +620,7 @@
 
     <action
         android:id="@+id/showPostTypesFragment"
-        app:destination="@id/postTypesFragment" >
+        app:destination="@id/postTypesFragment">
         <argument
             android:name="defaultPostType"
             android:defaultValue="@id/photoCaptureFragment2" />
@@ -669,7 +670,7 @@
     <fragment
         android:id="@+id/communityFragment"
         android:name="social.tsu.android.ui.community.CommunityFragment"
-        android:label="@string/community" >
+        android:label="@string/community">
         <action
             android:id="@+id/action_communityFragment_to_searchFragment"
             app:destination="@id/searchFragment"
@@ -680,13 +681,13 @@
         android:name="social.tsu.android.ui.community.CommunityCreateFragment">
         <argument
             android:name="mode"
-            app:argType="social.tsu.android.ui.community.CommunityCreateFragment$CreateCommunityMode"
-            android:defaultValue="CREATE" />
+            android:defaultValue="CREATE"
+            app:argType="social.tsu.android.ui.community.CommunityCreateFragment$CreateCommunityMode" />
         <argument
             android:name="community"
+            android:defaultValue="@null"
             app:argType="social.tsu.android.network.model.Group"
-            app:nullable="true"
-            android:defaultValue="@null" />
+            app:nullable="true" />
         <action
             android:id="@+id/action_communityCreateFragment_to_searchFragment"
             app:destination="@id/searchFragment"
@@ -709,14 +710,14 @@
     <fragment
         android:id="@+id/tsuContactsFragment"
         android:name="social.tsu.android.ui.messaging.tsu_contacts.TsuContactsFragment"
-        android:label="TsuContactsFragment" >
+        android:label="TsuContactsFragment">
         <argument
             android:name="mode"
             app:argType="social.tsu.android.ui.messaging.tsu_contacts.TsuContactsFragment$ContactsMode" />
         <argument
             android:name="communityId"
-            app:argType="integer"
-            android:defaultValue="-1" />
+            android:defaultValue="-1"
+            app:argType="integer" />
     </fragment>
     <fragment
         android:id="@+id/hashtagGridFragment"
@@ -736,16 +737,16 @@
         android:label="UserPhotosFeedFragment">
         <argument
             android:name="userId"
-            app:argType="integer"
-            android:defaultValue="-1" />
+            android:defaultValue="-1"
+            app:argType="integer" />
         <argument
             android:name="postId"
-            app:argType="long"
-            android:defaultValue="-1L" />
+            android:defaultValue="-1L"
+            app:argType="long" />
         <argument
             android:name="postPosition"
-            app:argType="integer"
-            android:defaultValue="0" />
+            android:defaultValue="0"
+            app:argType="integer" />
     </fragment>
     <action
         android:id="@+id/showUserPhotosFeedFragment"
@@ -766,16 +767,16 @@
         android:label="UserVideosFeedFragment">
         <argument
             android:name="userId"
-            app:argType="integer"
-            android:defaultValue="-1" />
+            android:defaultValue="-1"
+            app:argType="integer" />
         <argument
             android:name="postId"
-            app:argType="long"
-            android:defaultValue="-1L" />
+            android:defaultValue="-1L"
+            app:argType="long" />
         <argument
             android:name="postPosition"
-            app:argType="integer"
-            android:defaultValue="0" />
+            android:defaultValue="0"
+            app:argType="integer" />
     </fragment>
     <action
         android:id="@+id/showUserVideosFeedFragment"
@@ -796,8 +797,8 @@
         android:label="SinglePostFragment">
         <argument
             android:name="postId"
-            app:argType="long"
-            android:defaultValue="0L" />
+            android:defaultValue="0L"
+            app:argType="long" />
     </fragment>
     <fragment
         android:id="@+id/notificationSubscriptionsFragment"
@@ -809,7 +810,7 @@
     <fragment
         android:id="@+id/communityFeedFragment"
         android:name="social.tsu.android.ui.post_feed.community.CommunityFeedFragment"
-        android:label="CommunityFeedFragment" >
+        android:label="CommunityFeedFragment">
         <argument
             android:name="groupId"
             android:defaultValue="-1"
@@ -855,19 +856,20 @@
     <fragment
         android:id="@+id/communityPublishingRequestsFragment"
         android:name="social.tsu.android.ui.community.CommunityPublishingRequestsFragment"
-        android:label="CommunityPublishingRequestsFragment" >
+        android:label="CommunityPublishingRequestsFragment">
         <argument
             android:name="groupId"
-            app:argType="integer"
-            android:defaultValue="0" />
+            android:defaultValue="0"
+            app:argType="integer" />
     </fragment>
 
     <action
         android:id="@+id/action_global_open_communityPublishingRequestsFragment"
-        app:destination="@id/communityPublishingRequestsFragment">
-    </action>
+        app:destination="@id/communityPublishingRequestsFragment"></action>
 
-    <action android:id="@+id/action_global_communityCreateFragment" app:destination="@id/communityCreateFragment" />
+    <action
+        android:id="@+id/action_global_communityCreateFragment"
+        app:destination="@id/communityCreateFragment" />
     <fragment
         android:id="@+id/pendingMembershipFragment"
         android:name="social.tsu.android.ui.community.PendingMembershipFragment"
@@ -996,9 +998,9 @@
         android:label="OldUserOnBoardingFragment">
         <argument
             android:name="oldUserDetails"
+            android:defaultValue="@null"
             app:argType="social.tsu.android.data.local.models.OldUserDetails"
-            app:nullable="true"
-            android:defaultValue="@null" />
+            app:nullable="true" />
         <action
             android:id="@+id/action_oldUserOnBoardingFragment_to_profileEditFragment"
             app:destination="@id/profileEditFragment" />
@@ -1012,11 +1014,11 @@
     <fragment
         android:id="@+id/userAboutFragment"
         android:name="social.tsu.android.ui.user_profile.UserAboutFragment"
-        android:label="UserAboutFragment" >
+        android:label="UserAboutFragment">
         <argument
             android:name="userId"
-            app:argType="long"
-            android:defaultValue="-1L" />
+            android:defaultValue="-1L"
+            app:argType="long" />
         <argument
             android:name="profileInfo"
             app:argType="social.tsu.android.network.model.UserProfileParams" />
@@ -1024,11 +1026,13 @@
             android:id="@+id/showBasicInfoFragment"
             app:destination="@id/basicInfoFragment" />
     </fragment>
-    <action android:id="@+id/showUserAboutFragment" app:destination="@id/userAboutFragment" />
+    <action
+        android:id="@+id/showUserAboutFragment"
+        app:destination="@id/userAboutFragment" />
     <fragment
         android:id="@+id/basicInfoFragment"
         android:name="social.tsu.android.ui.user_profile.BasicInfoFragment"
-        android:label="BasicInfoFragment" >
+        android:label="BasicInfoFragment">
         <argument
             android:name="user"
             app:argType="social.tsu.android.network.model.UserProfileParams" />
@@ -1080,16 +1084,16 @@
         android:label="DiscoveryFeedFragment">
         <argument
             android:name="userId"
-            app:argType="integer"
-            android:defaultValue="-1" />
+            android:defaultValue="-1"
+            app:argType="integer" />
         <argument
             android:name="postId"
-            app:argType="long"
-            android:defaultValue="-1L" />
+            android:defaultValue="-1L"
+            app:argType="long" />
         <argument
             android:name="postPosition"
-            app:argType="integer"
-            android:defaultValue="0" />
+            android:defaultValue="0"
+            app:argType="integer" />
     </fragment>
     <action
         android:id="@+id/showDiscoveryFeedFragmentt"
@@ -1104,7 +1108,7 @@
             android:name="postPosition"
             android:defaultValue="0" />
     </action>
-    
+
     <fragment
         android:id="@+id/hashtagFeedFragment"
         android:name="social.tsu.android.ui.hashtag.feed.HashtagFeedFragment">
@@ -1131,8 +1135,7 @@
     </action>
     <fragment
         android:id="@+id/feedSettingsFragment"
-        android:name="social.tsu.android.ui.post_feed.feed_type.FeedTypeFragment">
-    </fragment>
+        android:name="social.tsu.android.ui.post_feed.feed_type.FeedTypeFragment"></fragment>
 
     <fragment
         android:id="@+id/mediaLibraryLayout_id"
@@ -1146,7 +1149,7 @@
     <fragment
         android:id="@+id/mediaGridFragment"
         android:name="social.tsu.android.ui.new_post.library.MediaGridFragment"
-        android:label="" >
+        android:label="">
         <argument
             android:name="mediaList"
             app:argType="social.tsu.android.ui.new_post.library.LibraryMedia[]" />
@@ -1164,7 +1167,11 @@
         android:id="@+id/postPreviewFragment"
         android:name="social.tsu.android.ui.post.view.preview.PostPreviewFragment"
         android:label="fragment_post_preview"
-        tools:layout="@layout/fragment_post_preview"
-        />
+        tools:layout="@layout/fragment_post_preview" />
 
+    <fragment
+        android:id="@+id/postVisibilityFragment"
+        android:name="social.tsu.android.ui.new_post.PostVisibilityFragment"
+        android:label="fragment_post_visibility"
+        tools:layout="@layout/fragment_post_visibility" />
 </navigation>

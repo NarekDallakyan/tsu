@@ -1,7 +1,5 @@
 package social.tsu.android.ui.post.view
 
-import android.graphics.Bitmap
-import android.graphics.BitmapFactory
 import android.net.Uri
 import android.os.Bundle
 import android.os.Handler
@@ -18,7 +16,6 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.navArgs
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.viewpager.widget.ViewPager
-import jp.co.cyberagent.android.gpuimage.GPUImage
 import kotlinx.android.synthetic.main.fragment_post_types.*
 import social.tsu.android.R
 import social.tsu.android.TsuApplication.Companion.filterItems
@@ -28,7 +25,6 @@ import social.tsu.android.ui.post.helper.CameraHelper
 import social.tsu.android.ui.post.helper.PostTypeUiHelper
 import social.tsu.android.ui.post.model.FilterVideoModel
 import social.tsu.android.ui.post.view.filter.FilterVideoAdapter
-import social.tsu.android.ui.post.view.filter.GPUImageFilterTools
 import social.tsu.android.ui.post.view.viewpager.*
 import social.tsu.android.utils.findParentNavController
 import social.tsu.android.viewModel.SharedViewModel
@@ -139,7 +135,7 @@ open class PostTypesFragment : Fragment(), Serializable {
         // Init view models
         initViewModels()
         // Ui initialization
-        iniUi()
+        initUi()
         // Init on click listeners
         initOnClicks()
         //init camera helper
@@ -500,7 +496,7 @@ open class PostTypesFragment : Fragment(), Serializable {
         return (newPostViewPager as TsuViewPager).currentItem
     }
 
-    private fun iniUi() {
+    private fun initUi() {
 
         // Init new post view pager
         initNewPostViewPagerAdapter()
@@ -563,7 +559,7 @@ open class PostTypesFragment : Fragment(), Serializable {
     /**
      *  Handling Sound icon visibility
      */
-    private fun handleSoundIcon(enable: Boolean? = null){
+    private fun handleSoundIcon(enable: Boolean? = null) {
 
         var soundTag = soundIcon?.tag as? String
 
@@ -585,7 +581,7 @@ open class PostTypesFragment : Fragment(), Serializable {
         }
     }
 
-    private fun handleSpeedIcon(enable: Boolean? = null){
+    private fun handleSpeedIcon(enable: Boolean? = null) {
 
         var speedTag = speedIcon?.tag as? String
         if (enable != null) {
@@ -725,7 +721,7 @@ open class PostTypesFragment : Fragment(), Serializable {
     private fun changeCameraFilter(filters: Filters) {
 
         return when ((newPostViewPager as TsuViewPager).currentItem) {
-            0 ->{
+            0 -> {
                 (fragments[0] as PhotoCameraPostFragment).handleFilter(filters)
             }
             1 -> {
