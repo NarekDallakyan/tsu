@@ -1,4 +1,5 @@
-package social.tsu.android.ui.new_post
+  package social.tsu.android.ui.new_post
+
 import android.Manifest
 import android.content.Context
 import android.graphics.Bitmap
@@ -51,6 +52,8 @@ import social.tsu.android.data.local.entity.Post
 import social.tsu.android.data.local.entity.PostPayload
 import social.tsu.android.data.local.models.PostUser
 import social.tsu.android.execute
+import social.tsu.android.ext.FileType
+import social.tsu.android.ext.getFileType
 import social.tsu.android.helper.AnalyticsHelper
 import social.tsu.android.helper.AuthenticationHelper
 import social.tsu.android.network.api.CommunityApi
@@ -153,6 +156,7 @@ class PostDraftFragment : Fragment() {
     private var mentionViewModel: MentionViewModel? = null
 
     var initialText: String? = null
+    private var fileTypeText: String? = null
 
 
     private val textWatcher = object : TextWatcher {
@@ -207,7 +211,6 @@ class PostDraftFragment : Fragment() {
 
         // Get argument data
         getArgumentData()
-
         val fragmentComponent = (activity?.application as TsuApplication)
             .appComponent.fragmentComponent().create()
         fragmentComponent.inject(this)
@@ -257,7 +260,7 @@ class PostDraftFragment : Fragment() {
                     }
                 }
 
-                view.findViewById<Button>(R.id.compose_post_visibility_group).show()
+                view.findViewById<Button>(R.id.compose_post_visibility_group).hide()
             }
             PostDraftType.MESSAGE -> {
                 view.findViewById<View>(R.id.btn_add_video)?.hide()
@@ -270,6 +273,21 @@ class PostDraftFragment : Fragment() {
 
         setHasOptionsMenu(true)
         return view
+    }
+
+    private fun initOnClicks() {
+
+        // Listen close layout clicked
+        closePostDraft?.setOnClickListener {
+            sharedViewModel!!.select(false)
+            findParentNavController().popBackStack(R.id.postTypesFragment, false)
+        }
+
+        // Listen visibility layout clicked
+        postVisibility?.setOnClickListener {
+            sharedViewModel!!.select(false)
+            findParentNavController().navigate(R.id.postVisibilityFragment)
+        }
     }
 
     // Argument properties
@@ -296,6 +314,27 @@ class PostDraftFragment : Fragment() {
         membership = requireArguments().getParcelable("membership")
         allowVideo = requireArguments().getBoolean("allowVideo")
         popToDestination = requireArguments().getInt("popToDestination")
+    }
+
+    private fun getFileType(): String? {
+
+        val fileType: FileType?
+
+        if (videoPath != null) {
+            fileType = videoPath?.getFileType()
+            return fileType?.value
+        }
+
+        if (videoContentUri != null) {
+            fileType = videoContentUri?.getFileType()
+            return fileType?.value
+        }
+
+        if (photoUri != null) {
+            fileType = photoUri?.getFileType()
+            return fileType?.value
+        }
+        return FileType.MEDIA.value
     }
 
     override fun onResume() {
@@ -329,10 +368,21 @@ class PostDraftFragment : Fragment() {
         savedInstanceState?.getString(STATE_POST_TEXT)?.let { composePost?.setText(it) }
         dateFormat = SimpleDateFormat("yyyy-MM-dd")
         startTimer()
+        // init OnClicks
+        initOnClicks()
+        // Add Content
+        addContent()
+    }
+
+    private fun addContent() {
+//        postDraftTitle.text = getFileType()
     }
 
     override fun onStart() {
         super.onStart()
+
+        val mainActivity = requireActivity() as? MainActivity
+        mainActivity?.supportActionBar?.hide()
 
         composeEditText?.setText("")
         composeEditText?.text?.let {
@@ -902,7 +952,7 @@ class PostDraftFragment : Fragment() {
                         onSuccess = {
                             Log.i(TAG, "post created")
                             val body = response.body()
-                            val post = if (body is PostPayload) body.post  else null
+                            val post = if (body is PostPayload) body.post else null
 
                             try {
                                 composeEditText?.text = null
