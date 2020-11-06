@@ -37,7 +37,7 @@ public class StorageUtil {
         sDataDir = BaseUtils.getContext().getFilesDir().getAbsolutePath();
       }
       File file = new File(sDataDir);
-      if (!file.exists()) {//判断文件目录是否存在
+      if (!file.exists()) {
         file.mkdirs();
       }
     }
