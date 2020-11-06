@@ -1,4 +1,4 @@
-  package social.tsu.android.ui.new_post
+package social.tsu.android.ui.new_post
 
 import android.Manifest
 import android.content.Context
@@ -376,6 +376,8 @@ class PostDraftFragment : Fragment() {
 
     private fun addContent() {
 //        postDraftTitle.text = getFileType()
+        // init OnClicks
+        initOnClicks()
     }
 
     override fun onStart() {
