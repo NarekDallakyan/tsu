@@ -15,6 +15,7 @@ import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
+import coil.Coil
 import coil.api.load
 import dagger.android.support.AndroidSupportInjection
 import kotlinx.android.synthetic.main.compose_post.progress_bar
@@ -129,10 +130,21 @@ class EditPostFragment : Fragment() {
                 val imageView = view?.findViewById<ImageView>(R.id.imgPreview)
                 when {
                     it.has_picture -> {
-                        imageView?.load(formatUrl(it.picture_url))
+                        return@let Coil.load(requireContext(), formatUrl(it.picture_url)) {
+                            target { fileDrawable ->
+                                imageView?.setImageDrawable(fileDrawable)
+                            }
+                        }
                     }
                     it.stream != null -> {
-                        imageView?.load(streamFormatURL(it.stream.thumbnail))
+                        return@let Coil.load(
+                            requireContext(),
+                            streamFormatURL(it.stream.thumbnail)
+                        ) {
+                            target { fileDrawable ->
+                                imageView?.setImageDrawable(fileDrawable)
+                            }
+                        }
                     }
                     else -> {
                         // really kotlin ? really ???
