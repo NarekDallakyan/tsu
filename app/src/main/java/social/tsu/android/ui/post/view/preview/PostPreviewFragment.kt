@@ -14,10 +14,7 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import kotlinx.android.synthetic.main.fragment_post_preview.*
 import social.tsu.android.R
-import social.tsu.android.ext.addOnKeyboardListener
-import social.tsu.android.ext.hide
-import social.tsu.android.ext.show
-import social.tsu.android.ext.showKeyboard
+import social.tsu.android.ext.*
 import social.tsu.android.ui.MainActivity
 import social.tsu.android.ui.post.model.ColorModel
 import social.tsu.android.ui.post.model.FontModel
@@ -166,6 +163,11 @@ class PostPreviewFragment : Fragment() {
 
         // Back button clicked
         previewBackBtn.setOnClickListener {
+
+            if (keyboardContainer.visibility == View.VISIBLE) {
+                requireView().hideKeyboard(requireActivity())
+                return@setOnClickListener
+            }
 
             val mainActivity = requireActivity() as? MainActivity
             mainActivity?.supportActionBar?.hide()
