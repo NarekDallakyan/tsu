@@ -70,7 +70,7 @@ import social.tsu.android.ui.community.BottomListener
 import social.tsu.android.ui.messaging.chats.ChatFragment
 import social.tsu.android.ui.messaging.tsu_contacts.TsuContactsFragment
 import social.tsu.android.ui.messaging.tsu_contacts.TsuContactsFragmentArgs
-import social.tsu.android.ui.new_post.PostDraftFragment
+import social.tsu.android.ui.post.view.draft.PostDraftFragment
 import social.tsu.android.ui.notifications.feed.NotificationsViewModel
 import social.tsu.android.ui.post_feed.main.MainFeedFragment
 import social.tsu.android.ui.post_feed.main.MainFeedFragmentDirections

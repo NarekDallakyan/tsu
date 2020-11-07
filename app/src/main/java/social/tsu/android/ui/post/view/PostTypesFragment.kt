@@ -45,7 +45,7 @@ import kotlin.collections.ArrayList
  * - postText - text for post. Not used here and will be passed to PostDraftFragment after media selection.
  * Used to save text previously entered by user
  * - recipient - recipient for post, used when creating message, optional
- * - postingType - {@link social.tsu.android.ui.new_post.PostDraftType} defaults to POST. May be POST, MESSAGE, COMMUNITY
+ * - postingType - {@link social.tsu.android.ui.post.view.draft.PostDraftType} defaults to POST. May be POST, MESSAGE, COMMUNITY
  * - membership - used when posting to community, optional
  *
  * In order to add new source for media you need to add new fragment to post_types_graph.xml and
@@ -357,6 +357,7 @@ open class PostTypesFragment : Fragment(), Serializable {
 
                 val mBundle = Bundle()
                 mBundle.putString("filePath", filePath)
+                mBundle.putString("originalFilePath", filePath)
                 mBundle.putInt("fromScreenType", getScreenType())
                 mBundle.putSerializable("postTypeFragment", this)
                 sharedViewModel!!.select(false)
@@ -406,6 +407,7 @@ open class PostTypesFragment : Fragment(), Serializable {
 
                 val mBundle = Bundle()
                 mBundle.putString("filePath", filePath)
+                mBundle.putString("originalFilePath", filePath)
                 mBundle.putInt("fromScreenType", getScreenType())
                 mBundle.putSerializable("postTypeFragment", this)
                 sharedViewModel!!.select(false)
@@ -452,7 +454,7 @@ open class PostTypesFragment : Fragment(), Serializable {
             }
 
             next(
-                photoUri = Uri.parse("file://".plus(filePath)),
+                photoUri = Uri.parse(filePath),
                 fromGrid = true
             )
         }
@@ -760,13 +762,15 @@ open class PostTypesFragment : Fragment(), Serializable {
         videoPath: String? = null,
         videoContentUri: String? = null,
         photoUri: Uri? = null,
-        fromGrid: Boolean? = null
+        fromGrid: Boolean? = null,
+        originalFilePath: String? = null
     ) {
 
         if (fromGrid == true) {
 
             val mBundle = Bundle()
             mBundle.putString("videoPath", videoPath)
+            mBundle.putString("originalFilePath", originalFilePath)
             mBundle.putString("videoContentUri", videoContentUri)
             mBundle.putString("photoUri", photoUri?.toString())
             mBundle.putString("postText", args.postText)

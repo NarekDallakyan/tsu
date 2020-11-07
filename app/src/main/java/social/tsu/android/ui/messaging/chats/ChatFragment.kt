@@ -24,7 +24,7 @@ import social.tsu.android.helper.Constants
 import social.tsu.android.network.model.Message
 import social.tsu.android.service.UserProfileImageService
 import social.tsu.android.ui.*
-import social.tsu.android.ui.new_post.PostDraftType
+import social.tsu.android.ui.post.view.draft.PostDraftType
 import social.tsu.android.ui.post_feed.main.MainFeedFragmentDirections
 import social.tsu.android.ui.search.MENTION_TYPE
 import social.tsu.android.ui.search.SearchFragment

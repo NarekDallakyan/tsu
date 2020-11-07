@@ -303,7 +303,7 @@
     </fragment>
     <fragment
         android:id="@+id/postDraftFragment"
-        android:name="social.tsu.android.ui.new_post.PostDraftFragment"
+        android:name="social.tsu.android.ui.post.view.draft.PostDraftFragment"
         android:label="New Post"
         tools:layout="@layout/draft_post">
 
@@ -352,7 +352,7 @@
         <argument
             android:name="postingType"
             android:defaultValue="POST"
-            app:argType="social.tsu.android.ui.new_post.PostDraftType" />
+            app:argType="social.tsu.android.ui.post.view.draft.PostDraftType" />
         <argument
             android:name="membership"
             android:defaultValue="@null"
@@ -577,7 +577,7 @@
         <argument
             android:name="postingType"
             android:defaultValue="POST"
-            app:argType="social.tsu.android.ui.new_post.PostDraftType" />
+            app:argType="social.tsu.android.ui.post.view.draft.PostDraftType" />
         <argument
             android:name="membership"
             android:defaultValue="@null"
@@ -1171,7 +1171,7 @@
 
     <fragment
         android:id="@+id/postVisibilityFragment"
-        android:name="social.tsu.android.ui.new_post.PostVisibilityFragment"
+        android:name="social.tsu.android.ui.post.view.draft.PostVisibilityFragment"
         android:label="fragment_post_visibility"
         tools:layout="@layout/fragment_post_visibility" />
 </navigation>

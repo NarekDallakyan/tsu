@@ -1,41 +1,21 @@
 package social.tsu.android.ext
 
-enum class FileType(val value: String) {
-    VIDEO("Video"), PHOTO("Photo"), MEDIA("Media")
-}
+import android.graphics.Bitmap
+import android.media.MediaMetadataRetriever
+import android.net.Uri
+import social.tsu.android.TsuApplication
 
-fun String.getFileType(): FileType? {
+fun String.getVideoThumbnail(): Bitmap? {
 
-    try {
-
-        val filePath = this
-        val lastDotIndex = filePath.lastIndexOf(".")
-
-        when (filePath.substring(lastDotIndex + 1)) {
-
-            "png" -> {
-                return FileType.PHOTO
-            }
-
-            "webp" -> {
-                return FileType.PHOTO
-            }
-
-            "jpeg" -> {
-                return FileType.PHOTO
-            }
-
-            "mp4" -> {
-                return FileType.VIDEO
-            }
-            else -> {
-                return FileType.MEDIA
-            }
-
-        }
-    } catch (error: Exception) {
-        return null
+    var mediaMetadataRetriever: MediaMetadataRetriever? = null
+    return try {
+        mediaMetadataRetriever = MediaMetadataRetriever()
+        mediaMetadataRetriever.setDataSource(TsuApplication.mContext, Uri.parse(this))
+        mediaMetadataRetriever.frameAtTime
+    } catch (e: Exception) {
+        e.printStackTrace()
+        null
+    } finally {
+        mediaMetadataRetriever?.release()
     }
-
-
 }

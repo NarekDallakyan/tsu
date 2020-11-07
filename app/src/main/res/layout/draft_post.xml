@@ -3,157 +3,11 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="wrap_content">
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
-
-        <EditText
-            android:visibility="gone"
-            android:id="@+id/composePost"
-            style="@style/TSUEditText.Multiline"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="@dimen/margin_default_medium"
-            android:layout_marginTop="16dp"
-            android:layout_marginEnd="@dimen/margin_default_medium"
-            android:hint="@string/create_post_hint"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/constraintLayout"
-            tools:text="@string/test_text" />
-
-        <androidx.constraintlayout.widget.Group
-            android:id="@+id/compose_post_visibility_group"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:visibility="gone"
-            app:constraint_referenced_ids="compose_post_visibility, compose_post_visibility_msg, compose_post_radio_group"
-            />
-
-        <TextView
-            android:id="@+id/compose_post_visibility"
-            style="@style/TSUTextAppearance"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="@dimen/margin_default_medium"
-            android:layout_marginTop="@dimen/margin_default_medium"
-            android:text="@string/create_post_visibility"
-            android:textColor="@color/field_hint"
-            android:textSize="@dimen/font_medium"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/composePost" />
-
-        <RadioGroup
-            android:id="@+id/compose_post_radio_group"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="@dimen/margin_default_medium"
-            android:layout_marginTop="@dimen/margin_default_medium"
-            android:layout_marginRight="@dimen/margin_default_medium"
-            android:checkedButton="@id/compose_post_public"
-            android:gravity="center"
-            android:orientation="horizontal"
-            app:layout_constraintTop_toBottomOf="@id/compose_post_visibility">
-
-            <RadioButton
-                android:id="@+id/compose_post_public"
-                style="@style/TSUSegmentedControlButton.Left"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:text="@string/community_public" />
-
-            <RadioButton
-                android:id="@+id/compose_post_private"
-                style="@style/TSUSegmentedControlButton.Right"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:text="@string/community_private" />
-
-            <RadioButton
-                android:id="@+id/compose_post_exclusive"
-                style="@style/TSUSegmentedControlButton.Right"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:visibility="gone"
-                android:text="@string/community_exclusive" />
-
-        </RadioGroup>
-
-        <TextView
-            android:id="@+id/compose_post_visibility_msg"
-            style="@style/TSUTextAppearance"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="@dimen/margin_default_medium"
-            android:layout_marginTop="@dimen/margin_default_medium"
-            android:layout_marginEnd="@dimen/margin_default_medium"
-            android:text="@string/create_post_public_msg"
-            android:textColor="@color/field_hint"
-            android:textSize="@dimen/font_medium"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/compose_post_radio_group" />
-
-        <ProgressBar
-            android:id="@+id/progress_bar"
-            style="?android:attr/progressBarStyleLarge"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/padding_small"
-            android:layout_marginBottom="@dimen/standard_margin"
-            android:visibility="gone"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/compose_post_visibility_msg" />
-
-        <com.google.android.material.button.MaterialButton
-            android:id="@+id/btn_add_photo"
-            style="@style/TSUPostCreateIconButton"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="@dimen/button_padding_default"
-            android:layout_marginTop="@dimen/margin_default_medium"
-            android:text="@string/create_post_photo_btn"
-            app:icon="@drawable/ic_photo_camera"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/progress_bar"
-            android:visibility="gone"/>
-
-        <com.google.android.material.button.MaterialButton
-            android:id="@+id/btn_add_video"
-            style="@style/TSUPostCreateIconButton"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/create_post_video_btn"
-            app:icon="@drawable/ic_videocam"
-            app:layout_constraintBottom_toBottomOf="@id/btn_add_video"
-            app:layout_constraintStart_toEndOf="@id/btn_add_photo"
-            app:layout_constraintTop_toTopOf="@id/btn_add_photo"
-            android:visibility="gone"/>
-
-        <View
-            android:layout_width="match_parent"
-            android:layout_height="@dimen/chat_divider_height"
-            android:background="@color/divider_default"
-            app:layout_constraintBottom_toTopOf="@id/btn_add_photo" />
-
-        <ImageView
-            android:id="@+id/imgPreview"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="16dp"
-            android:layout_marginBottom="@dimen/camera_margin_medium"
-            android:adjustViewBounds="true"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/btn_add_photo"
-            app:layout_constraintVertical_bias="0.0"
-            tools:src="@drawable/tsu" />
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:id="@+id/constraintLayout2"
@@ -175,14 +29,13 @@
                     android:id="@+id/imageView2"
                     android:layout_width="24dp"
                     android:layout_height="24dp"
+                    android:rotation="180"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintHorizontal_bias="0.29"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="parent"
-                    app:srcCompat="@drawable/ic_arrow_right_android"
-                    android:rotation="180"
-                    android:backgroundTint="@color/colorPrimary"
-                    />
+                    app:srcCompat="@drawable/arrow_green" />
             </androidx.constraintlayout.widget.ConstraintLayout>
 
             <TextView
@@ -194,12 +47,12 @@
                 android:textStyle="bold"
                 android:textSize="19sp"
                 app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toStartOf="@+id/constraintLayout3"
+                app:layout_constraintEnd_toStartOf="@+id/postButton"
                 app:layout_constraintStart_toEndOf="@+id/closePostDraft"
                 app:layout_constraintTop_toTopOf="parent" />
 
             <androidx.constraintlayout.widget.ConstraintLayout
-                android:id="@+id/constraintLayout3"
+                android:id="@+id/postButton"
                 android:layout_width="60dp"
                 android:layout_height="60dp"
                 app:layout_constraintBottom_toBottomOf="parent"
@@ -207,15 +60,16 @@
                 app:layout_constraintTop_toTopOf="parent">
 
                 <TextView
-                    android:id="@+id/textView7"
+                    android:id="@+id/actionText"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="Post"
-                    android:textSize="18sp"
                     android:textColor="@color/colorPrimary"
+                    android:textSize="18sp"
                     android:textStyle="bold"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintHorizontal_bias="0.39"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="parent" />
             </androidx.constraintlayout.widget.ConstraintLayout>
@@ -225,52 +79,69 @@
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:id="@+id/constraintLayout"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
             android:layout_marginTop="16dp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/constraintLayout2">
 
 
+            <ImageView
+                android:id="@+id/imgPreview"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_marginStart="16dp"
+                android:layout_marginTop="16dp"
+                android:layout_marginEnd="16dp"
+                android:layout_marginBottom="16dp"
+                android:adjustViewBounds="true"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/saveDeviceLayout"
+                tools:src="@drawable/tsu" />
+
             <androidx.constraintlayout.widget.ConstraintLayout
                 android:id="@+id/constraintLayout4"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:minHeight="60dp"
+                android:layout_marginEnd="16dp"
+                android:minHeight="50dp"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/textView6">
 
                 <EditText
-                    android:id="@+id/editText"
+                    android:id="@+id/descriptionEditText"
                     android:layout_width="0dp"
                     android:layout_height="match_parent"
-                    android:layout_marginStart="8dp"
+                    android:layout_marginStart="12dp"
                     android:backgroundTint="@color/transparent"
                     android:hint="@string/create_post_hint"
                     android:maxLength="256"
                     android:textColor="@color/stream_white"
                     android:textColorHint="@color/light_gray"
                     app:layout_constraintBottom_toBottomOf="parent"
-                    app:layout_constraintEnd_toStartOf="@+id/relativeLayout"
+                    app:layout_constraintEnd_toStartOf="@+id/descriptionCloseLayout"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="parent" />
 
                 <RelativeLayout
-                    android:id="@+id/relativeLayout"
+                    android:id="@+id/descriptionCloseLayout"
                     android:layout_width="60dp"
                     android:layout_height="0dp"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintStart_toEndOf="@+id/editText"
+                    app:layout_constraintStart_toEndOf="@+id/descriptionEditText"
                     app:layout_constraintTop_toTopOf="parent">
 
                     <ImageView
                         android:id="@+id/image"
                         android:layout_width="24dp"
                         android:layout_height="24dp"
-                        android:layout_centerHorizontal="true"
+                        android:layout_marginEnd="4dp"
+                        android:layout_alignParentEnd="true"
                         android:layout_centerVertical="true"
                         android:src="@drawable/ic_baseline_close_24" />
                 </RelativeLayout>
@@ -282,8 +153,8 @@
                 android:id="@+id/view4"
                 android:layout_width="match_parent"
                 android:layout_height="1dp"
-                android:layout_marginStart="8dp"
-                android:layout_marginEnd="8dp"
+                android:layout_marginStart="16dp"
+                android:layout_marginEnd="16dp"
                 android:background="@color/colorPrimary"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
@@ -293,7 +164,7 @@
                 android:id="@+id/textView6"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="8dp"
+                android:layout_marginStart="16dp"
                 android:layout_marginTop="10dp"
                 android:text="DESCRIPTION"
                 android:textColor="@color/light_gray"
@@ -306,7 +177,7 @@
                 android:id="@+id/textView8"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="8dp"
+                android:layout_marginStart="16dp"
                 android:layout_marginTop="10dp"
                 android:text="Can consist of no more than 256 characters"
                 android:textColor="@color/light_gray"
@@ -319,7 +190,9 @@
                 android:id="@+id/postVisibility"
                 android:layout_width="0dp"
                 android:layout_height="50dp"
+                android:layout_marginStart="16dp"
                 android:layout_marginTop="24dp"
+                android:layout_marginEnd="16dp"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/view6">
@@ -328,7 +201,6 @@
                     android:id="@+id/textView9"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginStart="8dp"
                     android:layout_marginTop="8dp"
                     android:layout_marginBottom="8dp"
                     android:text="Visibility"
@@ -340,7 +212,7 @@
                     app:layout_constraintTop_toTopOf="parent" />
 
                 <TextView
-                    android:id="@+id/textView10"
+                    android:id="@+id/visibilityChoosesText"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="8dp"
@@ -358,7 +230,6 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="8dp"
-                    android:layout_marginEnd="8dp"
                     android:layout_marginBottom="8dp"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintEnd_toEndOf="parent"
@@ -368,21 +239,20 @@
             </androidx.constraintlayout.widget.ConstraintLayout>
 
             <androidx.constraintlayout.widget.ConstraintLayout
+                android:id="@+id/saveDeviceLayout"
                 android:layout_width="0dp"
                 android:layout_height="50dp"
+                android:layout_marginStart="16dp"
                 android:layout_marginTop="8dp"
-                android:layout_marginBottom="8dp"
-                app:layout_constraintBottom_toBottomOf="parent"
+                android:layout_marginEnd="16dp"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/postVisibility"
-                app:layout_constraintVertical_bias="0.0">
+                app:layout_constraintTop_toBottomOf="@+id/postVisibility">
 
                 <TextView
                     android:id="@+id/textView11"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginStart="8dp"
                     android:layout_marginTop="8dp"
                     android:layout_marginBottom="8dp"
                     android:text="Save to device"
@@ -394,31 +264,42 @@
                     app:layout_constraintTop_toTopOf="parent" />
 
                 <Switch
-                    android:id="@+id/switch1"
+                    android:id="@+id/saveToDeviceSwitcher"
                     android:layout_width="wrap_content"
                     android:layout_height="30dp"
                     android:layout_marginTop="8dp"
-                    android:layout_marginEnd="8dp"
                     android:layout_marginBottom="8dp"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintTop_toTopOf="parent" />
+                    app:layout_constraintTop_toTopOf="parent"
+                    tools:ignore="UseSwitchCompatOrMaterialXml" />
             </androidx.constraintlayout.widget.ConstraintLayout>
 
             <View
                 android:id="@+id/view6"
                 android:layout_width="0dp"
-                android:layout_height="1dp"
-                android:layout_marginStart="8dp"
+                android:layout_height="0.5dp"
+                android:layout_marginStart="16dp"
                 android:layout_marginTop="32dp"
-                android:layout_marginEnd="8dp"
+                android:layout_marginEnd="16dp"
+                android:background="@color/tsu_grey"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/textView8"
-                android:background="@color/tsu_grey"/>
+                app:layout_constraintTop_toBottomOf="@+id/textView8" />
 
 
         </androidx.constraintlayout.widget.ConstraintLayout>
+
+        <ProgressBar
+            android:id="@+id/progress_bar"
+            style="?android:attr/progressBarStyleLarge"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:visibility="gone"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/constraintLayout2" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 </ScrollView>

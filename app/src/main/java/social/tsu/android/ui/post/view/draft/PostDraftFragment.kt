@@ -1,4 +1,4 @@
-package social.tsu.android.ui.new_post
+package social.tsu.android.ui.post.view.draft
 
 import android.Manifest
 import android.content.Context
@@ -7,25 +7,22 @@ import android.graphics.Bitmap.CompressFormat.JPEG
 import android.graphics.Matrix
 import android.net.Uri
 import android.os.Bundle
-import android.text.Editable
-import android.text.SpannableString
-import android.text.TextWatcher
+import android.os.Handler
 import android.util.Base64
 import android.util.Log
 import android.view.*
 import android.view.inputmethod.InputMethodManager
-import android.widget.*
+import android.widget.Toast
 import androidx.annotation.IdRes
-import androidx.core.os.bundleOf
 import androidx.exifinterface.media.ExifInterface
 import androidx.fragment.app.Fragment
-import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.whenStarted
 import androidx.navigation.NavOptions
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.navOptions
+import coil.api.load
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.resource.gif.GifDrawable
 import com.google.android.material.snackbar.Snackbar
@@ -38,10 +35,6 @@ import kotlinx.android.synthetic.main.draft_post.*
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
-import okhttp3.MediaType.Companion.toMediaTypeOrNull
-import okhttp3.MultipartBody
-import okhttp3.RequestBody
-import okhttp3.RequestBody.Companion.toRequestBody
 import retrofit2.Response
 import social.tsu.android.R
 import social.tsu.android.RxSchedulers
@@ -52,8 +45,7 @@ import social.tsu.android.data.local.entity.Post
 import social.tsu.android.data.local.entity.PostPayload
 import social.tsu.android.data.local.models.PostUser
 import social.tsu.android.execute
-import social.tsu.android.ext.FileType
-import social.tsu.android.ext.getFileType
+import social.tsu.android.ext.getVideoThumbnail
 import social.tsu.android.helper.AnalyticsHelper
 import social.tsu.android.helper.AuthenticationHelper
 import social.tsu.android.network.api.CommunityApi
@@ -67,17 +59,16 @@ import social.tsu.android.ui.CameraUtil
 import social.tsu.android.ui.MainActivity
 import social.tsu.android.ui.checkPermissions
 import social.tsu.android.ui.messaging.chats.ChatFragmentArgs
+import social.tsu.android.ui.post.helper.PostDraftVisibilityUiHelper
+import social.tsu.android.ui.post.helper.PostTypeDraftUiHelper
+import social.tsu.android.ui.post.view.draft.PostDraftFragmentDirections.showPostTypesFragment
 import social.tsu.android.ui.post_feed.community.CommunityFeedFragmentDirections
-import social.tsu.android.ui.post_feed.main.MainFeedFragmentDirections
-import social.tsu.android.ui.search.MENTION_TYPE
-import social.tsu.android.ui.search.SearchFragment
 import social.tsu.android.utils.*
 import social.tsu.android.viewModel.MentionViewModel
 import social.tsu.android.viewModel.SharedViewModel
 import social.tsu.android.workmanager.workers.UploadVideoWorker
 import java.io.ByteArrayOutputStream
 import java.io.File
-import java.io.IOException
 import java.io.Serializable
 import java.nio.ByteBuffer
 import java.text.SimpleDateFormat
@@ -136,72 +127,34 @@ class PostDraftFragment : Fragment() {
 
     private var sharedViewModel: SharedViewModel? = null
 
-    var textIndex: Int = 0
+
     val properties = HashMap<String, Any?>()
 
     @IdRes
     var defaultPostType: Int = R.id.photoCaptureFragment2
-
     private var compositeDisposable = CompositeDisposable()
-    private var composeEditText: EditText? = null
-
-    //val args: PostDraftFragmentArgs by navArgs()
-
     private var lastSnackbar: Snackbar? = null
-
-    private var visibilityRadioGroup: RadioGroup? = null
-    private var visibilityMessage: TextView? = null
-
-    var searchOpen = false
     private var mentionViewModel: MentionViewModel? = null
 
-    var initialText: String? = null
-    private var fileTypeText: String? = null
+    // Ui handler
+    private val draftUiHandler = PostTypeDraftUiHelper
+    private val visibilityUiHandler = PostDraftVisibilityUiHelper
 
 
-    private val textWatcher = object : TextWatcher {
-        override fun onTextChanged(cs: CharSequence, arg1: Int, arg2: Int, arg3: Int) {
-
-        }
-
-        override fun beforeTextChanged(
-            arg0: CharSequence,
-            arg1: Int,
-            arg2: Int,
-            arg3: Int
-        ) {
-
-        }
-
-        override fun afterTextChanged(arg0: Editable) {
-            val value = arg0.toString()
-            if (value.isNullOrEmpty()) {
-                return
-            }
-
-            if (value.contains("@")) {
-                val split = value.split(" ")
-                for (item in split) {
-                    if (item.contains("@") && item.length == 1) {
-                        searchOpen = true
-                        composeEditText?.let {
-                            textIndex = it.selectionEnd
-                            initialText = it.text.toString()
-                        }
-                        openNavController()
-                        break
-                    }
-                }
-            }
-
-        }
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+        dateFormat = SimpleDateFormat("yyyy-MM-dd")
+        startTimer()
+        // init OnClicks
+        initOnClicks()
+        // Add Content
+        initUi()
     }
 
     override fun onDestroyView() {
         compositeDisposable.dispose()
         dspTimer?.dispose()
         super.onDestroyView()
-        //TODO Fix code below as its creating video issues.
     }
 
     override fun onCreateView(
@@ -209,84 +162,85 @@ class PostDraftFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View? {
 
-        // Get argument data
-        getArgumentData()
         val fragmentComponent = (activity?.application as TsuApplication)
             .appComponent.fragmentComponent().create()
         fragmentComponent.inject(this)
 
-        mentionViewModel = ViewModelProvider(requireActivity()).get(MentionViewModel::class.java)
-        sharedViewModel = ViewModelProvider(requireActivity()).get(SharedViewModel::class.java)
-        //model!!.select(false)
-
         val view = inflater.inflate(R.layout.draft_post, container, false)
-
-        composeEditText = view.findViewById(R.id.composePost)
-
-        composeEditText?.onFocusChangeListener =
-            View.OnFocusChangeListener { _, hasFocus ->
-                if (hasFocus) {
-                    composeEditText?.addTextChangedListener(textWatcher)
-                } else {
-                    composeEditText?.removeTextChangedListener(textWatcher)
-                }
-            }
-
-        //Set up "Add photo" button
-        view.findViewById<View>(R.id.btn_add_photo).setOnClickListener {
-            addImageToPost()
-        }
-
-        //Set up "Add Video" button
-        view.findViewById<View>(R.id.btn_add_video).setOnClickListener {
-            addVideoToPost()
-        }
-
-        when (postDraftType) {
-            PostDraftType.POST -> {
-                visibilityRadioGroup = view.findViewById(R.id.compose_post_radio_group)
-                visibilityMessage = view.findViewById(R.id.compose_post_visibility_msg)
-                visibilityRadioGroup?.setOnCheckedChangeListener { _, checkedId ->
-                    when (checkedId) {
-                        R.id.compose_post_private -> {
-                            visibilityMessage?.setText(R.string.create_post_private_msg)
-                        }
-                        R.id.compose_post_public -> {
-                            visibilityMessage?.setText(R.string.create_post_public_msg)
-                        }
-                        R.id.compose_post_exclusive -> {
-                            visibilityMessage?.setText(R.string.create_post_public_exclusive_msg)
-                        }
-                    }
-                }
-
-                view.findViewById<Button>(R.id.compose_post_visibility_group).hide()
-            }
-            PostDraftType.MESSAGE -> {
-                view.findViewById<View>(R.id.btn_add_video)?.hide()
-            }
-            else -> {
-            }
-        }
-
-
+        // Get argument data
+        getArgumentData()
+        // init view model
+        initViewModel()
 
         setHasOptionsMenu(true)
         return view
+    }
+
+    private fun initViewModel() {
+
+        mentionViewModel = ViewModelProvider(requireActivity()).get(MentionViewModel::class.java)
+        sharedViewModel = ViewModelProvider(requireActivity()).get(SharedViewModel::class.java)
     }
 
     private fun initOnClicks() {
 
         // Listen close layout clicked
         closePostDraft?.setOnClickListener {
-            sharedViewModel!!.select(false)
+            sharedViewModel?.select(false)
             findParentNavController().popBackStack(R.id.postTypesFragment, false)
         }
 
         // Listen visibility layout clicked
         postVisibility?.setOnClickListener {
-            sharedViewModel!!.select(false)
+            sharedViewModel?.select(false)
             findParentNavController().navigate(R.id.postVisibilityFragment)
+        }
+
+        // Listen post button
+        postButton?.setOnClickListener {
+
+            // show progress bar and waiting for complete
+            progress_bar.show()
+            // handle save to device
+            handleSaveOnDevice()
+            // Waiting 1 second
+            Handler().postDelayed({
+                // handle post
+                handlePost()
+            }, 1000)
+        }
+    }
+
+    private fun handleSaveOnDevice() {
+
+        val originalFilePath = originalFilePath ?: ""
+        val originalFile = File(originalFilePath)
+        if (originalFile.exists()) {
+            val isDeleted = originalFile.delete()
+        }
+
+        if (saveToDeviceSwitcher.isChecked) return
+
+        val deletingUri = (when {
+            photoUri != null -> {
+                Uri.parse(photoUri)
+            }
+            videoPath != null -> {
+                Uri.parse(videoPath)
+            }
+            videoContentUri != null -> {
+                Uri.parse(videoContentUri)
+            }
+            else -> {
+                null
+            }
+        })
+            ?: return
+
+        val filePath = deletingUri.path ?: return
+        val deletingFile = File(filePath)
+        if (deletingFile.exists()) {
+            val isDeleted = deletingFile.delete()
         }
     }
 
@@ -300,12 +254,14 @@ class PostDraftFragment : Fragment() {
     private var membership: Membership? = null
     private var allowVideo: Boolean? = null
     private var popToDestination: Int? = null
+    private var originalFilePath: String? = null
 
     private fun getArgumentData() {
 
         if (arguments == null) return
 
         videoPath = requireArguments().getString("videoPath")
+        originalFilePath = requireArguments().getString("originalFilePath")
         videoContentUri = requireArguments().getString("videoContentUri")
         photoUri = requireArguments().getString("photoUri")
         postText = requireArguments().getString("postText")
@@ -316,68 +272,25 @@ class PostDraftFragment : Fragment() {
         popToDestination = requireArguments().getInt("popToDestination")
     }
 
-    private fun getFileType(): String? {
-
-        val fileType: FileType?
-
-        if (videoPath != null) {
-            fileType = videoPath?.getFileType()
-            return fileType?.value
-        }
-
-        if (videoContentUri != null) {
-            fileType = videoContentUri?.getFileType()
-            return fileType?.value
-        }
-
-        if (photoUri != null) {
-            fileType = photoUri?.getFileType()
-            return fileType?.value
-        }
-        return FileType.MEDIA.value
-    }
-
     override fun onResume() {
         super.onResume()
         compositeDisposable = CompositeDisposable()
-        var tag = ""
-        mentionViewModel?.getTag()?.observe(requireActivity(), Observer {
-            if (!it.isNullOrEmpty()) tag = it
-        })
-
         mentionViewModel?.selectTag("")
-
-        if (!initialText.isNullOrEmpty()) {
-            if (!tag.isNullOrEmpty()) {
-                composeEditText?.setText(initialText + tag)
-            } else {
-                composeEditText?.setText(initialText)
-            }
-        }
-        initialText = ""
     }
 
     override fun onDestroy() {
         super.onDestroy()
-        composeEditText?.setText("")
         mentionViewModel?.selectTag("")
     }
 
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        super.onViewCreated(view, savedInstanceState)
-        savedInstanceState?.getString(STATE_POST_TEXT)?.let { composePost?.setText(it) }
-        dateFormat = SimpleDateFormat("yyyy-MM-dd")
-        startTimer()
-        // init OnClicks
-        initOnClicks()
-        // Add Content
-        addContent()
-    }
+    private fun initUi() {
 
-    private fun addContent() {
-//        postDraftTitle.text = getFileType()
-        // init OnClicks
-        initOnClicks()
+        // handle description close visibility
+        draftUiHandler.handleDescriptionUi(view)
+        // handle save to device ui
+        draftUiHandler.handleSaveToDeviceUi(view)
+        // handle visibility ui
+        visibilityUiHandler.showChoosesOption(view)
     }
 
     override fun onStart() {
@@ -386,20 +299,9 @@ class PostDraftFragment : Fragment() {
         val mainActivity = requireActivity() as? MainActivity
         mainActivity?.supportActionBar?.hide()
 
-        composeEditText?.setText("")
-        composeEditText?.text?.let {
-            if (it.toString().isBlank()) {
-                view?.findViewById<EditText>(R.id.composePost)
-                    ?.setText(SpannableString(postText))
-            }
-        }
-
-        //Handle photo and video URIs if any of them are available.
-        //URIs comes in fragment arguments typically from PostTypesFragment after it's done with capture
-        //or selection
-
         photoUri?.let {
             try {
+                imageType = context?.contentResolver?.getType(Uri.parse(photoUri)) ?: ""
                 handlePhoto(Uri.parse(it))
             } catch (e: Exception) {
                 snack(getString(R.string.unable_to_load_attached_photo))
@@ -408,10 +310,12 @@ class PostDraftFragment : Fragment() {
         }
 
         videoPath?.let {
+            imageType = context?.contentResolver?.getType(Uri.parse(videoPath)) ?: ""
             handleVideo(it)
             return
         }
         videoContentUri?.let {
+            imageType = context?.contentResolver?.getType(Uri.parse(videoContentUri)) ?: ""
             handleVideoContentPath(it)
             return
         }
@@ -437,14 +341,14 @@ class PostDraftFragment : Fragment() {
      * and after successful upload makes an actual post
      */
     private fun postVideo(videoPath: String, message: String) {
-        val privacy = when (visibilityRadioGroup?.checkedRadioButtonId) {
-            R.id.compose_post_private -> {
+        val privacy = when (visibilityUiHandler.getChoosesOption()) {
+            1 -> {
                 Post.PRIVACY_PRIVATE
             }
-            R.id.compose_post_public -> {
+            0 -> {
                 Post.PRIVACY_PUBLIC
             }
-            R.id.compose_post_exclusive -> {
+            2 -> {
                 Post.PRIVACY_EXCLUSIVE
             }
             else -> {
@@ -459,7 +363,6 @@ class PostDraftFragment : Fragment() {
         )
         if (privacy == Post.PRIVACY_EXCLUSIVE)
             setTime()
-        //findNavController().navigate(PostDraftFragmentDirections.actionPostDraftFragmentToMainFeedFragment())
         popBackStack()
     }
 
@@ -473,14 +376,14 @@ class PostDraftFragment : Fragment() {
      */
     private fun postVideoPath(videoPath: Uri, message: String) {
 
-        val privacy = when (visibilityRadioGroup?.checkedRadioButtonId) {
-            R.id.compose_post_private -> {
+        val privacy = when (visibilityUiHandler.getChoosesOption()) {
+            1 -> {
                 Post.PRIVACY_PRIVATE
             }
-            R.id.compose_post_public -> {
+            0 -> {
                 Post.PRIVACY_PUBLIC
             }
-            R.id.compose_post_exclusive -> {
+            2 -> {
                 Post.PRIVACY_EXCLUSIVE
             }
             else -> {
@@ -505,36 +408,17 @@ class PostDraftFragment : Fragment() {
     private fun handleVideo(videoPath: String) {
         try {
 
-            val imgPreview = view?.findViewById<ImageView>(R.id.imgPreview)
-
-            val videoFile = File(videoPath)
-            val uri = Uri.fromFile(videoFile)
-
-            imgPreview?.let {
-                Glide.with(requireActivity()).load(uri).thumbnail(0.1f).into(it)
+            val videoThumbnail = videoPath.getVideoThumbnail()
+            videoThumbnail?.let {
+                imgPreview?.load(it)
             }
-        } catch (e: IOException) {
+        } catch (e: java.lang.Exception) {
             Log.e("IMAGE", "error reading stream", e)
-
         }
     }
 
     fun openPostTypesFragment() {
         addMediaToPost(defaultPostType)
-    }
-
-    /**
-     * Convenience method to open PostTypesFragment with photo tab active
-     */
-    private fun addImageToPost() {
-        addMediaToPost(R.id.photoCaptureFragment2)
-    }
-
-    /**
-     * Convenience method to open PostTypesFragment with video tab active
-     */
-    private fun addVideoToPost() {
-        addMediaToPost(R.id.videoCaptureFragment2)
     }
 
     /**
@@ -544,9 +428,7 @@ class PostDraftFragment : Fragment() {
      * interface opens
      */
     private fun addMediaToPost(mediaType: Int) {
-        composeEditText?.let {
-            initialText = it.text.toString()
-        }
+
         defaultPostType = mediaType
         checkPermissions(
             arrayOf(
@@ -555,20 +437,19 @@ class PostDraftFragment : Fragment() {
             ),
             MainActivity.NEW_POST_FROM_FEED_PERMISSIONS_REQUEST_CODE
         ) {
-            composeEditText?.let {
+            descriptionEditText?.let {
                 //Filling in all arguments for PostTypesFragment:
                 //setting defaultPostType (which tab should be selected on launch)
                 //and copying items from current fragment's arguments to pass them forward to PostTypesFragment
                 val text = it.text.toString()
-                val action = MainFeedFragmentDirections
-                    .showPostTypesFragment(text).apply {
-                        defaultPostType = mediaType
-                        postingType = postDraftType ?: PostDraftType.POST
-                        membership = membership
-                        recipient = postUser
-                        allowVideo = allowVideo
-                        popToDestination = popToDestination
-                    }
+                val action = showPostTypesFragment(text).apply {
+                    defaultPostType = mediaType
+                    postingType = postDraftType ?: PostDraftType.POST
+                    membership = membership
+                    recipient = postUser
+                    allowVideo = allowVideo
+                    popToDestination = popToDestination
+                }
                 findNavController().navigate(action)
             }
         }
@@ -579,20 +460,15 @@ class PostDraftFragment : Fragment() {
      * Setup video preview from provided Uri
      */
     private fun handleVideoContentPath(path: String) {
+
         try {
 
-            val imgPreview = view?.findViewById<ImageView>(R.id.imgPreview)
-
-            val uri = Uri.parse(path)
-
-            imgPreview?.let {
-                Glide.with(requireActivity()).load(uri).thumbnail(0.1f).into(imgPreview)
+            val videoThumbnail = path.getVideoThumbnail()
+            videoThumbnail?.let {
+                imgPreview?.load(it)
             }
-
-
-        } catch (e: IOException) {
+        } catch (e: java.lang.Exception) {
             Log.e("IMAGE", "error reading stream", e)
-
         }
     }
 
@@ -748,12 +624,7 @@ class PostDraftFragment : Fragment() {
         }
         withContext(Dispatchers.Main) {
 
-            view?.let {
-                Glide.with(imgPreview)
-                    .load(bitmap)
-                    .into(imgPreview)
-            }
-
+            imgPreview.setImageBitmap(bitmap)
         }
     }
 
@@ -777,7 +648,7 @@ class PostDraftFragment : Fragment() {
      */
     private fun proceed() {
         progress_bar?.visibility = View.VISIBLE
-        val text = composeEditText?.text.toString()
+        val text = descriptionEditText?.text.toString()
         val imageData = when (imageType) {
             null -> null
             "image/gif" -> {
@@ -797,14 +668,14 @@ class PostDraftFragment : Fragment() {
             PostDraftType.MESSAGE -> sendMessage(text, imageData)
             else -> {
                 val privacy =
-                    when (visibilityRadioGroup?.checkedRadioButtonId) {
-                        R.id.compose_post_private -> {
+                    when (visibilityUiHandler.getChoosesOption()) {
+                        1 -> {
                             Post.PRIVACY_PRIVATE
                         }
-                        R.id.compose_post_public -> {
+                        0 -> {
                             Post.PRIVACY_PUBLIC
                         }
-                        R.id.compose_post_exclusive -> {
+                        2 -> {
                             Post.PRIVACY_EXCLUSIVE
                         }
                         else -> {
@@ -838,7 +709,7 @@ class PostDraftFragment : Fragment() {
                 Log.i("PostMessage", "post created")
                 val pictureUrl = result.pictureUrl
                 try {
-                    composeEditText?.text = null
+                    descriptionEditText?.text = null
                     imgPreview.setImageBitmap(null)
                 } catch (e: Exception) {
                     e.printStackTrace()
@@ -957,7 +828,7 @@ class PostDraftFragment : Fragment() {
                             val post = if (body is PostPayload) body.post else null
 
                             try {
-                                composeEditText?.text = null
+                                descriptionEditText?.text = null
                                 imgPreview.setImageBitmap(null)
                             } catch (e: Exception) {
                                 e.printStackTrace()
@@ -1023,18 +894,6 @@ class PostDraftFragment : Fragment() {
             })
     }
 
-    private fun makeImageBody(bytes: ByteArray, isGif: Boolean): MultipartBody.Part {
-        val reqFile: RequestBody =
-            bytes.toRequestBody(if (isGif) "image/gif".toMediaTypeOrNull() else "image/jpeg".toMediaTypeOrNull())
-
-        val body: MultipartBody.Part = MultipartBody.Part.createFormData(
-            if (isGif) "gif" else "picture",
-            if (isGif) "gif.gif" else "picture.jpg",  // filename, this is optional
-            reqFile
-        )
-        return body
-    }
-
     /**
      * Returns to correct destination depending on posting type
      */
@@ -1069,17 +928,11 @@ class PostDraftFragment : Fragment() {
         }
     }
 
-    override fun onSaveInstanceState(outState: Bundle) {
-        super.onSaveInstanceState(outState)
-        initialText = composeEditText?.text.toString()
-        outState.putString(STATE_POST_TEXT, initialText)
-    }
-
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
 
         when (item.itemId) {
             R.id.post_content -> {
-                onPostClick()
+                handlePost()
                 return true
             }
             R.id.menu_edit_text -> {
@@ -1099,18 +952,18 @@ class PostDraftFragment : Fragment() {
     /**
      * Handler for Post button click
      */
-    private fun onPostClick() {
+    private fun handlePost() {
         dismissKeyboard()
 
-        val view = requireView()
-        val message = view.findViewById<TextView>(R.id.composePost)?.text.toString()
+        val message = descriptionEditText?.text.toString()
 
         if (postDraftType != PostDraftType.MESSAGE && message.hashtags().size > PostApi.MAX_HASHTAG_COUNT) {
             snack(R.string.create_post_hashtag_error)
+            progress_bar.hide()
             return
         }
 
-        sharedViewModel!!.select(true)
+        sharedViewModel?.select(true)
         lastSnackbar = Snackbar.make(
             requireView(),
             R.string.draft_message_posting,
@@ -1134,6 +987,7 @@ class PostDraftFragment : Fragment() {
                 }
             }
         }
+        progress_bar.hide()
     }
 
     private fun rotateImg(img: Bitmap, degree: Float): Bitmap {
@@ -1156,26 +1010,6 @@ class PostDraftFragment : Fragment() {
         private const val MAX_IMAGE_SIZE = 9437184L
         private const val MAX_RESOLUTION = 1024
         private const val STATE_POST_TEXT = "composeText"
-    }
-
-    fun openNavController() {
-
-        initialText = composeEditText?.text.toString()
-        composeEditText?.isSelected = false
-        composeEditText?.isFocusable = false
-
-
-        val navController = findNavController()
-        if (navController.currentDestination?.id == R.id.postDraftFragment) {
-            navController.navigate(
-                R.id.action_postDraft_to_mentionFragment,
-                bundleOf(
-                    "searchType" to SearchFragment.SEARCH_TYPE_MENTION,
-                    MENTION_TYPE to SearchFragment.MENTION_TYPE_COMMUNITY
-                )
-            )
-        }
-
     }
 
     fun showPosting() {
@@ -1206,14 +1040,11 @@ class PostDraftFragment : Fragment() {
                         if (tomorrowAsString.equals(todayAsString, true)
                                 .not() && tomorrowAsString.isNotEmpty()
                         ) {
-                            compose_post_exclusive.visibility = View.VISIBLE
                             sharedPrefManager.setExclusivePostTime("")
                         } else {
-                            compose_post_exclusive.visibility =
-                                if (tomorrowAsString.isEmpty()) View.VISIBLE else View.GONE
                         }
                     } ?: kotlin.run {
-                        compose_post_exclusive.visibility = View.VISIBLE
+
                     }
 
                     sharedPrefManager.getLaunchTime()?.let { launchtime ->
@@ -1232,6 +1063,5 @@ class PostDraftFragment : Fragment() {
 
                 }
             })
-
     }
 }

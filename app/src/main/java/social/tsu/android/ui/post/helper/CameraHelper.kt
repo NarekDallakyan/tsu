@@ -319,9 +319,10 @@ class CameraHelper(
     }
 
     fun saveBitmap(bitmap: Bitmap): String? {
+        val fileName = "/Tsu_Image".plus(System.currentTimeMillis()).plus(".png")
         val imagePath = File(
             Environment.getExternalStorageDirectory()
-                .toString() + "/Piyush.png"
+                .toString() + fileName
         )
         val fos: FileOutputStream
         return try {

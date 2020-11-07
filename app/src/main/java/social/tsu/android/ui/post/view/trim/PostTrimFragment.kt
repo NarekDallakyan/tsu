@@ -23,6 +23,7 @@ class PostTrimFragment : Fragment() {
 
     // Arguments data
     private var filePath: String? = null
+    private var originalFilePath: String? = null
     private var fromScreenType: Int? = null
 
     private var postTypeFragment: PostTypesFragment? = null
@@ -86,37 +87,12 @@ class PostTrimFragment : Fragment() {
                     // Handle trim video completed
                     handleTrimVideoResult(it)
                 }
+                return@setOnClickListener
             } else if (fromScreenType == 2 && videoDurationSeconds <= 7) {
                 videoTrimmerHandler.onSave {
                     // Handle trim video completed
                     handleTrimVideoResult(it)
                 }
-            }
-
-
-
-
-
-            if (videoDurationSeconds > 7 && fromScreenType == 2) {
-
-                Toast.makeText(
-                    requireContext(),
-                    "Maximum duration for GIF is 7 second.",
-                    Toast.LENGTH_LONG
-                ).show()
-
-                videoTrimmerHandler.onSave {
-                    // Handle trim video completed
-                    handleTrimVideoResult(it)
-                    return@onSave
-                }
-            }
-
-            videoTrimmerHandler.onSave {
-                Handler().postDelayed({
-                    // Handle trim video completed
-                    handleTrimVideoResult(it)
-                }, 1000)
             }
         }
     }
@@ -139,6 +115,7 @@ class PostTrimFragment : Fragment() {
             mBundle.putString("filePath", filePath)
             mBundle.putInt("fromScreenType", fromScreenType!!)
             mBundle.putSerializable("postTypeFragment", postTypeFragment)
+            mBundle.putString("originalFilePath", originalFilePath)
             sharedViewModel!!.select(false)
             findParentNavController().navigate(R.id.postPreviewFragment, mBundle)
         }
@@ -160,6 +137,7 @@ class PostTrimFragment : Fragment() {
         if (arguments == null) return
 
         filePath = requireArguments().getString("filePath")
+        originalFilePath = requireArguments().getString("originalFilePath")
         fromScreenType = requireArguments().getInt("fromScreenType")
         postTypeFragment =
             requireArguments().getSerializable("postTypeFragment") as? PostTypesFragment?

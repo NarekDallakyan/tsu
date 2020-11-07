@@ -33,6 +33,7 @@ class PostPreviewFragment : Fragment() {
 
     // Arguments data
     private var filePath: String? = null
+    private var originalFilePath: String? = null
     private var fromScreenType: Int? = null
 
     // Sub views
@@ -127,12 +128,12 @@ class PostPreviewFragment : Fragment() {
             // File type is image
             videoPreview?.visibility = View.GONE
             imagePreview?.visibility = View.VISIBLE
-            imagePreview?.setImageURI(Uri.parse("file://".plus(filePath)))
+            imagePreview?.setImageURI(Uri.parse(filePath))
         } else {
             // File type is video
             videoPreview?.visibility = View.VISIBLE
             imagePreview?.visibility = View.GONE
-            videoPreview?.setVideoURI(Uri.parse("file://".plus(filePath)))
+            videoPreview?.setVideoURI(Uri.parse(filePath))
             val mediaController = MediaController(requireContext())
             videoPreview?.setMediaController(mediaController)
             videoPreview?.start()
@@ -153,6 +154,7 @@ class PostPreviewFragment : Fragment() {
         fromScreenType = requireArguments().getInt("fromScreenType")
         postTypeFragment =
             requireArguments().getSerializable("postTypeFragment") as? PostTypesFragment?
+        originalFilePath = requireArguments().getString("originalFilePath")
     }
 
     private fun initViewModels() {
@@ -188,6 +190,7 @@ class PostPreviewFragment : Fragment() {
 
             (postTypeFragment)?.next(
                 videoPath = filePath,
+                originalFilePath = originalFilePath,
                 fromGrid = true
             )
         }

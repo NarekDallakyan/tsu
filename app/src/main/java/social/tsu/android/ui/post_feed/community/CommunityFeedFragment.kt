@@ -51,8 +51,8 @@ import social.tsu.android.ui.isInternetAvailable
 import social.tsu.android.ui.messaging.tsu_contacts.TsuContactsFragment
 import social.tsu.android.ui.messaging.tsu_contacts.TsuContactsFragmentArgs
 import social.tsu.android.ui.model.Data
-import social.tsu.android.ui.new_post.PostDraftFragmentDirections
-import social.tsu.android.ui.new_post.PostDraftType
+import social.tsu.android.ui.post.view.draft.PostDraftFragmentDirections
+import social.tsu.android.ui.post.view.draft.PostDraftType
 import social.tsu.android.ui.post_feed.BaseFeedFragment
 import social.tsu.android.ui.post_feed.UserPostsAdapter
 import social.tsu.android.ui.setVisibleOrGone

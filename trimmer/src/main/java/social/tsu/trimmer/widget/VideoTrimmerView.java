@@ -4,6 +4,7 @@ import android.animation.ValueAnimator;
 import android.content.Context;
 import android.media.MediaPlayer;
 import android.net.Uri;
+import android.os.Environment;
 import android.os.Handler;
 import android.util.AttributeSet;
 import android.util.Log;
@@ -250,7 +251,7 @@ public class VideoTrimmerView extends FrameLayout implements IVideoTrimmerView {
             mVideoView.pause();
             VideoTrimmerUtil.trim(mContext,
                     mSourceUri.getPath(),
-                    StorageUtil.getCacheDir(),
+                    Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS).getAbsolutePath(),
                     mLeftProgressPos,
                     mRightProgressPos,
                     mOnTrimVideoListener);

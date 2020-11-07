@@ -2,35 +2,36 @@ package social.tsu.android.ui.post_feed.edit_post
 
 import android.content.Context
 import android.os.Bundle
-import android.text.Editable
-import android.text.TextWatcher
-import android.view.*
+import android.view.LayoutInflater
+import android.view.View
+import android.view.ViewGroup
 import android.view.inputmethod.InputMethodManager
 import android.widget.EditText
 import android.widget.ImageView
 import android.widget.Toast
-import androidx.core.os.bundleOf
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
-import com.bumptech.glide.Glide
-import com.bumptech.glide.load.resource.drawable.DrawableTransitionOptions
+import coil.api.load
 import dagger.android.support.AndroidSupportInjection
-import kotlinx.android.synthetic.main.compose_post.*
+import kotlinx.android.synthetic.main.compose_post.progress_bar
+import kotlinx.android.synthetic.main.draft_post.*
 import social.tsu.android.R
-import social.tsu.android.adapters.viewholders.PostViewHolder
 import social.tsu.android.network.api.HostProvider
+import social.tsu.android.ui.MainActivity
 import social.tsu.android.ui.internetSnack
 import social.tsu.android.ui.isInternetAvailable
 import social.tsu.android.ui.model.Data
-import social.tsu.android.ui.search.MENTION_TYPE
-import social.tsu.android.ui.search.SearchFragment
-import social.tsu.android.ui.showKeyboard
+import social.tsu.android.ui.post.helper.PostTypeDraftUiHelper
+import social.tsu.android.utils.findParentNavController
+import social.tsu.android.utils.hide
+import social.tsu.android.utils.show
 import social.tsu.android.utils.snack
 import social.tsu.android.viewModel.MentionViewModel
+import social.tsu.android.viewModel.SharedViewModel
 import javax.inject.Inject
 
 class EditPostFragment : Fragment() {
@@ -39,8 +40,12 @@ class EditPostFragment : Fragment() {
     lateinit var viewModelFactory: ViewModelProvider.Factory
 
     private val viewModel by viewModels<EditPostViewModel> { viewModelFactory }
+    private var sharedViewModel: SharedViewModel? = null
 
     private val args: EditPostFragmentArgs by navArgs()
+
+    // Ui handler
+    private val draftUiHandler = PostTypeDraftUiHelper
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -48,64 +53,6 @@ class EditPostFragment : Fragment() {
     }
 
     private var mentionViewModel: MentionViewModel? = null
-    var composeEdit: EditText? = null
-
-    var initialText: String? = null
-
-    private val textWatcher = object : TextWatcher {
-        override fun onTextChanged(cs: CharSequence, arg1: Int, arg2: Int, arg3: Int) {
-
-        }
-
-        override fun beforeTextChanged(
-            arg0: CharSequence,
-            arg1: Int,
-            arg2: Int,
-            arg3: Int
-        ) {
-
-        }
-
-        override fun afterTextChanged(arg0: Editable) {
-
-            var value = arg0.toString()
-            if (value.isNullOrEmpty()) {
-                return
-            }
-
-            if (value.contains("@")) {
-                val split = value.split(" ")
-                for (item in split) {
-                    if (item.contains("@") && item.length == 1) {
-                        initialText = composeEdit?.text.toString()
-                        openMentionSearchFragment()
-                        break
-                    }
-                }
-            }
-
-        }
-    }
-
-
-    private fun openMentionSearchFragment() {
-        dismissKeyboard()
-        initialText = composeEdit?.text.toString()
-        composeEdit?.isSelected = false
-        composeEdit?.isFocusable = false
-
-
-        val navController = findNavController()
-        if (navController.currentDestination?.id == R.id.editPostFragment) {
-            navController.navigate(
-                R.id.action_postEdit_to_mentionSearchFragment,
-                bundleOf(
-                    "searchType" to SearchFragment.SEARCH_TYPE_MENTION,
-                    MENTION_TYPE to SearchFragment.MENTION_TYPE_EDIT_POST
-                )
-            )
-        }
-    }
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -113,37 +60,39 @@ class EditPostFragment : Fragment() {
     ): View? {
 
         val view = inflater.inflate(R.layout.draft_post, container, false)
-
-        composeEdit = view.findViewById(R.id.composePost) as EditText
-
-        mentionViewModel = ViewModelProvider(requireActivity()).get(MentionViewModel::class.java)
-
-        view.findViewById<View>(R.id.btn_add_photo).visibility = View.GONE
-        view.findViewById<View>(R.id.btn_add_video).visibility = View.GONE
-
         viewModel.postId = args.postId
-        composeEdit?.onFocusChangeListener =
-            View.OnFocusChangeListener { _, hasFocus ->
-                if (hasFocus) {
-                    composeEdit?.addTextChangedListener(textWatcher)
-                } else {
-                    composeEdit?.removeTextChangedListener(textWatcher)
-                }
-            }
-        setHasOptionsMenu(true)
         return view
+    }
+
+    private fun initViewModel() {
+
+        sharedViewModel = ViewModelProvider(requireActivity()).get(SharedViewModel::class.java)
+        mentionViewModel = ViewModelProvider(requireActivity()).get(MentionViewModel::class.java)
+    }
+
+    private fun initUi() {
+
+        postVisibility.hide()
+        saveDeviceLayout.hide()
+        postDraftTitle.text = "Edit Post"
+        actionText.text = "Save"
+
+        // handle description close visibility
+        draftUiHandler.handleDescriptionUi(view)
     }
 
     override fun onDestroy() {
         super.onDestroy()
-        composeEdit?.setText("")
+        descriptionEditText?.setText("")
         mentionViewModel?.selectTag("")
     }
 
 
     override fun onStart() {
         super.onStart()
-        composeEdit?.setText("")
+        val mainActivity = requireActivity() as? MainActivity
+        mainActivity?.supportActionBar?.hide()
+        descriptionEditText?.setText("")
     }
 
 
@@ -151,51 +100,39 @@ class EditPostFragment : Fragment() {
         super.onResume()
 
         var tag = ""
-        composeEdit?.setText("")
+        descriptionEditText?.setText("")
         mentionViewModel?.getTag()?.observe(requireActivity(), Observer {
             if (!it.isNullOrEmpty()) tag = it
         })
         mentionViewModel?.selectTag("")
-        if (!initialText.isNullOrEmpty()) {
-            if (!tag.isNullOrEmpty()) {
-
-                composeEdit?.append(initialText + tag)
-            } else {
-                composeEdit?.append(initialText)
-            }
-        }
-
-        composeEdit?.post(Runnable {
-            composeEdit?.requestFocus()
-            activity?.showKeyboard()
-        })
-        initialText = ""
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        // init view model
+        initViewModel()
+        // init on clicks
+        initOnClicks()
+        // init ui
+        initUi()
+        // get post
+        getPost()
+    }
+
+    private fun getPost() {
+
         viewModel.post.observe(viewLifecycleOwner, Observer {
             it?.let {
-                composeEdit?.setText(it.content)
-                composeEdit?.setSelection(composeEdit?.text?.length!!)
-                composeEdit?.requestFocus()
-                val imageView = view.findViewById<ImageView>(R.id.imgPreview)
+                descriptionEditText?.setText(it.content)
+                descriptionEditText?.setSelection(descriptionEditText?.text?.length!!)
+                descriptionEditText?.requestFocus()
+                val imageView = view?.findViewById<ImageView>(R.id.imgPreview)
                 when {
                     it.has_picture -> {
-                        Glide
-                            .with(view.context as Context)
-                            .load(formatUrl(it.picture_url))
-                            .thumbnail(PostViewHolder.POST_IMAGE_THUMBNAIL_QUALITY)
-                            .transition(DrawableTransitionOptions.withCrossFade())
-                            .into(imageView)
+                        imageView?.load(formatUrl(it.picture_url))
                     }
                     it.stream != null -> {
-                        Glide
-                            .with(view.context as Context)
-                            .load(streamFormatURL(it.stream.thumbnail))
-                            .thumbnail(PostViewHolder.POST_IMAGE_THUMBNAIL_QUALITY)
-                            .transition(DrawableTransitionOptions.withCrossFade())
-                            .into(imageView)
+                        imageView?.load(streamFormatURL(it.stream.thumbnail))
                     }
                     else -> {
                         // really kotlin ? really ???
@@ -205,53 +142,25 @@ class EditPostFragment : Fragment() {
         })
     }
 
-    override fun onOptionsItemSelected(item: MenuItem): Boolean {
-        when (item.itemId) {
-            R.id.save_btn -> {
-                viewModel.post.observe(viewLifecycleOwner, Observer {
-                    if (!it.has_picture && it.stream == null && view?.findViewById<EditText>(R.id.composePost)?.text.isNullOrBlank()) {
-                        dismissKeyboard()
-                        Toast.makeText(
-                            context,
-                            getString(R.string.enter_text_message),
-                            Toast.LENGTH_LONG
-                        ).show()
-                        progress_bar.visibility = View.GONE
-                    } else {
-                        composeEdit?.text?.let {
-                            dismissKeyboard()
-                            if (requireActivity().isInternetAvailable()) {
-                                viewModel.savePostEdits(it.toString())
-                                    .observe(viewLifecycleOwner, Observer {
-                                        when (it) {
-                                            is Data.Success -> findNavController().navigateUp()
-                                            is Data.Loading -> {
+    private fun initOnClicks() {
 
-                                            }
-                                            is Data.Error -> it.throwable.message?.let { message ->
-                                                snack(message)
-                                            }
-                                        }
-                                    })
-                            } else
-                                requireActivity().internetSnack()
-                        }
-                    }
-                })
-            }
+        // Listen save button clicked
+        postButton?.setOnClickListener {
+
+            onSave()
         }
 
-        return super.onOptionsItemSelected(item)
+        // Listen back button clicked
+        closePostDraft?.setOnClickListener {
+
+            sharedViewModel?.select(false)
+            findParentNavController().popBackStack(R.id.mainFeedFragment, false)
+        }
     }
 
     override fun onDestroyView() {
         dismissKeyboard()
         super.onDestroyView()
-    }
-
-    override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
-        inflater.inflate(R.menu.edit_menu, menu)
-        super.onCreateOptionsMenu(menu, inflater)
     }
 
     private fun dismissKeyboard() {
@@ -280,4 +189,49 @@ class EditPostFragment : Fragment() {
     }
 
 
+    private fun onSave() {
+
+        progress_bar.show()
+        viewModel.post.observe(viewLifecycleOwner, Observer {
+            if (!it.has_picture && it.stream == null && view?.findViewById<EditText>(R.id.composePost)?.text.isNullOrBlank()) {
+                dismissKeyboard()
+                Toast.makeText(
+                    context,
+                    getString(R.string.enter_text_message),
+                    Toast.LENGTH_LONG
+                ).show()
+                progress_bar.hide()
+            } else {
+
+                dismissKeyboard()
+
+                val changedText = descriptionEditText?.text?.toString()
+
+                if (changedText == null) {
+                    progress_bar.hide()
+                    return@Observer
+                }
+
+                if (!requireActivity().isInternetAvailable()) {
+                    progress_bar.hide()
+                    requireActivity().internetSnack()
+                    return@Observer
+                }
+
+                viewModel.savePostEdits(changedText)
+                    .observe(viewLifecycleOwner, Observer {
+                        when (it) {
+                            is Data.Success -> findNavController().navigateUp()
+                            is Data.Loading -> {
+
+                            }
+                            is Data.Error -> it.throwable.message?.let { message ->
+                                progress_bar.hide()
+                                snack(message)
+                            }
+                        }
+                    })
+            }
+        })
+    }
 }

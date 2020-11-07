@@ -6,7 +6,7 @@ import social.tsu.android.ui.*
 import social.tsu.android.ui.community.CommunityPublishingRequestsFragment
 import social.tsu.android.ui.community.members.CommunityMembersFragment
 import social.tsu.android.ui.live_stream.LivestreamFragment
-import social.tsu.android.ui.new_post.PostDraftFragment
+import social.tsu.android.ui.post.view.draft.PostDraftFragment
 import social.tsu.android.ui.notifications.feed.NotificationFragment
 import social.tsu.android.ui.post_feed.feed_type.FeedTypeFragment
 import social.tsu.android.ui.post_feed.main.MainFeedFragment
