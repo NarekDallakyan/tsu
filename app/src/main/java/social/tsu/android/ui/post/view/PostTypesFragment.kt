@@ -455,6 +455,7 @@ open class PostTypesFragment : Fragment(), Serializable {
 
             next(
                 photoUri = Uri.parse(filePath),
+                originalFilePath = filePath,
                 fromGrid = true
             )
         }

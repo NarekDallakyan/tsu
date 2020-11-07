@@ -171,7 +171,6 @@ class PostDraftFragment : Fragment() {
         getArgumentData()
         // init view model
         initViewModel()
-
         setHasOptionsMenu(true)
         return view
     }
@@ -209,14 +208,23 @@ class PostDraftFragment : Fragment() {
                 handlePost()
             }, 1000)
         }
+
+        // Listen save on device item clicked
+        saveDeviceLayout?.setOnClickListener {
+
+            val isChecked = saveToDeviceSwitcher.isChecked
+            saveToDeviceSwitcher.isChecked = !isChecked
+        }
     }
 
     private fun handleSaveOnDevice() {
 
-        val originalFilePath = originalFilePath ?: ""
-        val originalFile = File(originalFilePath)
-        if (originalFile.exists()) {
-            val isDeleted = originalFile.delete()
+        if (photoUri == null) {
+            val originalFilePath = originalFilePath ?: ""
+            val originalFile = File(originalFilePath)
+            if (originalFile.exists()) {
+                val isDeleted = originalFile.delete()
+            }
         }
 
         if (saveToDeviceSwitcher.isChecked) return
