@@ -1,5 +1,6 @@
 package social.tsu.android.ui.post.view.preview
 
+import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -14,7 +15,10 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import kotlinx.android.synthetic.main.fragment_post_preview.*
 import social.tsu.android.R
-import social.tsu.android.ext.*
+import social.tsu.android.ext.addOnKeyboardListener
+import social.tsu.android.ext.hide
+import social.tsu.android.ext.hideKeyboard
+import social.tsu.android.ext.show
 import social.tsu.android.ui.MainActivity
 import social.tsu.android.ui.post.model.ColorModel
 import social.tsu.android.ui.post.model.FontModel
@@ -22,6 +26,7 @@ import social.tsu.android.ui.post.view.PostTypesFragment
 import social.tsu.android.utils.KeyboardListener
 import social.tsu.android.utils.findParentNavController
 import social.tsu.android.viewModel.SharedViewModel
+import social.tsu.overlay.PreviewVideoActivity
 
 
 class PostPreviewFragment : Fragment() {
@@ -219,8 +224,9 @@ class PostPreviewFragment : Fragment() {
 
     private fun handleAddTextClicked() {
 
-        // Show keyboard
-        view?.showKeyboard(requireActivity())
+        val intent = Intent(requireContext(), PreviewVideoActivity::class.java)
+        intent.putExtra("DATA", filePath)
+        startActivity(intent)
     }
 
     private fun initAdapters() {

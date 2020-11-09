@@ -312,6 +312,7 @@ dependencies {
     // Load modules
     implementation project(':camera')
     implementation project(':trimmer')
+    implementation project(':overlay')
 
 }
 detekt {

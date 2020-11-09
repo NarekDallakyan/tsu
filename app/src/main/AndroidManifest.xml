@@ -48,7 +48,7 @@
         android:supportsRtl="true"
         android:requestLegacyExternalStorage="true"
         android:theme="@style/AppTheme"
-        tools:replace="android:allowBackup"
+        tools:replace="android:allowBackup,android:roundIcon,android:icon"
         tools:targetApi="q">
         <meta-data
             android:name="com.google.android.gms.ads.APPLICATION_ID"
@@ -71,7 +71,7 @@
 
         <activity
             android:name=".ui.StartupActivity"
-            android:windowSoftInputMode="adjustPan"
+            android:windowSoftInputMode="adjustNothing|stateHidden"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme.NoActionBar">
             <intent-filter>
