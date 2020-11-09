@@ -2,62 +2,17 @@ package social.tsu.android.ui.post.helper
 
 import android.content.Context
 import android.graphics.Typeface
-import android.os.Handler
 import android.view.View
-import android.widget.ImageView
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.core.content.ContextCompat
-import androidx.fragment.app.Fragment
 import kotlinx.android.synthetic.main.fragment_post_types.view.*
 import social.tsu.android.R
 import social.tsu.android.helper.DeviceUtils
 import social.tsu.android.ui.post.view.PostTypesFragment
-import social.tsu.android.ui.post.view.viewpager.GifPostFragment
-import social.tsu.android.ui.post.view.viewpager.PhotoCameraPostFragment
-import social.tsu.android.ui.post.view.viewpager.RecordVideoPostFragment
 
 object PostTypeUiHelper {
 
-    private val mHandle = Handler()
-    private var fragments = ArrayList<Fragment>()
-    private var blurImage: ImageView? = null
-
-    private val photoRunnable: () -> Unit = {
-
-        val fragment1 = fragments[1] as RecordVideoPostFragment
-        val fragment2 = fragments[2] as GifPostFragment
-        fragment1.handleOnStop()
-        fragment2.handleOnStop()
-
-        val fragment = fragments[0] as PhotoCameraPostFragment
-
-        fragment.handleOnResume()
-    }
-
-        private val videoRunnable: () -> Unit = {
-
-            val fragment1 = fragments[2] as GifPostFragment
-            val fragment2 = fragments[0] as PhotoCameraPostFragment
-            fragment1.handleOnStop()
-            fragment2.handleOnStop()
-
-            val fragment = fragments[1] as RecordVideoPostFragment
-
-            fragment.handleOnResume()
-        }
-
-        private val gifRunnable: () -> Unit = {
-
-            val fragment1 = fragments[1] as RecordVideoPostFragment
-            val fragment2 = fragments[0] as PhotoCameraPostFragment
-            fragment1.handleOnStop()
-            fragment2.handleOnStop()
-            val fragment = fragments[2] as GifPostFragment
-            fragment.handleOnResume()
-
-        }
-
-        fun setChoose(
+    fun setChoose(
             layout: Int,
             rootView: View?
         ) {
@@ -145,13 +100,9 @@ object PostTypeUiHelper {
         fun handleViewPagerChange(
             context: Context,
             position: Int,
-            rootView: View?,
-            fragments: ArrayList<Fragment>
+            rootView: View?
         ) {
             if (rootView == null) return
-
-            this.fragments = fragments
-            this.blurImage = blurImage
 
             // Find post type fragment sub views
             val newPostPhotoText = rootView.newPostPhotoText
@@ -194,11 +145,6 @@ object PostTypeUiHelper {
                             R.color.ib_fr_white
                         )
                     )
-
-                    mHandle.removeCallbacks(gifRunnable)
-                    mHandle.removeCallbacks(photoRunnable)
-                    mHandle.removeCallbacks(videoRunnable)
-                    mHandle.postDelayed(photoRunnable, 500)
                 }
 
                 // Video section
@@ -234,11 +180,6 @@ object PostTypeUiHelper {
                             R.color.ib_fr_white
                         )
                     )
-
-                    mHandle.removeCallbacks(gifRunnable)
-                    mHandle.removeCallbacks(photoRunnable)
-                    mHandle.removeCallbacks(videoRunnable)
-                    mHandle.postDelayed(videoRunnable, 500)
                 }
 
                 // GIF section
@@ -268,11 +209,6 @@ object PostTypeUiHelper {
                         )
                     )
                     newPostGifText.setTextColor(ContextCompat.getColor(context, R.color.next_green))
-
-                    mHandle.removeCallbacks(gifRunnable)
-                    mHandle.removeCallbacks(photoRunnable)
-                    mHandle.removeCallbacks(videoRunnable)
-                    mHandle.postDelayed(gifRunnable, 500)
                 }
             }
         }

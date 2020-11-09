@@ -1,3 +1,4 @@
+include ':classes'
 include ':ffmpeg'
 include ':trimmer'
 include ':camera'

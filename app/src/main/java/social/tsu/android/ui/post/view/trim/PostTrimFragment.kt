@@ -1,7 +1,6 @@
 package social.tsu.android.ui.post.view.trim
 
 import android.os.Bundle
-import android.os.Handler
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -109,6 +108,14 @@ class PostTrimFragment : Fragment() {
             }
             return
         }
+
+        if (filePath != null) {
+            MainActivity.draftFiles.add(filePath!!)
+        }
+        if (originalFilePath != null) {
+            MainActivity.draftFiles.add(originalFilePath!!)
+        }
+
         val filePath = it.toString()
         requireActivity().runOnUiThread {
             val mBundle = Bundle()

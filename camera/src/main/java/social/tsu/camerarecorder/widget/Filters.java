@@ -4,19 +4,6 @@ import android.content.Context;
 
 import java.io.InputStream;
 
-import jp.co.cyberagent.android.gpuimage.filter.GPUImageBilateralBlurFilter;
-import jp.co.cyberagent.android.gpuimage.filter.GPUImageBoxBlurFilter;
-import jp.co.cyberagent.android.gpuimage.filter.GPUImageBulgeDistortionFilter;
-import jp.co.cyberagent.android.gpuimage.filter.GPUImageCGAColorspaceFilter;
-import jp.co.cyberagent.android.gpuimage.filter.GPUImageColorInvertFilter;
-import jp.co.cyberagent.android.gpuimage.filter.GPUImageFilter;
-import jp.co.cyberagent.android.gpuimage.filter.GPUImageGaussianBlurFilter;
-import jp.co.cyberagent.android.gpuimage.filter.GPUImageGrayscaleFilter;
-import jp.co.cyberagent.android.gpuimage.filter.GPUImageHalftoneFilter;
-import jp.co.cyberagent.android.gpuimage.filter.GPUImageSepiaToneFilter;
-import jp.co.cyberagent.android.gpuimage.filter.GPUImageSharpenFilter;
-import jp.co.cyberagent.android.gpuimage.filter.GPUImageSphereRefractionFilter;
-import jp.co.cyberagent.android.gpuimage.filter.GPUImageWeakPixelInclusionFilter;
 import social.tsu.camerarecorder.egl.filter.GlBilateralFilter;
 import social.tsu.camerarecorder.egl.filter.GlBoxBlurFilter;
 import social.tsu.camerarecorder.egl.filter.GlBulgeDistortionFilter;
@@ -53,37 +40,6 @@ public enum Filters {
 
     Filters(String value) {
         this.value = value;
-    }
-
-    public static GPUImageFilter create(Filters filters) {
-        switch (filters) {
-            case BILATERAL:
-                return new GPUImageBilateralBlurFilter();
-            case BOX_BLUR:
-                return new GPUImageBoxBlurFilter();
-            case BULGE_DISTORTION:
-                return new GPUImageBulgeDistortionFilter();
-            case CGA_COLOR_SPACE:
-                return new GPUImageCGAColorspaceFilter();
-            case GAUSSIAN_BLUR:
-                return new GPUImageGaussianBlurFilter();
-            case GLAY_SCALE:
-                return new GPUImageGrayscaleFilter();
-            case INVERT:
-                return new GPUImageColorInvertFilter();
-            case SEPIA:
-                return new GPUImageSepiaToneFilter();
-            case SHARPEN:
-                return new GPUImageSharpenFilter();
-            case SPHERE_REFRACTION:
-                return new GPUImageSphereRefractionFilter();
-            case TONE:
-                return new GPUImageHalftoneFilter();
-            case WEAKPIXELINCLUSION:
-                return new GPUImageWeakPixelInclusionFilter();
-            default:
-                return new GPUImageFilter();
-        }
     }
 
     public static GlFilter getFilterInstance(Filters filters, Context applicationContext) {

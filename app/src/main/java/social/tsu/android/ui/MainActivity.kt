@@ -70,8 +70,8 @@ import social.tsu.android.ui.community.BottomListener
 import social.tsu.android.ui.messaging.chats.ChatFragment
 import social.tsu.android.ui.messaging.tsu_contacts.TsuContactsFragment
 import social.tsu.android.ui.messaging.tsu_contacts.TsuContactsFragmentArgs
-import social.tsu.android.ui.post.view.draft.PostDraftFragment
 import social.tsu.android.ui.notifications.feed.NotificationsViewModel
+import social.tsu.android.ui.post.view.draft.PostDraftFragment
 import social.tsu.android.ui.post_feed.main.MainFeedFragment
 import social.tsu.android.ui.post_feed.main.MainFeedFragmentDirections
 import social.tsu.android.utils.*
@@ -312,6 +312,13 @@ class MainActivity : DaggerAppCompatActivity(), NavController.OnDestinationChang
     override fun onDestroy() {
         super.onDestroy()
         dspTimer?.dispose()
+
+        draftFiles.forEach {
+            val mFile = File(it)
+            if (mFile.exists() && mFile.delete()) {
+                Log.i("adjnjdnfjdn", it)
+            }
+        }
     }
 
     private fun initAds() {
@@ -630,6 +637,9 @@ class MainActivity : DaggerAppCompatActivity(), NavController.OnDestinationChang
         }
 
         var instance: MainActivity? = null
+
+        // Delete drafts files
+        val draftFiles = arrayListOf<String>()
 
     }
 

@@ -2,11 +2,8 @@ package social.tsu.android.ui.post.view
 
 import android.net.Uri
 import android.os.Bundle
-import android.os.Handler
-import android.os.Looper
 import android.view.LayoutInflater
 import android.view.View
-import android.view.View.GONE
 import android.view.View.VISIBLE
 import android.view.ViewGroup
 import android.widget.Toast
@@ -15,25 +12,25 @@ import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.navArgs
 import androidx.recyclerview.widget.LinearLayoutManager
-import androidx.viewpager.widget.ViewPager
 import kotlinx.android.synthetic.main.fragment_post_types.*
 import social.tsu.android.R
 import social.tsu.android.TsuApplication.Companion.filterItems
 import social.tsu.android.ext.hide
+import social.tsu.android.ext.onSwipeListener
 import social.tsu.android.ext.show
-import social.tsu.android.ui.post.helper.CameraHelper
+import social.tsu.android.ui.MainActivity
 import social.tsu.android.ui.post.helper.PostTypeUiHelper
 import social.tsu.android.ui.post.model.FilterVideoModel
 import social.tsu.android.ui.post.view.filter.FilterVideoAdapter
-import social.tsu.android.ui.post.view.viewpager.*
+import social.tsu.android.ui.post.view.viewpager.GifPostHandler
+import social.tsu.android.ui.post.view.viewpager.PhotoCameraPostHandler
+import social.tsu.android.ui.post.view.viewpager.RecordVideoPostHandler
+import social.tsu.android.ui.post.view.viewpager.TsuViewPager
 import social.tsu.android.utils.findParentNavController
 import social.tsu.android.viewModel.SharedViewModel
-import social.tsu.camerarecorder.widget.Filters
+import social.tsu.cameracapturer.filter.Filter
 import social.tsu.trimmer.features.trim.VideoTrimmerUtil
 import java.io.Serializable
-import java.util.*
-import kotlin.collections.ArrayList
-
 
 /**
  * Main entry point for choosing media that can be attached to post.
@@ -60,25 +57,24 @@ open class PostTypesFragment : Fragment(), Serializable {
 
     val allowVideo by lazy { args.allowVideo }
 
-    // New post view pager fragments
-    private val fragments: ArrayList<Fragment> by lazy {
-        val fragments = ArrayList<Fragment>()
-        fragments.add(PhotoCameraPostFragment())
-        fragments.add(RecordVideoPostFragment())
-        fragments.add(GifPostFragment())
-        return@lazy fragments
-    }
-
     var sharedViewModel: SharedViewModel? = null
 
-    // Helper
-    private var cameraHelper: CameraHelper? = null
-    private val postTypeUiHelper = PostTypeUiHelper
+    /**
+     *  Return screen type
+     *
+     *  - 0 value is Photo section
+     *  - 1 value is Video section
+     *  - 2 value is Gif section
+     */
+    private var position: Int = 0
 
-    // Video record time
-    private var mTimer: Timer? = null
-    private var timer: TimerTask? = null
-    private var seconds = 0L
+    private var enableSwiping = true
+
+    private lateinit var photoCameraPostHandler: PhotoCameraPostHandler
+    private lateinit var recordVideoPostHandler: RecordVideoPostHandler
+    private lateinit var gifPostHandler: GifPostHandler
+
+    private val postTypeUiHelper = PostTypeUiHelper
 
     // File variables
     private var filePath: String? = null
@@ -96,7 +92,7 @@ open class PostTypesFragment : Fragment(), Serializable {
 
             camera_rotate_id?.hide(animate = true)
             post_bottom_navbar?.hide(invisible = true, animate = true)
-            (newPostViewPager as? TsuViewPager)?.enableSwiping(false)
+            enableSwiping = false
             snap_icon_id.setImageResource(R.drawable.video_record_start)
             sectionsLayout?.hide(animate = true)
             optionsLayout?.hide(animate = true)
@@ -104,7 +100,7 @@ open class PostTypesFragment : Fragment(), Serializable {
         } else {
 
             snap_icon_id.setImageResource(R.drawable.record_video_not_start)
-            (newPostViewPager as? TsuViewPager)?.enableSwiping(true)
+            enableSwiping = true
             sectionsLayout?.show(animate = true)
             optionsLayout?.show(animate = true)
             gallery_image_id?.show(animate = true)
@@ -131,6 +127,8 @@ open class PostTypesFragment : Fragment(), Serializable {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        // init handlers
+        initHandlers()
         recordingMode(false)
         // Init view models
         initViewModels()
@@ -138,74 +136,26 @@ open class PostTypesFragment : Fragment(), Serializable {
         initUi()
         // Init on click listeners
         initOnClicks()
-        //init camera helper
-        initCameraHelper()
     }
 
-    /**
-     *  Initialize Camera helper
-     */
-    private fun initCameraHelper() {
-        cameraHelper = CameraHelper(requireActivity(), requireContext(), requireView())
-    }
+    private fun initHandlers() {
 
-    /**
-     *  Handling timer recording functionality
-     */
-    private fun startRecordingTimer(start: Boolean, ignoreRecordingUi: Boolean = false) {
-
-        // Check if timer is null
-        if (timer == null) {
-            timer = object : TimerTask() {
-                override fun run() {
-                    seconds++
-
-                    val hours = seconds / 3600
-                    val minutes = seconds % 3600 / 60
-                    val seconds = seconds % 60
-                    requireActivity().runOnUiThread {
-                        timerText?.text = "$hours:$minutes:$seconds"
-                    }
-                }
-            }
-        }
-
-        if (!start) {
-            // Stop timer case
-            timerText?.visibility = GONE
-            timerText?.text = ""
-            timer?.cancel();
-            timer = null;
-            seconds = 0L
-            if (!ignoreRecordingUi) {
-                recordingMode(false)
-            }
-            return
-        }
-
-        // Start timer case
-        timerText?.text = ""
-        timerText?.visibility = VISIBLE
-        if (timer == null) {
-            return
-        }
-        mTimer = Timer()
-        mTimer?.scheduleAtFixedRate(timer, 0L, 1000L)
-        if (!ignoreRecordingUi) {
-            recordingMode(true)
-        }
+        if (wrap_view == null) return
+        photoCameraPostHandler = PhotoCameraPostHandler(wrap_view!!, this, requireContext())
+        recordVideoPostHandler = RecordVideoPostHandler(wrap_view!!, this, requireContext())
+        gifPostHandler = GifPostHandler(wrap_view!!, this, requireContext())
+        photoCameraPostHandler.initialize()
+        recordVideoPostHandler.initialize()
+        gifPostHandler.initialize()
     }
 
     override fun onStart() {
         super.onStart()
-        // Get view pager current page position
-        val currentPagePosition = (newPostViewPager as TsuViewPager).currentItem
         // Handle view pager after changing
         postTypeUiHelper.handleViewPagerChange(
             requireContext(),
-            currentPagePosition,
-            view,
-            fragments
+            0,
+            view
         )
     }
 
@@ -248,15 +198,15 @@ open class PostTypesFragment : Fragment(), Serializable {
         flashLayout_id?.setOnClickListener {
 
             // Handling camera flash mode functionality
-            when ((newPostViewPager as TsuViewPager).currentItem) {
+            when (position) {
                 0 -> {
-                    (fragments[0] as PhotoCameraPostFragment).handleFlash()
+                    photoCameraPostHandler.handleFlash()
                 }
                 1 -> {
-                    (fragments[1] as RecordVideoPostFragment).handleFlash()
+                    recordVideoPostHandler.handleFlash()
                 }
                 else -> {
-                    (fragments[2] as GifPostFragment).handleFlash()
+                    gifPostHandler.handleFlash()
                 }
             }
 
@@ -316,22 +266,18 @@ open class PostTypesFragment : Fragment(), Serializable {
     private fun handleStartCamera() {
 
         // Get view pager current page position
-        when ((newPostViewPager as TsuViewPager).currentItem) {
+        when (position) {
             0 -> {
-                val fragment = fragments[0] as PhotoCameraPostFragment
 
-                handlePhotoCaptureClicked(fragment)
+                handlePhotoCaptureClicked(photoCameraPostHandler)
             }
             1 -> {
-                val fragment = fragments[1] as RecordVideoPostFragment
 
-                handleVideoRecordClicked(fragment)
+                handleVideoRecordClicked(recordVideoPostHandler)
             }
             else -> {
 
-                val fragment = fragments[2] as GifPostFragment
-
-                handleRecordGifClicked(fragment)
+                handleRecordGifClicked(gifPostHandler)
             }
         }
     }
@@ -339,109 +285,69 @@ open class PostTypesFragment : Fragment(), Serializable {
     /**
      *  Changing Ui when user click gif record button and handle this functionality
      */
-    private fun handleRecordGifClicked(fragment: GifPostFragment) {
+    private fun handleRecordGifClicked(handler: GifPostHandler) {
 
-        if (isTimerRunning()) {
-            startRecordingTimer(false, ignoreRecordingUi = true)
-            fragment.stopRecording {
-                this.filePath = it
-
-                if (this.filePath == null) {
-                    Toast.makeText(
-                        requireContext(),
-                        "Can not continue, file is empty.",
-                        Toast.LENGTH_LONG
-                    ).show()
-                    return@stopRecording
-                }
-
-                val mBundle = Bundle()
-                mBundle.putString("filePath", filePath)
-                mBundle.putString("originalFilePath", filePath)
-                mBundle.putInt("fromScreenType", getScreenType())
-                mBundle.putSerializable("postTypeFragment", this)
-                sharedViewModel!!.select(false)
-                // Configure trimmer video limitation
-                VideoTrimmerUtil.TYPE = 2
-                Handler(Looper.getMainLooper()).postDelayed({
-                    findParentNavController().navigate(R.id.postTrimFragment, mBundle)
-                }, 200)
+        if (gifPostHandler.isRecording()) {
+            gifPostHandler.stopRecordGif {
+                navigateTrimFromGifSectionScreen(it)
             }
-            return
+        } else {
+            recordingMode(true)
+            handler.recordGif()
         }
+    }
 
-        fragment.recordGif { onCancel: Boolean, onStart: Boolean ->
+    private fun navigateTrimFromGifSectionScreen(it: String) {
 
-            if (onCancel) {
-                this.filePath = null
-                startRecordingTimer(false)
-                return@recordGif
-            }
-
-            if (onStart) {
-                this.filePath = null
-                startRecordingTimer(true)
-                return@recordGif
-            }
-        }
+        this.filePath = it
+        MainActivity.draftFiles.add(filePath!!)
+        val mBundle = Bundle()
+        mBundle.putString("filePath", filePath)
+        mBundle.putString("originalFilePath", filePath)
+        mBundle.putInt("fromScreenType", position)
+        mBundle.putSerializable("postTypeFragment", this)
+        sharedViewModel!!.select(false)
+        // Configure trimmer video limitation
+        VideoTrimmerUtil.TYPE = 2
+        findParentNavController().navigate(R.id.postTrimFragment, mBundle)
     }
 
     /**
      *  Changing Ui when user click video record button and handle this functionality
      */
-    private fun handleVideoRecordClicked(fragment: RecordVideoPostFragment) {
+    private fun handleVideoRecordClicked(handler: RecordVideoPostHandler) {
 
-        if (isTimerRunning()) {
-            startRecordingTimer(false, ignoreRecordingUi = true)
-            fragment.stopRecording {
-                this.filePath = it
-
-                if (this.filePath == null) {
-                    Toast.makeText(
-                        requireContext(),
-                        "Can not continue, file is empty.",
-                        Toast.LENGTH_LONG
-                    ).show()
-                    return@stopRecording
-                }
-
-                val mBundle = Bundle()
-                mBundle.putString("filePath", filePath)
-                mBundle.putString("originalFilePath", filePath)
-                mBundle.putInt("fromScreenType", getScreenType())
-                mBundle.putSerializable("postTypeFragment", this)
-                sharedViewModel!!.select(false)
-                // Configure trimmer video limitation
-                VideoTrimmerUtil.TYPE = 1
-                Handler(Looper.getMainLooper()).postDelayed({
-                    findParentNavController().navigate(R.id.postTrimFragment, mBundle)
-                }, 200)
+        if (recordVideoPostHandler.isRecording()) {
+            recordVideoPostHandler.stopRecording {
+                navigateTrimFromVideoSectionScreen(it)
             }
-            return
+        } else {
+            recordingMode(true)
+            handler.recordVideo()
         }
+    }
 
-        fragment.recordVideo { onCancel: Boolean, onStart: Boolean ->
+    private fun navigateTrimFromVideoSectionScreen(it: String) {
 
-            if (onCancel) {
-                this.filePath = null
-                startRecordingTimer(false)
-                return@recordVideo
-            }
-
-            if (onStart) {
-                this.filePath = null
-                startRecordingTimer(true)
-                return@recordVideo
-            }
-        }
+        this.filePath = it
+        MainActivity.draftFiles.add(filePath!!)
+        val mBundle = Bundle()
+        mBundle.putString("filePath", filePath)
+        mBundle.putString("originalFilePath", filePath)
+        mBundle.putInt("fromScreenType", position)
+        mBundle.putSerializable("postTypeFragment", this)
+        sharedViewModel?.select(false)
+        // Configure trimmer video limitation
+        VideoTrimmerUtil.TYPE = 1
+        findParentNavController().navigate(R.id.postTrimFragment, mBundle)
     }
 
     /**
      *  Changing Ui when user click capture button and handle this functionality
      */
-    private fun handlePhotoCaptureClicked(fragment: PhotoCameraPostFragment) {
+    private fun handlePhotoCaptureClicked(handler: PhotoCameraPostHandler) {
 
-        fragment.capturePicture {
+        handler.capturePicture {
             this.filePath = it
 
             if (this.filePath == null) {
@@ -453,6 +359,7 @@ open class PostTypesFragment : Fragment(), Serializable {
                 return@capturePicture
             }
 
+            MainActivity.draftFiles.add(filePath!!)
             next(
                 photoUri = Uri.parse(filePath),
                 originalFilePath = filePath,
@@ -462,47 +369,54 @@ open class PostTypesFragment : Fragment(), Serializable {
     }
 
     /**
-     *  Return is timer is running
-     */
-    private fun isTimerRunning(): Boolean {
-        return timerText?.visibility == VISIBLE
-    }
-
-    /**
      *  Changing Camera id when user click camera switch button
      */
     private fun handleSwitchCamera() {
 
         // Get view pager current page position
-        when ((newPostViewPager as TsuViewPager).currentItem) {
+        when (position) {
             0 -> {
-                (fragments[0] as PhotoCameraPostFragment).switchCamera()
+                photoCameraPostHandler.switchCamera()
             }
             1 -> {
-                (fragments[1] as RecordVideoPostFragment).switchCamera()
+                recordVideoPostHandler.switchCamera()
             }
             else -> {
-                (fragments[2] as GifPostFragment).switchCamera()
+                gifPostHandler.switchCamera()
             }
         }
     }
 
-    /**
-     *  Return screen type
-     *
-     *  - 0 value is Photo section
-     *  - 1 value is Video section
-     *  - 2 value is Gif section
-     */
-    private fun getScreenType(): Int {
-
-        return (newPostViewPager as TsuViewPager).currentItem
-    }
-
     private fun initUi() {
 
-        // Init new post view pager
-        initNewPostViewPagerAdapter()
+        // listen camera view swipe
+        wrap_view?.onSwipeListener {
+
+            if (!enableSwiping) {
+                return@onSwipeListener
+            }
+
+            if (!it) {
+                if (position < 2) {
+                    position++
+                }
+            } else {
+                if (position > 0) {
+                    position--
+                }
+            }
+
+            // Handle view pager after changing
+            postTypeUiHelper.handleViewPagerChange(
+                requireContext(),
+                position,
+                view
+            )
+
+            handleSpeedIcon(false)
+            handleFlashIcon(false)
+            handleSoundIcon(true)
+        }
         // Set default Camera Mode
         postTypeUiHelper.setChoose(
             PHOTO_CLICK,
@@ -517,46 +431,6 @@ open class PostTypesFragment : Fragment(), Serializable {
      */
     private fun initViewModels() {
         sharedViewModel = ViewModelProvider(requireActivity()).get(SharedViewModel::class.java)
-    }
-
-    /**
-     *  Initialize <Photo, Video, Gif> view pagers
-     */
-    private fun initNewPostViewPagerAdapter() {
-
-        val newPostAdapter = NewPostViewPager(childFragmentManager, fragments.size, fragments)
-        (newPostViewPager as TsuViewPager).setPageTransformer(true, ZoomOutPageTransformer())
-        (newPostViewPager as TsuViewPager).offscreenPageLimit = 3
-        (newPostViewPager as TsuViewPager).adapter = newPostAdapter
-        (newPostViewPager as TsuViewPager).addOnPageChangeListener(object :
-            ViewPager.OnPageChangeListener {
-            override fun onPageScrolled(
-                position: Int,
-                positionOffset: Float,
-                positionOffsetPixels: Int
-            ) {
-
-            }
-
-            override fun onPageSelected(position: Int) {
-                // Handle view pager after changing
-                postTypeUiHelper.handleViewPagerChange(
-                    requireContext(),
-                    position,
-                    view,
-                    fragments
-                )
-
-                handleSpeedIcon(false)
-                handleFlashIcon(false)
-                handleSoundIcon(true)
-                startRecordingTimer(false, ignoreRecordingUi = true)
-            }
-
-            override fun onPageScrollStateChanged(state: Int) {
-
-            }
-        })
     }
 
     /**
@@ -669,7 +543,7 @@ open class PostTypesFragment : Fragment(), Serializable {
             camera_rotate_id?.show(animate = true, duration = 500)
             (newPostViewPager as? TsuViewPager)?.enableSwiping(true)
             if (!applyFilter) {
-                changeCameraFilter((filterVideoAdapter?.getData()?.get(0)?.filterObject as Filters))
+                changeCameraFilter((filterVideoAdapter?.getData()?.get(0)?.filterObject as Filter))
             }
         }
     }
@@ -709,8 +583,8 @@ open class PostTypesFragment : Fragment(), Serializable {
 
         selectedFilterItemPosition = position
 
-        filterNameBuble?.text = (itemModel.filterObject as Filters).value
-        changeCameraFilter((itemModel.filterObject as Filters))
+        filterNameBuble?.text = "filter"
+        changeCameraFilter((itemModel.filterObject as Filter))
     }
 
     /**
@@ -721,17 +595,17 @@ open class PostTypesFragment : Fragment(), Serializable {
     /**
      *  Changing Camera filter
      */
-    private fun changeCameraFilter(filters: Filters) {
+    private fun changeCameraFilter(filters: Filter) {
 
-        return when ((newPostViewPager as TsuViewPager).currentItem) {
+        return when (position) {
             0 -> {
-                (fragments[0] as PhotoCameraPostFragment).handleFilter(filters)
+                photoCameraPostHandler.handleFilter(filters)
             }
             1 -> {
-                (fragments[1] as RecordVideoPostFragment).handleFilter(filters)
+                recordVideoPostHandler.handleFilter(filters)
             }
             else -> {
-                (fragments[2] as GifPostFragment).handleFilter(filters)
+                gifPostHandler.handleFilter(filters)
             }
         }
     }

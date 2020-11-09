@@ -14,11 +14,11 @@
         app:layout_constraintTop_toTopOf="parent"
         app:menu="@menu/post_top_menu" />
 
-    <social.tsu.android.ui.post.view.viewpager.TsuViewPager
-        android:id="@+id/newPostViewPager"
+    <social.tsu.cameracapturer.camera.CameraView
+        android:id="@+id/wrap_view"
         android:layout_width="0dp"
         android:layout_height="0dp"
-        app:layout_constraintBottom_toTopOf="@+id/post_bottom_navbar"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />

@@ -9,6 +9,7 @@ import social.tsu.android.R
 import social.tsu.android.ext.show
 import social.tsu.android.ui.post.model.FilterVideoModel
 import social.tsu.android.utils.hide
+import social.tsu.cameracapturer.filter.Filter
 import social.tsu.camerarecorder.widget.Filters
 
 class FilterVideoAdapter : RecyclerView.Adapter<FilterVideoAdapter.TrimVideoViewHolder>() {
@@ -50,8 +51,7 @@ class FilterVideoAdapter : RecyclerView.Adapter<FilterVideoAdapter.TrimVideoView
 
             val chooseLayer = itemView.chooseLayer
             val filterText = itemView.filterNameText
-
-            itemView.profile_image.setImageBitmap(itemModel.bitmaps)
+            val image = itemView.profile_image
 
             itemView.setOnClickListener {
                 itemClickListener?.let {
@@ -59,7 +59,7 @@ class FilterVideoAdapter : RecyclerView.Adapter<FilterVideoAdapter.TrimVideoView
                 }
             }
 
-            filterText.text = (itemModel.filterObject as Filters).value
+            filterText.text = "filter"
 
             if (!itemModel.isSelected) {
                 chooseLayer.hide()

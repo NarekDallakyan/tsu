@@ -18,8 +18,8 @@ android {
     compileSdkVersion 30
     buildToolsVersion "30.0.2"
     compileOptions {
-        sourceCompatibility JavaVersion.VERSION_1_8
-        targetCompatibility JavaVersion.VERSION_1_8
+        sourceCompatibility java_version
+        targetCompatibility java_version
     }
     lintOptions {
         checkReleaseBuilds false
@@ -307,7 +307,7 @@ dependencies {
     implementation 'jp.wasabeef:blurry:4.0.0'
 
     implementation 'com.github.AbedElazizShe:LightCompressor:0.7.5'
-    implementation 'jp.co.cyberagent.android:gpuimage:2.1.0'
+    //implementation 'jp.co.cyberagent.android:gpuimage:2.1.0'
 
     // Load modules
     implementation project(':camera')

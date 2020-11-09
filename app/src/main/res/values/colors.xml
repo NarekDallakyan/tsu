@@ -136,5 +136,6 @@
     <color name="tsu_pink">#FA21A3</color>
     <color name="tsu_dark_yellow">#976304</color>
     <color name="transparent">#00FFFFFF</color>
+    <color name="white_color">#FFFFFF</color>
 
 </resources>

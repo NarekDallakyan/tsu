@@ -971,6 +971,9 @@ class PostDraftFragment : Fragment() {
             return
         }
 
+        // remove draft array
+        MainActivity.draftFiles.clear()
+
         sharedViewModel?.select(true)
         lastSnackbar = Snackbar.make(
             requireView(),
