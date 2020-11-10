@@ -1,4 +1,4 @@
-package social.tsu.overlay;
+package social.tsu.overlay.view;
 
 import android.content.Context;
 import android.graphics.Color;
@@ -17,6 +17,8 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import java.util.ArrayList;
 import java.util.List;
+
+import social.tsu.overlay.R;
 
 /**
  * Created by Ahmed Adel on 5/8/17.

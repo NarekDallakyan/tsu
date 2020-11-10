@@ -1,4 +1,4 @@
-package social.tsu.overlay.Utils;
+package social.tsu.overlay.utils;
 
 public class DimensionData {
 

@@ -1,10 +1,9 @@
-package social.tsu.overlay;
+package social.tsu.overlay.view;
 
 import android.annotation.SuppressLint;
 import android.annotation.TargetApi;
 import android.app.ProgressDialog;
 import android.content.Context;
-import android.content.Intent;
 import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.graphics.SurfaceTexture;
@@ -13,8 +12,6 @@ import android.media.AudioManager;
 import android.media.MediaMetadataRetriever;
 import android.media.MediaPlayer;
 import android.net.Uri;
-import android.os.Build;
-import android.os.Bundle;
 import android.os.Environment;
 import android.provider.DocumentsContract;
 import android.provider.MediaStore;
@@ -23,14 +20,13 @@ import android.util.Log;
 import android.view.Surface;
 import android.view.TextureView;
 import android.view.View;
-import android.view.Window;
-import android.view.WindowManager;
+import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.content.ContextCompat;
-import androidx.core.content.res.ResourcesCompat;
 
 import com.bumptech.glide.Glide;
 import com.github.hiteshsondhi88.libffmpeg.FFmpeg;
@@ -43,22 +39,21 @@ import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 
-import social.tsu.overlay.Utils.DimensionData;
+import social.tsu.overlay.R;
 import social.tsu.overlay.photoeditor.OnPhotoEditorListener;
 import social.tsu.overlay.photoeditor.PhotoEditor;
 import social.tsu.overlay.photoeditor.PhotoEditorView;
 import social.tsu.overlay.photoeditor.SaveSettings;
-import social.tsu.overlay.photoeditor.TextStyleBuilder;
 import social.tsu.overlay.photoeditor.ViewType;
+import social.tsu.overlay.utils.DimensionData;
 
 import static android.media.MediaMetadataRetriever.METADATA_KEY_VIDEO_ROTATION;
-import static social.tsu.overlay.Utils.Utils.getScaledDimension;
+import static social.tsu.overlay.utils.Utils.getScaledDimension;
 
-public class PreviewVideoActivity extends AppCompatActivity implements OnPhotoEditorListener, PropertiesBSFragment.Properties,
-        View.OnClickListener,
+public class OverlayHandler implements OnPhotoEditorListener, PropertiesBSFragment.Properties,
         StickerBSFragment.StickerListener {
 
-    private static final String TAG = PreviewVideoActivity.class.getSimpleName();
+    private static final String TAG = OverlayHandler.class.getSimpleName();
     private PhotoEditor mPhotoEditor;
     private String globalVideoUrl = "";
     private PropertiesBSFragment propertiesBSFragment;
@@ -79,16 +74,32 @@ public class PreviewVideoActivity extends AppCompatActivity implements OnPhotoEd
 
     private MediaPlayer.OnCompletionListener onCompletionListener = mediaPlayer -> mediaPlayer.start();
 
-    @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        requestWindowFeature(Window.FEATURE_NO_TITLE);
-        getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
-        setContentView(R.layout.activity_preview_video);
-        initViews();
-        Glide.with(this).load(R.drawable.trans).centerCrop().into(((PhotoEditorView) findViewById(R.id.ivImage)).getSource());
+    private Context context;
+    private PhotoEditorView photoEditorView;
+    private TextureView videoSurface;
+    private EditText mAddTextEditText;
+    private AppCompatActivity appCompatActivity;
+    private int mColorCode;
 
-        videoPath = getIntent().getStringExtra("DATA");
+
+    public void initialize(
+            AppCompatActivity appCompatActivity,
+            Context context,
+            PhotoEditorView photoEditorView,
+            TextureView videoSurface,
+            EditText mAddTextEditText
+    ) {
+        this.mAddTextEditText = mAddTextEditText;
+        this.appCompatActivity = appCompatActivity;
+        this.context = context;
+        this.photoEditorView = photoEditorView;
+        this.videoSurface = videoSurface;
+    }
+
+    public void onCreate(String path) {
+        initViews();
+        Glide.with(context).load(R.drawable.trans).centerCrop().into(photoEditorView.getSource());
+        videoPath = path;
         MediaMetadataRetriever retriever = new MediaMetadataRetriever();
         retriever.setDataSource(videoPath);
         String metaRotation = retriever.extractMetadata(METADATA_KEY_VIDEO_ROTATION);
@@ -102,48 +113,33 @@ public class PreviewVideoActivity extends AppCompatActivity implements OnPhotoEd
         }
         setCanvasAspectRatio();
 
-        findViewById(R.id.videoSurface).getLayoutParams().width = newCanvasWidth;
-        findViewById(R.id.videoSurface).getLayoutParams().height = newCanvasHeight;
+        videoSurface.getLayoutParams().width = newCanvasWidth;
+        videoSurface.getLayoutParams().height = newCanvasHeight;
 
-        findViewById(R.id.ivImage).getLayoutParams().width = newCanvasWidth;
-        findViewById(R.id.ivImage).getLayoutParams().width = newCanvasWidth;
+        photoEditorView.getLayoutParams().width = newCanvasWidth;
+        photoEditorView.getLayoutParams().width = newCanvasWidth;
     }
 
     private void initViews() {
-        fFmpeg = FFmpeg.getInstance(this);
-        progressDialog = new ProgressDialog(this);
+        fFmpeg = FFmpeg.getInstance(context);
+        progressDialog = new ProgressDialog(context);
         mStickerBSFragment = new StickerBSFragment();
         mStickerBSFragment.setStickerListener(this);
         propertiesBSFragment = new PropertiesBSFragment();
         propertiesBSFragment.setPropertiesChangeListener(this);
-        mPhotoEditor = new PhotoEditor.Builder(this, findViewById(R.id.ivImage))
+        mPhotoEditor = new PhotoEditor.Builder(context, photoEditorView)
                 .setPinchTextScalable(true) // set flag to make text scalable when pinch
-                .setDeleteView(findViewById(R.id.imgDelete))
-                //.setDefaultTextTypeface(mTextRobotoTf)
-                //.setDefaultEmojiTypeface(mEmojiTypeFace)
                 .build(); // build photo editor sdk
 
         mPhotoEditor.setOnPhotoEditorListener(this);
 
-        findViewById(R.id.imgClose).setOnClickListener(this);
-        findViewById(R.id.imgDone).setOnClickListener(this);
-        findViewById(R.id.imgDraw).setOnClickListener(this);
-        findViewById(R.id.imgText).setOnClickListener(this);
-        findViewById(R.id.imgUndo).setOnClickListener(this);
-        findViewById(R.id.imgSticker).setOnClickListener(this);
-
-
-        ((TextureView) findViewById(R.id.videoSurface)).setSurfaceTextureListener(new TextureView.SurfaceTextureListener() {
+        videoSurface.setSurfaceTextureListener(new TextureView.SurfaceTextureListener() {
             @Override
             public void onSurfaceTextureAvailable(SurfaceTexture surfaceTexture, int i, int i1) {
-//                activityHomeBinding.videoSurface.getLayoutParams().height=640;
-//                activityHomeBinding.videoSurface.getLayoutParams().width=720;
                 Surface surface = new Surface(surfaceTexture);
 
                 try {
                     mediaPlayer = new MediaPlayer();
-//                    mediaPlayer.setDataSource("http://daily3gp.com/vids/747.3gp");
-
                     Log.d("VideoPath>>", videoPath);
                     mediaPlayer.setDataSource(videoPath);
                     mediaPlayer.setSurface(surface);
@@ -212,8 +208,6 @@ public class PreviewVideoActivity extends AppCompatActivity implements OnPhotoEd
         } catch (FFmpegNotSupportedException e) {
             e.printStackTrace();
         }
-
-
     }
 
     public void executeCommand(String[] command, final String absolutePath) {
@@ -221,11 +215,6 @@ public class PreviewVideoActivity extends AppCompatActivity implements OnPhotoEd
             fFmpeg.execute(command, new FFmpegExecuteResponseHandler() {
                 @Override
                 public void onSuccess(String s) {
-                    Log.d("CommandExecute", "onSuccess" + "  " + s);
-                    Toast.makeText(getApplicationContext(), "Sucess", Toast.LENGTH_SHORT).show();
-                    Intent i = new Intent(PreviewVideoActivity.this, VideoPreviewActivity.class);
-                    i.putExtra("DATA", absolutePath);
-                    startActivity(i);
 
                 }
 
@@ -260,36 +249,6 @@ public class PreviewVideoActivity extends AppCompatActivity implements OnPhotoEd
         }
     }
 
-    @Override
-    public void onClick(View v) {
-        int id = v.getId();
-        if (id == R.id.imgClose) {
-            onBackPressed();
-        } else if (id == R.id.imgDone) {
-            saveImage();
-        } else if (id == R.id.imgDraw) {
-            setDrawingMode();
-        } else if (id == R.id.imgText) {
-            TextEditorDialogFragment textEditorDialogFragment = TextEditorDialogFragment.show(this, 0);
-            textEditorDialogFragment.setOnTextEditorListener(new TextEditorDialogFragment.TextEditor() {
-
-                @Override
-                public void onDone(String inputText, int colorCode, int position) {
-                    final TextStyleBuilder styleBuilder = new TextStyleBuilder();
-                    styleBuilder.withTextColor(colorCode);
-                    Typeface typeface = ResourcesCompat.getFont(PreviewVideoActivity.this, TextEditorDialogFragment.getDefaultFontIds(PreviewVideoActivity.this).get(position));
-                    styleBuilder.withTextFont(typeface);
-                    mPhotoEditor.addText(inputText, styleBuilder, position);
-                }
-            });
-        } else if (id == R.id.imgUndo) {
-            Log.d("canvas>>", mPhotoEditor.undoCanvas() + "");
-            mPhotoEditor.clearBrushAllViews();
-        } else if (id == R.id.imgSticker) {
-            mStickerBSFragment.show(getSupportFragmentManager(), mStickerBSFragment.getTag());
-        }
-    }
-
     private void setCanvasAspectRatio() {
 
         originalDisplayHeight = getDisplayHeight();
@@ -301,19 +260,6 @@ public class PreviewVideoActivity extends AppCompatActivity implements OnPhotoEd
         newCanvasWidth = displayDiamenion.width;
         newCanvasHeight = displayDiamenion.height;
 
-    }
-
-
-    private void setDrawingMode() {
-        if (mPhotoEditor.getBrushDrawableMode()) {
-            mPhotoEditor.setBrushDrawingMode(false);
-
-            findViewById(R.id.imgDraw).setBackgroundColor(ContextCompat.getColor(this, R.color.black_trasp));
-        } else {
-            mPhotoEditor.setBrushDrawingMode(true);
-            findViewById(R.id.imgDraw).setBackgroundColor(ContextCompat.getColor(this, R.color.colorPrimary));
-            propertiesBSFragment.show(getSupportFragmentManager(), propertiesBSFragment.getTag());
-        }
     }
 
     @SuppressLint("MissingPermission")
@@ -333,17 +279,17 @@ public class PreviewVideoActivity extends AppCompatActivity implements OnPhotoEd
             mPhotoEditor.saveAsFile(file.getAbsolutePath(), saveSettings, new PhotoEditor.OnSaveListener() {
                 @Override
                 public void onSuccess(@NonNull String imagePath) {
-                    PreviewVideoActivity.this.imagePath = imagePath;
+                    OverlayHandler.this.imagePath = imagePath;
                     Log.d("imagePath>>", imagePath);
                     Log.d("imagePath2>>", Uri.fromFile(new File(imagePath)).toString());
-                    ((PhotoEditorView) findViewById(R.id.ivImage)).getSource().setImageURI(Uri.fromFile(new File(imagePath)));
-                    Toast.makeText(PreviewVideoActivity.this, "Saved successfully...", Toast.LENGTH_SHORT).show();
+                    photoEditorView.getSource().setImageURI(Uri.fromFile(new File(imagePath)));
+                    Toast.makeText(context, "Saved successfully...", Toast.LENGTH_SHORT).show();
                     applayWaterMark();
                 }
 
                 @Override
                 public void onFailure(@NonNull Exception exception) {
-                    Toast.makeText(PreviewVideoActivity.this, "Saving Failed...", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(context, "Saving Failed...", Toast.LENGTH_SHORT).show();
                 }
             });
         } catch (IOException e) {
@@ -355,21 +301,6 @@ public class PreviewVideoActivity extends AppCompatActivity implements OnPhotoEd
 
     private void applayWaterMark() {
 
-//        imagePath = generatePath(Uri.fromFile(new File(imagePath)),PreviewVideoActivity.this);
-
-//        MediaMetadataRetriever retriever = new MediaMetadataRetriever();
-//        retriever.setDataSource(videoPath);
-//        int width = Integer.valueOf(retriever.extractMetadata(MediaMetadataRetriever.METADATA_KEY_VIDEO_WIDTH));
-//        int height = Integer.valueOf(retriever.extractMetadata(MediaMetadataRetriever.METADATA_KEY_VIDEO_HEIGHT));
-        /*if (width > height) {
-            int tempWidth = width;
-            width = height;
-            height = tempWidth;
-        }*/
-
-//        Log.d(">>", "width>> " + width + "height>> " + height);
-//        retriever.release();
-
         File output = new File(Environment.getExternalStorageDirectory()
                 + File.separator + ""
                 + System.currentTimeMillis() + ".mp4");
@@ -379,15 +310,9 @@ public class PreviewVideoActivity extends AppCompatActivity implements OnPhotoEd
             exeCmd.add("-y");
             exeCmd.add("-i");
             exeCmd.add(videoPath);
-//            exeCmd.add("-framerate 30000/1001 -loop 1");
             exeCmd.add("-i");
             exeCmd.add(imagePath);
             exeCmd.add("-filter_complex");
-//            exeCmd.add("-strict");
-//            exeCmd.add("-2");
-//            exeCmd.add("-map");
-//            exeCmd.add("[1:v]scale=(iw+(iw/2)):(ih+(ih/2))[ovrl];[0:v][ovrl]overlay=x=(main_w-overlay_w)/2:y=(main_h-overlay_h)/2");
-//            exeCmd.add("[1:v]scale=720:1280:1823[ovrl];[0:v][ovrl]overlay=x=0:y=0");
             exeCmd.add("[1:v]scale=" + DRAW_CANVASW + ":" + DRAW_CANVASH + "[ovrl];[0:v][ovrl]overlay=x=0:y=0");
             exeCmd.add("-c:v");
             exeCmd.add("libx264");
@@ -405,8 +330,6 @@ public class PreviewVideoActivity extends AppCompatActivity implements OnPhotoEd
             for (int k = 0; k < newCommand.length; k++) {
                 Log.d("CMD==>>", newCommand[k] + "");
             }
-
-//            newCommand = new String[]{"-i", videoPath, "-i", imagePath, "-preset", "ultrafast", "-filter_complex", "[1:v]scale=2*trunc(" + (width / 2) + "):2*trunc(" + (height/ 2) + ") [ovrl], [0:v][ovrl]overlay=0:0" , output.getAbsolutePath()};
             executeCommand(newCommand, output.getAbsolutePath());
         } catch (Exception e) {
             e.printStackTrace();
@@ -417,29 +340,16 @@ public class PreviewVideoActivity extends AppCompatActivity implements OnPhotoEd
     @Override
     public void onStickerClick(Bitmap bitmap) {
         mPhotoEditor.setBrushDrawingMode(false);
-        findViewById(R.id.imgDraw).setBackgroundColor(ContextCompat.getColor(this, R.color.black_trasp));
         mPhotoEditor.addImage(bitmap);
     }
 
     @Override
     public void onEditTextChangeListener(final View rootView, String text, int colorCode, final int position) {
-        TextEditorDialogFragment textEditorDialogFragment =
-                TextEditorDialogFragment.show(this, text, colorCode, position);
-        textEditorDialogFragment.setOnTextEditorListener(new TextEditorDialogFragment.TextEditor() {
-            @Override
-            public void onDone(String inputText, int colorCode, int position) {
-                final TextStyleBuilder styleBuilder = new TextStyleBuilder();
-                styleBuilder.withTextColor(colorCode);
-                Typeface typeface = ResourcesCompat.getFont(PreviewVideoActivity.this, TextEditorDialogFragment.getDefaultFontIds(PreviewVideoActivity.this).get(position));
-                styleBuilder.withTextFont(typeface);
-                mPhotoEditor.editText(rootView, inputText, styleBuilder, position);
-            }
-        });
     }
 
     public String generatePath(Uri uri, Context context) {
         String filePath = null;
-        final boolean isKitKat = Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT;
+        final boolean isKitKat = true;
         if (isKitKat) {
             filePath = generateFromKitkat(uri, context);
         }
@@ -489,13 +399,13 @@ public class PreviewVideoActivity extends AppCompatActivity implements OnPhotoEd
 
     private int getDisplayWidth() {
         DisplayMetrics displayMetrics = new DisplayMetrics();
-        getWindowManager().getDefaultDisplay().getMetrics(displayMetrics);
+        appCompatActivity.getWindowManager().getDefaultDisplay().getMetrics(displayMetrics);
         return displayMetrics.widthPixels;
     }
 
     private int getDisplayHeight() {
         DisplayMetrics displayMetrics = new DisplayMetrics();
-        getWindowManager().getDefaultDisplay().getMetrics(displayMetrics);
+        appCompatActivity.getWindowManager().getDefaultDisplay().getMetrics(displayMetrics);
         return displayMetrics.heightPixels;
     }
 
@@ -534,5 +444,14 @@ public class PreviewVideoActivity extends AppCompatActivity implements OnPhotoEd
 
     }
 
+    public void colorItemClicked(int color) {
 
+        mColorCode = color;
+        mAddTextEditText.setTextColor(mColorCode);
+    }
+
+    public void fontItemClicked(Typeface font) {
+
+        mAddTextEditText.setTypeface(font);
+    }
 }

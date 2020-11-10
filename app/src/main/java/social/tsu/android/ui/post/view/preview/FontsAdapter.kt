@@ -16,7 +16,10 @@ class FontsAdapter : RecyclerView.Adapter<FontsAdapter.FontsViewHolder>() {
 
     class FontsViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
 
-        fun onBind(data: FontModel) {
+        fun onBind(
+            data: FontModel,
+            itemClickListener: ((position: Int, itemModel: FontModel) -> Unit)?
+        ) {
 
             val fontImage = itemView.fontImage
             val fontBorderLayout = itemView.fontBorderLayout
@@ -29,6 +32,12 @@ class FontsAdapter : RecyclerView.Adapter<FontsAdapter.FontsViewHolder>() {
                 fontBorderLayout.background = null
             }
             fontImage.setImageResource(data.iconResource)
+
+            itemView.setOnClickListener {
+                if (itemClickListener != null) {
+                    itemClickListener(adapterPosition, data)
+                }
+            }
         }
     }
 
@@ -40,7 +49,7 @@ class FontsAdapter : RecyclerView.Adapter<FontsAdapter.FontsViewHolder>() {
     }
 
     override fun onBindViewHolder(holder: FontsViewHolder, position: Int) {
-        holder.onBind(fontModelList[position])
+        holder.onBind(fontModelList[position], itemClickListener)
     }
 
     override fun getItemCount(): Int = fontModelList.size

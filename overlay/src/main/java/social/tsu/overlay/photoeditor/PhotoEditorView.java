@@ -21,8 +21,8 @@ import androidx.annotation.RequiresApi;
 import androidx.viewpager.widget.PagerAdapter;
 
 import social.tsu.overlay.R;
-import social.tsu.overlay.Utils.InfinitePagerAdapter;
-import social.tsu.overlay.Utils.InfiniteViewPager;
+import social.tsu.overlay.utils.InfinitePagerAdapter;
+import social.tsu.overlay.utils.InfiniteViewPager;
 
 
 /**

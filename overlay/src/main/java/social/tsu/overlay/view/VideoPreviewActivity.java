@@ -1,4 +1,4 @@
-package social.tsu.overlay;
+package social.tsu.overlay.view;
 
 import android.graphics.SurfaceTexture;
 import android.media.AudioManager;
@@ -14,10 +14,11 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import java.io.IOException;
 
-import social.tsu.overlay.Utils.DimensionData;
+import social.tsu.overlay.R;
+import social.tsu.overlay.utils.DimensionData;
 
 import static android.media.MediaMetadataRetriever.METADATA_KEY_VIDEO_ROTATION;
-import static social.tsu.overlay.Utils.Utils.getScaledDimension;
+import static social.tsu.overlay.utils.Utils.getScaledDimension;
 
 public class VideoPreviewActivity extends AppCompatActivity {
 

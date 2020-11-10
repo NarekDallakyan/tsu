@@ -1,4 +1,4 @@
-package social.tsu.overlay;
+package social.tsu.overlay.view;
 
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -12,6 +12,9 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment;
+
+import social.tsu.overlay.R;
+import social.tsu.overlay.view.ColorPickerAdapter;
 
 public class PropertiesBSFragment extends BottomSheetDialogFragment implements SeekBar.OnSeekBarChangeListener {
 

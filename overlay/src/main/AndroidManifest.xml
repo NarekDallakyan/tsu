@@ -14,19 +14,15 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
         <activity
-            android:name=".VideoPreviewActivity"
+            android:name=".view.VideoPreviewActivity"
             android:theme="@style/AppTheme.NoActionBar">
 
         </activity>
         <activity
-            android:name=".PreviewVideoActivity"
+            android:name=".view.OverlayHandler"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme.NoActionBar" />
-        <activity
-            android:name=".PreviewPhotoActivity"
-            android:screenOrientation="portrait"
-            android:theme="@style/AppTheme.NoActionBar" />
-        <activity android:name=".OverlayMainActivity">
+        <activity android:name=".view.OverlayMainActivity">
 
         </activity>
     </application>

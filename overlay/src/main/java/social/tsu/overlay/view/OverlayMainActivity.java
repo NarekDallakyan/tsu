@@ -1,4 +1,4 @@
-package social.tsu.overlay;
+package social.tsu.overlay.view;
 
 import android.content.Intent;
 import android.os.Build;
@@ -15,7 +15,8 @@ import com.kbeanie.multipicker.api.entity.ChosenVideo;
 
 import java.util.List;
 
-import social.tsu.overlay.Utils.CameraUtils;
+import social.tsu.overlay.R;
+import social.tsu.overlay.utils.CameraUtils;
 
 public class OverlayMainActivity extends AppCompatActivity implements CameraUtils.OnCameraResult {
 
@@ -56,13 +57,6 @@ public class OverlayMainActivity extends AppCompatActivity implements CameraUtil
 
     @Override
     public void onSuccess(List<ChosenImage> images) {
-        if (images != null && images.size() > 0) {
-            Intent i = new Intent(OverlayMainActivity.this, PreviewPhotoActivity.class);
-            i.putExtra("DATA", images.get(0).getOriginalPath());
-            //binding.ivProfilePic.setImageURI(Uri.fromFile(selectedImageFile));
-            startActivity(i);
-
-        }
     }
 
     @Override
@@ -74,14 +68,13 @@ public class OverlayMainActivity extends AppCompatActivity implements CameraUtil
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         cameraUtils.onActivityResult(requestCode, resultCode, data);
-
     }
 
 
     @Override
     public void onVideoSuccess(List<ChosenVideo> list) {
         if (list != null && list.size() > 0) {
-            Intent i = new Intent(OverlayMainActivity.this, PreviewVideoActivity.class);
+            Intent i = new Intent(OverlayMainActivity.this, OverlayHandler.class);
             i.putExtra("DATA", list.get(0).getOriginalPath());
             //binding.ivProfilePic.setImageURI(Uri.fromFile(selectedImageFile));
             startActivity(i);

@@ -145,7 +145,7 @@ public class GPUImageRenderer implements GLSurfaceView.Renderer, GLTextureView.R
                 @Override
                 public void run() {
                     GPUImageNativeLibrary.YUVtoRBGA(data, width, height, glRgbBuffer.array());
-                    glTextureId = jp.co.cyberagent.android.gpuimage.util.OpenGlUtils.loadTexture(glRgbBuffer, width, height, glTextureId);
+                    glTextureId = OpenGlUtils.loadTexture(glRgbBuffer, width, height, glTextureId);
 
                     if (imageWidth != width) {
                         imageWidth = width;

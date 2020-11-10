@@ -1,4 +1,4 @@
-package social.tsu.overlay.Utils;
+package social.tsu.overlay.utils;
 
 /**
  * Created by jaypal on 4/1/18.

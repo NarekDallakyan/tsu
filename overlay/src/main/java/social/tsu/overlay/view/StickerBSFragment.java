@@ -1,4 +1,4 @@
-package social.tsu.overlay;
+package social.tsu.overlay.view;
 
 import android.annotation.SuppressLint;
 import android.app.Dialog;
@@ -18,6 +18,8 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.google.android.material.bottomsheet.BottomSheetBehavior;
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment;
+
+import social.tsu.overlay.R;
 
 public class StickerBSFragment extends BottomSheetDialogFragment {
 

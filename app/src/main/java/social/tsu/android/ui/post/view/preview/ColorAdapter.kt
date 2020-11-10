@@ -15,9 +15,13 @@ class ColorAdapter : RecyclerView.Adapter<ColorAdapter.ColorsViewHolder>() {
     private var colorModelList = arrayListOf<ColorModel>()
     private var itemClickListener: ((position: Int, itemModel: ColorModel) -> Unit)? = null
 
-    class ColorsViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
+    class ColorsViewHolder(itemView: View) :
+        RecyclerView.ViewHolder(itemView) {
 
-        fun onBind(data: ColorModel) {
+        fun onBind(
+            data: ColorModel,
+            itemClickListener: ((position: Int, itemModel: ColorModel) -> Unit)?
+        ) {
 
             val colorLayout = itemView.colorLayout
             val rnd = Random()
@@ -27,8 +31,13 @@ class ColorAdapter : RecyclerView.Adapter<ColorAdapter.ColorsViewHolder>() {
                 rnd.nextInt(256),
                 rnd.nextInt(256)
             )
-
             colorLayout.setBackgroundColor(color)
+            data.color = color
+            itemView.setOnClickListener {
+                if (itemClickListener != null) {
+                    itemClickListener(adapterPosition, data)
+                }
+            }
         }
     }
 
@@ -40,7 +49,7 @@ class ColorAdapter : RecyclerView.Adapter<ColorAdapter.ColorsViewHolder>() {
     }
 
     override fun onBindViewHolder(holder: ColorsViewHolder, position: Int) {
-        holder.onBind(colorModelList[position])
+        holder.onBind(colorModelList[position], itemClickListener)
     }
 
     override fun getItemCount(): Int = colorModelList.size

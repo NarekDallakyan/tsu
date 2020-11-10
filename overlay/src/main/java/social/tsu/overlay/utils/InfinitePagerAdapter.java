@@ -1,4 +1,4 @@
-package social.tsu.overlay.Utils;
+package social.tsu.overlay.utils;
 
 import android.database.DataSetObserver;
 import android.os.Parcelable;
