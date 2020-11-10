@@ -17,11 +17,11 @@ import android.provider.DocumentsContract;
 import android.provider.MediaStore;
 import android.util.DisplayMetrics;
 import android.util.Log;
+import android.view.Gravity;
 import android.view.Surface;
 import android.view.TextureView;
 import android.view.View;
 import android.widget.EditText;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
@@ -60,7 +60,6 @@ public class OverlayHandler implements OnPhotoEditorListener {
     private ArrayList<String> exeCmd;
     FFmpeg fFmpeg;
     private String[] newCommand;
-    private ProgressDialog progressDialog;
 
     private int originalDisplayWidth;
     private int originalDisplayHeight;
@@ -76,7 +75,7 @@ public class OverlayHandler implements OnPhotoEditorListener {
     private EditText mAddTextEditText;
     private AppCompatActivity appCompatActivity;
     private int mColorCode;
-
+    private OverlayListener listener;
 
     public void initialize(
             AppCompatActivity appCompatActivity,
@@ -118,7 +117,6 @@ public class OverlayHandler implements OnPhotoEditorListener {
 
     private void initViews() {
         fFmpeg = FFmpeg.getInstance(context);
-        progressDialog = new ProgressDialog(context);
         mPhotoEditor = new PhotoEditor.Builder(context, photoEditorView)
                 .setPinchTextScalable(true) // set flag to make text scalable when pinch
                 .build(); // build photo editor sdk
@@ -207,12 +205,11 @@ public class OverlayHandler implements OnPhotoEditorListener {
             fFmpeg.execute(command, new FFmpegExecuteResponseHandler() {
                 @Override
                 public void onSuccess(String s) {
-
+                    listener.onSave(absolutePath);
                 }
 
                 @Override
                 public void onProgress(String s) {
-                    progressDialog.setMessage(s);
                     Log.d("CommandExecute", "onProgress" + "  " + s);
 
                 }
@@ -220,20 +217,15 @@ public class OverlayHandler implements OnPhotoEditorListener {
                 @Override
                 public void onFailure(String s) {
                     Log.d("CommandExecute", "onFailure" + "  " + s);
-                    progressDialog.hide();
-
                 }
 
                 @Override
                 public void onStart() {
-                    progressDialog.setTitle("Preccesing");
-                    progressDialog.setMessage("Starting");
-                    progressDialog.show();
                 }
 
                 @Override
                 public void onFinish() {
-                    progressDialog.hide();
+
                 }
             });
         } catch (FFmpegCommandAlreadyRunningException e) {
@@ -255,8 +247,8 @@ public class OverlayHandler implements OnPhotoEditorListener {
     }
 
     @SuppressLint("MissingPermission")
-    private void saveImage() {
-
+    public void saveOverlay(OverlayListener listener) {
+        this.listener = listener;
         File file = new File(Environment.getExternalStorageDirectory()
                 + File.separator + ""
                 + System.currentTimeMillis() + ".png");
@@ -272,23 +264,18 @@ public class OverlayHandler implements OnPhotoEditorListener {
                 @Override
                 public void onSuccess(@NonNull String imagePath) {
                     OverlayHandler.this.imagePath = imagePath;
-                    Log.d("imagePath>>", imagePath);
-                    Log.d("imagePath2>>", Uri.fromFile(new File(imagePath)).toString());
-                    photoEditorView.getSource().setImageURI(Uri.fromFile(new File(imagePath)));
-                    Toast.makeText(context, "Saved successfully...", Toast.LENGTH_SHORT).show();
                     applayWaterMark();
                 }
 
                 @Override
                 public void onFailure(@NonNull Exception exception) {
-                    Toast.makeText(context, "Saving Failed...", Toast.LENGTH_SHORT).show();
+                    listener.onError();
                 }
             });
         } catch (IOException e) {
             e.printStackTrace();
-
+            listener.onError();
         }
-
     }
 
     private void applayWaterMark() {
@@ -415,10 +402,13 @@ public class OverlayHandler implements OnPhotoEditorListener {
         Log.d(TAG, "onStopViewChangeListener() called with: viewType = [" + viewType + "]");
     }
 
-    public void colorItemClicked(int color) {
-
+    public void colorItemClicked(int color, boolean isWaterMarkOn, int position) {
         mColorCode = color;
-        mAddTextEditText.setTextColor(mColorCode);
+        if (isWaterMarkOn) {
+            mAddTextEditText.setBackgroundColor(color);
+        } else {
+            mAddTextEditText.setTextColor(mColorCode);
+        }
     }
 
     public void fontItemClicked(Typeface font) {
@@ -429,11 +419,9 @@ public class OverlayHandler implements OnPhotoEditorListener {
     public void watermark(boolean on, int color) {
 
         if (!on) {
-            mAddTextEditText.setTextColor(color);
             mAddTextEditText.setBackgroundColor(Color.TRANSPARENT);
         } else {
-            mAddTextEditText.setTextColor(Color.BLACK);
-            mAddTextEditText.setBackgroundColor(color);
+            mAddTextEditText.setBackgroundColor(Color.BLACK);
         }
     }
 
@@ -443,5 +431,22 @@ public class OverlayHandler implements OnPhotoEditorListener {
         styleBuilder.withTextColor(color);
         styleBuilder.withTextFont(typeface);
         mPhotoEditor.addText(text, styleBuilder, 0);
+    }
+
+    public void changeTextGravity(int gravity) {
+        if (gravity == 0) {
+            mAddTextEditText.setGravity(Gravity.START);
+        } else if (gravity == 1) {
+            mAddTextEditText.setGravity(Gravity.CENTER);
+        } else if (gravity == 2) {
+            mAddTextEditText.setGravity(Gravity.END);
+        }
+    }
+
+    public interface OverlayListener {
+
+        void onSave(String filePath);
+
+        void onError();
     }
 }

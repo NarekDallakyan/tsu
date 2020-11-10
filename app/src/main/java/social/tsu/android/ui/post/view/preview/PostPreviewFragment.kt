@@ -9,6 +9,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.view.WindowManager
 import android.widget.ImageView
+import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
@@ -175,14 +176,24 @@ class PostPreviewFragment : Fragment() {
         // Post file clicked
         postFile.setOnClickListener {
 
-            val mainActivity = requireActivity() as? MainActivity
-            mainActivity?.supportActionBar?.show()
+            filePreviewLoader.show()
+            overlayHandler.saveOverlay(object : OverlayHandler.OverlayListener {
+                override fun onSave(filePath: String?) {
+                    filePreviewLoader.hide()
+                    (postTypeFragment)?.next(
+                        videoPath = filePath,
+                        originalFilePath = originalFilePath,
+                        fromGrid = true
+                    )
+                    val mainActivity = requireActivity() as? MainActivity
+                    mainActivity?.supportActionBar?.show()
+                }
 
-            (postTypeFragment)?.next(
-                videoPath = filePath,
-                originalFilePath = originalFilePath,
-                fromGrid = true
-            )
+                override fun onError() {
+                    filePreviewLoader.hide()
+                    Toast.makeText(requireContext(), "Saving failure.", Toast.LENGTH_LONG).show()
+                }
+            })
         }
 
         // Add text click listener
@@ -240,7 +251,11 @@ class PostPreviewFragment : Fragment() {
         val colorsAdapter = ColorAdapter()
         colorsAdapter.addItemClickListener { position, itemModel ->
             activeColor = itemModel.color
-            overlayHandler.colorItemClicked(itemModel.color)
+            overlayHandler.colorItemClicked(
+                itemModel.color,
+                fontsAdapter.getData()[0].watermark,
+                position
+            )
         }
         fontsAdapter.addItemClickListener { position, itemModel ->
             handleFontItemClicked(position, itemModel)
@@ -273,6 +288,8 @@ class PostPreviewFragment : Fragment() {
 
             FontModel.ItemType.ALIGN -> {
 
+                val gravity = itemModel.align
+                overlayHandler.changeTextGravity(gravity)
             }
         }
     }
