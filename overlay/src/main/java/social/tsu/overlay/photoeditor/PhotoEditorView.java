@@ -4,13 +4,10 @@ import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.res.TypedArray;
 import android.graphics.Bitmap;
-import android.graphics.Color;
 import android.graphics.drawable.Drawable;
 import android.os.Build;
 import android.util.AttributeSet;
 import android.util.Log;
-import android.view.LayoutInflater;
-import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
@@ -18,23 +15,9 @@ import android.widget.RelativeLayout;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.annotation.RequiresApi;
-import androidx.viewpager.widget.PagerAdapter;
 
 import social.tsu.overlay.R;
-import social.tsu.overlay.utils.InfinitePagerAdapter;
-import social.tsu.overlay.utils.InfiniteViewPager;
 
-
-/**
- * <p>
- * This ViewGroup will have the {@link BrushDrawingView} to draw paint on it with {@link ImageView}
- * which our source image
- * </p>
- *
- * @author <a href="https://github.com/burhanrashid52">Burhanuddin Rashid</a>
- * @version 0.1.1
- * @since 1/18/2018
- */
 
 public class PhotoEditorView extends RelativeLayout {
 
@@ -43,7 +26,6 @@ public class PhotoEditorView extends RelativeLayout {
     private FilterImageView mImgSource;
     private BrushDrawingView mBrushDrawingView;
     private ImageFilterView mImageFilterView;
-    private InfiniteViewPager viewPager;
     private static final int imgSrcId = 1, brushSrcId = 2, glFilterId = 3, viewPagerId = 4;
 
     public PhotoEditorView(Context context) {
@@ -117,25 +99,8 @@ public class PhotoEditorView extends RelativeLayout {
         });
 
 
-        //setUp View Pager
-
-        viewPager = new InfiniteViewPager(getContext());
-        viewPager.setId(viewPagerId);
-        viewPager.setVisibility(View.VISIBLE);
-        InfinitePagerAdapter infinitePagerAdapter = new InfinitePagerAdapter(new MyViewPagerAdapter(getContext()));
-        viewPager.setAdapter(infinitePagerAdapter);
-        LayoutParams viewPagerParam = new LayoutParams(
-                ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
-        viewPagerParam.addRule(RelativeLayout.CENTER_IN_PARENT, RelativeLayout.TRUE);
-        viewPagerParam.addRule(RelativeLayout.ALIGN_TOP, viewPagerId);
-        viewPagerParam.addRule(RelativeLayout.ALIGN_BOTTOM, viewPagerId);
-
-
         //Add image source
         addView(mImgSource, imgSrcParam);
-
-        // Add Viewpager
-        addView(viewPager, viewPagerParam);
 
         //Add Gl FilterView
         addView(mImageFilterView, imgFilterParam);
@@ -182,66 +147,6 @@ public class PhotoEditorView extends RelativeLayout {
         }
 
 
-    }
-
-    public class MyViewPagerAdapter extends PagerAdapter {
-
-
-        public MyViewPagerAdapter(Context context) {
-
-        }
-
-        @Override
-        public Object instantiateItem(@NonNull ViewGroup collection, int position) {
-            LayoutInflater inflater = LayoutInflater.from(getContext());
-            ViewGroup layout = (ViewGroup) inflater.inflate(R.layout.item_slider_filter, collection, false);
-            ImageView viewBG = layout.findViewById(R.id.viewBG);
-            ImageView ivBottom = layout.findViewById(R.id.ivBottom);
-            ivBottom.setVisibility(GONE);
-
-            if (position == 0) {
-                viewBG.setBackgroundColor(Color.parseColor("#10000000"));
-                viewBG.setVisibility(VISIBLE);
-                ivBottom.setVisibility(GONE);
-            } else if (position == 1) {
-                viewBG.setBackgroundColor(Color.parseColor("#15FF5733"));
-                viewBG.setVisibility(VISIBLE);
-                ivBottom.setVisibility(GONE);
-            } else if (position == 2) {
-                viewBG.setVisibility(GONE);
-                ivBottom.setVisibility(VISIBLE);
-                ivBottom.setImageDrawable(getResources().getDrawable(R.drawable.gg));
-
-            } else if (position == 3) {
-                viewBG.setVisibility(VISIBLE);
-                ivBottom.setImageDrawable(getResources().getDrawable(R.drawable.hh));
-                ivBottom.setVisibility(VISIBLE);
-
-            }else if (position == 4) {
-                viewBG.setVisibility(VISIBLE);
-                ivBottom.setImageDrawable(getResources().getDrawable(R.drawable.ee));
-                ivBottom.setVisibility(VISIBLE);
-
-            }
-            collection.addView(layout);
-
-            return layout;
-        }
-
-        @Override
-        public void destroyItem(@NonNull ViewGroup container, int position, @NonNull Object view) {
-            container.removeView((View) view);
-        }
-
-        @Override
-        public int getCount() {
-            return 5;
-        }
-
-        @Override
-        public boolean isViewFromObject(@NonNull View view, @NonNull Object object) {
-            return view == object;
-        }
     }
 
     void setFilterEffect(PhotoFilter filterType) {

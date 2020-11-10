@@ -63,50 +63,6 @@ public class PhotoEditor implements BrushViewChangeListener, MultiTouchListener.
         redoViews = new ArrayList<>();
     }
 
-    public void addImage(Bitmap desiredImage) {
-        final View imageRootView = getLayout(ViewType.IMAGE);
-        final ImageView imageView = imageRootView.findViewById(R.id.imgPhotoEditorImage);
-//        final FrameLayout frmBorder = imageRootView.findViewById(R.id.frmBorder);
-//        final ImageView imgClose = imageRootView.findViewById(R.id.imgPhotoEditorClose);
-
-        imageView.setImageBitmap(desiredImage);
-
-        MultiTouchListener multiTouchListener = getMultiTouchListener();
-        multiTouchListener.setOnGestureControl(new MultiTouchListener.OnGestureControl() {
-            @Override
-            public void onClick() {
-//                boolean isBackgroundVisible = frmBorder.getTag() != null && (boolean) frmBorder.getTag();
-//                frmBorder.setBackgroundResource(isBackgroundVisible ? 0 : R.drawable.rounded_border_tv);
-//                imgClose.setVisibility(isBackgroundVisible ? View.GONE : View.VISIBLE);
-//                frmBorder.setTag(!isBackgroundVisible);
-            }
-
-            @Override
-            public void onLongClick() {
-
-            }
-        });
-
-        multiTouchListener.setOnMultiTouchListener(this);
-
-        imageRootView.setOnTouchListener(multiTouchListener);
-
-        addViewToParent(imageRootView, ViewType.IMAGE);
-
-    }
-
-    /* *//**
-     * This add the text on the {@link PhotoEditorView} with provided parameters
-     * by default {@link TextView#setText(int)} will be 18sp
-     *
-     * @param text              text to display
-     * @param colorCodeTextView text color to be displayed
-     *//*
-    @SuppressLint("ClickableViewAccessibility")
-    public void addText(String text, final int colorCodeTextView) {
-        addText(null, text, colorCodeTextView);
-    }*/
-
     /**
      * This add the text on the {@link PhotoEditorView} with provided parameters
      * by default {@link TextView#setText(int)} will be 18sp
@@ -140,9 +96,6 @@ public class PhotoEditor implements BrushViewChangeListener, MultiTouchListener.
         final View textRootView = getLayout(ViewType.TEXT);
         final TextView textInputTv = textRootView.findViewById(R.id.tvPhotoEditorText);
         textInputTv.setTag(position);
-//        final ImageView imgClose = textRootView.findViewById(R.id.imgPhotoEditorClose);
-//        final FrameLayout frmBorder = textRootView.findViewById(R.id.frmBorder);
-
         textInputTv.setText(text);
         if (styleBuilder != null)
             styleBuilder.applyStyle(textInputTv);
@@ -159,20 +112,10 @@ public class PhotoEditor implements BrushViewChangeListener, MultiTouchListener.
                 if (mOnPhotoEditorListener != null) {
                     mOnPhotoEditorListener.onEditTextChangeListener(textRootView, textInput, currentTextColor, position);
                 }
-
-//                boolean isBackgroundVisible = frmBorder.getTag() != null && (boolean) frmBorder.getTag();
-//                frmBorder.setBackgroundResource(isBackgroundVisible ? 0 : R.drawable.rounded_border_tv);
-//                imgClose.setVisibility(isBackgroundVisible ? View.GONE : View.VISIBLE);
-//                frmBorder.setTag(!isBackgroundVisible);
             }
 
             @Override
             public void onLongClick() {
-//                String textInput = textInputTv.getText().toString();
-//                int currentTextColor = textInputTv.getCurrentTextColor();
-//                if (mOnPhotoEditorListener != null) {
-//                    mOnPhotoEditorListener.onEditTextChangeListener(textRootView, textInput, currentTextColor);
-//                }
             }
         });
 
@@ -180,35 +123,6 @@ public class PhotoEditor implements BrushViewChangeListener, MultiTouchListener.
         textRootView.setOnTouchListener(multiTouchListener);
         addViewToParent(textRootView, ViewType.TEXT);
     }
-
- /*   *//**
-     * This will update text and color on provided view
-     *
-     * @param view      view on which you want update
-     * @param inputText text to update {@link TextView}
-     * @param colorCode color to update on {@link TextView}
-     *//*
-    public void editText(@NonNull View view, String inputText, @NonNull int colorCode) {
-        editText(view, null, inputText, colorCode);
-    }
-
-    *//**
-     * This will update the text and color on provided view
-     *
-     * @param view         root view where text view is a child
-     * @param textTypeface update typeface for custom font in the text
-     * @param inputText    text to update {@link TextView}
-     * @param colorCode    color to update on {@link TextView}
-     *//*
-    public void editText(@NonNull View view, @Nullable Typeface textTypeface, String inputText, @NonNull int colorCode) {
-        final TextStyleBuilder styleBuilder = new TextStyleBuilder();
-        styleBuilder.withTextColor(colorCode);
-        if (textTypeface != null) {
-            styleBuilder.withTextFont(textTypeface);
-        }
-
-        editText(view, inputText, styleBuilder);
-    }*/
 
     /**
      * This will update the text and color on provided view
@@ -229,43 +143,6 @@ public class PhotoEditor implements BrushViewChangeListener, MultiTouchListener.
             int i = addedViews.indexOf(view);
             if (i > -1) addedViews.set(i, view);
         }
-    }
-
-
-    public void addEmoji(String emojiName) {
-        addEmoji(null, emojiName);
-    }
-
-
-    public void addEmoji(Typeface emojiTypeface, String emojiName) {
-        brushDrawingView.setBrushDrawingMode(false);
-        final View emojiRootView = getLayout(ViewType.EMOJI);
-        final TextView emojiTextView = emojiRootView.findViewById(R.id.tvPhotoEditorText);
-//        final FrameLayout frmBorder = emojiRootView.findViewById(R.id.frmBorder);
-//        final ImageView imgClose = emojiRootView.findViewById(R.id.imgPhotoEditorClose);
-
-        if (emojiTypeface != null) {
-            emojiTextView.setTypeface(emojiTypeface);
-        }
-        emojiTextView.setTextSize(56);
-        emojiTextView.setText(emojiName);
-        MultiTouchListener multiTouchListener = getMultiTouchListener();
-        multiTouchListener.setOnGestureControl(new MultiTouchListener.OnGestureControl() {
-            @Override
-            public void onClick() {
-//                boolean isBackgroundVisible = frmBorder.getTag() != null && (boolean) frmBorder.getTag();
-//                frmBorder.setBackgroundResource(isBackgroundVisible ? 0 : R.drawable.rounded_border_tv);
-//                imgClose.setVisibility(isBackgroundVisible ? View.GONE : View.VISIBLE);
-//                frmBorder.setTag(!isBackgroundVisible);
-            }
-
-            @Override
-            public void onLongClick() {
-            }
-        });
-        multiTouchListener.setOnMultiTouchListener(this);
-        emojiRootView.setOnTouchListener(multiTouchListener);
-        addViewToParent(emojiRootView, ViewType.EMOJI);
     }
 
 
@@ -297,8 +174,6 @@ public class PhotoEditor implements BrushViewChangeListener, MultiTouchListener.
                 this.imageView,
                 isTextPinchZoomable,
                 mOnPhotoEditorListener);
-
-        //multiTouchListener.setOnMultiTouchListener(this);
 
         return multiTouchListener;
     }
@@ -339,19 +214,7 @@ public class PhotoEditor implements BrushViewChangeListener, MultiTouchListener.
         }
 
         if (rootView != null) {
-            //We are setting tag as ViewType to identify what type of the view it is
-            //when we remove the view from stack i.e onRemoveViewListener(ViewType viewType, int numberOfAddedViews);
             rootView.setTag(viewType);
-//            final ImageView imgClose = rootView.findViewById(R.id.imgPhotoEditorClose);
-//            final View finalRootView = rootView;
-//            if (imgClose != null) {
-//                imgClose.setOnClickListener(new View.OnClickListener() {
-//                    @Override
-//                    public void onClick(View v) {
-//                        viewUndo(finalRootView, viewType);
-//                    }
-//                });
-//            }
         }
         return rootView;
     }
@@ -447,14 +310,6 @@ public class PhotoEditor implements BrushViewChangeListener, MultiTouchListener.
             brushDrawingView.brushEraser();
     }
 
-    /*private void viewUndo() {
-        if (addedViews.size() > 0) {
-            parentView.removeView(addedViews.remove(addedViews.size() - 1));
-            if (mOnPhotoEditorListener != null)
-                mOnPhotoEditorListener.onRemoveViewListener(addedViews.size());
-        }
-    }*/
-
     private void viewUndo(View removedView, ViewType viewType) {
         if (addedViews.size() > 0) {
             if (addedViews.contains(removedView)) {
@@ -540,14 +395,6 @@ public class PhotoEditor implements BrushViewChangeListener, MultiTouchListener.
     public void clearHelperBox() {
         for (int i = 0; i < parentView.getChildCount(); i++) {
             View childAt = parentView.getChildAt(i);
-//            FrameLayout frmBorder = childAt.findViewById(R.id.frmBorder);
-//            if (frmBorder != null) {
-//                frmBorder.setBackgroundResource(0);
-//            }
-//            ImageView imgClose = childAt.findViewById(R.id.imgPhotoEditorClose);
-//            if (imgClose != null) {
-//                imgClose.setVisibility(View.GONE);
-//            }
         }
     }
 
@@ -824,7 +671,6 @@ public class PhotoEditor implements BrushViewChangeListener, MultiTouchListener.
         private BrushDrawingView brushDrawingView;
         private Typeface textTypeface;
         private Typeface emojiTypeface;
-        //By Default pinch zoom on text is enabled
         private boolean isTextPinchZoomable = true;
 
         /**

@@ -1,5 +1,6 @@
 package social.tsu.android.ui.post.view.preview
 
+import android.graphics.Color
 import android.graphics.Typeface
 import android.net.Uri
 import android.os.Bundle
@@ -8,8 +9,6 @@ import android.view.View
 import android.view.ViewGroup
 import android.view.WindowManager
 import android.widget.ImageView
-import android.widget.MediaController
-import android.widget.VideoView
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
@@ -39,11 +38,14 @@ class PostPreviewFragment : Fragment() {
 
     // Sub views
     private var imagePreview: ImageView? = null
-    private var videoPreview: VideoView? = null
     private var postTypeFragment: PostTypesFragment? = null
     private var originalMode: Int? = null
 
+    // Text overlay
     private lateinit var overlayHandler: OverlayHandler
+
+    private var activeColor: Int? = null
+    private var activeFont: Typeface? = null
 
     // fonts and colors adapters
     private val fontModels: ArrayList<FontModel> by lazy {
@@ -125,20 +127,16 @@ class PostPreviewFragment : Fragment() {
 
     private val colorModels: ArrayList<ColorModel> by lazy {
         val colorList = arrayListOf<ColorModel>()
-        colorList.add(ColorModel())
-        colorList.add(ColorModel())
-        colorList.add(ColorModel())
-        colorList.add(ColorModel())
-        colorList.add(ColorModel())
-        colorList.add(ColorModel())
-        colorList.add(ColorModel())
-        colorList.add(ColorModel())
-        colorList.add(ColorModel())
-        colorList.add(ColorModel())
-        colorList.add(ColorModel())
-        colorList.add(ColorModel())
-        colorList.add(ColorModel())
-        colorList.add(ColorModel())
+
+        colorList.add(ColorModel(Color.parseColor("#FFFFFF")))
+        colorList.add(ColorModel(Color.parseColor("#000000")))
+        colorList.add(ColorModel(Color.parseColor("#FFB734")))
+        colorList.add(ColorModel(Color.parseColor("#FF6B6B")))
+        colorList.add(ColorModel(Color.parseColor("#D21010")))
+        colorList.add(ColorModel(Color.parseColor("#4ECDC4")))
+        colorList.add(ColorModel(Color.parseColor("#8AD22C")))
+        colorList.add(ColorModel(Color.parseColor("#656CF4")))
+        colorList.add(ColorModel(Color.parseColor("#8F4DD8")))
         return@lazy colorList
     }
 
@@ -204,24 +202,17 @@ class PostPreviewFragment : Fragment() {
 
         if (fromScreenType == 0) {
             // File type is image
-            videoPreview?.visibility = View.GONE
             imagePreview?.visibility = View.VISIBLE
             imagePreview?.setImageURI(Uri.parse(filePath))
         } else {
             // File type is video
-            videoPreview?.visibility = View.VISIBLE
             imagePreview?.visibility = View.GONE
-            videoPreview?.setVideoURI(Uri.parse(filePath))
-            val mediaController = MediaController(requireContext())
-            videoPreview?.setMediaController(mediaController)
-            videoPreview?.start()
         }
     }
 
     private fun initViews() {
 
         imagePreview = view?.findViewById(R.id.imagePreview)
-        videoPreview = view?.findViewById(R.id.filePreview)
     }
 
     private fun getArgumentData() {
@@ -281,7 +272,7 @@ class PostPreviewFragment : Fragment() {
         // Add text click listener
         addTextLayout.setOnClickListener {
 
-            handleAddTextClicked()
+            requireView().showKeyboard(requireActivity())
         }
 
         // Listen keyboard visibility listener
@@ -291,24 +282,37 @@ class PostPreviewFragment : Fragment() {
                 addTextLayout?.show()
                 textOverlayDone?.hide(animate = true, duration = 200)
                 add_text_edit_text.clearFocus()
-                postFile.show(animate = true, duration = 200)
-                previewBackBtn.show(animate = true, duration = 200)
+                add_text_edit_text.hide(animate = true, duration = 200)
+                postFile.show(animate = true, duration = 500)
+                previewBackBtn.show(animate = true, duration = 500)
+                previewTitle.show(animate = true, duration = 500)
             }
 
             override fun onKeyboardShown() {
                 keyboardContainer?.show(animate = true, duration = 500)
                 addTextLayout?.hide()
                 textOverlayDone?.show(animate = true, duration = 500)
+                add_text_edit_text?.show(animate = true, duration = 500)
                 add_text_edit_text.requestFocus()
                 postFile.hide(animate = true, duration = 200)
                 previewBackBtn.hide(animate = true, duration = 200)
+                previewTitle.hide(animate = true, duration = 200)
             }
         })
-    }
 
-    private fun handleAddTextClicked() {
+        // listen overlay done click
+        textOverlayDone.setOnClickListener {
 
-        requireView().showKeyboard(requireActivity())
+            if (activeFont != null && activeColor != null && add_text_edit_text.text != null) {
+
+                requireView().hideKeyboard(requireActivity())
+                overlayHandler.onDoneClicked(
+                    activeFont,
+                    activeColor!!,
+                    add_text_edit_text.text.toString()
+                )
+            }
+        }
     }
 
     private fun initAdapters() {
@@ -317,11 +321,13 @@ class PostPreviewFragment : Fragment() {
         val colorsAdapter = ColorAdapter()
         colorsAdapter.addItemClickListener { position, itemModel ->
             if (itemModel.color != null) {
+                activeColor = itemModel.color
                 overlayHandler.colorItemClicked(itemModel.color!!)
             }
         }
 
         fontsAdapter.addItemClickListener { position, itemModel ->
+            activeFont = itemModel.font
             overlayHandler.fontItemClicked(itemModel.font)
         }
 

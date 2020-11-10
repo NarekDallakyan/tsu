@@ -5,7 +5,6 @@ import android.annotation.TargetApi;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.database.Cursor;
-import android.graphics.Bitmap;
 import android.graphics.SurfaceTexture;
 import android.graphics.Typeface;
 import android.media.AudioManager;
@@ -21,12 +20,10 @@ import android.view.Surface;
 import android.view.TextureView;
 import android.view.View;
 import android.widget.EditText;
-import android.widget.ImageView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.core.content.ContextCompat;
 
 import com.bumptech.glide.Glide;
 import com.github.hiteshsondhi88.libffmpeg.FFmpeg;
@@ -44,20 +41,18 @@ import social.tsu.overlay.photoeditor.OnPhotoEditorListener;
 import social.tsu.overlay.photoeditor.PhotoEditor;
 import social.tsu.overlay.photoeditor.PhotoEditorView;
 import social.tsu.overlay.photoeditor.SaveSettings;
+import social.tsu.overlay.photoeditor.TextStyleBuilder;
 import social.tsu.overlay.photoeditor.ViewType;
 import social.tsu.overlay.utils.DimensionData;
 
 import static android.media.MediaMetadataRetriever.METADATA_KEY_VIDEO_ROTATION;
 import static social.tsu.overlay.utils.Utils.getScaledDimension;
 
-public class OverlayHandler implements OnPhotoEditorListener, PropertiesBSFragment.Properties,
-        StickerBSFragment.StickerListener {
+public class OverlayHandler implements OnPhotoEditorListener {
 
     private static final String TAG = OverlayHandler.class.getSimpleName();
     private PhotoEditor mPhotoEditor;
     private String globalVideoUrl = "";
-    private PropertiesBSFragment propertiesBSFragment;
-    private StickerBSFragment mStickerBSFragment;
     private MediaPlayer mediaPlayer;
     private String videoPath = "";
     private String imagePath = "";
@@ -123,10 +118,6 @@ public class OverlayHandler implements OnPhotoEditorListener, PropertiesBSFragme
     private void initViews() {
         fFmpeg = FFmpeg.getInstance(context);
         progressDialog = new ProgressDialog(context);
-        mStickerBSFragment = new StickerBSFragment();
-        mStickerBSFragment.setStickerListener(this);
-        propertiesBSFragment = new PropertiesBSFragment();
-        propertiesBSFragment.setPropertiesChangeListener(this);
         mPhotoEditor = new PhotoEditor.Builder(context, photoEditorView)
                 .setPinchTextScalable(true) // set flag to make text scalable when pinch
                 .build(); // build photo editor sdk
@@ -338,12 +329,6 @@ public class OverlayHandler implements OnPhotoEditorListener, PropertiesBSFragme
     }
 
     @Override
-    public void onStickerClick(Bitmap bitmap) {
-        mPhotoEditor.setBrushDrawingMode(false);
-        mPhotoEditor.addImage(bitmap);
-    }
-
-    @Override
     public void onEditTextChangeListener(final View rootView, String text, int colorCode, final int position) {
     }
 
@@ -429,21 +414,6 @@ public class OverlayHandler implements OnPhotoEditorListener, PropertiesBSFragme
         Log.d(TAG, "onStopViewChangeListener() called with: viewType = [" + viewType + "]");
     }
 
-    @Override
-    public void onColorChanged(int colorCode) {
-        mPhotoEditor.setBrushColor(colorCode);
-    }
-
-    @Override
-    public void onOpacityChanged(int opacity) {
-
-    }
-
-    @Override
-    public void onBrushSizeChanged(int brushSize) {
-
-    }
-
     public void colorItemClicked(int color) {
 
         mColorCode = color;
@@ -453,5 +423,13 @@ public class OverlayHandler implements OnPhotoEditorListener, PropertiesBSFragme
     public void fontItemClicked(Typeface font) {
 
         mAddTextEditText.setTypeface(font);
+    }
+
+    public void onDoneClicked(Typeface typeface, int color, String text) {
+
+        final TextStyleBuilder styleBuilder = new TextStyleBuilder();
+        styleBuilder.withTextColor(color);
+        styleBuilder.withTextFont(typeface);
+        mPhotoEditor.addText(text, styleBuilder, 0);
     }
 }
