@@ -17,14 +17,13 @@ import kotlinx.android.synthetic.main.fragment_post_preview.*
 import social.tsu.android.R
 import social.tsu.android.ext.*
 import social.tsu.android.ui.MainActivity
-import social.tsu.android.ui.post.model.ColorModel
+import social.tsu.android.ui.post.helper.PostPreviewUiHelper
 import social.tsu.android.ui.post.model.FontModel
 import social.tsu.android.ui.post.view.PostTypesFragment
 import social.tsu.android.utils.KeyboardListener
 import social.tsu.android.utils.findParentNavController
 import social.tsu.android.viewModel.SharedViewModel
 import social.tsu.overlay.view.OverlayHandler
-import java.util.*
 
 
 class PostPreviewFragment : Fragment() {
@@ -41,104 +40,14 @@ class PostPreviewFragment : Fragment() {
     private var postTypeFragment: PostTypesFragment? = null
     private var originalMode: Int? = null
 
+    // Helper
+    private val previewUiHelper = PostPreviewUiHelper
+
     // Text overlay
     private lateinit var overlayHandler: OverlayHandler
 
     private var activeColor: Int? = null
     private var activeFont: Typeface? = null
-
-    // fonts and colors adapters
-    private val fontModels: ArrayList<FontModel> by lazy {
-        val fontList = arrayListOf<FontModel>()
-        fontList.add(
-            FontModel(
-                R.drawable.ic_font_1_drawable, false,
-                Typeface.createFromAsset(context?.assets, "cinzel.ttf")
-            )
-        )
-        fontList.add(
-            FontModel(
-                R.drawable.ic_font_3_drawable, false,
-                Typeface.createFromAsset(context?.assets, "beyond_wonderland.ttf")
-            )
-        )
-        fontList.add(
-            FontModel(
-                R.drawable.ic_font_2_drawable,
-                font = Typeface.createFromAsset(context?.assets, "emojione.ttf")
-            )
-        )
-        fontList.add(
-            FontModel(
-                R.drawable.ic_font_4_drawable,
-                font = Typeface.createFromAsset(context?.assets, "emojione-android.ttf")
-            )
-        )
-        fontList.add(
-            FontModel(
-                R.drawable.ic_font_5_drawable,
-                font = Typeface.createFromAsset(context?.assets, "josefinsans.ttf")
-            )
-        )
-        fontList.add(
-            FontModel(
-                R.drawable.ic_font_6_drawable,
-                font = Typeface.createFromAsset(context?.assets, "merriweather.ttf")
-            )
-        )
-        fontList.add(
-            FontModel(
-                R.drawable.ic_font_1_drawable,
-                font = Typeface.createFromAsset(context?.assets, "raleway.ttf")
-            )
-        )
-        fontList.add(
-            FontModel(
-                R.drawable.ic_font_3_drawable,
-                font = Typeface.createFromAsset(context?.assets, "wonderland.ttf")
-            )
-        )
-        fontList.add(
-            FontModel(
-                R.drawable.ic_font_2_drawable,
-                font = Typeface.createFromAsset(context?.assets, "raleway.ttf")
-            )
-        )
-        fontList.add(
-            FontModel(
-                R.drawable.ic_font_4_drawable,
-                font = Typeface.createFromAsset(context?.assets, "raleway.ttf")
-            )
-        )
-        fontList.add(
-            FontModel(
-                R.drawable.ic_font_5_drawable,
-                font = Typeface.createFromAsset(context?.assets, "raleway.ttf")
-            )
-        )
-        fontList.add(
-            FontModel(
-                R.drawable.ic_font_6_drawable,
-                font = Typeface.createFromAsset(context?.assets, "raleway.ttf")
-            )
-        )
-        return@lazy fontList
-    }
-
-    private val colorModels: ArrayList<ColorModel> by lazy {
-        val colorList = arrayListOf<ColorModel>()
-
-        colorList.add(ColorModel(Color.parseColor("#FFFFFF")))
-        colorList.add(ColorModel(Color.parseColor("#000000")))
-        colorList.add(ColorModel(Color.parseColor("#FFB734")))
-        colorList.add(ColorModel(Color.parseColor("#FF6B6B")))
-        colorList.add(ColorModel(Color.parseColor("#D21010")))
-        colorList.add(ColorModel(Color.parseColor("#4ECDC4")))
-        colorList.add(ColorModel(Color.parseColor("#8AD22C")))
-        colorList.add(ColorModel(Color.parseColor("#656CF4")))
-        colorList.add(ColorModel(Color.parseColor("#8F4DD8")))
-        return@lazy colorList
-    }
 
     override fun onDestroy() {
         super.onDestroy()
@@ -210,11 +119,18 @@ class PostPreviewFragment : Fragment() {
         }
     }
 
+    /**
+     *  Initialize views
+     */
     private fun initViews() {
 
         imagePreview = view?.findViewById(R.id.imagePreview)
+        add_text_edit_text.clearFocus()
     }
 
+    /**
+     *  Get argument data from bundles
+     */
     private fun getArgumentData() {
 
         if (arguments == null) return
@@ -270,7 +186,7 @@ class PostPreviewFragment : Fragment() {
         }
 
         // Add text click listener
-        addTextLayout.setOnClickListener {
+        textAction.setOnClickListener {
 
             requireView().showKeyboard(requireActivity())
         }
@@ -279,7 +195,7 @@ class PostPreviewFragment : Fragment() {
         requireActivity().addOnKeyboardListener(object : KeyboardListener {
             override fun onKeyboardHidden() {
                 keyboardContainer?.hide(animate = true, duration = 200)
-                addTextLayout?.show()
+                actionsLayout?.show(animate = true, duration = 500)
                 textOverlayDone?.hide(animate = true, duration = 200)
                 add_text_edit_text.clearFocus()
                 add_text_edit_text.hide(animate = true, duration = 200)
@@ -290,7 +206,7 @@ class PostPreviewFragment : Fragment() {
 
             override fun onKeyboardShown() {
                 keyboardContainer?.show(animate = true, duration = 500)
-                addTextLayout?.hide()
+                actionsLayout?.hide(animate = true, duration = 200)
                 textOverlayDone?.show(animate = true, duration = 500)
                 add_text_edit_text?.show(animate = true, duration = 500)
                 add_text_edit_text.requestFocus()
@@ -315,29 +231,49 @@ class PostPreviewFragment : Fragment() {
         }
     }
 
+    /**
+     *  Text overlay adapters (Fonts and Colors)
+     */
     private fun initAdapters() {
 
         val fontsAdapter = FontsAdapter()
         val colorsAdapter = ColorAdapter()
         colorsAdapter.addItemClickListener { position, itemModel ->
-            if (itemModel.color != null) {
-                activeColor = itemModel.color
-                overlayHandler.colorItemClicked(itemModel.color!!)
-            }
+            activeColor = itemModel.color
+            overlayHandler.colorItemClicked(itemModel.color)
         }
-
         fontsAdapter.addItemClickListener { position, itemModel ->
-            activeFont = itemModel.font
-            overlayHandler.fontItemClicked(itemModel.font)
+            handleFontItemClicked(position, itemModel)
         }
-
-        fontsAdapter.submitList(fontModels)
-        colorsAdapter.submitList(colorModels)
+        fontsAdapter.submitList(previewUiHelper.getFontList(requireContext()))
+        colorsAdapter.submitList(previewUiHelper.getColorList())
         fontsRecyclerView.layoutManager =
             LinearLayoutManager(requireContext(), LinearLayoutManager.HORIZONTAL, false)
         fontsRecyclerView.adapter = fontsAdapter
         colorsRecyclerView.layoutManager =
             LinearLayoutManager(requireContext(), LinearLayoutManager.HORIZONTAL, false)
         colorsRecyclerView.adapter = colorsAdapter
+    }
+
+    private fun handleFontItemClicked(position: Int, itemModel: FontModel) {
+
+        activeFont = itemModel.font
+
+        when (itemModel.itemType) {
+
+            FontModel.ItemType.WATERMARK -> {
+
+                val isWatermarkOn = itemModel.watermark
+                overlayHandler.watermark(isWatermarkOn, activeColor ?: Color.WHITE)
+            }
+
+            FontModel.ItemType.FONT -> {
+                overlayHandler.fontItemClicked(itemModel.font)
+            }
+
+            FontModel.ItemType.ALIGN -> {
+
+            }
+        }
     }
 }

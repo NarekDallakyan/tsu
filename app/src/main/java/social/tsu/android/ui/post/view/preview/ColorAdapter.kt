@@ -1,6 +1,5 @@
 package social.tsu.android.ui.post.view.preview
 
-import android.graphics.Color
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -24,15 +23,7 @@ class ColorAdapter : RecyclerView.Adapter<ColorAdapter.ColorsViewHolder>() {
         ) {
 
             val colorLayout = itemView.colorLayout
-            val rnd = Random()
-            val color: Int = Color.argb(
-                255,
-                rnd.nextInt(256),
-                rnd.nextInt(256),
-                rnd.nextInt(256)
-            )
-            colorLayout.setBackgroundColor(color)
-            data.color = color
+            colorLayout.setBackgroundColor(data.color)
             itemView.setOnClickListener {
                 if (itemClickListener != null) {
                     itemClickListener(adapterPosition, data)

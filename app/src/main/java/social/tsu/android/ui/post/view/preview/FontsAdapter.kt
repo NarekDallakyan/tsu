@@ -3,11 +3,12 @@ package social.tsu.android.ui.post.view.preview
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.RecyclerView
 import kotlinx.android.synthetic.main.vh_font_item.view.*
 import social.tsu.android.R
 import social.tsu.android.ui.post.model.FontModel
+import social.tsu.android.utils.hide
+import social.tsu.android.utils.show
 
 class FontsAdapter : RecyclerView.Adapter<FontsAdapter.FontsViewHolder>() {
 
@@ -21,20 +22,75 @@ class FontsAdapter : RecyclerView.Adapter<FontsAdapter.FontsViewHolder>() {
             itemClickListener: ((position: Int, itemModel: FontModel) -> Unit)?
         ) {
 
+            val fontLayout = itemView.fontBorderLayout
             val fontImage = itemView.fontImage
-            val fontBorderLayout = itemView.fontBorderLayout
-            if (data.needBorder) {
-                fontBorderLayout.background = ContextCompat.getDrawable(
-                    itemView.context,
-                    R.drawable.ic_rectangular_border_white
-                )
-            } else {
-                fontBorderLayout.background = null
+
+            val iconLayout = itemView.iconLayout
+            val iconImage = itemView.iconImage
+
+            when (data.itemType) {
+                FontModel.ItemType.FONT -> {
+
+                    iconLayout.hide()
+                    fontLayout.show()
+                    fontImage.setImageResource(data.iconResource)
+                }
+
+                FontModel.ItemType.ALIGN -> {
+                    iconLayout.show()
+                    fontLayout.hide()
+                    iconImage.setImageResource(data.iconResource)
+
+                }
+
+                FontModel.ItemType.WATERMARK -> {
+
+                    iconLayout.show()
+                    fontLayout.hide()
+                    iconImage.setImageResource(data.iconResource)
+                }
             }
+
             fontImage.setImageResource(data.iconResource)
 
             itemView.setOnClickListener {
+
                 if (itemClickListener != null) {
+
+                    when (data.itemType) {
+
+                        FontModel.ItemType.WATERMARK -> {
+                            val currentWatermarkStatus = data.watermark
+                            data.watermark = !currentWatermarkStatus
+
+                            if (data.watermark) {
+                                iconImage.setImageResource(R.drawable.ic_watermark_on)
+                            } else {
+                                iconImage.setImageResource(R.drawable.ic_watermark_off)
+                            }
+                        }
+
+                        FontModel.ItemType.ALIGN -> {
+
+                            when (data.align) {
+                                0 -> {
+                                    data.align = 1
+                                    iconImage.setImageResource(R.drawable.ic_text_align_center)
+                                }
+                                1 -> {
+                                    data.align = 2
+                                    iconImage.setImageResource(R.drawable.ic_text_align_right)
+                                }
+                                2 -> {
+                                    data.align = 0
+                                    iconImage.setImageResource(R.drawable.ic_text_align_left)
+                                }
+                            }
+                        }
+                        else -> {
+                        }
+                    }
+
                     itemClickListener(adapterPosition, data)
                 }
             }

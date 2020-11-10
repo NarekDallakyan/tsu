@@ -5,6 +5,7 @@ import android.annotation.TargetApi;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.database.Cursor;
+import android.graphics.Color;
 import android.graphics.SurfaceTexture;
 import android.graphics.Typeface;
 import android.media.AudioManager;
@@ -423,6 +424,17 @@ public class OverlayHandler implements OnPhotoEditorListener {
     public void fontItemClicked(Typeface font) {
 
         mAddTextEditText.setTypeface(font);
+    }
+
+    public void watermark(boolean on, int color) {
+
+        if (!on) {
+            mAddTextEditText.setTextColor(color);
+            mAddTextEditText.setBackgroundColor(Color.TRANSPARENT);
+        } else {
+            mAddTextEditText.setTextColor(Color.BLACK);
+            mAddTextEditText.setBackgroundColor(color);
+        }
     }
 
     public void onDoneClicked(Typeface typeface, int color, String text) {
