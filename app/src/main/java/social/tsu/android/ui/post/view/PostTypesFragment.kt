@@ -2,20 +2,22 @@ package social.tsu.android.ui.post.view
 
 import android.net.Uri
 import android.os.Bundle
-import android.os.Environment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.View.VISIBLE
 import android.view.ViewGroup
 import android.widget.Toast
 import androidx.appcompat.widget.Toolbar
+import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.navArgs
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.bumptech.glide.Glide
 import kotlinx.android.synthetic.main.fragment_post_types.*
 import social.tsu.android.R
 import social.tsu.android.TsuApplication.Companion.filterItems
+import social.tsu.android.ext.getLastPicture
 import social.tsu.android.ext.hide
 import social.tsu.android.ext.onSwipeListener
 import social.tsu.android.ext.show
@@ -31,8 +33,6 @@ import social.tsu.android.utils.findParentNavController
 import social.tsu.android.viewModel.SharedViewModel
 import social.tsu.cameracapturer.filter.Filter
 import social.tsu.trimmer.features.trim.VideoTrimmerUtil
-import social.tsu.trimmer.utils.GifUtils
-import java.io.File
 import java.io.Serializable
 
 /**
@@ -113,6 +113,30 @@ open class PostTypesFragment : Fragment(), Serializable {
 
     }
 
+    private fun showLastPicture() {
+
+        val borderLayout = gallery_image_id
+        val image = lastImage
+        val lastPicture = context?.getLastPicture()
+        if (lastPicture == null) {
+            borderLayout.background = null
+            image.setImageResource(R.drawable.img_white)
+        } else {
+            borderLayout.setBackgroundResource(R.drawable.border_white)
+
+            Glide.with(image)
+                .load(lastPicture)
+                .placeholder(
+                    ContextCompat.getDrawable(
+                        image.context,
+                        R.drawable.img_white
+                    )
+                )
+                .centerCrop()
+                .into(image)
+        }
+    }
+
     override fun onStop() {
         super.onStop()
         // remove recording mode
@@ -132,6 +156,8 @@ open class PostTypesFragment : Fragment(), Serializable {
         super.onViewCreated(view, savedInstanceState)
         // init handlers
         initHandlers()
+        // Show last picture
+        showLastPicture()
         recordingMode(false)
         // Init view models
         initViewModels()
