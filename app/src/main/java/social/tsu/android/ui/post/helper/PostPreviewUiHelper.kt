@@ -17,36 +17,36 @@ object PostPreviewUiHelper {
         val fontList = arrayListOf<FontModel>()
         fontList.add(
             FontModel(
-                R.drawable.ic_watermark_off, FontModel.ItemType.WATERMARK
+                R.drawable.ic_watermark_off, "", FontModel.ItemType.WATERMARK
             )
         )
         fontList.add(
             FontModel(
-                R.drawable.ic_text_align_left, FontModel.ItemType.ALIGN
+                R.drawable.ic_text_align_left, "", FontModel.ItemType.ALIGN
             )
         )
         fontList.add(
             FontModel(
-                R.drawable.ic_font_pic_classic_gray, FontModel.ItemType.FONT,
+                null, "Classic", FontModel.ItemType.FONT,
                 Typeface.createFromAsset(context?.assets, "classic.ttf")
             )
         )
         fontList.add(
             FontModel(
-                R.drawable.ic_font_pic_open_sans_gray, FontModel.ItemType.FONT,
+                null, "Monospace", FontModel.ItemType.FONT,
+                Typeface.createFromAsset(context?.assets, "robotoslab.ttf")
+            )
+        )
+        fontList.add(
+            FontModel(
+                null, "Neon", FontModel.ItemType.FONT,
                 Typeface.createFromAsset(context?.assets, "opensans.ttf")
             )
         )
         fontList.add(
             FontModel(
-                R.drawable.ic_font_pic_pacifico_gray, FontModel.ItemType.FONT,
+                null, "Handwriting", FontModel.ItemType.FONT,
                 Typeface.createFromAsset(context?.assets, "pacifico.ttf")
-            )
-        )
-        fontList.add(
-            FontModel(
-                R.drawable.ic_font_pic_roboto_lab_gray, FontModel.ItemType.FONT,
-                Typeface.createFromAsset(context?.assets, "robotoslab.ttf")
             )
         )
         return fontList

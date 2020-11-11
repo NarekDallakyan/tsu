@@ -38,11 +38,11 @@
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/keyboardContainer"
         android:layout_width="match_parent"
-        android:layout_height="100dp"
+        android:layout_height="70dp"
+        android:visibility="gone"
         android:background="@color/overlay_bg"
         android:gravity="end"
         android:orientation="horizontal"
-        android:visibility="gone"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintStart_toStartOf="parent">
@@ -50,8 +50,7 @@
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/fontsRecyclerView"
             android:layout_width="match_parent"
-            android:layout_height="50dp"
-            android:layout_marginBottom="1dp"
+            android:layout_height="35dp"
             app:layout_constraintBottom_toTopOf="@+id/colorsRecyclerView"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
@@ -60,7 +59,7 @@
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/colorsRecyclerView"
             android:layout_width="match_parent"
-            android:layout_height="50dp"
+            android:layout_height="35dp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"

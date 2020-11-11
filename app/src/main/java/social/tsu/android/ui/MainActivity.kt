@@ -62,6 +62,7 @@ import social.tsu.android.R
 import social.tsu.android.RxSchedulers
 import social.tsu.android.TsuApplication
 import social.tsu.android.data.repository.MessagingRepository
+import social.tsu.android.ext.hideKeyboard
 import social.tsu.android.helper.*
 import social.tsu.android.helper.ads.AdsConstants
 import social.tsu.android.network.model.UserProfile
@@ -186,6 +187,10 @@ class MainActivity : DaggerAppCompatActivity(), NavController.OnDestinationChang
         }
     }
 
+    override fun onStop() {
+        super.onStop()
+        window.decorView.hideKeyboard(this)
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)

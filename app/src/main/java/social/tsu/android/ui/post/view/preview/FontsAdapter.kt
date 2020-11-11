@@ -1,12 +1,10 @@
 package social.tsu.android.ui.post.view.preview
 
 import android.graphics.Color
-import android.graphics.drawable.Drawable
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.appcompat.content.res.AppCompatResources
-import androidx.core.graphics.drawable.DrawableCompat
+import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.RecyclerView
 import kotlinx.android.synthetic.main.vh_font_item.view.*
 import social.tsu.android.R
@@ -27,7 +25,7 @@ class FontsAdapter : RecyclerView.Adapter<FontsAdapter.FontsViewHolder>() {
         ) {
 
             val fontLayout = itemView.fontBorderLayout
-            val fontImage = itemView.fontImage
+            val fontText = itemView.fontImage
 
             val iconLayout = itemView.iconLayout
             val iconImage = itemView.iconImage
@@ -37,30 +35,35 @@ class FontsAdapter : RecyclerView.Adapter<FontsAdapter.FontsViewHolder>() {
 
                     iconLayout.hide()
                     fontLayout.show()
+                    fontText.text = data.text
+                    fontText.typeface = data.font
 
                     if (data.isSelected) {
-                        val drawableId = data.iconResource
 
-                        val unwrappedDrawable =
-                            AppCompatResources.getDrawable(itemView.context, drawableId)
-                        val wrappedDrawable: Drawable = DrawableCompat.wrap(unwrappedDrawable!!)
-                        DrawableCompat.setTint(wrappedDrawable, Color.WHITE)
-                        fontImage.setImageDrawable(wrappedDrawable)
+
+                        iconLayout.setBackgroundDrawable(
+                            ContextCompat.getDrawable(
+                                itemView.context,
+                                R.drawable.font_white_border
+                            )
+                        )
+                        fontText.setTextColor(Color.WHITE)
                     } else {
 
-                        val drawableId = data.iconResource
-                        val unwrappedDrawable =
-                            AppCompatResources.getDrawable(itemView.context, drawableId)
-                        val wrappedDrawable: Drawable = DrawableCompat.wrap(unwrappedDrawable!!)
-                        DrawableCompat.setTint(wrappedDrawable, Color.GRAY)
-                        fontImage.setImageDrawable(wrappedDrawable)
+                        iconLayout.setBackgroundDrawable(
+                            ContextCompat.getDrawable(
+                                itemView.context,
+                                R.drawable.font_grey_border
+                            )
+                        )
+                        fontText.setTextColor(Color.GRAY)
                     }
                 }
 
                 FontModel.ItemType.ALIGN -> {
                     iconLayout.show()
                     fontLayout.hide()
-                    iconImage.setImageResource(data.iconResource)
+                    iconImage.setImageResource(data.icon!!)
 
                 }
 
@@ -68,7 +71,7 @@ class FontsAdapter : RecyclerView.Adapter<FontsAdapter.FontsViewHolder>() {
 
                     iconLayout.show()
                     fontLayout.hide()
-                    iconImage.setImageResource(data.iconResource)
+                    iconImage.setImageResource(data.icon!!)
                 }
             }
 

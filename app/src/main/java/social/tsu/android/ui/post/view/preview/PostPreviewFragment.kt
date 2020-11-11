@@ -317,16 +317,6 @@ class PostPreviewFragment : Fragment() {
         fontsAdapter: FontsAdapter
     ) {
 
-        if (this.selectedFontItem >= 2) {
-            fontsAdapter.getData()[this.selectedFontItem].isSelected = false
-            fontsAdapter.notifyItemChanged(this.selectedFontItem)
-        }
-
-        fontsAdapter.getData()[position].isSelected = true
-        fontsAdapter.notifyItemChanged(position)
-        this.selectedFontItem = position
-
-
         activeFont = itemModel.font
 
         when (itemModel.itemType) {
@@ -338,6 +328,14 @@ class PostPreviewFragment : Fragment() {
             }
 
             FontModel.ItemType.FONT -> {
+
+                if (selectedFontItem >= 2) {
+                    fontsAdapter.getData()[this.selectedFontItem].isSelected = false
+                    fontsAdapter.notifyItemChanged(this.selectedFontItem)
+                }
+                fontsAdapter.getData()[position].isSelected = true
+                fontsAdapter.notifyItemChanged(position)
+                this.selectedFontItem = position
                 overlayHandler.fontItemClicked(itemModel.font)
             }
 

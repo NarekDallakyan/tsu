@@ -1,10 +1,10 @@
 package social.tsu.android.ui.post.model
 
 import android.graphics.Typeface
-import androidx.annotation.DrawableRes
 
 class FontModel(
-    @DrawableRes var iconResource: Int,
+    var icon: Int? = null,
+    var text: String,
     var itemType: ItemType,
     var font: Typeface? = null,
     var watermark: Boolean = false,
