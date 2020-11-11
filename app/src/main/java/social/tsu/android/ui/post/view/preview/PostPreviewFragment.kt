@@ -190,38 +190,40 @@ class PostPreviewFragment : Fragment() {
         // Listen keyboard visibility listener
         requireActivity().addOnKeyboardListener(object : KeyboardListener {
             override fun onKeyboardHidden() {
+                if (view == null) return
                 keyboardContainer?.hide(animate = true, duration = 200)
                 actionsLayout?.show(animate = true, duration = 500)
                 textOverlayDone?.hide(animate = true, duration = 200)
-                add_text_edit_text.clearFocus()
-                add_text_edit_text.hide(animate = true, duration = 200)
-                postFile.show(animate = true, duration = 500)
-                previewBackBtn.show(animate = true, duration = 500)
-                previewTitle.show(animate = true, duration = 500)
+                add_text_edit_text?.clearFocus()
+                add_text_edit_text?.hide(animate = true, duration = 200)
+                postFile?.show(animate = true, duration = 500)
+                previewBackBtn?.show(animate = true, duration = 500)
+                previewTitle?.show(animate = true, duration = 500)
             }
 
             override fun onKeyboardShown() {
+                if (view == null) return
                 keyboardContainer?.show(animate = true, duration = 500)
                 actionsLayout?.hide(animate = true, duration = 200)
                 textOverlayDone?.show(animate = true, duration = 500)
                 add_text_edit_text?.show(animate = true, duration = 500)
-                add_text_edit_text.requestFocus()
-                postFile.hide(animate = true, duration = 200)
-                previewBackBtn.hide(animate = true, duration = 200)
-                previewTitle.hide(animate = true, duration = 200)
+                add_text_edit_text?.requestFocus()
+                postFile?.hide(animate = true, duration = 200)
+                previewBackBtn?.hide(animate = true, duration = 200)
+                previewTitle?.hide(animate = true, duration = 200)
             }
         })
 
         // listen overlay done click
         textOverlayDone.setOnClickListener {
 
-            if (activeFont != null && activeColor != null && add_text_edit_text.text != null) {
+            if (activeFont != null && activeColor != null && add_text_edit_text?.text != null) {
 
                 requireView().hideKeyboard(requireActivity())
                 overlayHandler.onDoneClicked(
                     activeFont,
                     activeColor!!,
-                    add_text_edit_text.text.toString()
+                    add_text_edit_text?.text.toString()
                 )
             }
         }
