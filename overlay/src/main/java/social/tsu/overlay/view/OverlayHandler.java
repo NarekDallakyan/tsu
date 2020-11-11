@@ -2,7 +2,6 @@ package social.tsu.overlay.view;
 
 import android.annotation.SuppressLint;
 import android.annotation.TargetApi;
-import android.app.ProgressDialog;
 import android.content.Context;
 import android.database.Cursor;
 import android.graphics.Color;
@@ -402,7 +401,7 @@ public class OverlayHandler implements OnPhotoEditorListener {
         Log.d(TAG, "onStopViewChangeListener() called with: viewType = [" + viewType + "]");
     }
 
-    public void colorItemClicked(int color, boolean isWaterMarkOn, int position) {
+    public void colorItemClicked(int color, String colorName, boolean isWaterMarkOn) {
         mColorCode = color;
         if (isWaterMarkOn) {
             mAddTextEditText.setBackgroundColor(color);

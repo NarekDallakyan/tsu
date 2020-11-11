@@ -291,11 +291,11 @@ class PostPreviewFragment : Fragment() {
             colorsAdapter.notifyItemChanged(position)
             this.selectedColorItem = position
 
-            activeColor = itemModel.color
+            activeColor = Color.parseColor(itemModel.color.value)
             overlayHandler.colorItemClicked(
-                itemModel.color,
-                fontsAdapter.getData()[0].watermark,
-                position
+                Color.parseColor(itemModel.color.value),
+                itemModel.color.name,
+                fontsAdapter.getData()[0].watermark
             )
         }
         fontsAdapter.addItemClickListener { position, itemModel ->

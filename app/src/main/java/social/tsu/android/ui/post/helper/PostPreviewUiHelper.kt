@@ -1,7 +1,6 @@
 package social.tsu.android.ui.post.helper
 
 import android.content.Context
-import android.graphics.Color
 import android.graphics.Typeface
 import social.tsu.android.R
 import social.tsu.android.ui.post.model.ColorModel
@@ -59,15 +58,19 @@ object PostPreviewUiHelper {
 
         val colorList = arrayListOf<ColorModel>()
 
-        colorList.add(ColorModel(Color.parseColor("#FFFFFF")))
-        colorList.add(ColorModel(Color.parseColor("#000000")))
-        colorList.add(ColorModel(Color.parseColor("#FFB734")))
-        colorList.add(ColorModel(Color.parseColor("#FF6B6B")))
-        colorList.add(ColorModel(Color.parseColor("#D21010")))
-        colorList.add(ColorModel(Color.parseColor("#4ECDC4")))
-        colorList.add(ColorModel(Color.parseColor("#8AD22C")))
-        colorList.add(ColorModel(Color.parseColor("#656CF4")))
-        colorList.add(ColorModel(Color.parseColor("#8F4DD8")))
+        colorList.add(ColorModel(ColorModel.ColorEnum.White))
+        colorList.add(ColorModel(ColorModel.ColorEnum.Black))
+        colorList.add(ColorModel(ColorModel.ColorEnum.Yellow))
+        colorList.add(ColorModel(ColorModel.ColorEnum.Pink))
+        colorList.add(ColorModel(ColorModel.ColorEnum.Red))
+        colorList.add(ColorModel(ColorModel.ColorEnum.Mint))
+        colorList.add(ColorModel(ColorModel.ColorEnum.Green))
+        colorList.add(ColorModel(ColorModel.ColorEnum.Blue))
+        colorList.add(ColorModel(ColorModel.ColorEnum.Purple))
         return colorList
+    }
+
+    private fun overlayColors() {
+
     }
 }

@@ -1,5 +1,6 @@
 package social.tsu.android.ui.post.view.preview
 
+import android.graphics.Color
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -32,7 +33,7 @@ class ColorAdapter : RecyclerView.Adapter<ColorAdapter.ColorsViewHolder>() {
                 borderLayout.hide()
             }
 
-            colorLayout.setBackgroundColor(data.color)
+            colorLayout.setBackgroundColor(Color.parseColor(data.color.value))
             itemView.setOnClickListener {
                 if (itemClickListener != null) {
                     itemClickListener(adapterPosition, data)

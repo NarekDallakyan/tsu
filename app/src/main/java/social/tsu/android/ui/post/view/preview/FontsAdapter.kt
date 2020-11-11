@@ -40,8 +40,7 @@ class FontsAdapter : RecyclerView.Adapter<FontsAdapter.FontsViewHolder>() {
 
                     if (data.isSelected) {
 
-
-                        iconLayout.setBackgroundDrawable(
+                        fontLayout.setBackgroundDrawable(
                             ContextCompat.getDrawable(
                                 itemView.context,
                                 R.drawable.font_white_border
@@ -50,7 +49,7 @@ class FontsAdapter : RecyclerView.Adapter<FontsAdapter.FontsViewHolder>() {
                         fontText.setTextColor(Color.WHITE)
                     } else {
 
-                        iconLayout.setBackgroundDrawable(
+                        fontLayout.setBackgroundDrawable(
                             ContextCompat.getDrawable(
                                 itemView.context,
                                 R.drawable.font_grey_border
