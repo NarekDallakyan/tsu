@@ -2,6 +2,7 @@ package social.tsu.android.ui.post.view
 
 import android.net.Uri
 import android.os.Bundle
+import android.os.Environment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.View.VISIBLE
@@ -30,6 +31,8 @@ import social.tsu.android.utils.findParentNavController
 import social.tsu.android.viewModel.SharedViewModel
 import social.tsu.cameracapturer.filter.Filter
 import social.tsu.trimmer.features.trim.VideoTrimmerUtil
+import social.tsu.trimmer.utils.GifUtils
+import java.io.File
 import java.io.Serializable
 
 /**
@@ -300,6 +303,7 @@ open class PostTypesFragment : Fragment(), Serializable {
     private fun navigateTrimFromGifSectionScreen(it: String) {
 
         this.filePath = it
+
         MainActivity.draftFiles.add(filePath!!)
         val mBundle = Bundle()
         mBundle.putString("filePath", filePath)

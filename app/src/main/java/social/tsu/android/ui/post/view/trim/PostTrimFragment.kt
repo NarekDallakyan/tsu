@@ -14,6 +14,8 @@ import social.tsu.android.ui.post.view.PostTypesFragment
 import social.tsu.android.utils.findParentNavController
 import social.tsu.android.viewModel.SharedViewModel
 import social.tsu.trimmer.features.trim.VideoTrimmerHandler
+import social.tsu.trimmer.utils.GifUtils
+import java.io.File
 
 
 class PostTrimFragment : Fragment() {
@@ -107,6 +109,21 @@ class PostTrimFragment : Fragment() {
                 ).show()
             }
             return
+        }
+
+        if (fromScreenType == 2) {
+
+            GifUtils.convertToGif(File(filePath)) {
+
+                if (it != null) {
+                    val gifFilePath = it
+                    // remove video file
+                    if (File(filePath).exists()) {
+                        val result = File(filePath).delete()
+                        this.filePath = gifFilePath
+                    }
+                }
+            }
         }
 
         if (filePath != null) {

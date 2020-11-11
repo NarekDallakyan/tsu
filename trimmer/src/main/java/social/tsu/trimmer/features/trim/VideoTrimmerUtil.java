@@ -46,6 +46,7 @@ public class VideoTrimmerUtil {
     String duration = convertSecondsToTime((endMs - startMs) / 1000);
 
     String cmd = "-ss " + start + " -t " + duration + " -accurate_seek" + " -i " + inputFile + " -codec copy -avoid_negative_ts 1 " + outputFile;
+
     String[] command = cmd.split(" ");
     callback.onStartTrim();
     try {
