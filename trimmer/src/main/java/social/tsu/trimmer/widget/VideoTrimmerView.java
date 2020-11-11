@@ -30,7 +30,6 @@ import social.tsu.trimmer.features.trim.VideoTrimmerAdapter;
 import social.tsu.trimmer.features.trim.VideoTrimmerUtil;
 import social.tsu.trimmer.interfaces.IVideoTrimmerView;
 import social.tsu.trimmer.interfaces.VideoTrimListener;
-import social.tsu.trimmer.utils.StorageUtil;
 
 import static social.tsu.trimmer.features.trim.VideoTrimmerUtil.MAX_COUNT_RANGE;
 import static social.tsu.trimmer.features.trim.VideoTrimmerUtil.RECYCLER_VIEW_PADDING;

@@ -138,4 +138,6 @@
     <color name="transparent">#00FFFFFF</color>
     <color name="white_color">#FFFFFF</color>
 
+    <color name="overlay_bg">#B3000000</color>
+
 </resources>

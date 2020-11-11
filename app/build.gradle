@@ -305,8 +305,6 @@ dependencies {
     implementation 'com.github.PhilJay:MPAndroidChart:v3.1.0'
     //Blur imageView
     implementation 'jp.wasabeef:blurry:4.0.0'
-
-    implementation 'com.github.AbedElazizShe:LightCompressor:0.7.5'
     implementation 'pl.droidsonroids.gif:android-gif-drawable:1.2.19'
 
     // Load modules

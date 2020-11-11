@@ -52,6 +52,9 @@ class PostPreviewFragment : Fragment() {
     private var activeColor: Int? = null
     private var activeFont: Typeface? = null
 
+    private var selectedColorItem: Int = -1
+    private var selectedFontItem: Int = -1
+
     override fun onDestroy() {
         super.onDestroy()
         originalMode?.let { activity?.window?.setSoftInputMode(it) }
@@ -278,6 +281,16 @@ class PostPreviewFragment : Fragment() {
         val fontsAdapter = FontsAdapter()
         val colorsAdapter = ColorAdapter()
         colorsAdapter.addItemClickListener { position, itemModel ->
+
+            if (this.selectedColorItem >= 0) {
+                colorsAdapter.getData()[this.selectedColorItem].isSelected = false
+                colorsAdapter.notifyItemChanged(this.selectedColorItem)
+            }
+
+            colorsAdapter.getData()[position].isSelected = true
+            colorsAdapter.notifyItemChanged(position)
+            this.selectedColorItem = position
+
             activeColor = itemModel.color
             overlayHandler.colorItemClicked(
                 itemModel.color,
@@ -286,7 +299,7 @@ class PostPreviewFragment : Fragment() {
             )
         }
         fontsAdapter.addItemClickListener { position, itemModel ->
-            handleFontItemClicked(position, itemModel)
+            handleFontItemClicked(position, itemModel, fontsAdapter)
         }
         fontsAdapter.submitList(previewUiHelper.getFontList(requireContext()))
         colorsAdapter.submitList(previewUiHelper.getColorList())
@@ -298,7 +311,21 @@ class PostPreviewFragment : Fragment() {
         colorsRecyclerView.adapter = colorsAdapter
     }
 
-    private fun handleFontItemClicked(position: Int, itemModel: FontModel) {
+    private fun handleFontItemClicked(
+        position: Int,
+        itemModel: FontModel,
+        fontsAdapter: FontsAdapter
+    ) {
+
+        if (this.selectedFontItem >= 2) {
+            fontsAdapter.getData()[this.selectedFontItem].isSelected = false
+            fontsAdapter.notifyItemChanged(this.selectedFontItem)
+        }
+
+        fontsAdapter.getData()[position].isSelected = true
+        fontsAdapter.notifyItemChanged(position)
+        this.selectedFontItem = position
+
 
         activeFont = itemModel.font
 

@@ -6,6 +6,8 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import kotlinx.android.synthetic.main.vh_color_item.view.*
 import social.tsu.android.R
+import social.tsu.android.ext.hide
+import social.tsu.android.ext.show
 import social.tsu.android.ui.post.model.ColorModel
 import java.util.*
 
@@ -23,6 +25,13 @@ class ColorAdapter : RecyclerView.Adapter<ColorAdapter.ColorsViewHolder>() {
         ) {
 
             val colorLayout = itemView.colorLayout
+            val borderLayout = itemView.borderColor
+            if (data.isSelected) {
+                borderLayout.show()
+            } else {
+                borderLayout.hide()
+            }
+
             colorLayout.setBackgroundColor(data.color)
             itemView.setOnClickListener {
                 if (itemClickListener != null) {

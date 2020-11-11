@@ -7,7 +7,7 @@
     <RelativeLayout
         android:id="@+id/fontBorderLayout"
         android:layout_width="80dp"
-        android:layout_margin="10dp"
+        android:layout_margin="5dp"
         android:visibility="gone"
         android:layout_height="match_parent"
         app:layout_constraintBottom_toBottomOf="parent"
@@ -18,13 +18,15 @@
         <ImageView
             android:id="@+id/fontImage"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
+            android:layout_height="24dp"
+            android:layout_centerHorizontal="true"
+            android:layout_centerVertical="true"
             android:scaleType="fitXY" />
     </RelativeLayout>
 
     <RelativeLayout
         android:id="@+id/iconLayout"
-        android:layout_width="50dp"
+        android:layout_width="40dp"
         android:layout_height="match_parent"
         android:visibility="gone"
         app:layout_constraintBottom_toBottomOf="parent"
@@ -34,11 +36,10 @@
 
         <ImageView
             android:id="@+id/iconImage"
-            android:layout_width="30dp"
-            android:layout_height="30dp"
+            android:layout_width="24dp"
+            android:layout_height="24dp"
             android:layout_centerHorizontal="true"
-            android:layout_centerVertical="true"
-            android:scaleType="fitXY" />
+            android:layout_centerVertical="true" />
     </RelativeLayout>
 
 

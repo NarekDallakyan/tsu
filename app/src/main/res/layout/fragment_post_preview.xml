@@ -39,7 +39,7 @@
         android:id="@+id/keyboardContainer"
         android:layout_width="match_parent"
         android:layout_height="100dp"
-        android:background="@color/transparent"
+        android:background="@color/overlay_bg"
         android:gravity="end"
         android:orientation="horizontal"
         android:visibility="gone"

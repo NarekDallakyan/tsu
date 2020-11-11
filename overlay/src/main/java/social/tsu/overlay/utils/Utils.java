@@ -6,8 +6,7 @@ import android.net.Uri;
 import android.provider.Settings;
 import android.util.Log;
 
-import com.bumptech.glide.BuildConfig;
-
+import social.tsu.overlay.BuildConfig;
 
 public class Utils {
 
