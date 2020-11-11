@@ -25,6 +25,8 @@ import social.tsu.android.utils.KeyboardListener
 import social.tsu.android.utils.findParentNavController
 import social.tsu.android.viewModel.SharedViewModel
 import social.tsu.overlay.view.OverlayHandler
+import social.tsu.trimmer.utils.GifUtils
+import java.io.File
 
 
 class PostPreviewFragment : Fragment() {
@@ -176,24 +178,7 @@ class PostPreviewFragment : Fragment() {
         // Post file clicked
         postFile.setOnClickListener {
 
-            filePreviewLoader.show()
-            overlayHandler.saveOverlay(object : OverlayHandler.OverlayListener {
-                override fun onSave(filePath: String?) {
-                    filePreviewLoader.hide()
-                    (postTypeFragment)?.next(
-                        videoPath = filePath,
-                        originalFilePath = originalFilePath,
-                        fromGrid = true
-                    )
-                    val mainActivity = requireActivity() as? MainActivity
-                    mainActivity?.supportActionBar?.show()
-                }
-
-                override fun onError() {
-                    filePreviewLoader.hide()
-                    Toast.makeText(requireContext(), "Saving failure.", Toast.LENGTH_LONG).show()
-                }
-            })
+            handleNext()
         }
 
         // Add text click listener
@@ -240,6 +225,47 @@ class PostPreviewFragment : Fragment() {
                 )
             }
         }
+    }
+
+    private fun handleNext() {
+
+        filePreviewLoader.show()
+        overlayHandler.saveOverlay(object : OverlayHandler.OverlayListener {
+            override fun onSave(filePath: String?) {
+                filePreviewLoader.hide()
+
+                if (fromScreenType == 2) {
+
+                    GifUtils.convertToGif(File(filePath)) {
+
+                        if (it != null) {
+                            val gifFilePath = it
+                            // remove video file
+                            if (File(filePath).exists()) {
+                                val result = File(filePath).delete()
+                                (postTypeFragment)?.next(
+                                    videoPath = gifFilePath,
+                                    originalFilePath = originalFilePath,
+                                    fromGrid = true
+                                )
+                            }
+                        }
+                    }
+                    return
+                }
+
+                (postTypeFragment)?.next(
+                    videoPath = filePath,
+                    originalFilePath = originalFilePath,
+                    fromGrid = true
+                )
+            }
+
+            override fun onError() {
+                filePreviewLoader.hide()
+                Toast.makeText(requireContext(), "Saving failure.", Toast.LENGTH_LONG).show()
+            }
+        })
     }
 
     /**

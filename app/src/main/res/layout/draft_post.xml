@@ -86,7 +86,6 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/constraintLayout2">
 
-
             <ImageView
                 android:id="@+id/imgPreview"
                 android:layout_width="match_parent"

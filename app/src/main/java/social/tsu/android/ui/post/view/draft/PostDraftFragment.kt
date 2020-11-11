@@ -45,6 +45,7 @@ import social.tsu.android.data.local.entity.Post
 import social.tsu.android.data.local.entity.PostPayload
 import social.tsu.android.data.local.models.PostUser
 import social.tsu.android.execute
+import social.tsu.android.ext.getGifDrawable
 import social.tsu.android.ext.getVideoThumbnail
 import social.tsu.android.helper.AnalyticsHelper
 import social.tsu.android.helper.AuthenticationHelper
@@ -416,10 +417,16 @@ class PostDraftFragment : Fragment() {
     private fun handleVideo(videoPath: String) {
         try {
 
-            val videoThumbnail = videoPath.getVideoThumbnail()
-            videoThumbnail?.let {
-                imgPreview?.load(it)
+            if (videoPath.contains("gif")) {
+                val gifDrawable = videoPath.getGifDrawable()
+                imgPreview.setImageDrawable(gifDrawable)
+            } else {
+                val videoThumbnail = videoPath.getVideoThumbnail()
+                videoThumbnail?.let {
+                    imgPreview?.load(it)
+                }
             }
+
         } catch (e: java.lang.Exception) {
             Log.e("IMAGE", "error reading stream", e)
         }
@@ -470,10 +477,14 @@ class PostDraftFragment : Fragment() {
     private fun handleVideoContentPath(path: String) {
 
         try {
-
-            val videoThumbnail = path.getVideoThumbnail()
-            videoThumbnail?.let {
-                imgPreview?.load(it)
+            if (path.contains("gif")) {
+                val gifDrawable = path.getGifDrawable()
+                imgPreview.setImageDrawable(gifDrawable)
+            } else {
+                val videoThumbnail = path.getVideoThumbnail()
+                videoThumbnail?.let {
+                    imgPreview?.load(it)
+                }
             }
         } catch (e: java.lang.Exception) {
             Log.e("IMAGE", "error reading stream", e)
