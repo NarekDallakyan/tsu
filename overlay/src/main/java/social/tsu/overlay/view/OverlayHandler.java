@@ -8,7 +8,6 @@ import android.graphics.Color;
 import android.graphics.SurfaceTexture;
 import android.graphics.Typeface;
 import android.media.AudioManager;
-import android.media.MediaDataSource;
 import android.media.MediaMetadataRetriever;
 import android.media.MediaPlayer;
 import android.net.Uri;
@@ -396,6 +395,8 @@ public class OverlayHandler implements OnPhotoEditorListener {
 
         final TextStyleBuilder styleBuilder = new TextStyleBuilder();
         boolean colorIsWhite = name.toLowerCase().equals("white");
+        int gravity = mAddTextEditText.getGravity();
+        styleBuilder.withGravity(gravity);
         styleBuilder.withTextFont(typeface);
         if (!isWatermarkOn) {
             styleBuilder.withTextColor(color);
@@ -420,10 +421,11 @@ public class OverlayHandler implements OnPhotoEditorListener {
         }
     }
 
-    public void release(Typeface defaultTypeface) {
+    public void invalidateTextOverlay(Typeface defaultTypeface, int defaultColor) {
 
         mAddTextEditText.setBackgroundColor(Color.TRANSPARENT);
-        mAddTextEditText.setTextColor(Color.WHITE);
+        mAddTextEditText.setGravity(Gravity.START);
+        mAddTextEditText.setTextColor(defaultColor);
         mAddTextEditText.setTypeface(defaultTypeface);
         mAddTextEditText.setText("");
     }

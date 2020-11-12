@@ -69,7 +69,7 @@ open class PostTypesFragment : Fragment(), Serializable {
      *  - 1 value is Video section
      *  - 2 value is Gif section
      */
-    private var position: Int = 0
+    private var screenPosition: Int = 1
 
     private var enableSwiping = true
 
@@ -182,7 +182,7 @@ open class PostTypesFragment : Fragment(), Serializable {
         // Handle view pager after changing
         postTypeUiHelper.handleViewPagerChange(
             requireContext(),
-            0,
+            screenPosition,
             view
         )
     }
@@ -226,7 +226,7 @@ open class PostTypesFragment : Fragment(), Serializable {
         flashLayout_id?.setOnClickListener {
 
             // Handling camera flash mode functionality
-            when (position) {
+            when (screenPosition) {
                 0 -> {
                     photoCameraPostHandler.handleFlash()
                 }
@@ -294,7 +294,7 @@ open class PostTypesFragment : Fragment(), Serializable {
     private fun handleStartCamera() {
 
         // Get view pager current page position
-        when (position) {
+        when (screenPosition) {
             0 -> {
 
                 handlePhotoCaptureClicked(photoCameraPostHandler)
@@ -333,7 +333,7 @@ open class PostTypesFragment : Fragment(), Serializable {
         val mBundle = Bundle()
         mBundle.putString("filePath", filePath)
         mBundle.putString("originalFilePath", filePath)
-        mBundle.putInt("fromScreenType", position)
+        mBundle.putInt("fromScreenType", screenPosition)
         mBundle.putSerializable("postTypeFragment", this)
         sharedViewModel!!.select(false)
         // Configure trimmer video limitation
@@ -363,7 +363,7 @@ open class PostTypesFragment : Fragment(), Serializable {
         val mBundle = Bundle()
         mBundle.putString("filePath", filePath)
         mBundle.putString("originalFilePath", filePath)
-        mBundle.putInt("fromScreenType", position)
+        mBundle.putInt("fromScreenType", screenPosition)
         mBundle.putSerializable("postTypeFragment", this)
         sharedViewModel?.select(false)
         // Configure trimmer video limitation
@@ -404,7 +404,7 @@ open class PostTypesFragment : Fragment(), Serializable {
     private fun handleSwitchCamera() {
 
         // Get view pager current page position
-        when (position) {
+        when (screenPosition) {
             0 -> {
                 photoCameraPostHandler.switchCamera()
             }
@@ -427,19 +427,19 @@ open class PostTypesFragment : Fragment(), Serializable {
             }
 
             if (!it) {
-                if (position < 2) {
-                    position++
+                if (screenPosition < 2) {
+                    screenPosition++
                 }
             } else {
-                if (position > 0) {
-                    position--
+                if (screenPosition > 0) {
+                    screenPosition--
                 }
             }
 
             // Handle view pager after changing
             postTypeUiHelper.handleViewPagerChange(
                 requireContext(),
-                position,
+                screenPosition,
                 view
             )
 
@@ -627,7 +627,7 @@ open class PostTypesFragment : Fragment(), Serializable {
      */
     private fun changeCameraFilter(filters: Filter) {
 
-        return when (position) {
+        return when (screenPosition) {
             0 -> {
                 photoCameraPostHandler.handleFilter(filters)
             }

@@ -56,7 +56,7 @@ class PostPreviewFragment : Fragment() {
         Typeface.createFromAsset(TsuApplication.mContext.assets, "classic.ttf")
 
     private var selectedColorItem: Int = -1
-    private var selectedFontItem: Int = -1
+    private var selectedFontItem: Int = 2
 
     private lateinit var fontsAdapter: FontsAdapter
     private lateinit var colorsAdapter: ColorAdapter
@@ -96,8 +96,10 @@ class PostPreviewFragment : Fragment() {
         initOnClicks()
         // Preview file
         previewFile()
-        // Init adapters
-        initAdapters()
+        // Init font adapter
+        initFontAdapter()
+        // Init color adapter
+        initColorAdapter()
         // Init overlay helper
         initOverlayHelper()
     }
@@ -112,7 +114,8 @@ class PostPreviewFragment : Fragment() {
             add_text_edit_text
         )
         overlayHandler.onCreate(filePath)
-        overlayHandler.release(activeFont)
+        // invalidate text overlay
+        invalidateOverlay()
     }
 
     override fun onStart() {
@@ -253,8 +256,20 @@ class PostPreviewFragment : Fragment() {
         postFile?.show(animate = true, duration = 500)
         previewBackBtn?.show(animate = true, duration = 500)
         previewTitle?.show(animate = true, duration = 500)
-        // release overlay functionality
-        overlayHandler.release(activeFont)
+        // invalidate text overlay
+        invalidateOverlay()
+    }
+
+    /**
+     * Clear text overlay parameters
+     */
+    private fun invalidateOverlay() {
+
+        activeFont = Typeface.createFromAsset(TsuApplication.mContext.assets, "classic.ttf")
+        activeColor = ColorModel.ColorEnum.White
+        overlayHandler.invalidateTextOverlay(activeFont, Color.parseColor(activeColor.value))
+        initColorAdapter()
+        initFontAdapter()
     }
 
     private fun handleNext() {
@@ -301,11 +316,27 @@ class PostPreviewFragment : Fragment() {
     }
 
     /**
-     *  Text overlay adapters (Fonts and Colors)
+     *  Font adapter for Text overlay adapters
      */
-    private fun initAdapters() {
+    private fun initFontAdapter() {
 
         fontsAdapter = FontsAdapter()
+
+        fontsAdapter.addItemClickListener { position, itemModel ->
+            handleFontItemClicked(position, itemModel, fontsAdapter)
+        }
+        fontsAdapter.submitList(previewUiHelper.getFontList(requireContext()))
+
+        fontsRecyclerView.layoutManager =
+            LinearLayoutManager(requireContext(), LinearLayoutManager.HORIZONTAL, false)
+        fontsRecyclerView.adapter = fontsAdapter
+    }
+
+    /**
+     *  Color adapter for Text overlay adapters
+     */
+    private fun initColorAdapter() {
+
         colorsAdapter = ColorAdapter()
         colorsAdapter.addItemClickListener { position, itemModel ->
 
@@ -325,14 +356,7 @@ class PostPreviewFragment : Fragment() {
                 fontsAdapter.getData()[0].watermark
             )
         }
-        fontsAdapter.addItemClickListener { position, itemModel ->
-            handleFontItemClicked(position, itemModel, fontsAdapter)
-        }
-        fontsAdapter.submitList(previewUiHelper.getFontList(requireContext()))
         colorsAdapter.submitList(previewUiHelper.getColorList())
-        fontsRecyclerView.layoutManager =
-            LinearLayoutManager(requireContext(), LinearLayoutManager.HORIZONTAL, false)
-        fontsRecyclerView.adapter = fontsAdapter
         colorsRecyclerView.layoutManager =
             LinearLayoutManager(requireContext(), LinearLayoutManager.HORIZONTAL, false)
         colorsRecyclerView.adapter = colorsAdapter

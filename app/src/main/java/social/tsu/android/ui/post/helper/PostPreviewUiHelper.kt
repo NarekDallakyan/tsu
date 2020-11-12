@@ -27,7 +27,8 @@ object PostPreviewUiHelper {
         fontList.add(
             FontModel(
                 null, "Classic", FontModel.ItemType.FONT,
-                Typeface.createFromAsset(context?.assets, "classic.ttf")
+                Typeface.createFromAsset(context?.assets, "classic.ttf"),
+                isSelected = true
             )
         )
         fontList.add(
