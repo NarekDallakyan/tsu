@@ -8,6 +8,7 @@ import android.graphics.Color;
 import android.graphics.SurfaceTexture;
 import android.graphics.Typeface;
 import android.media.AudioManager;
+import android.media.MediaDataSource;
 import android.media.MediaMetadataRetriever;
 import android.media.MediaPlayer;
 import android.net.Uri;
@@ -61,6 +62,7 @@ public class OverlayHandler implements OnPhotoEditorListener {
     private int DRAW_CANVASW = 0;
     private int DRAW_CANVASH = 0;
 
+    private MediaMetadataRetriever retriever;
     private MediaPlayer.OnCompletionListener onCompletionListener = mediaPlayer -> mediaPlayer.start();
 
     private Context context;
@@ -70,6 +72,12 @@ public class OverlayHandler implements OnPhotoEditorListener {
     private AppCompatActivity appCompatActivity;
     private int mColorCode;
     private OverlayListener listener;
+
+    public void destroy() {
+
+        if (mediaPlayer == null) return;
+        mediaPlayer.stop();
+    }
 
     public void initialize(
             AppCompatActivity appCompatActivity,
@@ -89,7 +97,7 @@ public class OverlayHandler implements OnPhotoEditorListener {
         initViews();
         Glide.with(context).load(R.drawable.trans).centerCrop().into(photoEditorView.getSource());
         videoPath = path;
-        MediaMetadataRetriever retriever = new MediaMetadataRetriever();
+        retriever = new MediaMetadataRetriever();
         retriever.setDataSource(videoPath);
         String metaRotation = retriever.extractMetadata(METADATA_KEY_VIDEO_ROTATION);
         int rotation = metaRotation == null ? 0 : Integer.parseInt(metaRotation);

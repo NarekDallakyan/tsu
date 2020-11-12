@@ -13,6 +13,7 @@ import android.util.Log
 import android.view.*
 import android.view.inputmethod.InputMethodManager
 import android.widget.Toast
+import androidx.activity.addCallback
 import androidx.annotation.IdRes
 import androidx.exifinterface.media.ExifInterface
 import androidx.fragment.app.Fragment
@@ -187,7 +188,7 @@ class PostDraftFragment : Fragment() {
         // Listen close layout clicked
         closePostDraft?.setOnClickListener {
             sharedViewModel?.select(false)
-            findParentNavController().popBackStack(R.id.postTypesFragment, false)
+            findParentNavController().navigate(R.id.postTypesFragment)
         }
 
         // Listen visibility layout clicked
@@ -1085,5 +1086,13 @@ class PostDraftFragment : Fragment() {
 
                 }
             })
+    }
+
+    override fun onAttach(context: Context) {
+        super.onAttach(context)
+        requireActivity().onBackPressedDispatcher.addCallback(this) {
+            sharedViewModel?.select(false)
+            findParentNavController().navigate(R.id.postTypesFragment)
+        }
     }
 }

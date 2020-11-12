@@ -64,6 +64,7 @@ class PostPreviewFragment : Fragment() {
     override fun onDestroy() {
         super.onDestroy()
         originalMode?.let { activity?.window?.setSoftInputMode(it) }
+        overlayHandler.destroy()
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -174,10 +175,10 @@ class PostPreviewFragment : Fragment() {
             mainActivity?.supportActionBar?.hide()
 
 
-            if (fromScreenType == 0 || fromScreenType == 1) {
+            if (fromScreenType == 0) {
                 // Back to trim fragment
                 sharedViewModel?.select(false)
-                findParentNavController().popBackStack(R.id.postTypesFragment, false)
+                findParentNavController().navigate(R.id.postTypesFragment)
             } else {
                 // Back to post type fragment
                 sharedViewModel?.select(false)
@@ -277,6 +278,7 @@ class PostPreviewFragment : Fragment() {
                                     originalFilePath = originalFilePath,
                                     fromGrid = true
                                 )
+                                overlayHandler.destroy()
                             }
                         }
                     }
@@ -288,6 +290,7 @@ class PostPreviewFragment : Fragment() {
                     originalFilePath = originalFilePath,
                     fromGrid = true
                 )
+                overlayHandler.destroy()
             }
 
             override fun onError() {

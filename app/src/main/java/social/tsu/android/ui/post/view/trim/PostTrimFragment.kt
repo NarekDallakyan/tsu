@@ -1,10 +1,12 @@
 package social.tsu.android.ui.post.view.trim
 
+import android.content.Context
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
+import androidx.activity.addCallback
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import kotlinx.android.synthetic.main.fragment_post_trim.*
@@ -158,5 +160,13 @@ class PostTrimFragment : Fragment() {
     override fun onDestroy() {
         super.onDestroy()
         videoTrimmerHandler.onDestroy()
+    }
+
+    override fun onAttach(context: Context) {
+        super.onAttach(context)
+        requireActivity().onBackPressedDispatcher.addCallback(this) {
+            sharedViewModel?.select(false)
+            findParentNavController().navigate(R.id.postTypesFragment)
+        }
     }
 }
