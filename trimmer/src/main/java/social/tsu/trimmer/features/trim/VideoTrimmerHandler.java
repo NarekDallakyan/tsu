@@ -42,6 +42,7 @@ public class VideoTrimmerHandler implements VideoTrimListener {
 
 
   public void onPause() {
+    if (trimmerView == null) return;
     trimmerView.onVideoPause();
     trimmerView.setRestoreState(true);
   }

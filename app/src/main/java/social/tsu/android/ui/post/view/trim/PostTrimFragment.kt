@@ -64,8 +64,8 @@ class PostTrimFragment : Fragment() {
 
         closeLayout_id.setOnClickListener {
 
-            sharedViewModel!!.select(false)
-            findParentNavController().popBackStack(R.id.postTypesFragment, false)
+            sharedViewModel?.select(false)
+            findParentNavController().navigate(R.id.postTypesFragment)
         }
 
         nextLayout4_id.setOnClickListener {

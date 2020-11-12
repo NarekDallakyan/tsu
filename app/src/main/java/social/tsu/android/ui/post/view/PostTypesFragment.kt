@@ -143,7 +143,6 @@ open class PostTypesFragment : Fragment(), Serializable {
         recordingMode(false)
     }
 
-
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
@@ -369,6 +368,7 @@ open class PostTypesFragment : Fragment(), Serializable {
         sharedViewModel?.select(false)
         // Configure trimmer video limitation
         VideoTrimmerUtil.TYPE = 1
+
         findParentNavController().navigate(R.id.postTrimFragment, mBundle)
     }
 
@@ -638,6 +638,11 @@ open class PostTypesFragment : Fragment(), Serializable {
                 gifPostHandler.handleFilter(filters)
             }
         }
+    }
+
+    override fun onResume() {
+        super.onResume()
+        println()
     }
 
     override fun onDestroyView() {
