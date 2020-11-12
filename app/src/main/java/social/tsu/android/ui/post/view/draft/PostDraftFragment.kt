@@ -183,12 +183,25 @@ class PostDraftFragment : Fragment() {
         sharedViewModel = ViewModelProvider(requireActivity()).get(SharedViewModel::class.java)
     }
 
+    /**
+     *  Haandle back action
+     */
+    private fun handleBack() {
+
+        sharedViewModel?.select(false)
+        if (screenPosition == null || screenPosition == -1) {
+            findParentNavController().popBackStack(R.id.postPreviewFragment, false)
+        } else {
+            findParentNavController().navigate(R.id.postTypesFragment)
+        }
+    }
+
     private fun initOnClicks() {
 
-        // Listen close layout clicked
+        // Listen back layout clicked
         closePostDraft?.setOnClickListener {
-            sharedViewModel?.select(false)
-            findParentNavController().navigate(R.id.postTypesFragment)
+
+            handleBack()
         }
 
         // Listen visibility layout clicked
@@ -265,6 +278,7 @@ class PostDraftFragment : Fragment() {
     private var allowVideo: Boolean? = null
     private var popToDestination: Int? = null
     private var originalFilePath: String? = null
+    private var screenPosition: Int? = null
 
     private fun getArgumentData() {
 
@@ -280,6 +294,7 @@ class PostDraftFragment : Fragment() {
         membership = requireArguments().getParcelable("membership")
         allowVideo = requireArguments().getBoolean("allowVideo")
         popToDestination = requireArguments().getInt("popToDestination")
+        screenPosition = requireArguments().getInt("screenPosition", -1)
     }
 
     override fun onResume() {
@@ -1091,8 +1106,7 @@ class PostDraftFragment : Fragment() {
     override fun onAttach(context: Context) {
         super.onAttach(context)
         requireActivity().onBackPressedDispatcher.addCallback(this) {
-            sharedViewModel?.select(false)
-            findParentNavController().navigate(R.id.postTypesFragment)
+            handleBack()
         }
     }
 }

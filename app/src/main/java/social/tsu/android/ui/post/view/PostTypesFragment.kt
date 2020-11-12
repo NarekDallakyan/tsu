@@ -393,7 +393,8 @@ open class PostTypesFragment : Fragment(), Serializable {
             next(
                 photoUri = Uri.parse(filePath),
                 originalFilePath = filePath,
-                fromGrid = true
+                fromGrid = true,
+                screenPosition = 0
             )
         }
     }
@@ -673,7 +674,8 @@ open class PostTypesFragment : Fragment(), Serializable {
         videoContentUri: String? = null,
         photoUri: Uri? = null,
         fromGrid: Boolean? = null,
-        originalFilePath: String? = null
+        originalFilePath: String? = null,
+        screenPosition: Int? = null
     ) {
 
         if (fromGrid == true) {
@@ -689,6 +691,9 @@ open class PostTypesFragment : Fragment(), Serializable {
             mBundle.putParcelable("membership", args.membership)
             mBundle.putBoolean("allowVideo", args.allowVideo)
             mBundle.putInt("popToDestination", args.popToDestination)
+            if (screenPosition != null) {
+                mBundle.putInt("screenPosition", screenPosition)
+            }
             findParentNavController().navigate(R.id.postDraftFragment, mBundle)
             return
         }
