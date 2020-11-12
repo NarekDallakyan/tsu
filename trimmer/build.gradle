@@ -39,6 +39,6 @@ dependencies {
     implementation 'androidx.appcompat:appcompat:1.2.0'
     implementation 'com.google.android.material:material:1.2.1'
     implementation 'com.github.iknow4:android-utils-sdk:1.1.2'
-    // Include aar file
+    // Include ffmpeg
     implementation project(":ffmpeg")
 }

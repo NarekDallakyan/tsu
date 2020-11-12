@@ -16,9 +16,11 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import kotlinx.android.synthetic.main.fragment_post_preview.*
 import social.tsu.android.R
+import social.tsu.android.TsuApplication
 import social.tsu.android.ext.*
 import social.tsu.android.ui.MainActivity
 import social.tsu.android.ui.post.helper.PostPreviewUiHelper
+import social.tsu.android.ui.post.model.ColorModel
 import social.tsu.android.ui.post.model.FontModel
 import social.tsu.android.ui.post.view.PostTypesFragment
 import social.tsu.android.utils.KeyboardListener
@@ -49,11 +51,15 @@ class PostPreviewFragment : Fragment() {
     // Text overlay
     private lateinit var overlayHandler: OverlayHandler
 
-    private var activeColor: Int? = null
-    private var activeFont: Typeface? = null
+    private var activeColor: ColorModel.ColorEnum = ColorModel.ColorEnum.White
+    private var activeFont: Typeface? =
+        Typeface.createFromAsset(TsuApplication.mContext.assets, "classic.ttf")
 
     private var selectedColorItem: Int = -1
     private var selectedFontItem: Int = -1
+
+    private lateinit var fontsAdapter: FontsAdapter
+    private lateinit var colorsAdapter: ColorAdapter
 
     override fun onDestroy() {
         super.onDestroy()
@@ -105,6 +111,7 @@ class PostPreviewFragment : Fragment() {
             add_text_edit_text
         )
         overlayHandler.onCreate(filePath)
+        overlayHandler.release(activeFont)
     }
 
     override fun onStart() {
@@ -194,42 +201,59 @@ class PostPreviewFragment : Fragment() {
         requireActivity().addOnKeyboardListener(object : KeyboardListener {
             override fun onKeyboardHidden() {
                 if (view == null) return
-                keyboardContainer?.hide(animate = true, duration = 200)
-                actionsLayout?.show(animate = true, duration = 500)
-                textOverlayDone?.hide(animate = true, duration = 200)
-                add_text_edit_text?.clearFocus()
-                add_text_edit_text?.hide(animate = true, duration = 200)
-                postFile?.show(animate = true, duration = 500)
-                previewBackBtn?.show(animate = true, duration = 500)
-                previewTitle?.show(animate = true, duration = 500)
+                handleKeyboardHidden()
             }
 
             override fun onKeyboardShown() {
                 if (view == null) return
-                keyboardContainer?.show(animate = true, duration = 500)
-                actionsLayout?.hide(animate = true, duration = 200)
-                textOverlayDone?.show(animate = true, duration = 500)
-                add_text_edit_text?.show(animate = true, duration = 500)
-                add_text_edit_text?.requestFocus()
-                postFile?.hide(animate = true, duration = 200)
-                previewBackBtn?.hide(animate = true, duration = 200)
-                previewTitle?.hide(animate = true, duration = 200)
+                handleKeyboardShown()
             }
         })
 
         // listen overlay done click
         textOverlayDone.setOnClickListener {
 
-            if (activeFont != null && activeColor != null && add_text_edit_text?.text != null) {
+            if (activeFont != null && add_text_edit_text?.text != null) {
 
                 requireView().hideKeyboard(requireActivity())
+
+                val isWatermarkOn = fontsAdapter.getData()[0].watermark
+
                 overlayHandler.onDoneClicked(
                     activeFont,
-                    activeColor!!,
+                    Color.parseColor(activeColor.value),
+                    activeColor.name,
+                    isWatermarkOn,
                     add_text_edit_text?.text.toString()
                 )
             }
         }
+    }
+
+    private fun handleKeyboardShown() {
+
+        keyboardContainer?.show(animate = true, duration = 500)
+        actionsLayout?.hide(animate = true, duration = 200)
+        textOverlayDone?.show(animate = true, duration = 500)
+        add_text_edit_text?.show(animate = true, duration = 500)
+        add_text_edit_text?.requestFocus()
+        postFile?.hide(animate = true, duration = 200)
+        previewBackBtn?.hide(animate = true, duration = 200)
+        previewTitle?.hide(animate = true, duration = 200)
+    }
+
+    private fun handleKeyboardHidden() {
+
+        keyboardContainer?.hide(animate = true, duration = 200)
+        actionsLayout?.show(animate = true, duration = 500)
+        textOverlayDone?.hide(animate = true, duration = 200)
+        add_text_edit_text?.clearFocus()
+        add_text_edit_text?.hide(animate = true, duration = 200)
+        postFile?.show(animate = true, duration = 500)
+        previewBackBtn?.show(animate = true, duration = 500)
+        previewTitle?.show(animate = true, duration = 500)
+        // release overlay functionality
+        overlayHandler.release(activeFont)
     }
 
     private fun handleNext() {
@@ -278,8 +302,8 @@ class PostPreviewFragment : Fragment() {
      */
     private fun initAdapters() {
 
-        val fontsAdapter = FontsAdapter()
-        val colorsAdapter = ColorAdapter()
+        fontsAdapter = FontsAdapter()
+        colorsAdapter = ColorAdapter()
         colorsAdapter.addItemClickListener { position, itemModel ->
 
             if (this.selectedColorItem >= 0) {
@@ -291,10 +315,10 @@ class PostPreviewFragment : Fragment() {
             colorsAdapter.notifyItemChanged(position)
             this.selectedColorItem = position
 
-            activeColor = Color.parseColor(itemModel.color.value)
+            activeColor = itemModel.color
             overlayHandler.colorItemClicked(
                 Color.parseColor(itemModel.color.value),
-                itemModel.color.name,
+                activeColor.name,
                 fontsAdapter.getData()[0].watermark
             )
         }
@@ -317,18 +341,22 @@ class PostPreviewFragment : Fragment() {
         fontsAdapter: FontsAdapter
     ) {
 
-        activeFont = itemModel.font
 
         when (itemModel.itemType) {
 
             FontModel.ItemType.WATERMARK -> {
 
                 val isWatermarkOn = itemModel.watermark
-                overlayHandler.watermark(isWatermarkOn, activeColor ?: Color.WHITE)
+                overlayHandler.watermark(
+                    isWatermarkOn,
+                    Color.parseColor(activeColor.value),
+                    activeColor.name
+                )
             }
 
             FontModel.ItemType.FONT -> {
 
+                activeFont = itemModel.font
                 if (selectedFontItem >= 2) {
                     fontsAdapter.getData()[this.selectedFontItem].isSelected = false
                     fontsAdapter.notifyItemChanged(this.selectedFontItem)

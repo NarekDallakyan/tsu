@@ -80,7 +80,7 @@ public class PhotoEditor implements BrushViewChangeListener, MultiTouchListener.
             styleBuilder.withTextFont(textTypeface);
         }
 
-        addText(text, styleBuilder, tag);
+        addText(text, styleBuilder,  tag);
     }
 
     /**

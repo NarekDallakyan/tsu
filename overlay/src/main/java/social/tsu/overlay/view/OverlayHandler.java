@@ -25,12 +25,8 @@ import android.widget.EditText;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.arthenica.mobileffmpeg.FFmpeg;
 import com.bumptech.glide.Glide;
-import com.github.hiteshsondhi88.libffmpeg.FFmpeg;
-import com.github.hiteshsondhi88.libffmpeg.FFmpegExecuteResponseHandler;
-import com.github.hiteshsondhi88.libffmpeg.FFmpegLoadBinaryResponseHandler;
-import com.github.hiteshsondhi88.libffmpeg.exceptions.FFmpegCommandAlreadyRunningException;
-import com.github.hiteshsondhi88.libffmpeg.exceptions.FFmpegNotSupportedException;
 
 import java.io.File;
 import java.io.IOException;
@@ -46,6 +42,7 @@ import social.tsu.overlay.photoeditor.ViewType;
 import social.tsu.overlay.utils.DimensionData;
 
 import static android.media.MediaMetadataRetriever.METADATA_KEY_VIDEO_ROTATION;
+import static com.arthenica.mobileffmpeg.Config.RETURN_CODE_SUCCESS;
 import static social.tsu.overlay.utils.Utils.getScaledDimension;
 
 public class OverlayHandler implements OnPhotoEditorListener {
@@ -57,9 +54,7 @@ public class OverlayHandler implements OnPhotoEditorListener {
     private String videoPath = "";
     private String imagePath = "";
     private ArrayList<String> exeCmd;
-    FFmpeg fFmpeg;
     private String[] newCommand;
-
     private int originalDisplayWidth;
     private int originalDisplayHeight;
     private int newCanvasWidth, newCanvasHeight;
@@ -115,7 +110,6 @@ public class OverlayHandler implements OnPhotoEditorListener {
     }
 
     private void initViews() {
-        fFmpeg = FFmpeg.getInstance(context);
         mPhotoEditor = new PhotoEditor.Builder(context, photoEditorView)
                 .setPinchTextScalable(true) // set flag to make text scalable when pinch
                 .build(); // build photo editor sdk
@@ -169,66 +163,19 @@ public class OverlayHandler implements OnPhotoEditorListener {
         });
 
         exeCmd = new ArrayList<>();
-        try {
-            fFmpeg.loadBinary(new FFmpegLoadBinaryResponseHandler() {
-                @Override
-                public void onFailure() {
-                    Log.d("binaryLoad", "onFailure");
-
-                }
-
-                @Override
-                public void onSuccess() {
-                    Log.d("binaryLoad", "onSuccess");
-                }
-
-                @Override
-                public void onStart() {
-                    Log.d("binaryLoad", "onStart");
-
-                }
-
-                @Override
-                public void onFinish() {
-                    Log.d("binaryLoad", "onFinish");
-
-                }
-            });
-        } catch (FFmpegNotSupportedException e) {
-            e.printStackTrace();
-        }
     }
 
     public void executeCommand(String[] command, final String absolutePath) {
+
         try {
-            fFmpeg.execute(command, new FFmpegExecuteResponseHandler() {
-                @Override
-                public void onSuccess(String s) {
-                    listener.onSave(absolutePath);
-                }
-
-                @Override
-                public void onProgress(String s) {
-                    Log.d("CommandExecute", "onProgress" + "  " + s);
-
-                }
-
-                @Override
-                public void onFailure(String s) {
-                    Log.d("CommandExecute", "onFailure" + "  " + s);
-                }
-
-                @Override
-                public void onStart() {
-                }
-
-                @Override
-                public void onFinish() {
-
-                }
-            });
-        } catch (FFmpegCommandAlreadyRunningException e) {
-            e.printStackTrace();
+            int commandResult = FFmpeg.execute(command);
+            if (commandResult == RETURN_CODE_SUCCESS) {
+                listener.onSave(absolutePath);
+            } else {
+                listener.onError();
+            }
+        } catch (Exception error) {
+            listener.onError();
         }
     }
 
@@ -238,7 +185,7 @@ public class OverlayHandler implements OnPhotoEditorListener {
         originalDisplayWidth = getDisplayWidth();
 
         DimensionData displayDiamenion =
-                getScaledDimension(new DimensionData((int) DRAW_CANVASW, (int) DRAW_CANVASH),
+                getScaledDimension(new DimensionData(DRAW_CANVASW, DRAW_CANVASH),
                         new DimensionData(originalDisplayWidth, originalDisplayHeight));
         newCanvasWidth = displayDiamenion.width;
         newCanvasHeight = displayDiamenion.height;
@@ -304,10 +251,6 @@ public class OverlayHandler implements OnPhotoEditorListener {
                 newCommand[j] = exeCmd.get(j);
             }
 
-
-            for (int k = 0; k < newCommand.length; k++) {
-                Log.d("CMD==>>", newCommand[k] + "");
-            }
             executeCommand(newCommand, output.getAbsolutePath());
         } catch (Exception e) {
             e.printStackTrace();
@@ -401,9 +344,18 @@ public class OverlayHandler implements OnPhotoEditorListener {
         Log.d(TAG, "onStopViewChangeListener() called with: viewType = [" + viewType + "]");
     }
 
-    public void colorItemClicked(int color, String colorName, boolean isWaterMarkOn) {
+    public void colorItemClicked(int color, String name, boolean isWaterMarkOn) {
         mColorCode = color;
+
+        boolean colorIsWhite = name.toLowerCase().equals("white");
+
         if (isWaterMarkOn) {
+
+            if (colorIsWhite) {
+                mAddTextEditText.setTextColor(Color.BLACK);
+            } else {
+                mAddTextEditText.setTextColor(Color.WHITE);
+            }
             mAddTextEditText.setBackgroundColor(color);
         } else {
             mAddTextEditText.setTextColor(mColorCode);
@@ -415,20 +367,38 @@ public class OverlayHandler implements OnPhotoEditorListener {
         mAddTextEditText.setTypeface(font);
     }
 
-    public void watermark(boolean on, int color) {
+    public void watermark(boolean on, int color, String name) {
+
+        boolean colorIsWhite = name.toLowerCase().equals("white");
 
         if (!on) {
             mAddTextEditText.setBackgroundColor(Color.TRANSPARENT);
+            mAddTextEditText.setTextColor(color);
         } else {
-            mAddTextEditText.setBackgroundColor(Color.BLACK);
+            mAddTextEditText.setBackgroundColor(color);
+            if (colorIsWhite) {
+                mAddTextEditText.setTextColor(Color.BLACK);
+            } else {
+                mAddTextEditText.setTextColor(Color.WHITE);
+            }
         }
     }
 
-    public void onDoneClicked(Typeface typeface, int color, String text) {
+    public void onDoneClicked(Typeface typeface, int color, String name, boolean isWatermarkOn, String text) {
 
         final TextStyleBuilder styleBuilder = new TextStyleBuilder();
-        styleBuilder.withTextColor(color);
+        boolean colorIsWhite = name.toLowerCase().equals("white");
         styleBuilder.withTextFont(typeface);
+        if (!isWatermarkOn) {
+            styleBuilder.withTextColor(color);
+        } else {
+            styleBuilder.withBackgroundColor(color);
+            if (colorIsWhite) {
+                styleBuilder.withTextColor(Color.BLACK);
+            } else {
+                styleBuilder.withTextColor(Color.WHITE);
+            }
+        }
         mPhotoEditor.addText(text, styleBuilder, 0);
     }
 
@@ -440,6 +410,14 @@ public class OverlayHandler implements OnPhotoEditorListener {
         } else if (gravity == 2) {
             mAddTextEditText.setGravity(Gravity.END);
         }
+    }
+
+    public void release(Typeface defaultTypeface) {
+
+        mAddTextEditText.setBackgroundColor(Color.TRANSPARENT);
+        mAddTextEditText.setTextColor(Color.WHITE);
+        mAddTextEditText.setTypeface(defaultTypeface);
+        mAddTextEditText.setText("");
     }
 
     public interface OverlayListener {
