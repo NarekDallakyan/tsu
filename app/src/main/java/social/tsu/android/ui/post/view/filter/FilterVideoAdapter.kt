@@ -9,8 +9,6 @@ import social.tsu.android.R
 import social.tsu.android.ext.show
 import social.tsu.android.ui.post.model.FilterVideoModel
 import social.tsu.android.utils.hide
-import social.tsu.cameracapturer.filter.Filter
-import social.tsu.camerarecorder.widget.Filters
 
 class FilterVideoAdapter : RecyclerView.Adapter<FilterVideoAdapter.TrimVideoViewHolder>() {
 
