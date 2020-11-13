@@ -490,9 +490,13 @@ class MainActivity : DaggerAppCompatActivity(), NavController.OnDestinationChang
     }
 
     override fun onSaveInstanceState(outState: Bundle) {
-        //analyticsHelper.onPreSaveState(outState)
-        super.onSaveInstanceState(outState)
-        //analyticsHelper.onPostSaveState(outState)
+        try {
+            analyticsHelper.onPreSaveState(outState)
+            super.onSaveInstanceState(outState)
+            analyticsHelper.onPostSaveState(outState)
+        }catch (error: Exception){
+            error.printStackTrace()
+        }
     }
 
     override fun onCreateOptionsMenu(menu: Menu): Boolean {

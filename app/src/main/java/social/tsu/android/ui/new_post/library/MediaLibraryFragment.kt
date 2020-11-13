@@ -31,7 +31,6 @@ class MediaLibraryFragment : Fragment() {
     private val adapter = LibraryFoldersAdapter {
 
         val mBundle = Bundle()
-        mBundle.putSerializable("postTypeFragment", postTypeFragment)
         mBundle.putParcelableArrayList("mediaContentList", ArrayList<Parcelable>(it.mediaContent))
         mBundle.putString("folderName", it.folderName)
         findNavController().navigate(R.id.mediaGridFragment, mBundle)
@@ -43,8 +42,6 @@ class MediaLibraryFragment : Fragment() {
             )
         )*/
     }
-
-    private var postTypeFragment: PostTypesFragment? = null
 
     override fun onStart() {
         super.onStart()
@@ -64,12 +61,10 @@ class MediaLibraryFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        // Get argument data
-        getArgumentData()
         media_folder_recycler.adapter = adapter
 
         try {
-            libraryViewModel.allowVideo = postTypeFragment!!.allowVideo
+            libraryViewModel.allowVideo = PostTypesFragment.instance().allowVideo
         } catch (e: IllegalStateException) {
             Log.e("Library", "", e)
         }
@@ -83,13 +78,4 @@ class MediaLibraryFragment : Fragment() {
         })
 
     }
-
-    private fun getArgumentData() {
-
-        if (arguments == null) return
-
-        postTypeFragment =
-            requireArguments().getSerializable("postTypeFragment") as? PostTypesFragment
-    }
-
 }

@@ -24,10 +24,10 @@ object PostTypeUiHelper {
     ) {
         if (rootView == null) return
 
-        val languageLayout = rootView.languageLayout_id
-        val photoLayout = rootView.photoLayout_id
-        val gifLayout = rootView.gifLayout_id
-        val wifiLayout = rootView.wifiLayout_id
+        val languageLayout = rootView.languageLayout
+        val photoLayout = rootView.photoLayout
+        val gifLayout = rootView.gifLayout
+        val wifiLayout = rootView.wifiLayout
 
         when (layout) {
 

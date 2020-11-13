@@ -153,6 +153,7 @@ open class PostTypesFragment : Fragment(), Serializable {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        instance(this)
         // init handlers
         initHandlers()
         // Show last picture
@@ -205,9 +206,7 @@ open class PostTypesFragment : Fragment(), Serializable {
         // Listen library button on click
         gallery_image_id.setOnClickListener {
 
-            val mBundle = Bundle()
-            mBundle.putSerializable("postTypeFragment", this)
-            findParentNavController().navigate(R.id.mediaLibraryLayout_id, mBundle)
+            findParentNavController().navigate(R.id.mediaLibraryLayout_id)
         }
 
         // Listen filter close layout on click
@@ -260,6 +259,9 @@ open class PostTypesFragment : Fragment(), Serializable {
                 LANGUAGE_CLICK,
                 view
             )
+            val mainActivity = requireActivity() as? MainActivity
+            mainActivity?.supportActionBar?.hide()
+            findParentNavController().navigate(R.id.textMediaFragment)
         }
 
         // Listen gif button on click
@@ -342,7 +344,6 @@ open class PostTypesFragment : Fragment(), Serializable {
         mBundle.putString("filePath", filePath)
         mBundle.putString("originalFilePath", filePath)
         mBundle.putInt("fromScreenType", screenPosition)
-        mBundle.putSerializable("postTypeFragment", this)
         sharedViewModel!!.select(false)
         // Configure trimmer video limitation
         VideoTrimmerUtil.TYPE = 2
@@ -372,7 +373,6 @@ open class PostTypesFragment : Fragment(), Serializable {
         mBundle.putString("filePath", filePath)
         mBundle.putString("originalFilePath", filePath)
         mBundle.putInt("fromScreenType", screenPosition)
-        mBundle.putSerializable("postTypeFragment", this)
         sharedViewModel?.select(false)
         // Configure trimmer video limitation
         VideoTrimmerUtil.TYPE = 1
@@ -727,6 +727,15 @@ open class PostTypesFragment : Fragment(), Serializable {
 
         fun showToolbar() {
             toolbar?.show()
+        }
+
+        private var instance: PostTypesFragment? = null
+
+        fun instance(fragment: PostTypesFragment? = null): PostTypesFragment {
+            if (instance == null) {
+                instance = fragment
+            }
+            return instance!!
         }
     }
 }

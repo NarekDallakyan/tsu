@@ -42,7 +42,6 @@ class PostPreviewFragment : Fragment() {
 
     // Sub views
     private var imagePreview: ImageView? = null
-    private var postTypeFragment: PostTypesFragment? = null
     private var originalMode: Int? = null
 
     // Helper
@@ -154,8 +153,6 @@ class PostPreviewFragment : Fragment() {
 
         filePath = requireArguments().getString("filePath")
         fromScreenType = requireArguments().getInt("fromScreenType")
-        postTypeFragment =
-            requireArguments().getSerializable("postTypeFragment") as? PostTypesFragment?
         originalFilePath = requireArguments().getString("originalFilePath")
     }
 
@@ -288,7 +285,7 @@ class PostPreviewFragment : Fragment() {
                             // remove video file
                             if (File(filePath).exists()) {
                                 val result = File(filePath).delete()
-                                (postTypeFragment)?.next(
+                                (PostTypesFragment.instance()).next(
                                     videoPath = gifFilePath,
                                     originalFilePath = originalFilePath,
                                     fromGrid = true
@@ -300,7 +297,7 @@ class PostPreviewFragment : Fragment() {
                     return
                 }
 
-                (postTypeFragment)?.next(
+                (PostTypesFragment.instance()).next(
                     videoPath = filePath,
                     originalFilePath = originalFilePath,
                     fromGrid = true

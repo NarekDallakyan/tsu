@@ -27,7 +27,6 @@ class PostTrimFragment : Fragment() {
     private var originalFilePath: String? = null
     private var fromScreenType: Int? = null
 
-    private var postTypeFragment: PostTypesFragment? = null
     private var videoTrimmerHandler = VideoTrimmerHandler()
 
 
@@ -123,7 +122,6 @@ class PostTrimFragment : Fragment() {
             val mBundle = Bundle()
             mBundle.putString("filePath", filePath)
             mBundle.putInt("fromScreenType", fromScreenType!!)
-            mBundle.putSerializable("postTypeFragment", postTypeFragment)
             mBundle.putString("originalFilePath", originalFilePath)
             sharedViewModel!!.select(false)
             findParentNavController().navigate(R.id.postPreviewFragment, mBundle)
@@ -148,8 +146,6 @@ class PostTrimFragment : Fragment() {
         filePath = requireArguments().getString("filePath")
         originalFilePath = requireArguments().getString("originalFilePath")
         fromScreenType = requireArguments().getInt("fromScreenType")
-        postTypeFragment =
-            requireArguments().getSerializable("postTypeFragment") as? PostTypesFragment?
     }
 
     override fun onPause() {

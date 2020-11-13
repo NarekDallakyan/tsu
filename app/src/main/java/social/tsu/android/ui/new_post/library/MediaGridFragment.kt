@@ -14,7 +14,6 @@ import social.tsu.android.ui.post.view.PostTypesFragment
 
 class MediaGridFragment : Fragment() {
 
-    private var postTypeFragment: PostTypesFragment? = null
     private var mediaContentList: ArrayList<LibraryMedia>? = null
     private var folderName: String? = null
 
@@ -38,7 +37,7 @@ class MediaGridFragment : Fragment() {
             val imageUri = if (it.isImage()) it.uri else null
             val videoUri = if (it.isVideo()) it.uri.toString() else null
 
-            (postTypeFragment)?.next(
+            (PostTypesFragment.instance()).next(
                 videoContentUri = videoUri,
                 photoUri = imageUri,
                 fromGrid = true
@@ -55,8 +54,6 @@ class MediaGridFragment : Fragment() {
 
         if (arguments == null) return
 
-        postTypeFragment =
-            requireArguments().getSerializable("postTypeFragment") as? PostTypesFragment
         mediaContentList =
             requireArguments().getParcelableArrayList<LibraryMedia>("mediaContentList")
         folderName = requireArguments().getString("folderName")
