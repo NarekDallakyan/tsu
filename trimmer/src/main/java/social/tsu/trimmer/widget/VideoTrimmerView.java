@@ -63,10 +63,79 @@ public class VideoTrimmerView extends FrameLayout implements IVideoTrimmerView {
     private int mScaledTouchSlop;
     private int lastScrollX;
     private boolean isSeeking;
+    private final RangeSeekBarView.OnRangeSeekBarChangeListener mOnRangeSeekBarChangeListener = new RangeSeekBarView.OnRangeSeekBarChangeListener() {
+        @Override
+        public void onRangeSeekBarValuesChanged(RangeSeekBarView bar, long minValue, long maxValue, int action, boolean isMin,
+                                                RangeSeekBarView.Thumb pressedThumb) {
+            Log.d(TAG, "-----minValue----->>>>>>" + minValue);
+            Log.d(TAG, "-----maxValue----->>>>>>" + maxValue);
+            mLeftProgressPos = minValue + scrollPos;
+            mRedProgressBarPos = mLeftProgressPos;
+            mRightProgressPos = maxValue + scrollPos;
+            Log.d(TAG, "-----mLeftProgressPos----->>>>>>" + mLeftProgressPos);
+            Log.d(TAG, "-----mRightProgressPos----->>>>>>" + mRightProgressPos);
+            switch (action) {
+                case MotionEvent.ACTION_DOWN:
+                    isSeeking = false;
+                    break;
+                case MotionEvent.ACTION_MOVE:
+                    isSeeking = true;
+                    seekTo((int) (pressedThumb == RangeSeekBarView.Thumb.MIN ? mLeftProgressPos : mRightProgressPos));
+                    break;
+                case MotionEvent.ACTION_UP:
+                    isSeeking = false;
+                    seekTo((int) mLeftProgressPos);
+                    break;
+                default:
+                    break;
+            }
+
+            mRangeSeekBarView.setStartEndTime(mLeftProgressPos, mRightProgressPos);
+        }
+    };
     private boolean isOverScaledTouchSlop;
+    private final RecyclerView.OnScrollListener mOnScrollListener = new RecyclerView.OnScrollListener() {
+        @Override
+        public void onScrollStateChanged(RecyclerView recyclerView, int newState) {
+            super.onScrollStateChanged(recyclerView, newState);
+            Log.d(TAG, "newState = " + newState);
+        }
+
+        @Override
+        public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
+            super.onScrolled(recyclerView, dx, dy);
+            isSeeking = false;
+            int scrollX = calcScrollXDistance();
+            if (Math.abs(lastScrollX - scrollX) < mScaledTouchSlop) {
+                isOverScaledTouchSlop = false;
+                return;
+            }
+            isOverScaledTouchSlop = true;
+            if (scrollX == -RECYCLER_VIEW_PADDING) {
+                scrollPos = 0;
+            } else {
+                isSeeking = true;
+                scrollPos = (long) (mAverageMsPx * (RECYCLER_VIEW_PADDING + scrollX) / THUMB_WIDTH);
+                mLeftProgressPos = mRangeSeekBarView.getSelectedMinValue() + scrollPos;
+                mRightProgressPos = mRangeSeekBarView.getSelectedMaxValue() + scrollPos;
+                Log.d(TAG, "onScrolled >>>> mLeftProgressPos = " + mLeftProgressPos);
+                mRedProgressBarPos = mLeftProgressPos;
+                if (mVideoView.isPlaying()) {
+                    mVideoView.pause();
+                    setPlayPauseViewIcon(false);
+                }
+                mRedProgressIcon.setVisibility(GONE);
+                seekTo(mLeftProgressPos);
+                mRangeSeekBarView.setStartEndTime(mLeftProgressPos, mRightProgressPos);
+                mRangeSeekBarView.invalidate();
+            }
+            lastScrollX = scrollX;
+        }
+    };
     private int mThumbsTotalCount;
     private ValueAnimator mRedProgressAnimator;
     private Handler mAnimationHandler = new Handler();
+    private Runnable mAnimationRunnable = () -> updateVideoProgress();
 
     public VideoTrimmerView(Context context, AttributeSet attrs) {
         this(context, attrs, 0);
@@ -75,6 +144,27 @@ public class VideoTrimmerView extends FrameLayout implements IVideoTrimmerView {
     public VideoTrimmerView(Context context, AttributeSet attrs, int defStyleAttr) {
         super(context, attrs, defStyleAttr);
         init(context);
+    }
+
+    public static Long getMaxShootDuration() {
+
+        if (VideoTrimmerUtil.TYPE == 1) {
+            return VideoTrimmerUtil.MAX_SHOOT_DURATION_VIDEO;
+        } else {
+            return VideoTrimmerUtil.MAX_SHOOT_DURATION_GIF;
+        }
+    }
+
+    public static int getMaxDuration() {
+        if (VideoTrimmerUtil.TYPE == 1) {
+            return VideoTrimmerUtil.VIDEO_MAX_TIME;
+        } else {
+            return VideoTrimmerUtil.GIF_MAX_TIME;
+        }
+    }
+
+    public static void initBaseUtils(Context context) {
+        BaseUtils.init(context);
     }
 
     public long getVideoTrimDuration() {
@@ -97,23 +187,6 @@ public class VideoTrimmerView extends FrameLayout implements IVideoTrimmerView {
         mVideoThumbRecyclerView.setAdapter(mVideoThumbAdapter);
         mVideoThumbRecyclerView.addOnScrollListener(mOnScrollListener);
         setUpListeners();
-    }
-
-    public static Long getMaxShootDuration() {
-
-        if (VideoTrimmerUtil.TYPE == 1) {
-            return VideoTrimmerUtil.MAX_SHOOT_DURATION_VIDEO;
-        } else {
-            return VideoTrimmerUtil.MAX_SHOOT_DURATION_GIF;
-        }
-    }
-
-    public static int getMaxDuration() {
-        if (VideoTrimmerUtil.TYPE == 1) {
-            return VideoTrimmerUtil.VIDEO_MAX_TIME;
-        } else {
-            return VideoTrimmerUtil.GIF_MAX_TIME;
-        }
     }
 
     private void initRangeSeekBarView() {
@@ -274,76 +347,6 @@ public class VideoTrimmerView extends FrameLayout implements IVideoTrimmerView {
         mPlayView.setImageResource(isPlaying ? R.drawable.ic_video_pause_black : R.drawable.ic_video_play_black);
     }
 
-    private final RangeSeekBarView.OnRangeSeekBarChangeListener mOnRangeSeekBarChangeListener = new RangeSeekBarView.OnRangeSeekBarChangeListener() {
-        @Override
-        public void onRangeSeekBarValuesChanged(RangeSeekBarView bar, long minValue, long maxValue, int action, boolean isMin,
-                                                RangeSeekBarView.Thumb pressedThumb) {
-            Log.d(TAG, "-----minValue----->>>>>>" + minValue);
-            Log.d(TAG, "-----maxValue----->>>>>>" + maxValue);
-            mLeftProgressPos = minValue + scrollPos;
-            mRedProgressBarPos = mLeftProgressPos;
-            mRightProgressPos = maxValue + scrollPos;
-            Log.d(TAG, "-----mLeftProgressPos----->>>>>>" + mLeftProgressPos);
-            Log.d(TAG, "-----mRightProgressPos----->>>>>>" + mRightProgressPos);
-            switch (action) {
-                case MotionEvent.ACTION_DOWN:
-                    isSeeking = false;
-                    break;
-                case MotionEvent.ACTION_MOVE:
-                    isSeeking = true;
-                    seekTo((int) (pressedThumb == RangeSeekBarView.Thumb.MIN ? mLeftProgressPos : mRightProgressPos));
-                    break;
-                case MotionEvent.ACTION_UP:
-                    isSeeking = false;
-                    seekTo((int) mLeftProgressPos);
-                    break;
-                default:
-                    break;
-            }
-
-            mRangeSeekBarView.setStartEndTime(mLeftProgressPos, mRightProgressPos);
-        }
-    };
-
-    private final RecyclerView.OnScrollListener mOnScrollListener = new RecyclerView.OnScrollListener() {
-        @Override
-        public void onScrollStateChanged(RecyclerView recyclerView, int newState) {
-            super.onScrollStateChanged(recyclerView, newState);
-            Log.d(TAG, "newState = " + newState);
-        }
-
-        @Override
-        public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
-            super.onScrolled(recyclerView, dx, dy);
-            isSeeking = false;
-            int scrollX = calcScrollXDistance();
-            if (Math.abs(lastScrollX - scrollX) < mScaledTouchSlop) {
-                isOverScaledTouchSlop = false;
-                return;
-            }
-            isOverScaledTouchSlop = true;
-            if (scrollX == -RECYCLER_VIEW_PADDING) {
-                scrollPos = 0;
-            } else {
-                isSeeking = true;
-                scrollPos = (long) (mAverageMsPx * (RECYCLER_VIEW_PADDING + scrollX) / THUMB_WIDTH);
-                mLeftProgressPos = mRangeSeekBarView.getSelectedMinValue() + scrollPos;
-                mRightProgressPos = mRangeSeekBarView.getSelectedMaxValue() + scrollPos;
-                Log.d(TAG, "onScrolled >>>> mLeftProgressPos = " + mLeftProgressPos);
-                mRedProgressBarPos = mLeftProgressPos;
-                if (mVideoView.isPlaying()) {
-                    mVideoView.pause();
-                    setPlayPauseViewIcon(false);
-                }
-                mRedProgressIcon.setVisibility(GONE);
-                seekTo(mLeftProgressPos);
-                mRangeSeekBarView.setStartEndTime(mLeftProgressPos, mRightProgressPos);
-                mRangeSeekBarView.invalidate();
-            }
-            lastScrollX = scrollX;
-        }
-    };
-
     private int calcScrollXDistance() {
         LinearLayoutManager layoutManager = (LinearLayoutManager) mVideoThumbRecyclerView.getLayoutManager();
         int position = layoutManager.findFirstVisibleItemPosition();
@@ -386,8 +389,6 @@ public class VideoTrimmerView extends FrameLayout implements IVideoTrimmerView {
         }
     }
 
-    private Runnable mAnimationRunnable = () -> updateVideoProgress();
-
     private void updateVideoProgress() {
         long currentPosition = mVideoView.getCurrentPosition();
         Log.d(TAG, "updateVideoProgress currentPosition = " + currentPosition);
@@ -407,9 +408,5 @@ public class VideoTrimmerView extends FrameLayout implements IVideoTrimmerView {
     public void onDestroy() {
         BackgroundExecutor.cancelAll("", true);
         UiThreadExecutor.cancelAll("");
-    }
-
-    public static void initBaseUtils(Context context) {
-        BaseUtils.init(context);
     }
 }

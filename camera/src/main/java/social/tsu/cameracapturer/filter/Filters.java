@@ -2,7 +2,7 @@ package social.tsu.cameracapturer.filter;
 
 import androidx.annotation.NonNull;
 
-import social.tsu.cameracapturer.camera.CameraView;
+import social.tsu.camera.CameraView;
 import social.tsu.cameracapturer.filters.AutoFixFilter;
 import social.tsu.cameracapturer.filters.BlackAndWhiteFilter;
 import social.tsu.cameracapturer.filters.BrightnessFilter;

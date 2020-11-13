@@ -11,27 +11,27 @@ import androidx.annotation.Nullable;
 
 public class CameraPreviewMaskView extends View {
 
-  public CameraPreviewMaskView(Context context) {
-    super(context);
-    init();
-  }
+    public CameraPreviewMaskView(Context context) {
+        super(context);
+        init();
+    }
 
-  public CameraPreviewMaskView(Context context, @Nullable AttributeSet attrs) {
-    super(context, attrs);
-    init();
-  }
+    public CameraPreviewMaskView(Context context, @Nullable AttributeSet attrs) {
+        super(context, attrs);
+        init();
+    }
 
-  public CameraPreviewMaskView(Context context, @Nullable AttributeSet attrs, int defStyleAttr) {
-    super(context, attrs, defStyleAttr);
-    init();
-  }
+    public CameraPreviewMaskView(Context context, @Nullable AttributeSet attrs, int defStyleAttr) {
+        super(context, attrs, defStyleAttr);
+        init();
+    }
 
-  private void init() {
-    setBackgroundColor(Color.parseColor("#cc000000"));
-  }
+    private void init() {
+        setBackgroundColor(Color.parseColor("#cc000000"));
+    }
 
-  @Override
-  protected void onDraw(Canvas canvas) {
-    super.onDraw(canvas);
-  }
+    @Override
+    protected void onDraw(Canvas canvas) {
+        super.onDraw(canvas);
+    }
 }

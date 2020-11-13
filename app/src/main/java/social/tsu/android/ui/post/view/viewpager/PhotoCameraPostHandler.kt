@@ -5,11 +5,11 @@ import android.media.MediaScannerConnection
 import android.net.Uri
 import android.os.Environment
 import androidx.lifecycle.LifecycleOwner
-import social.tsu.cameracapturer.camera.CameraListener
-import social.tsu.cameracapturer.camera.CameraView
-import social.tsu.cameracapturer.camera.PictureResult
+import social.tsu.camera.CameraListener
+import social.tsu.camera.CameraView
+import social.tsu.camera.PictureResult
 import social.tsu.cameracapturer.filter.Filter
-import social.tsu.cameracapturer.helper.CameraCaptureHelper
+import social.tsu.helper.CameraCaptureHelper
 import java.io.File
 import java.text.SimpleDateFormat
 import java.util.*

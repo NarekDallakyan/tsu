@@ -3,8 +3,10 @@ package social.tsu.cameracapturer.engine.offset;
 import androidx.annotation.NonNull;
 import androidx.annotation.VisibleForTesting;
 
-import social.tsu.cameracapturer.camera.CameraLogger;
-import social.tsu.cameracapturer.control.Facing;
+import social.tsu.camera.CameraLogger;
+import social.tsu.control.Facing;
+import social.tsu.engine.offset.Axis;
+import social.tsu.engine.offset.Reference;
 
 
 /**

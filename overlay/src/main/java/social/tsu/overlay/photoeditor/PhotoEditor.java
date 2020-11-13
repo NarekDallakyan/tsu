@@ -63,6 +63,32 @@ public class PhotoEditor implements BrushViewChangeListener, MultiTouchListener.
         redoViews = new ArrayList<>();
     }
 
+    private static String convertEmoji(String emoji) {
+        String returnedEmoji;
+        try {
+            int convertEmojiToInt = Integer.parseInt(emoji.substring(2), 16);
+            returnedEmoji = new String(Character.toChars(convertEmojiToInt));
+        } catch (NumberFormatException e) {
+            returnedEmoji = "";
+        }
+        return returnedEmoji;
+    }
+
+    /**
+     * Provide the list of emoji in form of unicode string
+     *
+     * @param context context
+     * @return list of emoji unicode
+     */
+    public static ArrayList<String> getEmojis(Context context) {
+        ArrayList<String> convertedEmojiList = new ArrayList<>();
+        String[] emojiList = context.getResources().getStringArray(R.array.photo_editor_emoji);
+        for (String emojiUnicode : emojiList) {
+            convertedEmojiList.add(convertEmoji(emojiUnicode));
+        }
+        return convertedEmojiList;
+    }
+
     /**
      * This add the text on the {@link PhotoEditorView} with provided parameters
      * by default {@link TextView#setText(int)} will be 18sp
@@ -80,7 +106,7 @@ public class PhotoEditor implements BrushViewChangeListener, MultiTouchListener.
             styleBuilder.withTextFont(textTypeface);
         }
 
-        addText(text, styleBuilder,  tag);
+        addText(text, styleBuilder, tag);
     }
 
     /**
@@ -144,7 +170,6 @@ public class PhotoEditor implements BrushViewChangeListener, MultiTouchListener.
             if (i > -1) addedViews.set(i, view);
         }
     }
-
 
     /**
      * Add to root view from image,emoji and text to our parent view
@@ -237,16 +262,6 @@ public class PhotoEditor implements BrushViewChangeListener, MultiTouchListener.
     }
 
     /**
-     * set the size of bursh user want to paint on canvas i.e {@link BrushDrawingView}
-     *
-     * @param size size of brush
-     */
-    public void setBrushSize(float size) {
-        if (brushDrawingView != null)
-            brushDrawingView.setBrushSize(size);
-    }
-
-    /**
      * set opacity/transparency of brush while painting on {@link BrushDrawingView}
      *
      * @param opacity opacity is in form of percentage
@@ -256,16 +271,6 @@ public class PhotoEditor implements BrushViewChangeListener, MultiTouchListener.
             opacity = (int) ((opacity / 100.0) * 255.0);
             brushDrawingView.setOpacity(opacity);
         }
-    }
-
-    /**
-     * set brush color which user want to paint
-     *
-     * @param color color value for paint
-     */
-    public void setBrushColor(@ColorInt int color) {
-        if (brushDrawingView != null)
-            brushDrawingView.setBrushColor(color);
     }
 
     /**
@@ -297,6 +302,15 @@ public class PhotoEditor implements BrushViewChangeListener, MultiTouchListener.
         return 0;
     }
 
+    /**
+     * set the size of bursh user want to paint on canvas i.e {@link BrushDrawingView}
+     *
+     * @param size size of brush
+     */
+    public void setBrushSize(float size) {
+        if (brushDrawingView != null)
+            brushDrawingView.setBrushSize(size);
+    }
 
     public int getBrushColor() {
         if (brushDrawingView != null)
@@ -304,6 +318,15 @@ public class PhotoEditor implements BrushViewChangeListener, MultiTouchListener.
         return 0;
     }
 
+    /**
+     * set brush color which user want to paint
+     *
+     * @param color color value for paint
+     */
+    public void setBrushColor(@ColorInt int color) {
+        if (brushDrawingView != null)
+            brushDrawingView.setBrushColor(color);
+    }
 
     public void brushEraser() {
         if (brushDrawingView != null)
@@ -322,7 +345,6 @@ public class PhotoEditor implements BrushViewChangeListener, MultiTouchListener.
             }
         }
     }
-
 
     public boolean undo() {
         if (addedViews.size() > 0) {
@@ -387,7 +409,6 @@ public class PhotoEditor implements BrushViewChangeListener, MultiTouchListener.
         clearBrushAllViews();
     }
 
-
     /**
      * Remove all helper boxes from views
      */
@@ -407,7 +428,6 @@ public class PhotoEditor implements BrushViewChangeListener, MultiTouchListener.
         parentView.setFilterEffect(customEffect);
     }
 
-
     public void setFilterEffect(PhotoFilter filterType) {
         parentView.setFilterEffect(filterType);
     }
@@ -420,26 +440,6 @@ public class PhotoEditor implements BrushViewChangeListener, MultiTouchListener.
     @Override
     public void onRemoveViewListener(View removedView) {
         viewUndo(removedView, (ViewType) removedView.getTag());
-    }
-
-    /**
-     * A callback to save the edited image asynchronously
-     */
-    public interface OnSaveListener {
-
-        /**
-         * Call when edited image is saved successfully on given path
-         *
-         * @param imagePath path on which image is saved
-         */
-        void onSuccess(@NonNull String imagePath);
-
-        /**
-         * Call when failed to saved image on given path
-         *
-         * @param exception exception thrown while saving image
-         */
-        void onFailure(@NonNull Exception exception);
     }
 
     /**
@@ -592,17 +592,6 @@ public class PhotoEditor implements BrushViewChangeListener, MultiTouchListener.
         });
     }
 
-    private static String convertEmoji(String emoji) {
-        String returnedEmoji;
-        try {
-            int convertEmojiToInt = Integer.parseInt(emoji.substring(2), 16);
-            returnedEmoji = new String(Character.toChars(convertEmojiToInt));
-        } catch (NumberFormatException e) {
-            returnedEmoji = "";
-        }
-        return returnedEmoji;
-    }
-
     /**
      * Callback on editing operation perform on {@link PhotoEditorView}
      *
@@ -662,6 +651,26 @@ public class PhotoEditor implements BrushViewChangeListener, MultiTouchListener.
     }
 
 
+    /**
+     * A callback to save the edited image asynchronously
+     */
+    public interface OnSaveListener {
+
+        /**
+         * Call when edited image is saved successfully on given path
+         *
+         * @param imagePath path on which image is saved
+         */
+        void onSuccess(@NonNull String imagePath);
+
+        /**
+         * Call when failed to saved image on given path
+         *
+         * @param exception exception thrown while saving image
+         */
+        void onFailure(@NonNull Exception exception);
+    }
+
     public static class Builder {
 
         private Context context;
@@ -716,20 +725,5 @@ public class PhotoEditor implements BrushViewChangeListener, MultiTouchListener.
         public PhotoEditor build() {
             return new PhotoEditor(this);
         }
-    }
-
-    /**
-     * Provide the list of emoji in form of unicode string
-     *
-     * @param context context
-     * @return list of emoji unicode
-     */
-    public static ArrayList<String> getEmojis(Context context) {
-        ArrayList<String> convertedEmojiList = new ArrayList<>();
-        String[] emojiList = context.getResources().getStringArray(R.array.photo_editor_emoji);
-        for (String emojiUnicode : emojiList) {
-            convertedEmojiList.add(convertEmoji(emojiUnicode));
-        }
-        return convertedEmojiList;
     }
 }

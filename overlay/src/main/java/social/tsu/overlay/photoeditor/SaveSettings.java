@@ -17,6 +17,13 @@ public class SaveSettings {
     private Bitmap.CompressFormat compressFormat;
     private int compressQuality;
 
+    private SaveSettings(Builder builder) {
+        this.isClearViewsEnabled = builder.isClearViewsEnabled;
+        this.isTransparencyEnabled = builder.isTransparencyEnabled;
+        this.compressFormat = builder.compressFormat;
+        this.compressQuality = builder.compressQuality;
+    }
+
     boolean isTransparencyEnabled() {
         return isTransparencyEnabled;
     }
@@ -31,13 +38,6 @@ public class SaveSettings {
 
     int getCompressQuality() {
         return compressQuality;
-    }
-
-    private SaveSettings(Builder builder) {
-        this.isClearViewsEnabled = builder.isClearViewsEnabled;
-        this.isTransparencyEnabled = builder.isTransparencyEnabled;
-        this.compressFormat = builder.compressFormat;
-        this.compressQuality = builder.compressQuality;
     }
 
     public static class Builder {
@@ -71,9 +71,10 @@ public class SaveSettings {
 
         /**
          * Set the compression format for the file to save: JPEG, PNG or WEBP
-         * @see{android.graphics.Bitmap.CompressFormat}
+         *
          * @param compressFormat JPEG, PNG or WEBP
          * @return Builder
+         * @see{android.graphics.Bitmap.CompressFormat}
          */
         public Builder setCompressFormat(@NonNull Bitmap.CompressFormat compressFormat) {
             this.compressFormat = compressFormat;
@@ -83,10 +84,11 @@ public class SaveSettings {
         /**
          * Set the expected compression quality for the output, a number between
          * 0 and 100
+         *
          * @param compressQuality An integer from 0 to 100
          * @return Builder
          */
-        public Builder setCompressQuality(@IntRange(from=0,to=100) int compressQuality) {
+        public Builder setCompressQuality(@IntRange(from = 0, to = 100) int compressQuality) {
             this.compressQuality = compressQuality;
             return this;
         }

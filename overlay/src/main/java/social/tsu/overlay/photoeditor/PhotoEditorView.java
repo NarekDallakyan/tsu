@@ -22,11 +22,10 @@ import social.tsu.overlay.R;
 public class PhotoEditorView extends RelativeLayout {
 
     private static final String TAG = "PhotoEditorView";
-
+    private static final int imgSrcId = 1, brushSrcId = 2, glFilterId = 3, viewPagerId = 4;
     private FilterImageView mImgSource;
     private BrushDrawingView mBrushDrawingView;
     private ImageFilterView mImageFilterView;
-    private static final int imgSrcId = 1, brushSrcId = 2, glFilterId = 3, viewPagerId = 4;
 
     public PhotoEditorView(Context context) {
         super(context);

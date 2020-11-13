@@ -15,7 +15,10 @@ import java.util.Map;
 public class TextStyleBuilder {
 
     private Map<TextStyle, Object> values = new HashMap<>();
-    protected Map<TextStyle, Object> getValues() { return values; }
+
+    protected Map<TextStyle, Object> getValues() {
+        return values;
+    }
 
     /**
      * Set this textSize style
@@ -126,7 +129,7 @@ public class TextStyleBuilder {
 
                 case TEXT_APPEARANCE: {
                     if (entry.getValue() instanceof Integer) {
-                        final int styleAppearance = (Integer)entry.getValue();
+                        final int styleAppearance = (Integer) entry.getValue();
                         applyTextAppearance(textView, styleAppearance);
                     }
                 }
@@ -182,11 +185,14 @@ public class TextStyleBuilder {
         BACKGROUND("Background"),
         TEXT_APPEARANCE("TextAppearance");
 
+        private String property;
+
         TextStyle(String property) {
             this.property = property;
         }
 
-        private String property;
-        public String getProperty() {return property;}
+        public String getProperty() {
+            return property;
+        }
     }
 }

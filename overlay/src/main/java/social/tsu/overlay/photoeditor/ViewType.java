@@ -1,7 +1,6 @@
 package social.tsu.overlay.photoeditor;
 
 
-
 /**
  * <p>
  * Enum define for various operation happening on the {@link PhotoEditorView} while editing

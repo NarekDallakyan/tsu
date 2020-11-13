@@ -5,6 +5,8 @@ import androidx.annotation.VisibleForTesting;
 
 import java.util.HashMap;
 
+import social.tsu.size.Size;
+
 
 /**
  * A simple class representing an aspect ratio.

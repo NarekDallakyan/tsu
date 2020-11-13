@@ -36,22 +36,17 @@ public class BrushDrawingView extends View {
     static final float DEFAULT_BRUSH_SIZE = 25.0f;
     static final float DEFAULT_ERASER_SIZE = 50.0f;
     static final int DEFAULT_OPACITY = 255;
-
-    private float mBrushSize = DEFAULT_BRUSH_SIZE;
-    private float mBrushEraserSize = DEFAULT_ERASER_SIZE;
-    private int mOpacity = DEFAULT_OPACITY;
-
+    private static final float TOUCH_TOLERANCE = 4;
     private final Stack<LinePath> mDrawnPaths = new Stack<>();
     private final Stack<LinePath> mRedoPaths = new Stack<>();
     private final Paint mDrawPaint = new Paint();
-
+    private float mBrushSize = DEFAULT_BRUSH_SIZE;
+    private float mBrushEraserSize = DEFAULT_ERASER_SIZE;
+    private int mOpacity = DEFAULT_OPACITY;
     private Canvas mDrawCanvas;
     private boolean mBrushDrawMode;
-
     private Path mPath;
     private float mTouchX, mTouchY;
-    private static final float TOUCH_TOLERANCE = 4;
-
     private BrushViewChangeListener mBrushViewChangeListener;
 
     public BrushDrawingView(Context context) {
@@ -98,12 +93,8 @@ public class BrushDrawingView extends View {
         mDrawPaint.setXfermode(new PorterDuffXfermode(PorterDuff.Mode.CLEAR));
     }
 
-    void setBrushDrawingMode(boolean brushDrawMode) {
-        this.mBrushDrawMode = brushDrawMode;
-        if (brushDrawMode) {
-            this.setVisibility(View.VISIBLE);
-            refreshBrushDrawing();
-        }
+    int getOpacity() {
+        return mOpacity;
     }
 
     void setOpacity(@IntRange(from = 0, to = 255) int opacity) {
@@ -111,22 +102,16 @@ public class BrushDrawingView extends View {
         setBrushDrawingMode(true);
     }
 
-    int getOpacity() {
-        return mOpacity;
-    }
-
     boolean getBrushDrawingMode() {
         return mBrushDrawMode;
     }
 
-    void setBrushSize(float size) {
-        mBrushSize = size;
-        setBrushDrawingMode(true);
-    }
-
-    void setBrushColor(@ColorInt int color) {
-        mDrawPaint.setColor(color);
-        setBrushDrawingMode(true);
+    void setBrushDrawingMode(boolean brushDrawMode) {
+        this.mBrushDrawMode = brushDrawMode;
+        if (brushDrawMode) {
+            this.setVisibility(View.VISIBLE);
+            refreshBrushDrawing();
+        }
     }
 
     void setBrushEraserSize(float brushEraserSize) {
@@ -147,8 +132,18 @@ public class BrushDrawingView extends View {
         return mBrushSize;
     }
 
+    void setBrushSize(float size) {
+        mBrushSize = size;
+        setBrushDrawingMode(true);
+    }
+
     int getBrushColor() {
         return mDrawPaint.getColor();
+    }
+
+    void setBrushColor(@ColorInt int color) {
+        mDrawPaint.setColor(color);
+        setBrushDrawingMode(true);
     }
 
     void clearAll() {

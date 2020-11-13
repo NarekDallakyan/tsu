@@ -18,6 +18,7 @@ import com.jakewharton.threetenabp.AndroidThreeTen
 import dagger.android.AndroidInjector
 import dagger.android.DispatchingAndroidInjector
 import dagger.android.HasAndroidInjector
+import jp.co.cyberagent.android.gpuimage.GPUImage
 import social.tsu.android.data.repository.PostFeedRepository
 import social.tsu.android.di.AppComponent
 import social.tsu.android.di.DaggerAppComponent
@@ -27,10 +28,10 @@ import social.tsu.android.network.api.ProjectEnvironment
 import social.tsu.android.service.SharedPrefManager
 import social.tsu.android.ui.post.model.FilterVideoModel
 import social.tsu.android.utils.AppVersion
+import social.tsu.android.utils.FilterBitmapUtils
 import social.tsu.android.workmanager.DaggerWorkerFactory
 import social.tsu.cameracapturer.filter.BaseFilter
 import social.tsu.cameracapturer.filter.NoFilter
-import social.tsu.cameracapturer.filter.image.GPUImage
 import social.tsu.cameracapturer.filters.*
 import social.tsu.trimmer.widget.VideoTrimmerView
 import java.text.SimpleDateFormat
@@ -68,13 +69,12 @@ open class TsuApplication : Application(),HasAndroidInjector,   CameraXConfig.Pr
                 this.mContext.resources, R.drawable.video_trim_girl
             )
 
-            return originalBitmap
+            val getCorrespondingFilter = FilterBitmapUtils.getCorrespondingFilter(filter)
 
-            /*val gpuImage = GPUImage(this.mContext)
+            val gpuImage = GPUImage(this.mContext)
             gpuImage.setImage(originalBitmap)
-            gpuImage.setFilter(BlackAndWhiteFilter())
-
-            return gpuImage.bitmapWithFilterApplied*/
+            gpuImage.setFilter(getCorrespondingFilter)
+            return gpuImage.bitmapWithFilterApplied
         }
 
         val filterItems: ArrayList<FilterVideoModel> by lazy {
@@ -82,133 +82,79 @@ open class TsuApplication : Application(),HasAndroidInjector,   CameraXConfig.Pr
             val filterItems = ArrayList<FilterVideoModel>()
             filterItems.add(
                 FilterVideoModel(
-                    R.drawable.cover, NoFilter(), bitmaps =
+                    "Normal", NoFilter(), bitmaps =
                     createBitmap(NoFilter())
-                )
-            );
-            filterItems.add(
-                FilterVideoModel(
-                    R.drawable.cover, AutoFixFilter(), bitmaps =
-                    createBitmap(AutoFixFilter())
                 )
             )
             filterItems.add(
                 FilterVideoModel(
-                    R.drawable.cover, BlackAndWhiteFilter(), bitmaps =
+                    "White", BlackAndWhiteFilter(), bitmaps =
                     createBitmap(BlackAndWhiteFilter())
                 )
             )
             filterItems.add(
                 FilterVideoModel(
-                    R.drawable.cover, BrightnessFilter(), bitmaps =
-                    createBitmap(BrightnessFilter())
-                )
-            )
-            filterItems.add(
-                FilterVideoModel(
-                    R.drawable.cover, ContrastFilter(), bitmaps =
+                    "Contrast", ContrastFilter(), bitmaps =
                     createBitmap(ContrastFilter())
                 )
             )
             filterItems.add(
                 FilterVideoModel(
-                    R.drawable.cover, CrossProcessFilter(), bitmaps =
-                    createBitmap(CrossProcessFilter())
-                )
-            )
-            filterItems.add(
-                FilterVideoModel(
-                    R.drawable.cover, DocumentaryFilter(), bitmaps =
-                    createBitmap(DocumentaryFilter())
-                )
-            )
-            filterItems.add(
-                FilterVideoModel(
-                    R.drawable.cover, DuotoneFilter(), bitmaps =
-                    createBitmap(DuotoneFilter())
-                )
-            )
-            filterItems.add(
-                FilterVideoModel(
-                    R.drawable.cover, FillLightFilter(), bitmaps =
+                    "Light", FillLightFilter(), bitmaps =
                     createBitmap(FillLightFilter())
                 )
             )
             filterItems.add(
                 FilterVideoModel(
-                    R.drawable.cover, GammaFilter(), bitmaps =
+                    "Gamma", GammaFilter(), bitmaps =
                     createBitmap(GammaFilter())
                 )
             )
             filterItems.add(
                 FilterVideoModel(
-                    R.drawable.cover, GrainFilter(), bitmaps =
-                    createBitmap(GrainFilter())
-                )
-            )
-            filterItems.add(
-                FilterVideoModel(
-                    R.drawable.cover, GrayscaleFilter(), bitmaps =
+                    "Grayscale", GrayscaleFilter(), bitmaps =
                     createBitmap(GrayscaleFilter())
                 )
             )
             filterItems.add(
                 FilterVideoModel(
-                    R.drawable.cover, HueFilter(), bitmaps =
+                    "Hue", HueFilter(), bitmaps =
                     createBitmap(HueFilter())
                 )
             )
             filterItems.add(
                 FilterVideoModel(
-                    R.drawable.cover, InvertColorsFilter(), bitmaps =
+                    "Invert", InvertColorsFilter(), bitmaps =
                     createBitmap(InvertColorsFilter())
                 )
             )
             filterItems.add(
                 FilterVideoModel(
-                    R.drawable.cover, LomoishFilter(), bitmaps =
-                    createBitmap(LomoishFilter())
-                )
-            )
-            filterItems.add(
-                FilterVideoModel(
-                    R.drawable.cover, PosterizeFilter(), bitmaps =
+                    "Posterize", PosterizeFilter(), bitmaps =
                     createBitmap(PosterizeFilter())
                 )
             )
             filterItems.add(
                 FilterVideoModel(
-                    R.drawable.cover, SaturationFilter(), bitmaps =
+                    "Saturation", SaturationFilter(), bitmaps =
                     createBitmap(SaturationFilter())
                 )
             )
             filterItems.add(
                 FilterVideoModel(
-                    R.drawable.cover, SepiaFilter(), bitmaps =
+                    "Sepia", SepiaFilter(), bitmaps =
                     createBitmap(SepiaFilter())
                 )
             )
             filterItems.add(
                 FilterVideoModel(
-                    R.drawable.cover, SharpnessFilter(), bitmaps =
+                    "Sharpness", SharpnessFilter(), bitmaps =
                     createBitmap(SharpnessFilter())
                 )
             )
             filterItems.add(
                 FilterVideoModel(
-                    R.drawable.cover, TemperatureFilter(), bitmaps =
-                    createBitmap(TemperatureFilter())
-                )
-            )
-            filterItems.add(
-                FilterVideoModel(
-                    R.drawable.cover, TintFilter(), bitmaps =
-                    createBitmap(TintFilter())
-                )
-            )
-            filterItems.add(
-                FilterVideoModel(
-                    R.drawable.cover, VignetteFilter(), bitmaps =
+                    "Vignette", VignetteFilter(), bitmaps =
                     createBitmap(VignetteFilter())
                 )
             )

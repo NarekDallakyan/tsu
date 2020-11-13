@@ -31,21 +31,14 @@ import social.tsu.overlay.R;
 
 public class CameraUtils implements ImagePickerCallback, VideoPickerCallback {
 
-    private Activity activity;
-
-    private CameraImagePicker cameraPicker;
-
-    private CameraVideoPicker cameraVideoPicker;
-
-    private ImagePicker imagePicker;
-
-    private VideoPicker videoPicker;
-
-    private String pickerPath;
-
-    private OnCameraResult onCameraResult;
-
     public static final int PERMISSION_CODE = 11;
+    private Activity activity;
+    private CameraImagePicker cameraPicker;
+    private CameraVideoPicker cameraVideoPicker;
+    private ImagePicker imagePicker;
+    private VideoPicker videoPicker;
+    private String pickerPath;
+    private OnCameraResult onCameraResult;
 
     public CameraUtils(Activity activity, OnCameraResult onCameraResult) {
         this.activity = activity;
@@ -145,7 +138,7 @@ public class CameraUtils implements ImagePickerCallback, VideoPickerCallback {
                     cameraPicker.reinitialize(pickerPath);
                 }
                 cameraPicker.submit(data);
-            }else if (requestCode == Picker.PICK_VIDEO_DEVICE) {
+            } else if (requestCode == Picker.PICK_VIDEO_DEVICE) {
                 if (videoPicker == null) {
                     videoPicker = new VideoPicker(activity);
                     videoPicker.setVideoPickerCallback(this);
@@ -274,7 +267,7 @@ public class CameraUtils implements ImagePickerCallback, VideoPickerCallback {
 
     @Override
     public void onVideosChosen(List<ChosenVideo> list) {
-        if(onCameraResult!=null){
+        if (onCameraResult != null) {
             onCameraResult.onVideoSuccess(list);
         }
     }

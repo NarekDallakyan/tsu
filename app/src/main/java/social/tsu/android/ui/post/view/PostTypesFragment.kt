@@ -614,7 +614,7 @@ open class PostTypesFragment : Fragment(), Serializable {
 
         selectedFilterItemPosition = position
 
-        filterNameBuble?.text = "filter"
+        filterNameBuble?.text = itemModel.fontName
         changeCameraFilter((itemModel.filterObject as Filter))
     }
 

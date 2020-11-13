@@ -8,7 +8,7 @@ import androidx.annotation.NonNull;
 
 import social.tsu.cameracapturer.filter.BaseFilter;
 import social.tsu.cameracapturer.filter.TwoParameterFilter;
-import social.tsu.cameracapturer.internal.GlUtils;
+import social.tsu.internal.GlUtils;
 
 /**
  * Representation of input frames using only two color tones.

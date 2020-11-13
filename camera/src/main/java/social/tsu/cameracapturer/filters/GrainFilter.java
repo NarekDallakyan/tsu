@@ -9,7 +9,7 @@ import java.util.Random;
 
 import social.tsu.cameracapturer.filter.BaseFilter;
 import social.tsu.cameracapturer.filter.OneParameterFilter;
-import social.tsu.cameracapturer.internal.GlUtils;
+import social.tsu.internal.GlUtils;
 
 /**
  * Applies film grain effect to the frames.

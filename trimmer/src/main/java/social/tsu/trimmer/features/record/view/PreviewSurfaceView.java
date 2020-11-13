@@ -16,176 +16,176 @@ import java.util.List;
 
 @SuppressLint("ViewConstructor")
 public class PreviewSurfaceView extends SurfaceView implements SurfaceHolder.Callback {
-  private static final String TAG = "PreviewSurfaceView";
+    private static final String TAG = "PreviewSurfaceView";
 
-  private Camera mCamera;
-  private SurfaceHolder mHolder;
-  private Context mContext;
-  private int cameraId = Camera.CameraInfo.CAMERA_FACING_BACK;
-  private int displayDegree = 90;
+    private Camera mCamera;
+    private SurfaceHolder mHolder;
+    private Context mContext;
+    private int cameraId = Camera.CameraInfo.CAMERA_FACING_BACK;
+    private int displayDegree = 90;
 
-  public PreviewSurfaceView(Context context) {
-    super(context);
-    mContext = context;
-    init();
-  }
-
-  public PreviewSurfaceView(Context context, AttributeSet attrs) {
-    super(context, attrs);
-    this.mContext = context;
-    init();
-  }
-
-  private void init() {
-    mCamera = Camera.open(cameraId);
-    mHolder = getHolder();
-    mHolder.addCallback(this);
-  }
-
-  public void startPreview() {
-    mCamera.startPreview();
-  }
-
-  @Override
-  public void surfaceCreated(SurfaceHolder holder) {
-    try {
-      startCamera(holder);
-    } catch (IOException e) {
-      e.printStackTrace();
+    public PreviewSurfaceView(Context context) {
+        super(context);
+        mContext = context;
+        init();
     }
-  }
 
-  @Override
-  public void surfaceChanged(SurfaceHolder holder, int format, int width, int height) {
-    if (mHolder.getSurface() == null) {
-      return;
+    public PreviewSurfaceView(Context context, AttributeSet attrs) {
+        super(context, attrs);
+        this.mContext = context;
+        init();
     }
-    try {
-      mCamera.stopPreview();
-    } catch (Exception e) {
-      e.printStackTrace();
-    }
-    try {
-      startCamera(mHolder);
-    } catch (Exception e) {
-      Log.e(TAG, e.toString());
-    }
-  }
 
-  private void startCamera(SurfaceHolder holder) throws IOException {
-    mCamera.setPreviewDisplay(holder);
-    setCameraDisplayOrientation((Activity) mContext, cameraId, mCamera);
+    private void init() {
+        mCamera = Camera.open(cameraId);
+        mHolder = getHolder();
+        mHolder.addCallback(this);
+    }
 
-    Camera.Size preSize = getCameraSize();
+    public void startPreview() {
+        mCamera.startPreview();
+    }
 
-    Camera.Parameters parameters = mCamera.getParameters();
-    parameters.setPreviewSize(preSize.width, preSize.height);
-    parameters.setPictureSize(preSize.width, preSize.height);
-    parameters.setJpegQuality(100);
-    try {
-      mCamera.setParameters(parameters);
-    } catch (Exception e) {
-      try {
-        parameters.setPictureSize(1920, 1080);
-        mCamera.setParameters(parameters);
-      } catch (Exception ignored) {
-      }
+    @Override
+    public void surfaceCreated(SurfaceHolder holder) {
+        try {
+            startCamera(holder);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
-    mCamera.startPreview();
-  }
 
-  public Camera.Size getCameraSize() {
-    if (null != mCamera) {
-      Camera.Parameters parameters = mCamera.getParameters();
-      DisplayMetrics metrics = mContext.getResources().getDisplayMetrics();
-      Camera.Size preSize = getCloselyPreSize(true, metrics.widthPixels, metrics.heightPixels, parameters.getSupportedPreviewSizes());
-      return preSize;
+    @Override
+    public void surfaceChanged(SurfaceHolder holder, int format, int width, int height) {
+        if (mHolder.getSurface() == null) {
+            return;
+        }
+        try {
+            mCamera.stopPreview();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        try {
+            startCamera(mHolder);
+        } catch (Exception e) {
+            Log.e(TAG, e.toString());
+        }
     }
-    return null;
-  }
 
-  @Override
-  public void surfaceDestroyed(SurfaceHolder holder) {
-    release();
-  }
+    private void startCamera(SurfaceHolder holder) throws IOException {
+        mCamera.setPreviewDisplay(holder);
+        setCameraDisplayOrientation((Activity) mContext, cameraId, mCamera);
 
-  /**
-   * Android API: Display Orientation Setting
-   * Just change screen display orientation,
-   * the rawFrame data never be changed.
-   */
-  private void setCameraDisplayOrientation(Activity activity, int cameraId, Camera camera) {
-    Camera.CameraInfo info = new Camera.CameraInfo();
-    Camera.getCameraInfo(cameraId, info);
-    int rotation = activity.getWindowManager().getDefaultDisplay().getRotation();
-    int degrees = 0;
-    switch (rotation) {
-      case Surface.ROTATION_0:
-        degrees = 0;
-        break;
-      case Surface.ROTATION_90:
-        degrees = 90;
-        break;
-      case Surface.ROTATION_180:
-        degrees = 180;
-        break;
-      case Surface.ROTATION_270:
-        degrees = 270;
-        break;
-    }
-    if (info.facing == Camera.CameraInfo.CAMERA_FACING_FRONT) {
-      displayDegree = (info.orientation + degrees) % 360;
-      displayDegree = (360 - displayDegree) % 360;  // compensate the mirror
-    } else {
-      displayDegree = (info.orientation - degrees + 360) % 360;
-    }
-    camera.setDisplayOrientation(displayDegree);
-  }
+        Camera.Size preSize = getCameraSize();
 
-  public synchronized void release() {
-    try {
-      if (null != mCamera) {
-        mCamera.setPreviewCallback(null);
-        mCamera.stopPreview();
-        mCamera.release();
-        mCamera = null;
-      }
-      if (null != mHolder) {
-        mHolder.removeCallback(this);
-        mHolder = null;
-      }
-    } catch (Exception e) {
-      e.printStackTrace();
+        Camera.Parameters parameters = mCamera.getParameters();
+        parameters.setPreviewSize(preSize.width, preSize.height);
+        parameters.setPictureSize(preSize.width, preSize.height);
+        parameters.setJpegQuality(100);
+        try {
+            mCamera.setParameters(parameters);
+        } catch (Exception e) {
+            try {
+                parameters.setPictureSize(1920, 1080);
+                mCamera.setParameters(parameters);
+            } catch (Exception ignored) {
+            }
+        }
+        mCamera.startPreview();
     }
-  }
 
-  private Camera.Size getCloselyPreSize(boolean isPortrait, int surfaceWidth, int surfaceHeight, List<Camera.Size> preSizeList) {
-    int reqTmpWidth;
-    int reqTmpHeight;
-    if (isPortrait) {
-      reqTmpWidth = surfaceHeight;
-      reqTmpHeight = surfaceWidth;
-    } else {
-      reqTmpWidth = surfaceWidth;
-      reqTmpHeight = surfaceHeight;
+    public Camera.Size getCameraSize() {
+        if (null != mCamera) {
+            Camera.Parameters parameters = mCamera.getParameters();
+            DisplayMetrics metrics = mContext.getResources().getDisplayMetrics();
+            Camera.Size preSize = getCloselyPreSize(true, metrics.widthPixels, metrics.heightPixels, parameters.getSupportedPreviewSizes());
+            return preSize;
+        }
+        return null;
     }
-    for (Camera.Size size : preSizeList) {
-      if ((size.width == reqTmpWidth) && (size.height == reqTmpHeight)) {
-        return size;
-      }
+
+    @Override
+    public void surfaceDestroyed(SurfaceHolder holder) {
+        release();
     }
-    float reqRatio = ((float) reqTmpWidth) / reqTmpHeight;
-    float curRatio, deltaRatio;
-    float deltaRatioMin = Float.MAX_VALUE;
-    Camera.Size retSize = null;
-    for (Camera.Size size : preSizeList) {
-      curRatio = ((float) size.width) / size.height;
-      deltaRatio = Math.abs(reqRatio - curRatio);
-      if (deltaRatio < deltaRatioMin) {
-        deltaRatioMin = deltaRatio;
-        retSize = size;
-      }
+
+    /**
+     * Android API: Display Orientation Setting
+     * Just change screen display orientation,
+     * the rawFrame data never be changed.
+     */
+    private void setCameraDisplayOrientation(Activity activity, int cameraId, Camera camera) {
+        Camera.CameraInfo info = new Camera.CameraInfo();
+        Camera.getCameraInfo(cameraId, info);
+        int rotation = activity.getWindowManager().getDefaultDisplay().getRotation();
+        int degrees = 0;
+        switch (rotation) {
+            case Surface.ROTATION_0:
+                degrees = 0;
+                break;
+            case Surface.ROTATION_90:
+                degrees = 90;
+                break;
+            case Surface.ROTATION_180:
+                degrees = 180;
+                break;
+            case Surface.ROTATION_270:
+                degrees = 270;
+                break;
+        }
+        if (info.facing == Camera.CameraInfo.CAMERA_FACING_FRONT) {
+            displayDegree = (info.orientation + degrees) % 360;
+            displayDegree = (360 - displayDegree) % 360;  // compensate the mirror
+        } else {
+            displayDegree = (info.orientation - degrees + 360) % 360;
+        }
+        camera.setDisplayOrientation(displayDegree);
     }
-    return retSize;
-  }
+
+    public synchronized void release() {
+        try {
+            if (null != mCamera) {
+                mCamera.setPreviewCallback(null);
+                mCamera.stopPreview();
+                mCamera.release();
+                mCamera = null;
+            }
+            if (null != mHolder) {
+                mHolder.removeCallback(this);
+                mHolder = null;
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    private Camera.Size getCloselyPreSize(boolean isPortrait, int surfaceWidth, int surfaceHeight, List<Camera.Size> preSizeList) {
+        int reqTmpWidth;
+        int reqTmpHeight;
+        if (isPortrait) {
+            reqTmpWidth = surfaceHeight;
+            reqTmpHeight = surfaceWidth;
+        } else {
+            reqTmpWidth = surfaceWidth;
+            reqTmpHeight = surfaceHeight;
+        }
+        for (Camera.Size size : preSizeList) {
+            if ((size.width == reqTmpWidth) && (size.height == reqTmpHeight)) {
+                return size;
+            }
+        }
+        float reqRatio = ((float) reqTmpWidth) / reqTmpHeight;
+        float curRatio, deltaRatio;
+        float deltaRatioMin = Float.MAX_VALUE;
+        Camera.Size retSize = null;
+        for (Camera.Size size : preSizeList) {
+            curRatio = ((float) size.width) / size.height;
+            deltaRatio = Math.abs(reqRatio - curRatio);
+            if (deltaRatio < deltaRatioMin) {
+                deltaRatioMin = deltaRatio;
+                retSize = size;
+            }
+        }
+        return retSize;
+    }
 }

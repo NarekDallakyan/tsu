@@ -7,7 +7,7 @@ import androidx.annotation.NonNull;
 import java.util.Random;
 
 import social.tsu.cameracapturer.filter.BaseFilter;
-import social.tsu.cameracapturer.internal.GlUtils;
+import social.tsu.internal.GlUtils;
 
 /**
  * Applies a lomo-camera style effect to the input frames.

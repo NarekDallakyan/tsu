@@ -3,7 +3,7 @@ package social.tsu.android.ui.post.model
 import android.graphics.Bitmap
 
 class FilterVideoModel(
-    var filterImage: Int,
+    var fontName: String,
     var filterObject: Any,
     var isSelected: Boolean = false,
     val bitmaps: Bitmap?

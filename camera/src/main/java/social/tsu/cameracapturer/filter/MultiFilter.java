@@ -13,8 +13,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import social.tsu.cameracapturer.internal.GlUtils;
-import social.tsu.cameracapturer.size.Size;
+import social.tsu.internal.GlUtils;
+import social.tsu.size.Size;
 
 /**
  * A {@link MultiFilter} is a special {@link Filter} that can group one or more filters together.

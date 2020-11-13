@@ -63,11 +63,11 @@ public class OverlayHandler implements OnPhotoEditorListener {
 
     private MediaMetadataRetriever retriever;
     private MediaPlayer.OnCompletionListener onCompletionListener = mediaPlayer -> mediaPlayer.start();
-
     private Context context;
     private PhotoEditorView photoEditorView;
     private TextureView videoSurface;
     private EditText mAddTextEditText;
+    private TextStyleBuilder styleBuilder;
     private AppCompatActivity appCompatActivity;
     private int mColorCode;
     private OverlayListener listener;
@@ -393,7 +393,7 @@ public class OverlayHandler implements OnPhotoEditorListener {
 
     public void onDoneClicked(Typeface typeface, int color, String name, boolean isWatermarkOn, String text) {
 
-        final TextStyleBuilder styleBuilder = new TextStyleBuilder();
+        styleBuilder = new TextStyleBuilder();
         boolean colorIsWhite = name.toLowerCase().equals("white");
         int gravity = mAddTextEditText.getGravity();
         styleBuilder.withGravity(gravity);

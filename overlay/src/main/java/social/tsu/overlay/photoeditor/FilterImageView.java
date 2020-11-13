@@ -39,10 +39,6 @@ class FilterImageView extends AppCompatImageView {
         mOnImageChangedListener = onImageChangedListener;
     }
 
-    interface OnImageChangedListener {
-        void onBitmapLoaded(@Nullable Bitmap sourceBitmap);
-    }
-
     @Override
     public void setImageBitmap(Bitmap bm) {
         super.setImageBitmap(bm);
@@ -129,5 +125,9 @@ class FilterImageView extends AppCompatImageView {
             return ((BitmapDrawable) getDrawable()).getBitmap();
         }
         return null;
+    }
+
+    interface OnImageChangedListener {
+        void onBitmapLoaded(@Nullable Bitmap sourceBitmap);
     }
 }

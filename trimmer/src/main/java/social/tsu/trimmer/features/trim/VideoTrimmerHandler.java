@@ -14,63 +14,63 @@ import social.tsu.trimmer.widget.VideoTrimmerView;
 
 public class VideoTrimmerHandler implements VideoTrimListener {
 
-  private static final String VIDEO_PATH_KEY = "video-file-path";
-  public static final int VIDEO_TRIM_REQUEST_CODE = 0x001;
-  private VideoTrimmerView trimmerView;
-  private OnTrimComplete callback;
+    public static final int VIDEO_TRIM_REQUEST_CODE = 0x001;
+    private static final String VIDEO_PATH_KEY = "video-file-path";
+    private VideoTrimmerView trimmerView;
+    private OnTrimComplete callback;
 
-  public static void call(FragmentActivity from, String videoPath) {
+    public static void call(FragmentActivity from, String videoPath) {
 
-    if (!TextUtils.isEmpty(videoPath)) {
-      Bundle bundle = new Bundle();
-      bundle.putString(VIDEO_PATH_KEY, videoPath);
-      Intent intent = new Intent(from, VideoTrimmerHandler.class);
-      intent.putExtras(bundle);
-      from.startActivityForResult(intent, VIDEO_TRIM_REQUEST_CODE);
+        if (!TextUtils.isEmpty(videoPath)) {
+            Bundle bundle = new Bundle();
+            bundle.putString(VIDEO_PATH_KEY, videoPath);
+            Intent intent = new Intent(from, VideoTrimmerHandler.class);
+            intent.putExtras(bundle);
+            from.startActivityForResult(intent, VIDEO_TRIM_REQUEST_CODE);
+        }
     }
-  }
 
-  public void initUI(VideoTrimmerView trimmerView, String path, Context context) {
-    this.trimmerView = trimmerView;
-    trimmerView.setOnTrimVideoListener(this);
-    trimmerView.initVideoByURI(Uri.parse(path));
-  }
+    public void initUI(VideoTrimmerView trimmerView, String path, Context context) {
+        this.trimmerView = trimmerView;
+        trimmerView.setOnTrimVideoListener(this);
+        trimmerView.initVideoByURI(Uri.parse(path));
+    }
 
-  public long getVideoTrimDuration() {
-    return trimmerView.getVideoTrimDuration();
-  }
+    public long getVideoTrimDuration() {
+        return trimmerView.getVideoTrimDuration();
+    }
 
 
-  public void onPause() {
-    if (trimmerView == null) return;
-    trimmerView.onVideoPause();
-    trimmerView.setRestoreState(true);
-  }
+    public void onPause() {
+        if (trimmerView == null) return;
+        trimmerView.onVideoPause();
+        trimmerView.setRestoreState(true);
+    }
 
-  public void onDestroy() {
-    trimmerView.onDestroy();
-  }
+    public void onDestroy() {
+        trimmerView.onDestroy();
+    }
 
-  public void onStartTrim() {
+    public void onStartTrim() {
 
-  }
+    }
 
-  @Override
-  public void onFinishTrim(String in) {
-    callback.onComplete(in);
-  }
+    @Override
+    public void onFinishTrim(String in) {
+        callback.onComplete(in);
+    }
 
-  @Override
-  public void onCancel() {
-    trimmerView.onDestroy();
-  }
+    @Override
+    public void onCancel() {
+        trimmerView.onDestroy();
+    }
 
-  public void onSave(OnTrimComplete callback) {
-    this.callback = callback;
-    trimmerView.onSaveClicked();
-  }
+    public void onSave(OnTrimComplete callback) {
+        this.callback = callback;
+        trimmerView.onSaveClicked();
+    }
 
-  public interface OnTrimComplete {
-    void onComplete(String filePath);
-  }
+    public interface OnTrimComplete {
+        void onComplete(String filePath);
+    }
 }

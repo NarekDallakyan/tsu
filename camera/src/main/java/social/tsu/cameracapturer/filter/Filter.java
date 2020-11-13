@@ -5,8 +5,6 @@ import androidx.annotation.NonNull;
 
 import java.io.File;
 
-import social.tsu.cameracapturer.camera.CameraView;
-
 
 /**
  * A Filter is a real time filter that operates onto the camera preview, plus any

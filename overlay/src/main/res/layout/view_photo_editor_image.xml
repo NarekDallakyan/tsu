@@ -4,17 +4,16 @@
     android:layout_height="wrap_content">
 
 
-
-        <ImageView
-            android:id="@+id/imgPhotoEditorImage"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:layout_margin="4dp"
-            android:adjustViewBounds="true"
-            android:contentDescription="@string/app_name"
-            android:scaleType="fitCenter"
-            android:src="@drawable/ic_remove" />
+    <ImageView
+        android:id="@+id/imgPhotoEditorImage"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:layout_margin="4dp"
+        android:adjustViewBounds="true"
+        android:contentDescription="@string/app_name"
+        android:scaleType="fitCenter"
+        android:src="@drawable/ic_remove" />
 
 
 </FrameLayout>

@@ -1,15 +1,13 @@
 package social.tsu.cameracapturer.control;
 
 
-
 import androidx.annotation.NonNull;
 
-import social.tsu.cameracapturer.camera.CameraView;
+import social.tsu.control.Control;
 
 /**
  * Audio values indicate whether to record audio stream when record video.
  *
- * @see CameraView#setAudio(Audio)
  */
 public enum Audio implements Control {
 
@@ -35,7 +33,7 @@ public enum Audio implements Control {
      */
     STEREO(3);
 
-    final static Audio DEFAULT = ON;
+    public final static Audio DEFAULT = ON;
 
     private int value;
 
@@ -43,12 +41,12 @@ public enum Audio implements Control {
         this.value = value;
     }
 
-    int value() {
+    public int value() {
         return value;
     }
 
     @NonNull
-    static Audio fromValue(int value) {
+    public static Audio fromValue(int value) {
         Audio[] list = Audio.values();
         for (Audio action : list) {
             if (action.value() == value) {

@@ -306,6 +306,7 @@ dependencies {
     //Blur imageView
     implementation 'jp.wasabeef:blurry:4.0.0'
     implementation 'pl.droidsonroids.gif:android-gif-drawable:1.2.19'
+    implementation 'jp.co.cyberagent.android:gpuimage:2.1.0'
 
     // Load modules
     implementation project(':camera')

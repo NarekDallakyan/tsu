@@ -50,14 +50,14 @@ class FilterVideoAdapter : RecyclerView.Adapter<FilterVideoAdapter.TrimVideoView
             val chooseLayer = itemView.chooseLayer
             val filterText = itemView.filterNameText
             val image = itemView.profile_image
-
+            // Add Content
+            filterText.text = itemModel.fontName
+            image.setImageBitmap(itemModel.bitmaps)
             itemView.setOnClickListener {
                 itemClickListener?.let {
                     it(adapterPosition, itemModel)
                 }
             }
-
-            filterText.text = "filter"
 
             if (!itemModel.isSelected) {
                 chooseLayer.hide()

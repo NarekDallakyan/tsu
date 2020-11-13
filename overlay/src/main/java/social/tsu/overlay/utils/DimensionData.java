@@ -5,6 +5,11 @@ public class DimensionData {
     public int width;
     public int height;
 
+    public DimensionData(int new_width, int new_height) {
+        width = new_width;
+        height = new_height;
+    }
+
     public int getWidth() {
         return width;
     }
@@ -19,10 +24,5 @@ public class DimensionData {
 
     public void setHeight(int height) {
         this.height = height;
-    }
-
-    public DimensionData(int new_width, int new_height) {
-        width = new_width;
-        height = new_height;
     }
 }

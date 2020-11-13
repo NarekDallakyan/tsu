@@ -5,11 +5,11 @@ import android.media.MediaScannerConnection
 import android.net.Uri
 import android.util.Log
 import androidx.lifecycle.LifecycleOwner
-import social.tsu.cameracapturer.camera.CameraListener
-import social.tsu.cameracapturer.camera.CameraView
-import social.tsu.cameracapturer.camera.VideoResult
+import social.tsu.camera.CameraListener
+import social.tsu.camera.CameraView
+import social.tsu.camera.VideoResult
 import social.tsu.cameracapturer.filter.Filter
-import social.tsu.cameracapturer.helper.CameraCaptureHelper
+import social.tsu.helper.CameraCaptureHelper
 
 
 class GifPostHandler(

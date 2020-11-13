@@ -6,7 +6,7 @@ import androidx.annotation.NonNull;
 
 import social.tsu.cameracapturer.filter.BaseFilter;
 import social.tsu.cameracapturer.filter.OneParameterFilter;
-import social.tsu.cameracapturer.internal.GlUtils;
+import social.tsu.internal.GlUtils;
 
 /**
  * Applies gamma correction to the frames.

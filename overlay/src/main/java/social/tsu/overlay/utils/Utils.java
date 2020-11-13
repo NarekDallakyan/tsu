@@ -18,7 +18,6 @@ public class Utils {
     public static final int OPEN_SETTINGS_FOR_PERMISSION = 125;
 
 
-
     public static DimensionData getScaledDimension(DimensionData imgSize, DimensionData
             boundary) {
 

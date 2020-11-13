@@ -198,6 +198,22 @@ class MultiTouchListener implements OnTouchListener {
         this.onMultiTouchListener = onMultiTouchListener;
     }
 
+    void setOnGestureControl(OnGestureControl onGestureControl) {
+        mOnGestureControl = onGestureControl;
+    }
+
+    interface OnMultiTouchListener {
+        void onEditTextClickListener(String text, int colorCode);
+
+        void onRemoveViewListener(View removedView);
+    }
+
+    interface OnGestureControl {
+        void onClick();
+
+        void onLongClick();
+    }
+
     private class ScaleGestureListener extends ScaleGestureDetector.SimpleOnScaleGestureListener {
 
         private float mPivotX;
@@ -237,22 +253,6 @@ class MultiTouchListener implements OnTouchListener {
         float pivotY;
         float minimumScale;
         float maximumScale;
-    }
-
-    interface OnMultiTouchListener {
-        void onEditTextClickListener(String text, int colorCode);
-
-        void onRemoveViewListener(View removedView);
-    }
-
-    interface OnGestureControl {
-        void onClick();
-
-        void onLongClick();
-    }
-
-    void setOnGestureControl(OnGestureControl onGestureControl) {
-        mOnGestureControl = onGestureControl;
     }
 
     private final class GestureListener extends GestureDetector.SimpleOnGestureListener {

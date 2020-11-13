@@ -7,9 +7,9 @@ import androidx.annotation.VisibleForTesting;
 
 import java.nio.FloatBuffer;
 
-import social.tsu.cameracapturer.camera.CameraLogger;
-import social.tsu.cameracapturer.internal.GlUtils;
-import social.tsu.cameracapturer.size.Size;
+import social.tsu.camera.CameraLogger;
+import social.tsu.internal.GlUtils;
+import social.tsu.size.Size;
 
 /**
  * A base implementation of {@link Filter} that just leaves the fragment shader to subclasses.
@@ -98,7 +98,8 @@ public abstract class BaseFilter implements Filter {
     private int vertexPositionLocation = -1;
     private int vertexTextureCoordinateLocation = -1;
     @VisibleForTesting int programHandle = -1;
-    @VisibleForTesting Size size;
+    @VisibleForTesting
+    Size size;
 
     @SuppressWarnings("WeakerAccess")
     protected String vertexPositionName = DEFAULT_VERTEX_POSITION_NAME;

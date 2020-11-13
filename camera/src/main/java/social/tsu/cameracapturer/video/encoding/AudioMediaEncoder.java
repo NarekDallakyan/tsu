@@ -16,7 +16,14 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.concurrent.LinkedBlockingQueue;
 
-import social.tsu.cameracapturer.camera.CameraLogger;
+import social.tsu.camera.CameraLogger;
+import social.tsu.video.encoding.AudioTimestamp;
+import social.tsu.video.encoding.ByteBufferPool;
+import social.tsu.video.encoding.EncoderThread;
+import social.tsu.video.encoding.InputBuffer;
+import social.tsu.video.encoding.InputBufferPool;
+import social.tsu.video.encoding.MediaEncoder;
+import social.tsu.video.encoding.MediaEncoderEngine;
 
 /**
  * Default implementation for audio encoding.
