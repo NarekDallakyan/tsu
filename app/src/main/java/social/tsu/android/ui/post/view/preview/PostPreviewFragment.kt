@@ -288,7 +288,8 @@ class PostPreviewFragment : Fragment() {
                                 (PostTypesFragment.instance()).next(
                                     videoPath = gifFilePath,
                                     originalFilePath = originalFilePath,
-                                    fromGrid = true
+                                    fromGrid = true,
+                                    screenPosition = fromScreenType
                                 )
                                 overlayHandler.destroy()
                             }
@@ -300,7 +301,8 @@ class PostPreviewFragment : Fragment() {
                 (PostTypesFragment.instance()).next(
                     videoPath = filePath,
                     originalFilePath = originalFilePath,
-                    fromGrid = true
+                    fromGrid = true,
+                    screenPosition = fromScreenType
                 )
                 overlayHandler.destroy()
             }

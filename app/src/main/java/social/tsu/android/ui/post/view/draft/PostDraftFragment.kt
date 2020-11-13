@@ -189,10 +189,15 @@ class PostDraftFragment : Fragment() {
     private fun handleBack() {
 
         sharedViewModel?.select(false)
+
         if (screenPosition == null || screenPosition == -1) {
-            findParentNavController().popBackStack(R.id.postPreviewFragment, false)
+            findParentNavController().popBackStack(R.id.mediaGridFragment, false)
         } else {
-            findParentNavController().navigate(R.id.postTypesFragment)
+            if (screenPosition == 0) {
+                findParentNavController().navigate(R.id.postTypesFragment)
+            } else {
+                findParentNavController().popBackStack(R.id.postPreviewFragment, false)
+            }
         }
     }
 

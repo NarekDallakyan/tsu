@@ -1,5 +1,6 @@
 package social.tsu.android.ui.post.view
 
+import android.content.Context
 import android.net.Uri
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -7,6 +8,7 @@ import android.view.View
 import android.view.View.VISIBLE
 import android.view.ViewGroup
 import android.widget.Toast
+import androidx.activity.addCallback
 import androidx.appcompat.widget.Toolbar
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
@@ -85,6 +87,14 @@ open class PostTypesFragment : Fragment(), Serializable {
     // Filters
     private var filterVideoAdapter: FilterVideoAdapter? = null
     private var selectedFilterItemPosition: Int = -1
+
+    /**
+     *  Handling back action
+     */
+    private fun handleBack() {
+        sharedViewModel!!.select(false)
+        findParentNavController().popBackStack(R.id.mainFeedFragment, false)
+    }
 
     /**
      *  Handling record mode UI
@@ -287,8 +297,7 @@ open class PostTypesFragment : Fragment(), Serializable {
         }
 
         closeLayout_id?.setOnClickListener {
-            sharedViewModel!!.select(false)
-            findParentNavController().popBackStack(R.id.mainFeedFragment, false)
+            handleBack()
         }
 
         filterLayout_id?.setOnClickListener {
@@ -736,6 +745,13 @@ open class PostTypesFragment : Fragment(), Serializable {
                 instance = fragment
             }
             return instance!!
+        }
+    }
+
+    override fun onAttach(context: Context) {
+        super.onAttach(context)
+        requireActivity().onBackPressedDispatcher.addCallback(this) {
+            handleBack()
         }
     }
 }

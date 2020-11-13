@@ -10,6 +10,7 @@ import androidx.navigation.fragment.navArgs
 import kotlinx.android.synthetic.main.fragment_media_grid.*
 import kotlinx.android.synthetic.main.fragment_post_types.*
 import social.tsu.android.R
+import social.tsu.android.ui.MainActivity
 import social.tsu.android.ui.post.view.PostTypesFragment
 
 class MediaGridFragment : Fragment() {
@@ -18,6 +19,12 @@ class MediaGridFragment : Fragment() {
     private var folderName: String? = null
 
     private val args: MediaGridFragmentArgs by navArgs()
+
+    override fun onStart() {
+        super.onStart()
+        val mainActivity = requireActivity() as? MainActivity
+        mainActivity?.supportActionBar?.show()
+    }
 
     override fun onCreateView(
         inflater: LayoutInflater,
