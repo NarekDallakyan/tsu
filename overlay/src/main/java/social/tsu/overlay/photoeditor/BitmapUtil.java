@@ -9,15 +9,6 @@ import java.nio.IntBuffer;
 
 import javax.microedition.khronos.opengles.GL10;
 
-/**
- * <p>
- * Bitmap utility class to perform different transformation on bitmap
- * </p>
- *
- * @author <a href="https://github.com/burhanrashid52">Burhanuddin Rashid</a>
- * @version 0.1.2
- * @since 5/21/2018
- */
 class BitmapUtil {
     /**
      * Remove transparency in edited bitmap
@@ -71,7 +62,7 @@ class BitmapUtil {
     }
 
     /**
-     * Save filter bitmap from {@link ja.burhanrashid52.photoeditor.ImageFilterView}
+     * Save filter bitmap from
      *
      * @param glSurfaceView surface view on which is image is drawn
      * @param gl            open gl source to read pixels from {@link GLSurfaceView}

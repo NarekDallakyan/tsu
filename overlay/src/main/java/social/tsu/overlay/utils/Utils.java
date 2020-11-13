@@ -31,11 +31,6 @@ public class Utils {
         Log.d("video_width >> ", original_width + " video_height >> " + original_height);
         Log.d("display_width >> ", bound_width + " display_height >> " + bound_height);
 
-        /*if (original_width > original_height) {
-
-        } else {
-
-        }*/
 
 
         //scale width to fit
@@ -43,16 +38,6 @@ public class Utils {
         //scale height to maintain aspect ratio
         new_height = (new_width * original_height) / original_width;
 
-//        new_height = ((double)original_width / (double) bound_width) * bound_height;
-
-
-        // first check if we need to scale width
-      /*  if (original_width > bound_width) {
-            //scale width to fit
-            new_width = bound_width;
-            //scale height to maintain aspect ratio
-            new_height = (new_width * original_height) / original_width;
-        }*/
         // then check if we need to scale even with the new height
         if (new_height > bound_height) {
             //scale height to fit instead
@@ -71,5 +56,4 @@ public class Utils {
         intent.setData(uri);
         activity.startActivityForResult(intent, 0);
     }
-
 }

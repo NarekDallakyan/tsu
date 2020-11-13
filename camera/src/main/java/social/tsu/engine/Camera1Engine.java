@@ -768,7 +768,6 @@ public class Camera1Engine extends CameraEngine implements
                 mHandler.post(AUTOFOCUS_END_DELAY_MILLIS, mFocusEndRunnable);
 
                 // Wrapping autoFocus in a try catch to handle some device specific exceptions,
-                // see See https://github.com/natario1/CameraView/issues/181.
                 try {
                     mCamera.autoFocus(new Camera.AutoFocusCallback() {
                         @Override
@@ -793,7 +792,5 @@ public class Camera1Engine extends CameraEngine implements
             }
         });
     }
-
-    //endregion
 }
 

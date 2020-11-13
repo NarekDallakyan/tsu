@@ -21,16 +21,6 @@ import androidx.annotation.VisibleForTesting;
 
 import java.util.Stack;
 
-/**
- * <p>
- * This is custom drawing view used to do painting on user touch events it it will paint on canvas
- * as per attributes provided to the paint
- * </p>
- *
- * @author <a href="https://github.com/burhanrashid52">Burhanuddin Rashid</a>
- * @version 0.1.1
- * @since 12/1/18
- */
 public class BrushDrawingView extends View {
 
     static final float DEFAULT_BRUSH_SIZE = 25.0f;

@@ -3,15 +3,6 @@ package social.tsu.overlay.photoeditor;
 import android.view.View;
 
 
-/**
- * @author <a href="https://github.com/burhanrashid52">Burhanuddin Rashid</a>
- * @version 0.1.1
- * @since 18/01/2017
- * <p>
- * This are the callbacks when any changes happens while editing the photo to make and custimization
- * on client side
- * </p>
- */
 public interface OnPhotoEditorListener {
 
     /**

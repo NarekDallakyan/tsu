@@ -92,7 +92,6 @@ import social.tsu.preview.RendererThread;
  * finally the {@link EglViewport} drawing operations should be synchronized with a lock.
  * <p>
  * REFERENCES
- * https://github.com/natario1/CameraView/issues/514
  * https://android.googlesource.com/platform/frameworks/native/+/5c1139f/libs/gui/SurfaceTexture.cpp
  * I can see here that SurfaceTexture does indeed call glBindTexture with the same parameters whenever
  * updateTexImage is called, but it also does other gl stuff first. This other gl stuff might be

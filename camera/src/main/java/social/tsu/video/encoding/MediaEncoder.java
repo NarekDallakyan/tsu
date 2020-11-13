@@ -76,7 +76,6 @@ import social.tsu.internal.utils.WorkerHandler;
  * milliseconds of the first frame in the {@link System#currentTimeMillis()} reference, so
  * something that we can coordinate on.
  */
-// https://github.com/saki4510t/AudioVideoRecordingSample/blob/master/app/src/main/java/com/serenegiant/encoder/MediaEncoder.java
 @RequiresApi(api = Build.VERSION_CODES.JELLY_BEAN_MR2)
 public abstract class MediaEncoder {
 

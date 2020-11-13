@@ -1,8 +1,5 @@
 package social.tsu.overlay.utils;
 
-/**
- * Created by jaypal on 4/1/18.
- */
 public interface Constant {
 
     String FORMAT1 = "HH:mm";

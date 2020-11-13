@@ -59,14 +59,14 @@ public class TextStyleBuilder {
     /**
      * Set this background color
      *
-     * @param background Background color to apply on text, this method overrides the preview set on {@link ja.burhanrashid52.photoeditor.TextStyleBuilder#withBackgroundDrawable(Drawable)}
+     * @param background Background color to apply on text, this method overrides the preview set on {@link TextStyleBuilder#withBackgroundDrawable(Drawable)}
      */
     public void withBackgroundColor(@NonNull int background) {
         values.put(TextStyle.BACKGROUND, background);
     }
 
     /**
-     * Set this background {@link Drawable}, this method overrides the preview set on {@link ja.burhanrashid52.photoeditor.TextStyleBuilder#withBackgroundColor(int)}
+     * Set this background {@link Drawable}, this method overrides the preview set on {@link TextStyleBuilder#withBackgroundColor(int)}
      *
      * @param bgDrawable Background drawable to apply on text
      */
@@ -159,23 +159,15 @@ public class TextStyleBuilder {
     }
 
     protected void applyBackgroundDrawable(TextView textView, Drawable bg) {
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN) {
-            textView.setBackground(bg);
-        } else {
-            textView.setBackgroundDrawable(bg);
-        }
+        textView.setBackground(bg);
     }
 
     protected void applyTextAppearance(TextView textView, int styleAppearance) {
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-            textView.setTextAppearance(styleAppearance);
-        } else {
-            textView.setTextAppearance(textView.getContext(), styleAppearance);
-        }
+        textView.setTextAppearance(styleAppearance);
     }
 
     /**
-     * Enum to maintain current supported style properties used on on {@link PhotoEditor#addText(String, ja.burhanrashid52.photoeditor.TextStyleBuilder)} and {@link PhotoEditor#editText(View, String, ja.burhanrashid52.photoeditor.TextStyleBuilder)}
+     * Enum to maintain current supported style properties used on on {@link PhotoEditor#addText(String, TextStyleBuilder)} and {@link PhotoEditor#editText(View, String, TextStyleBuilder)}
      */
     protected enum TextStyle {
         SIZE("TextSize"),

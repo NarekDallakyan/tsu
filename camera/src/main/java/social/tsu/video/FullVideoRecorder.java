@@ -57,8 +57,6 @@ public abstract class FullVideoRecorder extends VideoRecorder {
         mMediaRecorder.setOutputFormat(mProfile.fileFormat);
 
         // Get the audio mime type
-        // https://android.googlesource.com/platform/frameworks/av/+/master/media/libmediaplayerservice/StagefrightRecorder.cpp#1096
-        // https://github.com/MrAlex94/Waterfox-Old/blob/master/media/libstagefright/frameworks/av/media/libstagefright/MediaDefs.cpp
         String audioType;
         switch (mProfile.audioCodec) {
             case MediaRecorder.AudioEncoder.AMR_NB:
@@ -81,8 +79,6 @@ public abstract class FullVideoRecorder extends VideoRecorder {
         }
 
         // Get the video mime type
-        // https://android.googlesource.com/platform/frameworks/av/+/master/media/libmediaplayerservice/StagefrightRecorder.cpp#1650
-        // https://github.com/MrAlex94/Waterfox-Old/blob/master/media/libstagefright/frameworks/av/media/libstagefright/MediaDefs.cpp
         String videoType;
         if (stub.videoCodec == VideoCodec.H_264)
             mProfile.videoCodec = MediaRecorder.VideoEncoder.H264;

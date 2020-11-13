@@ -7,13 +7,6 @@ import androidx.annotation.NonNull;
 import java.util.HashMap;
 import java.util.Map;
 
-/**
- * Define your custom effect using {@link Builder} class
- *
- * @author <a href="https://github.com/burhanrashid52">Burhanuddin Rashid</a>
- * @version 0.1.2
- * @since 5/22/2018
- */
 public class CustomEffect {
 
     private String mEffectName;

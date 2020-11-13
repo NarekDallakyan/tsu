@@ -69,8 +69,6 @@ public class RangeSeekBarView extends View {
     private float secondPointer = 0;
 
     private Canvas mCanvas;
-    private int w;
-    private int h;
 
     public RangeSeekBarView(Context context) {
         super(context);
@@ -208,12 +206,6 @@ public class RangeSeekBarView extends View {
         String rightThumbsTime = DateUtil.convertSecondsToTime(mEndPosition);
         canvas.drawText(leftThumbsTime, normalizedToScreen(normalizedMinValue), TextPositionY, mVideoTrimTimePaintL);
         canvas.drawText(rightThumbsTime, normalizedToScreen(normalizedMaxValue), TextPositionY, mVideoTrimTimePaintR);
-    }
-
-    @Override
-    protected void onSizeChanged(int w, int h, int oldw, int oldh) {
-        this.w = w;
-        this.h = h;
     }
 
     @Override

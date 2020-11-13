@@ -63,9 +63,6 @@ public class SnapshotVideoRecorder extends VideoRecorder implements RendererFram
         mOverlayRotation = overlayRotation;
     }
 
-    // https://stackoverflow.com/a/5220554/4288782
-    // Assuming low motion, we don't want to put this too high for default usage,
-    // advanced users are still free to change this for each video.
     private static int estimateVideoBitRate(@NonNull Size size, int frameRate) {
         return (int) (0.07F * 1F * size.getWidth() * size.getHeight() * frameRate);
     }

@@ -43,15 +43,6 @@ import static android.media.effect.EffectFactory.EFFECT_TINT;
 import static android.media.effect.EffectFactory.EFFECT_VIGNETTE;
 import static social.tsu.overlay.photoeditor.PhotoFilter.NONE;
 
-/**
- * <p>
- * Filter Images using ImageFilterView
- * </p>
- *
- * @author <a href="https://github.com/burhanrashid52">Burhanuddin Rashid</a>
- * @version 0.1.2
- * @since 2/14/2018
- */
 class ImageFilterView extends GLSurfaceView implements GLSurfaceView.Renderer {
 
     private static final String TAG = "ImageFilterView";
@@ -86,9 +77,6 @@ class ImageFilterView extends GLSurfaceView implements GLSurfaceView.Renderer {
     }
 
     void setSourceBitmap(Bitmap sourceBitmap) {
-       /* if (mSourceBitmap != null && mSourceBitmap.sameAs(sourceBitmap)) {
-            //mCurrentEffect = NONE;
-        }*/
         mSourceBitmap = sourceBitmap;
         mInitialized = false;
     }
