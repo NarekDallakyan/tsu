@@ -95,8 +95,6 @@
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="0dp"
             android:layout_height="40dp"
-            android:layout_marginStart="32dp"
-            android:layout_marginEnd="32dp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
@@ -106,9 +104,11 @@
                 android:id="@+id/languageLayout_id"
                 android:layout_width="30dp"
                 android:layout_height="30dp"
+                android:layout_marginEnd="32dp"
                 android:background="@drawable/languages_icon"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toStartOf="@+id/imageView5"
+                app:layout_constraintHorizontal_bias="1.0"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent">
 
@@ -118,6 +118,7 @@
                 android:id="@+id/wifiLayout_id"
                 android:layout_width="30dp"
                 android:layout_height="30dp"
+                android:layout_marginStart="32dp"
                 android:background="@drawable/ic_wifi_gray_ending"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
@@ -128,6 +129,7 @@
                 android:id="@+id/photoLayout_id"
                 android:layout_width="30dp"
                 android:layout_height="30dp"
+                android:layout_marginStart="32dp"
                 android:background="@drawable/ic_photo_camera"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toStartOf="@+id/wifiLayout_id"

@@ -445,7 +445,6 @@ open class PostTypesFragment : Fragment(), Serializable {
             )
 
             handleSpeedIcon(false)
-            handleFlashIcon(false)
             handleSoundIcon(true)
         }
         // Set default Camera Mode
@@ -520,17 +519,17 @@ open class PostTypesFragment : Fragment(), Serializable {
         if (enable != null) {
 
             flashTag = if (enable) {
-                "off"
-            } else {
                 "on"
+            } else {
+                "off"
             }
         }
 
         if (flashTag == "on") {
-            flashIcon?.setImageResource(R.drawable.ic_flash_offwhite)
+            flashIcon?.setImageResource(R.drawable.flash_on)
             flashIcon?.tag = "off"
         } else {
-            flashIcon?.setImageResource(R.drawable.flash_on)
+            flashIcon?.setImageResource(R.drawable.ic_flash_offwhite)
             flashIcon?.tag = "on"
         }
     }
