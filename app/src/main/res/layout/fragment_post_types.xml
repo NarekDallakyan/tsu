@@ -107,7 +107,7 @@
                 android:layout_marginEnd="32dp"
                 android:background="@drawable/languages_icon"
                 app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toStartOf="@+id/imageView5"
+                app:layout_constraintEnd_toStartOf="@+id/gifLayout_id"
                 app:layout_constraintHorizontal_bias="1.0"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent">
@@ -123,7 +123,9 @@
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toEndOf="@+id/photoLayout_id"
-                app:layout_constraintTop_toTopOf="parent"></androidx.constraintlayout.widget.ConstraintLayout>
+                app:layout_constraintTop_toTopOf="parent">
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
 
             <androidx.constraintlayout.widget.ConstraintLayout
                 android:id="@+id/photoLayout_id"
@@ -133,18 +135,20 @@
                 android:background="@drawable/ic_photo_camera"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toStartOf="@+id/wifiLayout_id"
-                app:layout_constraintStart_toEndOf="@+id/imageView5"
-                app:layout_constraintTop_toTopOf="parent"></androidx.constraintlayout.widget.ConstraintLayout>
+                app:layout_constraintStart_toEndOf="@+id/gifLayout_id"
+                app:layout_constraintTop_toTopOf="parent">
 
-            <ImageView
-                android:id="@+id/imageView5"
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:id="@+id/gifLayout_id"
                 android:layout_width="30dp"
                 android:layout_height="30dp"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toStartOf="@+id/photoLayout_id"
                 app:layout_constraintStart_toEndOf="@+id/languageLayout_id"
                 app:layout_constraintTop_toTopOf="parent"
-                app:srcCompat="@drawable/ic_gif_icon" />
+                android:background="@drawable/ic_gif_icon"/>
         </androidx.constraintlayout.widget.ConstraintLayout>
 
     </androidx.constraintlayout.widget.ConstraintLayout>

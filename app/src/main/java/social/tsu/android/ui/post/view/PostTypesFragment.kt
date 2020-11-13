@@ -262,6 +262,14 @@ open class PostTypesFragment : Fragment(), Serializable {
             )
         }
 
+        // Listen gif button on click
+        gifLayout_id?.setOnClickListener {
+            postTypeUiHelper.setChoose(
+                GIF_CLICK,
+                view
+            )
+        }
+
         photoLayout_id?.setOnClickListener {
             postTypeUiHelper.setChoose(
                 PHOTO_CLICK,
@@ -714,6 +722,7 @@ open class PostTypesFragment : Fragment(), Serializable {
         const val LANGUAGE_CLICK = 1
         const val PHOTO_CLICK = 2
         const val WIFI_CLICK = 3
+        const val GIF_CLICK = 4
         private var toolbar: Toolbar? = null
 
         fun showToolbar() {

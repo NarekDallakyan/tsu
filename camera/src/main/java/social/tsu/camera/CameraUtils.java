@@ -259,7 +259,6 @@ public class CameraUtils {
         if (rotation == -1) {
             InputStream stream = null;
             try {
-                // http://sylvana.net/jpegcrop/exif_orientation.html
                 stream = new ByteArrayInputStream(source);
                 ExifInterface exif = new ExifInterface(stream);
                 int exifOrientation = exif.getAttributeInt(ExifInterface.TAG_ORIENTATION, ExifInterface.ORIENTATION_NORMAL);

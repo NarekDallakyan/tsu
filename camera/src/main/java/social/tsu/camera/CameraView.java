@@ -2217,6 +2217,4 @@ public class CameraView extends FrameLayout implements LifecycleObserver {
             });
         }
     }
-
-    //endregion
 }

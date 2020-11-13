@@ -1,77 +1,143 @@
 package social.tsu.android.ui.post.helper
 
 import android.content.Context
+import android.graphics.Color
 import android.graphics.Typeface
+import android.graphics.drawable.Drawable
 import android.view.View
+import androidx.appcompat.content.res.AppCompatResources
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.core.content.ContextCompat
+import androidx.core.graphics.drawable.DrawableCompat
 import kotlinx.android.synthetic.main.fragment_post_types.view.*
 import social.tsu.android.R
+import social.tsu.android.TsuApplication
 import social.tsu.android.helper.DeviceUtils
 import social.tsu.android.ui.post.view.PostTypesFragment
+
 
 object PostTypeUiHelper {
 
     fun setChoose(
-            layout: Int,
-            rootView: View?
-        ) {
-            if (rootView == null) return
+        layout: Int,
+        rootView: View?
+    ) {
+        if (rootView == null) return
 
-            val languageLayout = rootView.languageLayout_id
-            val photoLayout = rootView.photoLayout_id
-            val wifiLayout = rootView.wifiLayout_id
+        val languageLayout = rootView.languageLayout_id
+        val photoLayout = rootView.photoLayout_id
+        val gifLayout = rootView.gifLayout_id
+        val wifiLayout = rootView.wifiLayout_id
 
-            when (layout) {
+        when (layout) {
 
-                PostTypesFragment.LANGUAGE_CLICK -> {
-                    languageLayout?.setBackgroundResource(R.drawable.ic_languages_white_end)
-                    setUnChoose(
-                        PostTypesFragment.PHOTO_CLICK,
-                        languageLayout,
-                        photoLayout,
-                        wifiLayout
-                    )
-                    setUnChoose(
-                        PostTypesFragment.WIFI_CLICK,
-                        languageLayout,
-                        photoLayout,
-                        wifiLayout
-                    )
+            PostTypesFragment.GIF_CLICK -> {
+                val unwrappedDrawable =
+                    AppCompatResources.getDrawable(TsuApplication.mContext, R.drawable.ic_gif_icon)
+                unwrappedDrawable?.let {
+                    val wrappedDrawable: Drawable = DrawableCompat.wrap(it)
+                    DrawableCompat.setTint(wrappedDrawable, Color.WHITE)
+                    gifLayout?.background = wrappedDrawable
                 }
+                setUnChoose(
+                    PostTypesFragment.PHOTO_CLICK,
+                    languageLayout,
+                    photoLayout,
+                    wifiLayout,
+                    gifLayout
+                )
+                setUnChoose(
+                    PostTypesFragment.WIFI_CLICK,
+                    languageLayout,
+                    photoLayout,
+                    wifiLayout,
+                    gifLayout
+                )
 
-                PostTypesFragment.PHOTO_CLICK -> {
-                    photoLayout?.setBackgroundResource(R.drawable.ic_photo_white)
+                setUnChoose(
+                    PostTypesFragment.LANGUAGE_CLICK,
+                    languageLayout,
+                    photoLayout,
+                    wifiLayout,
+                    gifLayout
+                )
+            }
+            PostTypesFragment.LANGUAGE_CLICK -> {
+                languageLayout?.setBackgroundResource(R.drawable.ic_languages_white_end)
+                setUnChoose(
+                    PostTypesFragment.PHOTO_CLICK,
+                    languageLayout,
+                    photoLayout,
+                    wifiLayout,
+                    gifLayout
+                )
+                setUnChoose(
+                    PostTypesFragment.WIFI_CLICK,
+                    languageLayout,
+                    photoLayout,
+                    wifiLayout,
+                    gifLayout
+                )
 
-                    setUnChoose(
-                        PostTypesFragment.LANGUAGE_CLICK,
-                        languageLayout,
-                        photoLayout,
-                        wifiLayout
-                    )
-                    setUnChoose(
-                        PostTypesFragment.WIFI_CLICK,
-                        languageLayout,
-                        photoLayout,
-                        wifiLayout
-                    )
-                }
+                setUnChoose(
+                    PostTypesFragment.GIF_CLICK,
+                    languageLayout,
+                    photoLayout,
+                    wifiLayout,
+                    gifLayout
+                )
+            }
 
-                PostTypesFragment.WIFI_CLICK -> {
-                    wifiLayout?.setBackgroundResource(R.drawable.ic_wifi_white_finish)
-                    setUnChoose(
-                        PostTypesFragment.LANGUAGE_CLICK,
-                        languageLayout,
-                        photoLayout,
-                        wifiLayout
-                    )
-                    setUnChoose(
-                        PostTypesFragment.PHOTO_CLICK,
-                        languageLayout,
-                        photoLayout,
-                        wifiLayout
-                    )
-                }
+            PostTypesFragment.PHOTO_CLICK -> {
+                photoLayout?.setBackgroundResource(R.drawable.ic_photo_white)
+
+                setUnChoose(
+                    PostTypesFragment.LANGUAGE_CLICK,
+                    languageLayout,
+                    photoLayout,
+                    wifiLayout,
+                    gifLayout
+                )
+                setUnChoose(
+                    PostTypesFragment.WIFI_CLICK,
+                    languageLayout,
+                    photoLayout,
+                    wifiLayout,
+                    gifLayout
+                )
+                setUnChoose(
+                    PostTypesFragment.GIF_CLICK,
+                    languageLayout,
+                    photoLayout,
+                    wifiLayout,
+                    gifLayout
+                )
+            }
+
+            PostTypesFragment.WIFI_CLICK -> {
+                wifiLayout?.setBackgroundResource(R.drawable.ic_wifi_white_finish)
+                setUnChoose(
+                    PostTypesFragment.LANGUAGE_CLICK,
+                    languageLayout,
+                    photoLayout,
+                    wifiLayout,
+                    gifLayout
+                )
+                setUnChoose(
+                    PostTypesFragment.PHOTO_CLICK,
+                    languageLayout,
+                    photoLayout,
+                    wifiLayout,
+                    gifLayout
+                )
+                setUnChoose(
+                    PostTypesFragment.GIF_CLICK,
+                    languageLayout,
+                    photoLayout,
+                    wifiLayout,
+                    gifLayout
+                )
+            }
             }
         }
 
@@ -80,7 +146,8 @@ object PostTypeUiHelper {
             layout: Int,
             languageLayout: ConstraintLayout?,
             photoLayout: ConstraintLayout?,
-            wifiLayout: ConstraintLayout?
+            wifiLayout: ConstraintLayout?,
+            gifLayout: ConstraintLayout?
         ) {
             when (layout) {
                 PostTypesFragment.LANGUAGE_CLICK -> {
@@ -93,6 +160,10 @@ object PostTypeUiHelper {
 
                 PostTypesFragment.WIFI_CLICK -> {
                     wifiLayout?.setBackgroundResource(R.drawable.ic_wifi_gray_ending)
+                }
+
+                PostTypesFragment.GIF_CLICK -> {
+                    gifLayout?.setBackgroundResource(R.drawable.ic_gif_icon)
                 }
             }
         }
